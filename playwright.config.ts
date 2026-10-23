@@ -1,41 +1,41 @@
 import { defineConfig, devices } from '@playwright/test'
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
 import 'dotenv/config'
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+// CI tests the production build; locally the dev server is used (or reused if already running).
+// Set E2E_PORT to run beside another server, e.g. a `next start` already on 3000.
+// Set E2E_BASE_URL to test a deployed site (staging gate); no local server is started then.
+const port = Number(process.env.E2E_PORT || 3000)
+const externalURL = process.env.E2E_BASE_URL?.replace(/\/$/, '')
+const baseURL = externalURL || `http://localhost:${port}`
+const isCI = Boolean(process.env.CI)
+// 'chrome' uses the installed Google Chrome when Playwright's own Chromium is not downloaded.
+const channel = process.env.E2E_CHANNEL || 'chromium'
+
 export default defineConfig({
   testDir: './tests/e2e',
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  forbidOnly: isCI,
+  retries: isCI ? 2 : 0,
+  // The admin spec seeds a shared user, so keep runs serial.
+  workers: 1,
+  reporter: isCI ? [['github'], ['html', { open: 'never' }]] : 'html',
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://localhost:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    baseURL,
     trace: 'on-first-retry',
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], channel: 'chromium' },
+      use: { ...devices['Desktop Chrome'], channel },
     },
   ],
-  webServer: {
-    command: 'npm run dev',
-    reuseExistingServer: true,
-    url: 'http://localhost:3000',
-  },
+  webServer: externalURL
+    ? undefined
+    : {
+        command: `npm run ${isCI ? 'start' : 'dev'} -- --port ${port}`,
+        url: baseURL,
+        reuseExistingServer: !isCI,
+        timeout: 180_000,
+        // Payload's admin calls its API at serverURL, which must be this server.
+        env: { NEXT_PUBLIC_SITE_URL: baseURL },
+      },
 })

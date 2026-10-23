@@ -68,7 +68,7 @@ The proxy matcher is `/((?!admin|api|download|_next|_vercel|.*\..*).*)`. Any new
 
 1. **Build time:** every locale × page × slug is pre-rendered (`generateStaticParams` + `setRequestLocale`).
 2. **Edit time:** Payload `afterChange`/`afterDelete` hooks on each collection/global call `revalidatePath()` for the affected localized paths (both locales) or `revalidateTag()` for shared data (e.g. `site`, `navigation`). The next request regenerates once; subsequent requests are static.
-3. **Edge:** Cloudflare caches HTML with `s-maxage` + `stale-while-revalidate`; static assets (`/_next/static`) immutable for 1 year. On revalidation, purge the matching Cloudflare URLs (via Cloudflare API from the same hook) — **optional**, add only if stale edge HTML becomes a problem (tracked as risk R-07).
+3. **Edge:** Next emits `s-maxage=31536000` for pre-rendered pages and overrides `Cache-Control` set in `next.config`, so the HTML edge TTL is set by a **Cloudflare Cache Rule** (Edge TTL override, short, see DEPLOY.md), not by origin headers. Cloudflare caches HTML; static assets (`/_next/static`) immutable for 1 year. On revalidation, purge the matching Cloudflare URLs (via Cloudflare API from the same hook) — **optional**, add only if stale edge HTML becomes a problem (tracked as risk R-07).
 4. **Images:** sizes generated at upload (thumb 480, card 960, wide 1600, hero 2400, WebP). Components pick the right size; `next/image` optimisation is used for local `/public` assets only. No per-request resizing of CMS media.
 5. **Video:** MP4 H.264 + WebM, 3 sizes, on R2 behind Cloudflare. Loaded only when FR-HOME-02 conditions allow.
 
@@ -139,7 +139,7 @@ scripts/
 | Env | Where | DB | Media | Purpose |
 |---|---|---|---|---|
 | Local | developer machine | docker Postgres 17 | local `/media` | Development (Payload schema push) |
-| CI | GitHub Actions | service Postgres 17 | none | typecheck, lint, build (+ tests, planned) |
+| CI | GitHub Actions | service Postgres 17 | none | typecheck, lint, migrate (fresh DB), int tests, build, e2e on `next start` |
 | Staging | Hostinger temp URL / `staging.` subdomain | Neon branch `staging` | R2 (r2.dev URL) | Client review, QA |
 | Production | handymandoit.com via Cloudflare | Neon `main` | R2 `media.handymandoit.com` | Live |
 
@@ -173,3 +173,4 @@ Format: **ID · date · decision · context · consequences · status.** Never d
 | ADR-012 | — | Form spam protection: honeypot + timing + rate limit vs Cloudflare Turnstile | Turnstile adds a third-party script; start without, add if spam appears. | Proposed |
 | ADR-013 | 2026-10-23 | Keep the Neon project in AWS us-east-1 (supersedes the EU-region note in ADR-002) | Owner decision. Pages are pre-rendered and revalidated by hooks, so visitors are unaffected; CMS admin and build-time queries pay ~100 ms per round trip from Hostinger EU. Revisit if the admin feels slow. | Accepted |
 | ADR-014 | 2026-10-23 | Defer Cloudflare R2; media on local disk meanwhile | Owner decision. Staging uploads may not survive Hostinger redeploys, so final content goes in after R2 is enabled (set `S3_*` + `MEDIA_PUBLIC_URL`, no code change). | Accepted, temporary |
+| ADR-015 | 2026-10-23 | Static CSP with `'unsafe-inline'` scripts on public routes only; no CSP on `/admin`, `/api` | Nonce-based CSP forces dynamic rendering, which breaks ADR-004 (pre-render everything). Still blocks third-party script/frame/object injection, framing (`frame-ancestors 'self'`) and base/form hijacking. Payload admin needs eval/inline code, so it gets the other headers only. HSTS without `includeSubDomains`/`preload` (`app.` is hosted elsewhere). Extend `script-src`/`connect-src` for GA4 in Phase 5. | Accepted |

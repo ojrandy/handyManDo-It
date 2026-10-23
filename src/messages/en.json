@@ -31,5 +31,21 @@
   "footer": {
     "rights": "All rights reserved.",
     "hours": "Every day, 07:00–21:00 (WAT)"
+  },
+  "notFound": {
+    "metaTitle": "Page not found",
+    "eyebrow": "Error 404",
+    "title": "We can’t find that page.",
+    "body": "The link may be old or the page may have moved. Go back home or message us on WhatsApp.",
+    "home": "Back to home",
+    "whatsapp": "Message us on WhatsApp"
+  },
+  "error": {
+    "eyebrow": "Error",
+    "title": "Something went wrong.",
+    "body": "It’s not you. Try again in a moment; if it keeps happening, message us on WhatsApp.",
+    "retry": "Try again",
+    "home": "Back to home",
+    "whatsapp": "Message us on WhatsApp"
   }
 }

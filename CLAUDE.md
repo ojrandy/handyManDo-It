@@ -40,6 +40,7 @@ npm run lint                # eslint
 npm run build               # production build (heap capped at 3 GB for Hostinger)
 npm run test:int            # vitest  (tests/int/**/*.int.spec.ts, needs DB)
 npm run test:e2e            # playwright (tests/e2e, needs DB + dev server)
+E2E_BASE_URL=https://… npm run test:smoke   # public smoke suite against a deployed site
 npm run generate:types      # after ANY collection/global change → src/payload-types.ts
 npm run generate:importmap  # after adding custom admin components
 npm run migrate:create      # after ANY schema change destined for production
@@ -113,6 +114,8 @@ prompt.md                phase-by-phase prompt library
 - Payload CLI commands (`generate:types`, `migrate`) can finish their work but **not exit** (open DB pool). Wrap them in `timeout 180 …` in scripts, or stop them once they print `Done.` / `Types written`.
 - `npx playwright` may resolve a different Playwright than the project's `@playwright/test` (1.58.2). Use the local binary (`npx --no-install playwright`) so browser versions match.
 - ESLint uses the native flat configs from `eslint-config-next` 16 (`eslint-config-next/core-web-vitals`, `/typescript`). The old `FlatCompat` wrapper crashes with a circular-JSON error.
+- Local `.env` `DATABASE_URL` must be the Docker DB. Dev mode schema-pushes to whatever it points at, so a Neon string there alters staging outside migrations. Neon strings live in Hostinger env vars only.
+- Run e2e beside another server with `E2E_PORT=3100 npm run test:e2e`; only one `next dev` per directory is allowed.
 - `S3_BUCKET` empty ⇒ uploads go to local `/media` (gitignored). Fine for dev, never for staging/prod.
 - `MEDIA_PUBLIC_URL` drives both `next/image` remotePatterns and R2 file URLs — set it in every non-local environment.
 - The Users hook makes the **first** created user an admin. Create the real admin on a fresh DB before exposing `/admin`.

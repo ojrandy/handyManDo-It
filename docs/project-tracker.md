@@ -30,22 +30,22 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-0.05 | Payload localization fr/en, admin i18n | FR-I18N-04 | ✅ | |
 | T-0.06 | next-intl routing with translated pathnames, `proxy.ts` | FR-I18N-01 | ✅ | |
 | T-0.07 | Design tokens, fonts (Sora + Poppins), utilities | design-system | ✅ | |
-| T-0.08 | `Users` (roles, first-user admin), `Media` (sizes), `Site` global | FR-CMS-02 | ✅ | |
+| T-0.08 | `Users` (roles, first-user admin), `Media` (sizes), `Site` global | FR-CMS-02 | ✅ | Media create/update/delete restricted to editors (`isEditor`), 2026-10-23 |
 | T-0.09 | Placeholder home + LanguageSwitcher + skip link | FR-I18N-02, FR-GLB-05 | ✅ | |
 | T-0.10 | PWA manifest, icons, OG default | FR-SEO-04 | ✅ | |
-| T-0.11 | CI: typecheck, lint, build | QA-AUTO-01 | ✅ | Tests not in CI yet |
+| T-0.11 | CI: typecheck, lint, build | QA-AUTO-01 | ✅ | Extended by T-0.21 (migrate, int, e2e) |
 | T-0.12 | Align tooling on npm (Playwright `webServer.command`, `.vscode` `npm.packageManager`) | ADR-010 | ✅ | Both now npm |
 | T-0.13 | **Initial DB migration** `src/migrations/` | NFR-MAINT-02 | ✅ | `20261023_172405_initial` created + applied locally (15 tables) |
-| T-0.14 | First git commit + GitHub repo + branch protection | — | 🔄 | Remote `origin` = github.com/ojrandy/handyManDo-It (empty). Commit/push awaiting owner approval |
-| T-0.15 | Neon project + `staging` branch | ADR-002, ADR-013 | 🔄 | Project exists in **us-east-1** (kept, owner decision 2026-10-23). Needs the pooled **Postgres connection string** (not the Data API URL), set as a Hostinger env var |
+| T-0.14 | First git commit + GitHub repo + branch protection | — | 🔄 | `0253fb0` pushed to `origin/main` 2026-10-23 (owner-approved). First CI run green (GitHub Actions, 2026-10-23). Remaining (owner, GitHub settings; runbook DEPLOY.md §1 "GitHub"): decide visibility (repo is currently **public**), then protect `main` requiring the `check` job once the hardening PR is green |
+| T-0.15 | Neon project + `staging` branch | ADR-002, ADR-013 | 🔄 | Project exists in **us-east-1** (kept, owner decision 2026-10-23). Pooled connection string obtained (default branch `neondb`). Remaining (owner, Neon console; runbook DEPLOY.md §1 "Neon"): create the `staging` branch and put its pooled string in Hostinger env vars **only**; local `.env` points at Docker again (2026-10-23), because dev schema-push would otherwise alter Neon |
 | T-0.16 | R2 bucket, token, CORS, r2.dev | ADR-003, ADR-014 | ⏸ deferred | Owner decision 2026-10-23: later. Until then media is stored on local disk. On Hostinger, uploads may be lost on redeploy, so don't upload final content to staging before R2 |
 | T-0.23 | First-user form: hide `roles` from non-admins | FR-CMS-02 | ✅ | Field `access.create` admin-only; hook still makes first user admin |
-| T-0.17 | Hostinger Node app + env vars + first deploy | NFR-HOST-01 | ⬜ | Needs hPanel access |
+| T-0.17 | Hostinger Node app + env vars + first deploy | NFR-HOST-01 | ⬜ | Needs hPanel access (owner). Runbook + env table + gate checks: DEPLOY.md §1 "Hostinger" and "First deploy and Phase 0 gate"; gate verified with `E2E_BASE_URL=… npm run test:smoke` |
 | T-0.18 | Cloudflare zone (copy DNS, keep `app` record intact) | — | ⬜ | Can wait until launch |
-| T-0.19 | Localized `not-found.tsx` + `error.tsx` | FR-PG-16 | ⬜ | |
-| T-0.20 | Security headers in `next.config.ts` | NFR-SEC-01 | ⬜ | |
-| T-0.21 | Message parity test + int/e2e in CI | QA-AUTO-02..04 | ⬜ | |
-| T-0.22 | Replace Payload template tests with project smoke tests | QA-AUTO-03 | ⬜ | |
+| T-0.19 | Localized `not-found.tsx` + `error.tsx` | FR-PG-16 | ✅ | `[locale]/not-found.tsx`, `error.tsx`, `[...rest]` catch-all → localized 404 with status 404; shared `StatusMessage` |
+| T-0.20 | Security headers in `next.config.ts` | NFR-SEC-01 | ✅ | CSP on site routes (not `/admin`, `/api`), nosniff, XFO, Referrer, COOP, Permissions; HSTS only on https (ADR-015) |
+| T-0.21 | Message parity test + int/e2e in CI | QA-AUTO-02..04 | ✅ | CI: migrate (QA-AUTO-12) → int → build → e2e on `next start`; Vitest env `node` |
+| T-0.22 | Replace Payload template tests with project smoke tests | QA-AUTO-03 | ✅ | `messages`, `access` int specs; `site`, `admin` e2e specs; seeding refuses non-local DBs |
 
 **Verified 2026-10-23:**
 - `tsc --noEmit` clean; `eslint .` 0 errors; `fr.json`/`en.json` key parity OK.
@@ -55,6 +55,8 @@ Update this file in the same PR as the work. Every task lists the requirement ID
   - hreflang `Link` header (fr, en, x-default)
   - `/admin` → create-first-user
 - Screenshots checked: `/fr` at 1440 px, `/en` at 390 px.
+
+**Hardening, verified 2026-10-23 (branch `chore/phase-0-hardening`):** see change log. Commands and results are listed in the PR description.
 
 ## 3. Phase 1 — Content & assets
 
@@ -71,7 +73,9 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-1.09 | `scripts/capture-screens.ts` (fr/en × light/dark) | FR-HOME-10 | ⬜ |
 | T-1.10 | Hero video: select stock, encode MP4/WebM ×3, poster AVIF < 120 KB, cue list | FR-HOME-01 | ⬜ |
 | T-1.11 | French + English copy for all sections | FR-I18N-04 | ⬜ |
-| T-1.12 | Access-control int tests | QA-AUTO-08 | ⬜ |
+| T-1.12 | Access-control int tests (extend `tests/int/access.int.spec.ts` to the editor/admin matrix) | QA-AUTO-08 | ⬜ |
+| T-1.13 | `src/lib/payload.ts`: cached `getPayload()` + typed query helpers (architecture §6) | NFR-MAINT-01 | ⬜ |
+| T-1.14 | `site` global: `afterChange` → `revalidateTag('site')` when pages start reading it (part of T-1.04) | FR-CMS-04 | ⬜ |
 
 ## 4. Phase 2 — Hero prototype
 
@@ -180,3 +184,4 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | 2026-10-23 | Phase 0 scaffold: Next 16 + Payload 3, i18n, tokens, Users/Media/Site, CI, DEPLOY.md | Dev |
 | 2026-10-23 | Added CLAUDE.md, prompt.md and docs (requirements, architecture, data-model, design-system, quality-assurance, operations, project-tracker) | Dev |
 | 2026-10-23 | Initial migration; npm tooling alignment; flat ESLint config (eslint-config-next 16); roles hidden on first-user form; build + smoke test verified; GitHub remote added | Dev |
+| 2026-10-23 | Phase 0 hardening: localized 404/error (T-0.19), security headers (T-0.20), project int/e2e tests + CI migrate/int/e2e (T-0.21, T-0.22), Media explicit access, logo `Link`, local `.env` back on Docker, Cloudflare HTML cache rule documented (DEPLOY.md) | Dev |

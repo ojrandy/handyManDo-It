@@ -12,7 +12,7 @@ Status legend: ✅ implemented · 🟡 partial · ⬜ planned
 |---|---|
 | Localization | Config: locales `fr` (default) + `en`, `fallback: true`. Any human-readable text is `localized: true`. Numbers, URLs, booleans, relationships are not localized unless they genuinely differ per language. |
 | Slugs | `slug` field: unique, lowercase kebab-case, auto-generated from title on create, editable. **Localized** for collections whose URLs are translated (services, projects, jobs, posts if FR/EN articles differ). Service slugs fixed per PLAN.md §6. |
-| Access | Every collection/global declares `access` explicitly. Helpers live in `src/collections/Users.ts` (`isAdmin`, `isAdminOrSelf`); add `isEditor`, `publishedOrAuthenticated` there. |
+| Access | Every collection/global declares `access` explicitly. Helpers live in `src/collections/Users.ts` (`isAdmin`, `isAdminOrSelf`, `isEditor`); add `publishedOrAuthenticated` there. |
 | Drafts | `versions: { drafts: true }` on public content collections; public reads filter `_status: 'published'`. |
 | Revalidation | Every public collection/global has `afterChange` + `afterDelete` hooks that revalidate affected paths/tags (see architecture.md §4). Put shared hooks in `src/hooks/`. |
 | SEO | `@payloadcms/plugin-seo` adds `meta` group (title, description, image) on page-like collections. |
@@ -52,7 +52,7 @@ Access: create/delete admin; read/update admin or self. Hook: first user ever cr
 | caption | text, localized | |
 | (upload) | image/*, video/mp4, video/webm, application/pdf | focal point on |
 
-Sizes (WebP): `thumb` 480, `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read. ⬜ Add: restrict create/update/delete to authenticated; separate private collection for CVs (§3.12).
+Sizes (WebP): `thumb` 480, `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read; create/update/delete `isEditor` (2026-10-23). ⬜ Separate private collection for CVs (§3.12).
 
 ### 3.3 `services` ⬜
 title (L), slug (L, unique), icon (select of icon keys), heroImage (media), summary (L), body (richText, L), inclusions (array{text L}), process (array{title L, text L}), fromPrice (number FCFA, optional → fallback label), faqs (relationship faqs[]), relatedProjects (relationship projects[]), order, featuredOnHome (bool), size (`large`/`small` for bento), meta (SEO). Drafts on.

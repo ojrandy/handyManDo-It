@@ -31,5 +31,21 @@
   "footer": {
     "rights": "Tous droits réservés.",
     "hours": "Tous les jours, 07h00–21h00 (WAT)"
+  },
+  "notFound": {
+    "metaTitle": "Page introuvable",
+    "eyebrow": "Erreur 404",
+    "title": "Cette page est introuvable.",
+    "body": "Le lien est peut-être ancien ou la page a été déplacée. Revenez à l’accueil ou contactez-nous sur WhatsApp.",
+    "home": "Retour à l’accueil",
+    "whatsapp": "Écrire sur WhatsApp"
+  },
+  "error": {
+    "eyebrow": "Erreur",
+    "title": "Un problème est survenu.",
+    "body": "Ce n’est pas de votre faute. Réessayez dans un instant ; si le problème continue, contactez-nous sur WhatsApp.",
+    "retry": "Réessayer",
+    "home": "Retour à l’accueil",
+    "whatsapp": "Écrire sur WhatsApp"
   }
 }

@@ -1,11 +1,16 @@
 import type { CollectionConfig } from 'payload'
 
+import { isEditor } from './Users'
+
 // Sizes are generated once at upload so the Hostinger server never resizes
 // images per request (docs/PLAN.md §2).
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
     read: () => true,
+    create: isEditor,
+    update: isEditor,
+    delete: isEditor,
   },
   fields: [
     {

@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
+import { Link } from '@/i18n/navigation'
 import { site } from '@/lib/site'
 
 type Props = { params: Promise<{ locale: string }> }
@@ -22,7 +23,7 @@ export default async function HomePage({ params }: Props) {
       />
 
       <header className="container-site flex items-center justify-between py-5">
-        <a href={`/${locale}`} className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src="/brand/logo.jpg"
             alt={site.name}
@@ -32,7 +33,7 @@ export default async function HomePage({ params }: Props) {
             className="rounded-lg"
           />
           <span className="font-display text-lg font-semibold tracking-tight">{site.name}</span>
-        </a>
+        </Link>
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
           <a
@@ -44,7 +45,10 @@ export default async function HomePage({ params }: Props) {
         </div>
       </header>
 
-      <main id="main" className="container-site flex min-h-[calc(100dvh-88px)] flex-col justify-center py-16">
+      <main
+        id="main"
+        className="container-site flex min-h-[calc(100dvh-88px)] flex-col justify-center py-16"
+      >
         <p className="mb-6 text-sm font-medium tracking-[0.2em] text-gold-300 uppercase">
           {t('eyebrow')}
         </p>

@@ -32,9 +32,9 @@ Current state: `tests/int/api.int.spec.ts` and `tests/e2e/admin.e2e.spec.ts` are
 | ID | Check | Verifies |
 |---|---|---|
 | QA-AUTO-01 | Typecheck + lint + build in CI | NFR-MAINT-01 ✅ |
-| QA-AUTO-02 | Int tests in CI (Postgres service already present) | FR-CMS-* |
-| QA-AUTO-03 | E2E smoke in CI: `/` redirects, `/fr` & `/en` 200, switcher, 404 | FR-I18N-* |
-| QA-AUTO-04 | Message parity test: `fr.json` and `en.json` have identical key trees, no empty values | FR-I18N-03 |
+| QA-AUTO-02 | Int tests in CI (Postgres service already present) | FR-CMS-* ✅ |
+| QA-AUTO-03 | E2E smoke in CI: `/` redirects, `/fr` & `/en` 200, switcher, 404 | FR-I18N-* ✅ |
+| QA-AUTO-04 | Message parity test: `fr.json` and `en.json` have identical key trees, no empty values | FR-I18N-03 ✅ |
 | QA-AUTO-05 | Redirect table test: each legacy URL → 301 → expected target | FR-SEO-05 |
 | QA-AUTO-06 | axe scan of each template in both locales | NFR-A11Y-01 |
 | QA-AUTO-07 | Lighthouse CI with budgets | NFR-PERF-* |
@@ -42,7 +42,7 @@ Current state: `tests/int/api.int.spec.ts` and `tests/e2e/admin.e2e.spec.ts` are
 | QA-AUTO-09 | Form handler tests: validation, honeypot, rate limit, stored + emailed | FR-FORM-* |
 | QA-AUTO-10 | Metadata test: canonical, hreflang trio, title/description present per template | FR-SEO-01 |
 | QA-AUTO-11 | `npm audit --omit=dev --audit-level=high` | NFR-SEC-04 |
-| QA-AUTO-12 | Migration check: `payload migrate:status` clean against fresh DB | NFR-MAINT-02 |
+| QA-AUTO-12 | Migration check: `payload migrate:status` clean against fresh DB | NFR-MAINT-02 ✅ (CI runs `npm run migrate` on an empty DB) |
 
 ## 4. Quality gates
 
@@ -122,7 +122,9 @@ Bug report template: *Title · Env/URL · Locale · Device/browser/viewport · S
 
 ## 8. Test data and accounts
 
-- Test admin for e2e: created/destroyed by `tests/helpers/seedUser.ts` (`dev@payloadcms.com`). **Never** run against staging/prod DBs.
+- Test admin for e2e: created/destroyed by `tests/helpers/seedUser.ts` (`e2e-admin@handymandoit.test`). **Never** run against staging/prod DBs; the helper refuses any `DATABASE_URL` host other than localhost.
+- Deployed-site smoke: `E2E_BASE_URL=https://<env> npm run test:smoke` runs `tests/e2e/site.e2e.spec.ts` only (no DB access), used for the Phase 0 staging gate and after every deploy.
+- Vitest runs in the `node` environment (int tests use the Payload Local API). Component tests opt in to jsdom per file with `// @vitest-environment jsdom`.
 - Seeds (`scripts/seed.ts`) are idempotent and the canonical demo content.
 - Never use real customer data in tests.
 

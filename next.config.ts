@@ -10,15 +10,68 @@ const dirname = path.dirname(__filename)
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
 const mediaHost = process.env.MEDIA_PUBLIC_URL ? new URL(process.env.MEDIA_PUBLIC_URL) : null
+const isDev = process.env.NODE_ENV === 'development'
+// HSTS and upgrade-insecure-requests only make sense (and only work) behind HTTPS.
+const isHttps = (process.env.NEXT_PUBLIC_SITE_URL || '').startsWith('https://')
+
+// Pages are pre-rendered, so nonces are not an option; 'unsafe-inline' covers the
+// inline scripts Next.js emits. Extend script-src/connect-src when GA4 lands (Phase 5).
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
+  "style-src 'self' 'unsafe-inline'",
+  `img-src 'self' data: blob:${mediaHost ? ` ${mediaHost.origin}` : ''}`,
+  `media-src 'self'${mediaHost ? ` ${mediaHost.origin}` : ''}`,
+  "font-src 'self'",
+  `connect-src 'self'${isDev ? ' ws:' : ''}`,
+  "frame-ancestors 'self'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  ...(isHttps ? ['upgrade-insecure-requests'] : []),
+].join('; ')
+
+const securityHeaders = [
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()',
+  },
+  // No includeSubDomains/preload: app.handymandoit.com is hosted elsewhere and preload is hard to undo.
+  ...(isHttps ? [{ key: 'Strict-Transport-Security', value: 'max-age=31536000' }] : []),
+]
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ['image/avif', 'image/webp'],
-    localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/brand/**' }, { pathname: '/icons/**' }, { pathname: '/video/**' }],
+    localPatterns: [
+      { pathname: '/api/media/file/**' },
+      { pathname: '/brand/**' },
+      { pathname: '/icons/**' },
+      { pathname: '/video/**' },
+    ],
     remotePatterns: mediaHost
-      ? [{ protocol: mediaHost.protocol.replace(':', '') as 'https' | 'http', hostname: mediaHost.hostname }]
+      ? [
+          {
+            protocol: mediaHost.protocol.replace(':', '') as 'https' | 'http',
+            hostname: mediaHost.hostname,
+          },
+        ]
       : [],
+  },
+  async headers() {
+    return [
+      { source: '/:path*', headers: securityHeaders },
+      // The Payload admin relies on inline/eval code, so the CSP covers the public site only.
+      {
+        source: '/:path((?!admin|api).*)',
+        headers: [{ key: 'Content-Security-Policy', value: contentSecurityPolicy }],
+      },
+    ]
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

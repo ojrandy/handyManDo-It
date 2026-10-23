@@ -20,7 +20,7 @@ Version 1.0 · 2026-10-23 · Complements [DEPLOY.md](DEPLOY.md) (first-time setu
 | Variable | Required | Scope | Notes |
 |---|---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | ✅ | public, build-time | Origin, no trailing slash. Used for `metadataBase`, Payload `serverURL`, sitemap |
-| `DATABASE_URL` | ✅ | server | Neon **pooled** string with `sslmode=require` |
+| `DATABASE_URL` | ✅ | server | Staging/prod: Neon **pooled** string with `sslmode=require`. Local: **always** the Docker DB (dev schema-push would alter Neon) |
 | `PAYLOAD_SECRET` | ✅ | server | 32+ random bytes, unique per env. Rotating it invalidates sessions |
 | `S3_BUCKET` | ✅ (staging/prod) | server | Empty ⇒ local disk (dev only) |
 | `S3_ENDPOINT` | ✅ with bucket | server | `https://<account-id>.r2.cloudflarestorage.com` |
@@ -30,8 +30,11 @@ Version 1.0 · 2026-10-23 · Complements [DEPLOY.md](DEPLOY.md) (first-time setu
 | `EMAIL_FROM` | ✅ | server | Sender address; must be authorised by SPF/DKIM of the SMTP provider |
 | `NEXT_PUBLIC_GA_ID` | ⬜ planned | public | GA4 measurement ID |
 | `NEXT_TELEMETRY_DISABLED` | optional | build | `1` in CI |
+| `E2E_PORT` | optional | tests | Playwright web-server port (default 3000) |
+| `E2E_BASE_URL` | optional | tests | Run e2e/smoke against a deployed URL (no local server), e.g. the staging gate |
+| `E2E_CHANNEL` | optional | tests | `chrome` to use the installed Google Chrome instead of Playwright's Chromium |
 
-Rules: `.env` is gitignored; `.env.example` lists every variable with a comment — update it in the same PR that introduces a variable. Never put secrets in `NEXT_PUBLIC_*`. `NEXT_PUBLIC_*` and `MEDIA_PUBLIC_URL` are read at **build** time → change them, then **rebuild**.
+Rules: `.env` is gitignored; `.env.example` lists every variable with a comment — update it in the same PR that introduces a variable. Never put secrets in `NEXT_PUBLIC_*`. `NEXT_PUBLIC_*` and `MEDIA_PUBLIC_URL` are read at **build** time → change them, then **rebuild**. This includes the security headers: HSTS and `upgrade-insecure-requests` are emitted only when `NEXT_PUBLIC_SITE_URL` starts with `https://` at build time.
 
 ## 3. Build and start
 
