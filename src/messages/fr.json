@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "siteName": "HandyMan Do IT",
+    "title": "HandyMan Do IT · Des pros de confiance chez vous, au Cameroun",
+    "description": "Réservez des professionnels vérifiés pour vos réparations, aménagements, déménagements et plus. Prix clair d’abord, paiement Mobile Money, suivi en direct. Douala, Buea, Yaoundé et plus de 120 villes."
+  },
+  "nav": {
+    "services": "Services",
+    "businesses": "Entreprises",
+    "becomeAPro": "Devenir pro",
+    "ourWork": "Nos réalisations",
+    "about": "À propos",
+    "blog": "Blog",
+    "getTheApp": "Télécharger l’app",
+    "skipToContent": "Aller au contenu"
+  },
+  "language": {
+    "label": "Langue",
+    "fr": "Français",
+    "en": "English"
+  },
+  "hero": {
+    "eyebrow": "Douala · Buea · Yaoundé",
+    "titleStart": "Un pro chez vous,",
+    "titleHighlight": "en toute confiance.",
+    "subtitle": "Réservez des professionnels vérifiés, recevez un prix clair avant le début des travaux, payez en toute sécurité par Mobile Money et suivez l’intervention en direct.",
+    "primaryCta": "Réserver un service",
+    "secondaryCta": "Télécharger l’app",
+    "values": "Ponctuel · Poli · Professionnel"
+  },
+  "footer": {
+    "rights": "Tous droits réservés.",
+    "hours": "Tous les jours, 07h00–21h00 (WAT)"
+  }
+}

@@ -1,0 +1,124 @@
+# Data Model (Payload CMS)
+
+Version 1.0 · 2026-10-23 · Source of truth for the schema is the code in `src/collections` and `src/globals`; this doc describes intent, conventions and the target model. Generated types: `src/payload-types.ts` (never edit).
+
+Status legend: ✅ implemented · 🟡 partial · ⬜ planned
+
+---
+
+## 1. Conventions
+
+| Rule | Detail |
+|---|---|
+| Localization | Config: locales `fr` (default) + `en`, `fallback: true`. Any human-readable text is `localized: true`. Numbers, URLs, booleans, relationships are not localized unless they genuinely differ per language. |
+| Slugs | `slug` field: unique, lowercase kebab-case, auto-generated from title on create, editable. **Localized** for collections whose URLs are translated (services, projects, jobs, posts if FR/EN articles differ). Service slugs fixed per PLAN.md §6. |
+| Access | Every collection/global declares `access` explicitly. Helpers live in `src/collections/Users.ts` (`isAdmin`, `isAdminOrSelf`); add `isEditor`, `publishedOrAuthenticated` there. |
+| Drafts | `versions: { drafts: true }` on public content collections; public reads filter `_status: 'published'`. |
+| Revalidation | Every public collection/global has `afterChange` + `afterDelete` hooks that revalidate affected paths/tags (see architecture.md §4). Put shared hooks in `src/hooks/`. |
+| SEO | `@payloadcms/plugin-seo` adds `meta` group (title, description, image) on page-like collections. |
+| Ordering | Manual ordering via `order` number field (or Payload `orderable` when used). |
+| Admin | `admin.useAsTitle`, `defaultColumns`, `group` (Content, Marketing, Company, Inbox, Settings) set on every collection. |
+| Changes | After any change: `npm run generate:types` → `npm run migrate:create` → commit both. |
+
+## 2. Entity overview
+
+```
+users ─┐
+       └─(author)─▶ posts ──▶ categories
+media ◀── used by almost everything (upload relationship)
+services ◀──(service)── projects ──(featured)──▶ home
+   │  ▲                     ▲
+   │  └──(service)── testimonials
+   └──▶ faqs (by service or category)
+team · partners · jobs · appScreens · submissions
+globals: site · navigation · home · seo
+```
+
+## 3. Collections
+
+### 3.1 `users` ✅
+| Field | Type | Notes |
+|---|---|---|
+| email, password | auth | Payload auth |
+| name | text | |
+| roles | select[] `admin`/`editor` | required, default `['editor']`, `saveToJWT`; only admins can change |
+
+Access: create/delete admin; read/update admin or self. Hook: first user ever created becomes admin.
+
+### 3.2 `media` ✅
+| Field | Type | Notes |
+|---|---|---|
+| alt | text, **required, localized** | |
+| caption | text, localized | |
+| (upload) | image/*, video/mp4, video/webm, application/pdf | focal point on |
+
+Sizes (WebP): `thumb` 480, `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read. ⬜ Add: restrict create/update/delete to authenticated; separate private collection for CVs (§3.12).
+
+### 3.3 `services` ⬜
+title (L), slug (L, unique), icon (select of icon keys), heroImage (media), summary (L), body (richText, L), inclusions (array{text L}), process (array{title L, text L}), fromPrice (number FCFA, optional → fallback label), faqs (relationship faqs[]), relatedProjects (relationship projects[]), order, featuredOnHome (bool), size (`large`/`small` for bento), meta (SEO). Drafts on.
+
+### 3.4 `projects` ⬜
+title (L), slug (L), service (rel services), city (text), client (text), cover (media), gallery (media[]), before / after (media), story (richText L), featured (bool), date, meta.
+
+### 3.5 `testimonials` ⬜
+name, city, service (rel), quote (textarea L), photo (media), projectPhoto (media), rating (1–5), featured (bool), order. Seed: N Emmanuel (Yaoundé), Richard S. (Buea), Solpia Cameroon (Douala), M Lounge Exclusive (Bonaberi).
+
+### 3.6 `team` ⬜
+name, role (L), photo (media), bio (textarea L), order. Seed: J. Batholomew, Mbeng Nkeng S., ANU Ernest.
+
+### 3.7 `partners` ⬜
+name, logo (media), url, order.
+
+### 3.8 `faqs` ⬜
+question (L), answer (richText L), category (select: payments, coverage, quotes, cancellations, guarantee, safety, pros, business), service (rel, optional), showOnHome (bool), order.
+
+### 3.9 `posts` + `categories` ⬜
+posts: title (L), slug, excerpt (L), cover (media), content (richText L), categories (rel[]), author (rel users), publishedAt, legacyUrl (text, for redirect audit), meta. Drafts on.
+categories: title (L), slug.
+
+### 3.10 `jobs` ⬜
+title (L), slug, location, type (select: full-time, part-time, contract), description (richText L), open (bool), closesAt (date).
+
+### 3.11 `appScreens` ⬜
+key (select: welcome, home, services, category, shop, food, help, tracking, wallet, chat, completion), locale (`fr`/`en`, **not** Payload-localized — one doc per locale×theme), theme (`light`/`dark`), image (media), caption (L). Unique index on (key, locale, theme).
+
+### 3.12 `submissions` ⬜
+type (select: contact, quote-home, quote-business, partnership, pro, job), name, email, phone, city, message, payload (json, extra form fields), job (rel jobs, optional), attachment (rel to private `files` upload collection), locale, utm (json), status (select: new, in-progress, done, spam), createdAt.
+Access: create **only via server route handler** (Local API with `overrideAccess`), no public REST create; read/update for authenticated; delete admin. Hook: `afterChange` on create → email notification. Retention: 24 months (NFR-PRIV-01).
+
+## 4. Globals
+
+### 4.1 `site` ✅ (access: public read, admin update)
+Tabs — **Contact:** phone, whatsappUrl, email, hours (L), offices[] {label L, address, city, mapUrl}. **Apps:** webAppUrl, playStoreUrl, appStoreUrl (empty ⇒ iOS badge hidden), rating, reviewCount (empty ⇒ rating row hidden). **Stats:** towns, years, clients, projects. **Social:** facebook, instagram, x, youtube.
+Defaults come from `src/lib/site.ts`. ⬜ Add revalidation hook (`revalidateTag('site')`).
+
+### 4.2 `navigation` ⬜
+header[] {label L, link (internal pathname key or external URL), children[] for mega-menu {label L, description L, icon, link}}; footer columns[] {title L, links[]}.
+
+### 4.3 `home` ⬜
+One group per home section (PLAN.md §5.2–5.16) with localized copy. Hero: video (media, mp4), videoWebm (media), poster (media), filmUrl (media), cues[] {timeSeconds number, text L, icon}. Drafts on.
+
+### 4.4 `seo` ⬜
+defaultTitle (L), defaultDescription (L), ogImage (media), organisation JSON-LD fields (legalName, foundingDate, sameAs[]).
+
+## 5. Redirects
+
+`@payloadcms/plugin-redirects` is installed (not yet configured). Use it for **editor-managed** redirects; keep the fixed legacy map (PLAN.md §8) in `next.config.ts` `redirects()` so it's versioned and testable.
+
+## 6. Migrations
+
+- Dev: Payload pushes schema automatically (`push` in dev). Don't rely on push anywhere else.
+- **No `src/migrations/` folder exists yet.** Before the first staging deploy run `npm run migrate:create -- --name initial` against a clean DB and commit it.
+- Each schema PR: one migration, named after the change (`add-services`, `faq-category`).
+- Destructive changes (rename/drop) need a two-step migration or a data copy in `up()`; document in the PR.
+- Production applies migrations on start (`npm run start:prod`). Take a Neon branch/snapshot before any destructive migration.
+
+## 7. Seed and import data
+
+| Script | Source | Fills |
+|---|---|---|
+| `scripts/seed.ts` ⬜ | Old site content + `lib/site.ts` | services (11), testimonials (4), team (3), partners (8), faqs, site, navigation, home |
+| `scripts/migrate-wordpress.ts` ⬜ | WordPress REST API | posts (20), categories, media; records `legacyUrl` |
+| `scripts/capture-screens.ts` ⬜ | Playwright on app.handymandoit.com | appScreens (390×844 @3x, fr/en, light/dark) |
+
+Seeds must be **idempotent** (upsert by slug/key) and safe to re-run.

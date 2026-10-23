@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "siteName": "HandyMan Do IT",
+    "title": "HandyMan Do IT · Trusted home services in Cameroon",
+    "description": "Book verified pros for repairs, design, moving and more. Clear price first, pay with Mobile Money, follow the job live. Douala, Buea, Yaoundé and 120+ towns."
+  },
+  "nav": {
+    "services": "Services",
+    "businesses": "Businesses",
+    "becomeAPro": "Become a pro",
+    "ourWork": "Our work",
+    "about": "About",
+    "blog": "Blog",
+    "getTheApp": "Get the app",
+    "skipToContent": "Skip to content"
+  },
+  "language": {
+    "label": "Language",
+    "fr": "Français",
+    "en": "English"
+  },
+  "hero": {
+    "eyebrow": "Douala · Buea · Yaoundé",
+    "titleStart": "Help for your home,",
+    "titleHighlight": "right at home.",
+    "subtitle": "Book verified professionals, get a clear price before anything starts, pay safely with Mobile Money and follow the job live.",
+    "primaryCta": "Book a service",
+    "secondaryCta": "Get the app",
+    "values": "Punctual · Polite · Professional"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "hours": "Every day, 07:00–21:00 (WAT)"
+  }
+}
