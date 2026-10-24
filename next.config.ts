@@ -50,6 +50,7 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     localPatterns: [
       { pathname: '/api/media/file/**' },
+      { pathname: '/badges/**' },
       { pathname: '/brand/**' },
       { pathname: '/icons/**' },
       { pathname: '/video/**' },

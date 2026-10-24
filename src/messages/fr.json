@@ -12,7 +12,13 @@
     "about": "À propos",
     "blog": "Blog",
     "getTheApp": "Télécharger l’app",
-    "skipToContent": "Aller au contenu"
+    "skipToContent": "Aller au contenu",
+    "main": "Navigation principale",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "allServices": "Voir tous les services",
+    "home": "Accueil HandyMan Do IT",
+    "servicesIntro": "Des pros vérifiés pour chaque besoin, du petit dépannage au grand chantier."
   },
   "language": {
     "label": "Langue",
@@ -26,7 +32,46 @@
     "subtitle": "Réservez des professionnels vérifiés, recevez un prix clair avant le début des travaux, payez en toute sécurité par Mobile Money et suivez l’intervention en direct.",
     "primaryCta": "Réserver un service",
     "secondaryCta": "Télécharger l’app",
-    "values": "Ponctuel · Poli · Professionnel"
+    "values": "Ponctuel · Poli · Professionnel",
+    "watchFilm": "Voir le film",
+    "film": {
+      "title": "HandyMan Do IT en vidéo",
+      "close": "Fermer la vidéo"
+    },
+    "trust": {
+      "clients": "{count}+ clients satisfaits"
+    },
+    "story": {
+      "label": "Comment se déroule une intervention avec HandyMan",
+      "pause": "Mettre l’animation en pause",
+      "play": "Reprendre l’animation"
+    },
+    "notification": {
+      "app": "HandyMan Do IT",
+      "now": "maintenant"
+    },
+    "cues": {
+      "quote": {
+        "title": "Prix clair reçu",
+        "body": "Tapisserie · 25 000 FCFA"
+      },
+      "paid": {
+        "title": "Payé avec MTN MoMo",
+        "body": "Montant sécurisé jusqu’à la fin du travail"
+      },
+      "onTheWay": {
+        "title": "Votre pro vérifié est en route",
+        "body": "Suivez-le sur la carte en direct"
+      },
+      "finished": {
+        "title": "Travail terminé",
+        "body": "Photos de l’intervention ajoutées"
+      },
+      "released": {
+        "title": "Code partagé · paiement libéré",
+        "body": "+50 points de fidélité"
+      }
+    }
   },
   "footer": {
     "rights": "Tous droits réservés.",
@@ -47,5 +92,95 @@
     "retry": "Réessayer",
     "home": "Retour à l’accueil",
     "whatsapp": "Écrire sur WhatsApp"
+  },
+  "services": {
+    "interiorExteriorDesign": {
+      "name": "Design intérieur & extérieur",
+      "short": "Design",
+      "blurb": "Des espaces pensés pour vous."
+    },
+    "upholsteryFurniture": {
+      "name": "Tapisserie & mobilier",
+      "short": "Tapisserie",
+      "blurb": "Canapés, chaises et meubles sur mesure."
+    },
+    "repairsInstallations": {
+      "name": "Réparations & installations",
+      "short": "Réparations",
+      "blurb": "Plomberie, électricité, appareils."
+    },
+    "remodeling": {
+      "name": "Rénovation",
+      "short": "Rénovation",
+      "blurb": "Cuisines, salles de bain, pièces entières."
+    },
+    "signage": {
+      "name": "Signalétique",
+      "short": "Enseignes",
+      "blurb": "Enseignes et panneaux pour votre activité."
+    },
+    "events": {
+      "name": "Événements",
+      "short": "Événements",
+      "blurb": "Installation et décoration d’événements."
+    },
+    "lighting": {
+      "name": "Éclairage",
+      "short": "Éclairage",
+      "blurb": "Luminaires, LED et ambiance."
+    },
+    "building": {
+      "name": "Construction",
+      "short": "Construction",
+      "blurb": "Maçonnerie, carrelage, gros œuvre."
+    },
+    "moving": {
+      "name": "Déménagement",
+      "short": "Déménagement",
+      "blurb": "Un déménagement sans stress."
+    },
+    "packing": {
+      "name": "Emballage",
+      "short": "Emballage",
+      "blurb": "Vos biens protégés et étiquetés."
+    },
+    "transport": {
+      "name": "Transport",
+      "short": "Transport",
+      "blurb": "Livraison et transport de biens."
+    }
+  },
+  "getTheApp": {
+    "qrTitle": "Scannez pour installer l’app",
+    "qrBody": "Ouvrez l’appareil photo de votre téléphone et visez le code.",
+    "qrAlt": "QR code vers HandyMan Do IT sur Google Play",
+    "orUseWeb": "Ou utilisez l’app web",
+    "close": "Fermer"
+  },
+  "stores": {
+    "googlePlay": "Disponible sur Google Play",
+    "appStore": "Télécharger dans l’App Store",
+    "label": "Télécharger l’application"
+  },
+  "payments": {
+    "label": "Moyens de paiement acceptés",
+    "mtn": "MTN MoMo",
+    "orange": "Orange Money",
+    "wallet": "Portefeuille HandyMan"
+  },
+  "phone": {
+    "time": "9:41",
+    "greeting": "Bonjour",
+    "question": "De quoi avez-vous besoin aujourd’hui ?",
+    "search": "Rechercher un service",
+    "categories": "Catégories",
+    "promoTitle": "Prix clair avant de réserver",
+    "promoBody": "Décrivez le travail, ajoutez des photos, recevez votre prix.",
+    "tabs": {
+      "home": "Accueil",
+      "bookings": "Réservations",
+      "wallet": "Portefeuille",
+      "profile": "Profil"
+    }
   }
 }

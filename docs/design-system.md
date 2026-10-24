@@ -80,21 +80,21 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 | Component | Status | Notes |
 |---|---|---|
 | LanguageSwitcher | ✅ | Pill group, `aria-pressed`, keeps equivalent page |
-| Button | ⬜ | Variants: `primary` (gold pill), `secondary` (outline white on dark / teal on light), `ghost`, `link`; sizes sm/md/lg; renders `Link` or `<a>` for external; never a `<div>` |
-| StoreBadges | ⬜ | Play + App Store (hidden if no URL); fires `store_click` with placement |
-| GetTheApp | ⬜ | Smart CTA (device detection), QR popover on desktop |
-| Badge / PaymentBadges | ⬜ | MTN MoMo, Orange Money, HandyMan Wallet |
+| Button | ✅ | `buttonClasses({ variant, size })` helper (`ui/button.ts`) applied to `Link`, `<a>`, `<button>` and popover triggers; variants `primary` (gold pill), `secondary` (outline on dark), `ghost` (no horizontal padding, aligns with copy); sizes sm/md/lg, min height 44 px; never a `<div>`. Light-background variants come with the first light section |
+| StoreBadges | ✅ | Official Google Play badge per locale (`public/badges`, unaltered); App Store hidden while `appStoreUrl` is empty. `store_click` event in Phase 5 |
+| GetTheApp | ✅ | Server wrapper renders the QR SVG; client button: Android → Play, iOS → App Store or web app, desktop → native `popover` with QR. Plain Play link before hydration / without JS |
+| Badge / PaymentBadges | ✅ | Text pills with brand-colour dots (no third-party logos until licensed) |
 | Accordion | ⬜ | Native `<details>` or ARIA disclosure; fires `faq_open` |
 | Tabs | ⬜ | ARIA tabs pattern with arrow-key nav |
 | Marquee | ⬜ | Pause on hover/focus; static under reduced motion |
 | Counter | ⬜ | Animates on view; final value in DOM for SR/no-JS |
-| Dialog / Lightbox | ⬜ | Focus trap, Esc closes, returns focus; brand film with captions |
+| Dialog / Lightbox | ✅ | Native modal `<dialog>` (focus contained, Esc closes), focus returned to trigger, backdrop click closes; `FilmLightbox` video `preload="none"`. Captions pending transcript |
 | Carousel (embla) | ⬜ | Keyboard + swipe; visible controls |
 | WhatsAppFab | ⬜ | Bottom-right, delayed, safe-area aware |
 | Form fields | ⬜ | Label always visible, error text linked with `aria-describedby`, `aria-live` summary |
 | JsonLd | ⬜ | `<script type="application/ld+json">` server component |
-| device/Phone, device/Laptop | ⬜ | CSS/SVG frames, screen slot accepts image or HTML demo |
-| sections/* | ⬜ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
+| device/Phone, device/Laptop | Phone ✅ · Laptop ⬜ | CSS frame with `overlay` slot; `AppHomeScreen` is an HTML recreation of the app Home screen until captured screens (T-1.09) |
+| sections/* | Header, Hero ✅ · rest ⬜ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
 
 **Component rules**
 1. Server Component unless it needs interactivity; client logic in the smallest possible child.

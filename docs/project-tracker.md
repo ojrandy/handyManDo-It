@@ -13,7 +13,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 |---|---|---|---|
 | 0. Foundations | Stack wired, i18n, tokens, CI, staging | Staging loads `/fr`, `/en`; `/admin` works | 🔄 code done; staging gate deferred (owner, 2026-10-24) |
 | 1. Content & assets | Migrations/seeds, CMS model, screens, video, FR copy | All content visible in CMS | ⬜ |
-| 2. Hero prototype | Header + synced-story hero + light-data mode | **Owner approves the look** | ⬜ |
+| 2. Hero prototype | Header + synced-story hero + light-data mode | **Owner approves the look** | 🔄 built 2026-10-24, awaiting owner review |
 | 3. Home page | Sections 5.3–5.17 | Home complete in both locales | ⬜ |
 | 4. Inner pages | All §6 pages, forms, `/download` | Every page live on staging | ⬜ |
 | 5. SEO & analytics | JSON-LD, sitemaps, hreflang, OG, redirects, GA4 | Rich results pass; events in DebugView | ⬜ |
@@ -81,13 +81,13 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 
 | ID | Task | Req | Status |
 |---|---|---|---|
-| T-2.01 | Header (transparent → frosted, mega-menu, mobile menu) | FR-GLB-01 | ⬜ |
-| T-2.02 | Button, StoreBadges, GetTheApp (smart), PaymentBadges | FR-GLB-04/06 | ⬜ |
-| T-2.03 | Hero: video + overlay + H1/CTAs + trust row | FR-HOME-01 | ⬜ |
-| T-2.04 | Phone frame + cue-synced notifications | FR-HOME-01 | ⬜ |
-| T-2.05 | Light-data / reduced-motion mode | FR-HOME-02 | ⬜ |
-| T-2.06 | Brand film lightbox with captions | FR-HOME-01, NFR-A11Y-01 | ⬜ |
-| T-2.07 | Lighthouse + device check of hero; owner approval | NFR-PERF-01 | ⬜ |
+| T-2.01 | Header (transparent → frosted, mega-menu, mobile menu) | FR-GLB-01 | ✅ `Header` + `HeaderShell`; mega-menu (click/hover, Esc returns focus), mobile menu as modal `<dialog>` with store badge + language switch |
+| T-2.02 | Button, StoreBadges, GetTheApp (smart), PaymentBadges | FR-GLB-04/06 | ✅ `buttonClasses()`, official Google Play badges (fr/en), App Store link hidden until URL (official badge to add with Q-3); QR popover encodes the Play URL until `/download` (T-4.10) |
+| T-2.03 | Hero: video + overlay + H1/CTAs + trust row | FR-HOME-01 | ✅ code; footage pending T-1.10/Q-4 (`heroVideo` in `src/lib/hero.ts`, designed background meanwhile). Trust avatars are initials until testimonials (T-1.01); rating row hidden (Q-6). Scroll cue added with Phase 3 sections |
+| T-2.04 | Phone frame + cue-synced notifications | FR-HOME-01 | ✅ `device/Phone` + HTML `AppHomeScreen` until real screens (T-1.09); cues sync via `requestVideoFrameCallback` (timeupdate fallback); cue list moves to the `home` global (T-1.03) |
+| T-2.05 | Light-data / reduced-motion mode | FR-HOME-02 | ✅ `useLightData` (Save-Data, slow/cellular, reduced motion); video never rendered or requested (e2e); pause control for WCAG 2.2.2 |
+| T-2.06 | Brand film lightbox with captions | FR-HOME-01, NFR-A11Y-01 | 🔄 lightbox done (native `<dialog>`, `preload="none"`); captions need the film's audio transcript from the owner |
+| T-2.07 | Lighthouse + device check of hero; owner approval | NFR-PERF-01 | 🔄 automated: LCP is server-rendered text (H1 desktop, subhead 390 px), no console errors, e2e `hero.e2e.spec.ts`. Pending: Lighthouse on a mid-range Android, owner approval |
 
 ## 5. Phase 3 — Home page
 
@@ -187,3 +187,4 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | 2026-10-23 | Phase 0 hardening: localized 404/error (T-0.19), security headers (T-0.20), project int/e2e tests + CI migrate/int/e2e (T-0.21, T-0.22), Media explicit access, logo `Link`, local `.env` back on Docker, Cloudflare HTML cache rule documented (DEPLOY.md) | Dev |
 | 2026-10-24 | Deployment (T-0.15, T-0.17) deferred until the design is done; work continues on GitHub only | Owner |
 | 2026-10-24 | Security upgrade Next 16.4.2 + sharp 0.35.5 (ADR-016); Vitest hook timeout 60 s | Dev |
+| 2026-10-24 | Phase 2 built: header (mega-menu, mobile menu), smart Get the app + QR, store/payment badges, synced-story hero with phone + lifecycle notifications, light-data mode, film lightbox; deps lucide-react 1.52.0, qrcode 1.5.4 | Dev |

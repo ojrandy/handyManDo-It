@@ -12,7 +12,13 @@
     "about": "About",
     "blog": "Blog",
     "getTheApp": "Get the app",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "main": "Main navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "allServices": "See all services",
+    "home": "HandyMan Do IT home",
+    "servicesIntro": "Verified pros for every job, from quick fixes to full projects."
   },
   "language": {
     "label": "Language",
@@ -26,7 +32,46 @@
     "subtitle": "Book verified professionals, get a clear price before anything starts, pay safely with Mobile Money and follow the job live.",
     "primaryCta": "Book a service",
     "secondaryCta": "Get the app",
-    "values": "Punctual · Polite · Professional"
+    "values": "Punctual · Polite · Professional",
+    "watchFilm": "Watch the film",
+    "film": {
+      "title": "HandyMan Do IT on film",
+      "close": "Close video"
+    },
+    "trust": {
+      "clients": "{count}+ happy clients"
+    },
+    "story": {
+      "label": "How a job works with HandyMan",
+      "pause": "Pause animation",
+      "play": "Play animation"
+    },
+    "notification": {
+      "app": "HandyMan Do IT",
+      "now": "now"
+    },
+    "cues": {
+      "quote": {
+        "title": "Clear price received",
+        "body": "Upholstery · 25,000 FCFA"
+      },
+      "paid": {
+        "title": "Paid with MTN MoMo",
+        "body": "Held safely until the job is done"
+      },
+      "onTheWay": {
+        "title": "Your verified pro is on the way",
+        "body": "Follow along on the live map"
+      },
+      "finished": {
+        "title": "Job finished",
+        "body": "Photos of the work added"
+      },
+      "released": {
+        "title": "Code shared · payment released",
+        "body": "+50 reward points"
+      }
+    }
   },
   "footer": {
     "rights": "All rights reserved.",
@@ -47,5 +92,95 @@
     "retry": "Try again",
     "home": "Back to home",
     "whatsapp": "Message us on WhatsApp"
+  },
+  "services": {
+    "interiorExteriorDesign": {
+      "name": "Interior & exterior design",
+      "short": "Design",
+      "blurb": "Spaces designed around you."
+    },
+    "upholsteryFurniture": {
+      "name": "Upholstery & furniture",
+      "short": "Upholstery",
+      "blurb": "Sofas, chairs and made-to-measure pieces."
+    },
+    "repairsInstallations": {
+      "name": "Repairs & installations",
+      "short": "Repairs",
+      "blurb": "Plumbing, electrics, appliances."
+    },
+    "remodeling": {
+      "name": "Remodeling",
+      "short": "Remodeling",
+      "blurb": "Kitchens, bathrooms, whole rooms."
+    },
+    "signage": {
+      "name": "Signage",
+      "short": "Signage",
+      "blurb": "Signs and boards for your business."
+    },
+    "events": {
+      "name": "Events",
+      "short": "Events",
+      "blurb": "Event set-up and decoration."
+    },
+    "lighting": {
+      "name": "Lighting",
+      "short": "Lighting",
+      "blurb": "Fixtures, LEDs and ambience."
+    },
+    "building": {
+      "name": "Building",
+      "short": "Building",
+      "blurb": "Masonry, tiling, structural work."
+    },
+    "moving": {
+      "name": "Moving",
+      "short": "Moving",
+      "blurb": "Stress-free home and office moves."
+    },
+    "packing": {
+      "name": "Packing",
+      "short": "Packing",
+      "blurb": "Your things wrapped and labelled."
+    },
+    "transport": {
+      "name": "Transport",
+      "short": "Transport",
+      "blurb": "Delivery and goods transport."
+    }
+  },
+  "getTheApp": {
+    "qrTitle": "Scan to get the app",
+    "qrBody": "Point your phone’s camera at the code.",
+    "qrAlt": "QR code to HandyMan Do IT on Google Play",
+    "orUseWeb": "Or use the web app",
+    "close": "Close"
+  },
+  "stores": {
+    "googlePlay": "Get it on Google Play",
+    "appStore": "Download on the App Store",
+    "label": "Download the app"
+  },
+  "payments": {
+    "label": "Accepted payment methods",
+    "mtn": "MTN MoMo",
+    "orange": "Orange Money",
+    "wallet": "HandyMan Wallet"
+  },
+  "phone": {
+    "time": "9:41",
+    "greeting": "Hello",
+    "question": "What do you need today?",
+    "search": "Search for a service",
+    "categories": "Categories",
+    "promoTitle": "Clear price before you book",
+    "promoBody": "Describe the job, add photos, get your price.",
+    "tabs": {
+      "home": "Home",
+      "bookings": "Bookings",
+      "wallet": "Wallet",
+      "profile": "Profile"
+    }
   }
 }

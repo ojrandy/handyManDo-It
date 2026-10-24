@@ -18,6 +18,8 @@ export default defineConfig({
   // The admin spec seeds a shared user, so keep runs serial.
   workers: 1,
   reporter: isCI ? [['github'], ['html', { open: 'never' }]] : 'html',
+  // The first Payload admin render on a cold server can exceed the 5 s default.
+  expect: { timeout: 15_000 },
   use: {
     baseURL,
     trace: 'on-first-retry',

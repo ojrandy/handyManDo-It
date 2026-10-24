@@ -5,6 +5,7 @@ import { Poppins, Sora } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
+import { Header } from '@/components/sections/Header'
 import { routing } from '@/i18n/routing'
 import { site } from '@/lib/site'
 import '../globals.css'
@@ -81,7 +82,10 @@ export default async function LocaleLayout({ children, params }: Props) {
         >
           {t('skipToContent')}
         </a>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <Header />
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   )

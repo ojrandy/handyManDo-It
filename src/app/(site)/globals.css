@@ -31,6 +31,30 @@
 
   --shadow-glow: 0 0 0 1px rgb(231 171 52 / 0.35), 0 12px 40px -8px rgb(231 171 52 / 0.45);
   --shadow-float: 0 30px 80px -20px rgb(10 28 37 / 0.55);
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-notification-in: notification-in 600ms var(--ease-out-expo) both;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  @keyframes notification-in {
+    from {
+      opacity: 0;
+      transform: translateY(-14px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 @layer base {
