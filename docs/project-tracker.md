@@ -13,8 +13,8 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 |---|---|---|---|
 | 0. Foundations | Stack wired, i18n, tokens, CI, staging | Staging loads `/fr`, `/en`; `/admin` works | 🔄 code done; staging gate deferred (owner, 2026-10-24) |
 | 1. Content & assets | Migrations/seeds, CMS model, screens, video, FR copy | All content visible in CMS | ⬜ |
-| 2. Hero prototype | Header + synced-story hero + light-data mode | **Owner approves the look** | 🔄 built 2026-10-24, awaiting owner review |
-| 3. Home page | Sections 5.3–5.17 | Home complete in both locales | ⬜ |
+| 2. Hero prototype | Header + synced-story hero + light-data mode | **Owner approves the look** | ✅ owner moved on to Phase 3, 2026-10-24 (footage, captions, Lighthouse on device still open) |
+| 3. Home page | Sections 5.3–5.17 | Home complete in both locales | 🔄 |
 | 4. Inner pages | All §6 pages, forms, `/download` | Every page live on staging | ⬜ |
 | 5. SEO & analytics | JSON-LD, sitemaps, hreflang, OG, redirects, GA4 | Rich results pass; events in DebugView | ⬜ |
 | 6. QA & launch | Device/perf/a11y audit, content review, DNS cut-over | Go-live | ⬜ |
@@ -188,3 +188,4 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | 2026-10-24 | Deployment (T-0.15, T-0.17) deferred until the design is done; work continues on GitHub only | Owner |
 | 2026-10-24 | Security upgrade Next 16.4.2 + sharp 0.35.5 (ADR-016); Vitest hook timeout 60 s | Dev |
 | 2026-10-24 | Phase 2 built: header (mega-menu, mobile menu), smart Get the app + QR, store/payment badges, synced-story hero with phone + lifecycle notifications, light-data mode, film lightbox; deps lucide-react 1.52.0, qrcode 1.5.4 | Dev |
+| 2026-10-24 | Phase 2 accepted (owner started Phase 3); hero merged to main | Owner |
