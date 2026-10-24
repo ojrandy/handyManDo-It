@@ -144,7 +144,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-6.01 | Full manual device matrix | quality-assurance §9 | ⬜ |
 | T-6.02 | Lighthouse CI + axe in CI | QA-AUTO-06/07 | ⬜ |
 | T-6.03 | FR native review + content freeze | FR-I18N-04 | ⬜ |
-| T-6.04 | Security review + `npm audit` | NFR-SEC-* | ⬜ |
+| T-6.04 | Security review + `npm audit` | NFR-SEC-* | ⬜ (2026-10-24: critical Next + high sharp advisories fixed (ADR-016). Open: 3 high / 5 moderate inside Payload (lexical→happy-dom, drizzle-kit→esbuild-kit); re-check on each Payload release) |
 | T-6.05 | Go-live checklist + DNS cut-over | quality-assurance §7 | ⬜ |
 | T-6.06 | Post-launch monitoring T+1h/24h/7d | operations §6 | ⬜ |
 
@@ -186,3 +186,4 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | 2026-10-23 | Initial migration; npm tooling alignment; flat ESLint config (eslint-config-next 16); roles hidden on first-user form; build + smoke test verified; GitHub remote added | Dev |
 | 2026-10-23 | Phase 0 hardening: localized 404/error (T-0.19), security headers (T-0.20), project int/e2e tests + CI migrate/int/e2e (T-0.21, T-0.22), Media explicit access, logo `Link`, local `.env` back on Docker, Cloudflare HTML cache rule documented (DEPLOY.md) | Dev |
 | 2026-10-24 | Deployment (T-0.15, T-0.17) deferred until the design is done; work continues on GitHub only | Owner |
+| 2026-10-24 | Security upgrade Next 16.4.2 + sharp 0.35.5 (ADR-016); Vitest hook timeout 60 s | Dev |

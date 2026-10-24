@@ -19,7 +19,7 @@ A bilingual (**FR default**, EN) marketing website that replaces the old handyma
 
 | Layer | Choice |
 |---|---|
-| Framework | Next.js **16.3.3** (App Router, RSC, Turbopack), React **19.2.6**, TypeScript 5.7 strict |
+| Framework | Next.js **16.4.2** (App Router, RSC, Turbopack; security upgrade 2026-10-24, ADR-016), React **19.2.6**, TypeScript 5.7 strict |
 | CMS | Payload **3.92.0** embedded in the same app (`/admin`, `/api`), Lexical rich text |
 | DB | Postgres 17 (local: docker compose; prod: **Neon**, us-east-1, owner decision 2026-10-23, ADR-013). Payload does **not** support MySQL |
 | Media | Cloudflare **R2** via `@payloadcms/storage-s3` (local disk when `S3_BUCKET` is empty) |

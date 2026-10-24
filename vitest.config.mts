@@ -10,5 +10,7 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./vitest.setup.ts'],
     include: ['tests/int/**/*.int.spec.ts'],
+    // getPayload() connects and checks the schema in beforeAll; 10 s is too tight on slow machines.
+    hookTimeout: 60_000,
   },
 })
