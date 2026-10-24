@@ -11,7 +11,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 
 | Phase | Goal | Sign-off gate | Status |
 |---|---|---|---|
-| 0. Foundations | Stack wired, i18n, tokens, CI, staging | Staging loads `/fr`, `/en`; `/admin` works | 🔄 |
+| 0. Foundations | Stack wired, i18n, tokens, CI, staging | Staging loads `/fr`, `/en`; `/admin` works | 🔄 code done; staging gate deferred (owner, 2026-10-24) |
 | 1. Content & assets | Migrations/seeds, CMS model, screens, video, FR copy | All content visible in CMS | ⬜ |
 | 2. Hero prototype | Header + synced-story hero + light-data mode | **Owner approves the look** | ⬜ |
 | 3. Home page | Sections 5.3–5.17 | Home complete in both locales | ⬜ |
@@ -37,10 +37,10 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-0.12 | Align tooling on npm (Playwright `webServer.command`, `.vscode` `npm.packageManager`) | ADR-010 | ✅ | Both now npm |
 | T-0.13 | **Initial DB migration** `src/migrations/` | NFR-MAINT-02 | ✅ | `20261023_172405_initial` created + applied locally (15 tables) |
 | T-0.14 | First git commit + GitHub repo + branch protection | — | 🔄 | `0253fb0` pushed to `origin/main` 2026-10-23 (owner-approved). First CI run green (GitHub Actions, 2026-10-23). Remaining (owner, GitHub settings; runbook DEPLOY.md §1 "GitHub"): decide visibility (repo is currently **public**), then protect `main` requiring the `check` job once the hardening PR is green |
-| T-0.15 | Neon project + `staging` branch | ADR-002, ADR-013 | 🔄 | Project exists in **us-east-1** (kept, owner decision 2026-10-23). Pooled connection string obtained (default branch `neondb`). Remaining (owner, Neon console; runbook DEPLOY.md §1 "Neon"): create the `staging` branch and put its pooled string in Hostinger env vars **only**; local `.env` points at Docker again (2026-10-23), because dev schema-push would otherwise alter Neon |
+| T-0.15 | Neon project + `staging` branch | ADR-002, ADR-013 | ⏸ deferred | Project exists in **us-east-1** (kept, owner decision 2026-10-23). Pooled connection string obtained (default branch `neondb`). Remaining (owner, Neon console; runbook DEPLOY.md §1 "Neon"): create the `staging` branch and put its pooled string in Hostinger env vars **only**; local `.env` points at Docker again (2026-10-23), because dev schema-push would otherwise alter Neon |
 | T-0.16 | R2 bucket, token, CORS, r2.dev | ADR-003, ADR-014 | ⏸ deferred | Owner decision 2026-10-23: later. Until then media is stored on local disk. On Hostinger, uploads may be lost on redeploy, so don't upload final content to staging before R2 |
 | T-0.23 | First-user form: hide `roles` from non-admins | FR-CMS-02 | ✅ | Field `access.create` admin-only; hook still makes first user admin |
-| T-0.17 | Hostinger Node app + env vars + first deploy | NFR-HOST-01 | ⬜ | Needs hPanel access (owner). Runbook + env table + gate checks: DEPLOY.md §1 "Hostinger" and "First deploy and Phase 0 gate"; gate verified with `E2E_BASE_URL=… npm run test:smoke` |
+| T-0.17 | Hostinger Node app + env vars + first deploy | NFR-HOST-01 | ⏸ deferred | Owner decision 2026-10-24: finish the design first, deploy afterwards; until then work is only pushed to GitHub. Needs hPanel access (owner). Runbook + env table + gate checks: DEPLOY.md §1 "Hostinger" and "First deploy and Phase 0 gate"; gate verified with `E2E_BASE_URL=… npm run test:smoke` |
 | T-0.18 | Cloudflare zone (copy DNS, keep `app` record intact) | — | ⬜ | Can wait until launch |
 | T-0.19 | Localized `not-found.tsx` + `error.tsx` | FR-PG-16 | ✅ | `[locale]/not-found.tsx`, `error.tsx`, `[...rest]` catch-all → localized 404 with status 404; shared `StatusMessage` |
 | T-0.20 | Security headers in `next.config.ts` | NFR-SEC-01 | ✅ | CSP on site routes (not `/admin`, `/api`), nosniff, XFO, Referrer, COOP, Permissions; HSTS only on https (ADR-015) |
@@ -185,3 +185,4 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | 2026-10-23 | Added CLAUDE.md, prompt.md and docs (requirements, architecture, data-model, design-system, quality-assurance, operations, project-tracker) | Dev |
 | 2026-10-23 | Initial migration; npm tooling alignment; flat ESLint config (eslint-config-next 16); roles hidden on first-user form; build + smoke test verified; GitHub remote added | Dev |
 | 2026-10-23 | Phase 0 hardening: localized 404/error (T-0.19), security headers (T-0.20), project int/e2e tests + CI migrate/int/e2e (T-0.21, T-0.22), Media explicit access, logo `Link`, local `.env` back on Docker, Cloudflare HTML cache rule documented (DEPLOY.md) | Dev |
+| 2026-10-24 | Deployment (T-0.15, T-0.17) deferred until the design is done; work continues on GitHub only | Owner |
