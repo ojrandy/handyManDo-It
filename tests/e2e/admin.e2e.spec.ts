@@ -7,6 +7,8 @@ test.describe('Admin panel', () => {
   let page: Page
 
   test.beforeAll(async ({ browser }) => {
+    // Seeding plus the first admin render can exceed the default 30 s on a cold server.
+    test.setTimeout(120_000)
     await seedTestUser()
 
     const context = await browser.newContext()
@@ -27,7 +29,8 @@ test.describe('Admin panel', () => {
 
   test('can navigate to list view', async () => {
     await page.goto('/admin/collections/users')
-    await expect(page).toHaveURL(/\/admin\/collections\/users$/)
+    // Payload appends list preferences (?limit=…) to the URL after load.
+    await expect(page).toHaveURL(/\/admin\/collections\/users(\?|$)/)
     await expect(page.locator('h1', { hasText: 'Users' }).first()).toBeVisible()
   })
 
