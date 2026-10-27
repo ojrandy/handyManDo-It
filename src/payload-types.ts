@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    services: Service;
     team: Team;
     partners: Partner;
     'payload-kv': PayloadKv;
@@ -80,6 +81,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -209,6 +211,106 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  /**
+   * URL segment. Filled from the title when empty; changing it changes the URL.
+   */
+  slug: string;
+  /**
+   * Links one of the 11 built-in services to its site assets. Leave empty for new ones.
+   */
+  key?:
+    | (
+        | 'interiorExteriorDesign'
+        | 'upholsteryFurniture'
+        | 'repairsInstallations'
+        | 'remodeling'
+        | 'signage'
+        | 'events'
+        | 'lighting'
+        | 'building'
+        | 'moving'
+        | 'packing'
+        | 'transport'
+      )
+    | null;
+  icon:
+    | 'palette'
+    | 'sofa'
+    | 'wrench'
+    | 'hammer'
+    | 'signpost'
+    | 'party-popper'
+    | 'lightbulb'
+    | 'hard-hat'
+    | 'truck'
+    | 'package'
+    | 'car'
+    | 'paint-roller'
+    | 'plug'
+    | 'droplets'
+    | 'shield-check';
+  heroImage?: (number | null) | Media;
+  summary: string;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  inclusions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  process?:
+    | {
+        title: string;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * FCFA. Empty shows "Clear price before you book".
+   */
+  fromPrice?: number | null;
+  featuredOnHome?: boolean | null;
+  /**
+   * Tile size in the home services grid.
+   */
+  size?: ('large' | 'small') | null;
+  /**
+   * Lower numbers come first.
+   */
+  order?: number | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "team".
  */
 export interface Team {
@@ -274,6 +376,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
       } | null)
     | ({
         relationTo: 'team';
@@ -412,6 +518,46 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  key?: T;
+  icon?: T;
+  heroImage?: T;
+  summary?: T;
+  body?: T;
+  inclusions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  process?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  fromPrice?: T;
+  featuredOnHome?: T;
+  size?: T;
+  order?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

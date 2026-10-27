@@ -54,8 +54,8 @@ Access: create/delete admin; read/update admin or self. Hook: first user ever cr
 
 Sizes (WebP): `thumb` 480, `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read; create/update/delete `isEditor` (2026-10-23). ⬜ Separate private collection for CVs (§3.12).
 
-### 3.3 `services` ⬜
-title (L), slug (L, unique), icon (select of icon keys), heroImage (media), summary (L), body (richText, L), inclusions (array{text L}), process (array{title L, text L}), fromPrice (number FCFA, optional → fallback label), faqs (relationship faqs[]), relatedProjects (relationship projects[]), order, featuredOnHome (bool), size (`large`/`small` for bento), meta (SEO). Drafts on.
+### 3.3 `services` ✅
+title (L, required), slug (L; unique per locale, index `(slug, _locale)`, so FR and EN may share a slug), key (select of the 11 built-in `ServiceKey`s from `src/lib/service-keys.ts`, unique, optional for new services), icon (select of Lucide names in the same file), heroImage (media), summary (textarea L, required), body (richText L), inclusions (array{text}, localized as a whole), process (array{title, text}, localized as a whole), fromPrice (number FCFA, optional → fallback label), featuredOnHome (bool, default true), size (`large`/`small` for bento), order, meta (SEO plugin tab: localized title/description/image). Drafts on (20 versions). Access: `publishedOrEditor` read, editor write. Revalidates tag `services`. FAQs and related projects arrive as `join` fields with branches 3–4 (ADR-017).
 
 ### 3.4 `projects` ⬜
 title (L), slug (L), service (rel services), city (text), client (text), cover (media), gallery (media[]), before / after (media), story (richText L), featured (bool), date, meta.

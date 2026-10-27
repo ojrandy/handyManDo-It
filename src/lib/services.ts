@@ -15,18 +15,9 @@ import {
 
 import type { Locale } from '@/i18n/routing'
 
-export type ServiceKey =
-  | 'interiorExteriorDesign'
-  | 'upholsteryFurniture'
-  | 'repairsInstallations'
-  | 'remodeling'
-  | 'signage'
-  | 'events'
-  | 'lighting'
-  | 'building'
-  | 'moving'
-  | 'packing'
-  | 'transport'
+import type { ServiceKey } from './service-keys'
+
+export type { ServiceKey } from './service-keys'
 
 type Service = {
   key: ServiceKey

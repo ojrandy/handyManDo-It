@@ -1,5 +1,6 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { en } from '@payloadcms/translations/languages/en'
@@ -11,6 +12,7 @@ import { fileURLToPath } from 'url'
 
 import { Media } from './collections/Media'
 import { Partners } from './collections/Partners'
+import { Services } from './collections/Services'
 import { Team } from './collections/Team'
 import { Users } from './collections/Users'
 import { Site } from './globals/Site'
@@ -44,7 +46,7 @@ export default buildConfig({
     defaultLocale: 'fr',
     fallback: true,
   },
-  collections: [Users, Media, Team, Partners],
+  collections: [Users, Media, Services, Team, Partners],
   globals: [Site],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -71,6 +73,14 @@ export default buildConfig({
     : undefined,
   sharp,
   plugins: [
+    // Adds a localized meta group (title, description, image) in an SEO tab.
+    seoPlugin({
+      collections: [Services.slug],
+      uploadsCollection: Media.slug,
+      tabbedUI: true,
+      generateTitle: ({ doc }) => `${doc.title} · HandyMan Do IT`,
+      generateDescription: ({ doc }) => doc.summary,
+    }),
     s3Storage({
       enabled: useR2,
       collections: {
