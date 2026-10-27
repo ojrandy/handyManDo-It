@@ -10,6 +10,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { AppScreens } from './collections/AppScreens'
 import { Categories } from './collections/Categories'
 import { Faqs } from './collections/Faqs'
 import { Files } from './collections/Files'
@@ -75,6 +76,7 @@ export default buildConfig({
     Categories,
     Team,
     Partners,
+    AppScreens,
     Jobs,
     Submissions,
     Files,

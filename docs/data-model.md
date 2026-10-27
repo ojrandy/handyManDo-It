@@ -79,8 +79,8 @@ categories: title (L, required), slug (shared by both locales). Public read, edi
 ### 3.10 `jobs` ✅
 title (L, required), slug (L, unique per locale: `/careers/[slug]` is translated), location (required), type (select: full-time, part-time, contract), open (bool, default true, indexed; closed roles stay visible without the apply form), closesAt (date), description (richText L, required). Public read, editor write; revalidates `jobs`.
 
-### 3.11 `appScreens` ⬜
-key (select: welcome, home, services, category, shop, food, help, tracking, wallet, chat, completion), locale (`fr`/`en`, **not** Payload-localized — one doc per locale×theme), theme (`light`/`dark`), image (media), caption (L). Unique index on (key, locale, theme).
+### 3.11 `app-screens` ✅ (`appScreens`)
+key (select: welcome, home, services, category, shop, food, help, tracking, wallet, chat, completion), lang (`fr`/`en`, **not** Payload-localized — one doc per language × theme; renamed from `locale`, Q-15), theme (`light`/`dark`, default light), image (media, required; 390×844 @3×), caption (L). Unique compound index (key, lang, theme). Public read, editor write; revalidates `app-screens`.
 
 ### 3.12 `submissions` ✅ + `files` ✅
 submissions: status (select: new, in-progress, done, spam; the only editable field), type (select: contact, quote-home, quote-business, partnership, pro, job), name, email, phone, city, message, job (rel jobs), attachment (upload → `files`), locale (fr/en), details (json, extra form fields; named `details`, not `payload`, to avoid confusion with Payload), utm (json), createdAt. Visitor-supplied fields are read-only for everyone (field access `update: false`, FR-FORM-02).

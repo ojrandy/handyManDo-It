@@ -77,6 +77,7 @@ export interface Config {
     categories: Category;
     team: Team;
     partners: Partner;
+    'app-screens': AppScreen;
     jobs: Job;
     submissions: Submission;
     files: File;
@@ -103,6 +104,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
+    'app-screens': AppScreensSelect<false> | AppScreensSelect<true>;
     jobs: JobsSelect<false> | JobsSelect<true>;
     submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
     files: FilesSelect<false> | FilesSelect<true>;
@@ -565,6 +567,34 @@ export interface Partner {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "app-screens".
+ */
+export interface AppScreen {
+  id: number;
+  key:
+    | 'welcome'
+    | 'home'
+    | 'services'
+    | 'category'
+    | 'shop'
+    | 'food'
+    | 'help'
+    | 'tracking'
+    | 'wallet'
+    | 'chat'
+    | 'completion';
+  lang: 'fr' | 'en';
+  theme: 'light' | 'dark';
+  /**
+   * Phone screenshot, 390×844 at 3× (1170×2532).
+   */
+  image: number | Media;
+  caption?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "jobs".
  */
 export interface Job {
@@ -719,6 +749,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'partners';
         value: number | Partner;
+      } | null)
+    | ({
+        relationTo: 'app-screens';
+        value: number | AppScreen;
       } | null)
     | ({
         relationTo: 'jobs';
@@ -1025,6 +1059,19 @@ export interface PartnersSelect<T extends boolean = true> {
   logo?: T;
   url?: T;
   order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "app-screens_select".
+ */
+export interface AppScreensSelect<T extends boolean = true> {
+  key?: T;
+  lang?: T;
+  theme?: T;
+  image?: T;
+  caption?: T;
   updatedAt?: T;
   createdAt?: T;
 }
