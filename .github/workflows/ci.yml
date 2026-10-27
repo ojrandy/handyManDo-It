@@ -41,6 +41,8 @@ jobs:
       - run: npm run lint
       # Applies the committed migrations to the empty database, as production does on start (QA-AUTO-12).
       - run: npm run migrate
+      # Fails when the Payload config changed without a committed migration (data-model.md §6).
+      - run: npm run migrate:check -- --drift
       - run: npm run test:int
       - run: npm run build
       - run: npx --no-install playwright install --with-deps chromium

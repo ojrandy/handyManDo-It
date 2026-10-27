@@ -34,6 +34,18 @@ describe('anonymous access', () => {
     ).rejects.toMatchObject({ status: 403 })
   })
 
+  it.each(['team', 'partners'] as const)('can read %s but not write it', async (collection) => {
+    const { docs } = await payload.find({ collection, overrideAccess: false, limit: 1 })
+    expect(docs).toBeDefined()
+    await expect(
+      payload.create({
+        collection,
+        data: { name: 'x', role: 'x', logo: 1 },
+        overrideAccess: false,
+      }),
+    ).rejects.toMatchObject({ status: 403 })
+  })
+
   it('cannot create media', async () => {
     await expect(
       payload.create({ collection: 'media', data: { alt: 'x' }, overrideAccess: false }),

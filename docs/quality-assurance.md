@@ -42,7 +42,7 @@ Current state: `tests/int/api.int.spec.ts` and `tests/e2e/admin.e2e.spec.ts` are
 | QA-AUTO-09 | Form handler tests: validation, honeypot, rate limit, stored + emailed | FR-FORM-* |
 | QA-AUTO-10 | Metadata test: canonical, hreflang trio, title/description present per template | FR-SEO-01 |
 | QA-AUTO-11 | `npm audit --omit=dev --audit-level=high` | NFR-SEC-04 |
-| QA-AUTO-12 | Migration check: `payload migrate:status` clean against fresh DB | NFR-MAINT-02 ✅ (CI runs `npm run migrate` on an empty DB) |
+| QA-AUTO-12 | Migration check: `payload migrate:status` clean against fresh DB | NFR-MAINT-02 ✅ (CI runs `npm run migrate` on an empty DB, then `npm run migrate:check -- --drift`; locally `npm run migrate:check`) |
 
 ## 4. Quality gates
 

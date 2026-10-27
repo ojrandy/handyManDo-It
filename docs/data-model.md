@@ -63,11 +63,11 @@ title (L), slug (L), service (rel services), city (text), client (text), cover (
 ### 3.5 `testimonials` ⬜
 name, city, service (rel), quote (textarea L), photo (media), projectPhoto (media), rating (1–5), featured (bool), order. Seed: N Emmanuel (Yaoundé), Richard S. (Buea), Solpia Cameroon (Douala), M Lounge Exclusive (Bonaberi).
 
-### 3.6 `team` ⬜
-name, role (L), photo (media), bio (textarea L), order. Seed: J. Batholomew, Mbeng Nkeng S., ANU Ernest.
+### 3.6 `team` ✅
+name (required), role (L, required), photo (media), bio (textarea L), order. Group Company; public read, editor write; revalidates tag `team`. Seed: J. Batholomew, Mbeng Nkeng S., ANU Ernest.
 
-### 3.7 `partners` ⬜
-name, logo (media), url, order.
+### 3.7 `partners` ✅
+name (required), logo (media, required; its alt should be the partner name), url (http/https only), order. Group Marketing; public read, editor write; revalidates tag `partners`. Unknown names (Q-10) are seeded as placeholders.
 
 ### 3.8 `faqs` ⬜
 question (L), answer (richText L), category (select: payments, coverage, quotes, cancellations, guarantee, safety, pros, business), service (rel, optional), showOnHome (bool), order.
@@ -114,6 +114,7 @@ defaultTitle (L), defaultDescription (L), ogImage (media), organisation JSON-LD 
 - Merge schema branches in order. If another schema branch lands first: delete your migration, rebase, run `migrate:create` again. Never hand-merge two migrations.
 - Never edit a migration that is on `main`; fix forward with a new one.
 - Content goes in seeds (`scripts/seed.ts`), not in `up()`. Migrations change structure only.
+- Gate: `npm run migrate:check` runs both checks locally (drift: config vs last snapshot; fresh: applies all migrations to a scratch `<db>_migration_check` database, local hosts only, dropped after). CI runs `migrate:check -- --drift` after `migrate`.
 - Destructive changes (rename/drop) need a two-step migration or a data copy in `up()`; document in the PR.
 - Production applies migrations on start (`npm run start:prod`). Take a Neon branch/snapshot before any destructive migration.
 

@@ -10,6 +10,8 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import { Media } from './collections/Media'
+import { Partners } from './collections/Partners'
+import { Team } from './collections/Team'
 import { Users } from './collections/Users'
 import { Site } from './globals/Site'
 
@@ -42,7 +44,7 @@ export default buildConfig({
     defaultLocale: 'fr',
     fallback: true,
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Team, Partners],
   globals: [Site],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

@@ -62,7 +62,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 
 | ID | Task | Req | Status |
 |---|---|---|---|
-| T-1.01 | Collections: services, projects, testimonials, team, partners, faqs | FR-CMS-01 | ⬜ |
+| T-1.01 | Collections: services, projects, testimonials, team, partners, faqs | FR-CMS-01 | 🔄 team + partners ✅ (migration `add_team_partners`, 2026-10-27) |
 | T-1.02 | Collections: posts, categories, jobs, appScreens, submissions (+ private files) | FR-CMS-01 | ⬜ |
 | T-1.03 | Globals: navigation, home (with hero cues), seo | FR-CMS-01 | ⬜ |
 | T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | 🔄 `src/hooks/revalidate.ts` (tag-based) on `site` + `media`; each new collection adds it |
@@ -218,3 +218,4 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | 2026-10-27 | Phase 3 batch 2: trusted-by marquee, services bento with real project photos, testimonials, FAQ + JSON-LD; open questions Q-10..Q-12 | Dev |
 | 2026-10-27 | Phase 1 CMS build plan: helpers, branch/migration order, migration rules (data-model §8, ADR-017 proposed); Q-13..Q-15; T-1.15 | Dev |
 | 2026-10-27 | Phase 1 branch 0: `src/access`, slug + order fields, tag-based revalidate hooks, `lib/payload.ts`; no schema change | Dev |
+| 2026-10-27 | Phase 1 branch 1: `team` + `partners` collections and migration; `npm run migrate:check` (drift + empty-DB apply), drift check in CI | Dev |
