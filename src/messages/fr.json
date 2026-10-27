@@ -75,7 +75,40 @@
   },
   "footer": {
     "rights": "Tous droits réservés.",
-    "hours": "Tous les jours, 07h00–21h00 (WAT)"
+    "hours": "Tous les jours, 07h00–21h00 (WAT)",
+    "label": "Pied de page",
+    "tagline": "Right at Home",
+    "columns": {
+      "services": "Services",
+      "company": "Entreprise",
+      "support": "Assistance",
+      "legal": "Mentions légales"
+    },
+    "links": {
+      "about": "À propos",
+      "ourWork": "Nos réalisations",
+      "careers": "Carrières",
+      "blog": "Blog",
+      "becomeAPro": "Devenir pro",
+      "businesses": "Entreprises",
+      "buildings": "Immeubles",
+      "shop": "Boutique",
+      "food": "Repas",
+      "contact": "Contact",
+      "faq": "FAQ",
+      "reviews": "Avis",
+      "privacy": "Confidentialité",
+      "terms": "Conditions",
+      "disclaimer": "Avertissement"
+    },
+    "contactTitle": "Contact",
+    "call": "Appel ou WhatsApp",
+    "email": "E-mail",
+    "offices": {
+      "technical": "Direction technique",
+      "office": "Bureau"
+    },
+    "follow": "Suivez-nous"
   },
   "notFound": {
     "metaTitle": "Page introuvable",
@@ -182,5 +215,159 @@
       "wallet": "Portefeuille",
       "profile": "Profil"
     }
+  },
+  "pillars": {
+    "eyebrow": "Pourquoi HandyMan",
+    "title": "Trois promesses à chaque intervention.",
+    "values": {
+      "punctual": {
+        "title": "Ponctuel",
+        "body": "Votre pro arrive à l’heure convenue, et vous suivez chaque étape en direct dans l’app."
+      },
+      "polite": {
+        "title": "Poli",
+        "body": "Des pros respectueux et soigneux, qui traitent votre maison ou votre bureau comme le leur."
+      },
+      "professional": {
+        "title": "Professionnel",
+        "body": "Six ans de projets à travers le Cameroun, avec des photos du travail à chaque intervention."
+      }
+    },
+    "trustTitle": "La tranquillité, intégrée",
+    "trust": {
+      "verified": {
+        "title": "Pros vérifiés",
+        "body": "Identité, documents et compétences sont vérifiés avant qu’un pro puisse accepter une mission."
+      },
+      "held": {
+        "title": "Paiement bloqué jusqu’à la fin",
+        "body": "Payez par Mobile Money ou portefeuille. L’argent n’est libéré qu’une fois le travail terminé."
+      },
+      "tracking": {
+        "title": "Suivi en direct + photos",
+        "body": "Suivez votre pro sur la carte et voyez chaque étape avec des photos du travail."
+      },
+      "code": {
+        "title": "Code de fin de mission",
+        "body": "La mission ne se clôture que lorsque vous donnez votre code privé."
+      }
+    }
+  },
+  "numbers": {
+    "eyebrow": "HandyMan en chiffres",
+    "title": "Une confiance partout au Cameroun.",
+    "body": "De Douala, Buea et Yaoundé à plus de 120 villes.",
+    "stats": {
+      "towns": "Villes desservies",
+      "years": "Années d’expérience",
+      "clients": "Clients satisfaits",
+      "projects": "Projets phares"
+    },
+    "mapLabel": "Carte du Cameroun avec les villes desservies, dont Douala, Buea et Yaoundé"
+  },
+  "howItWorks": {
+    "eyebrow": "Comment ça marche",
+    "title": "Réservez en trois étapes.",
+    "steps": {
+      "choose": {
+        "title": "Choisissez",
+        "body": "Choisissez un service ou décrivez votre besoin, ajoutez des photos et recevez un prix clair."
+      },
+      "book": {
+        "title": "Réservez et payez",
+        "body": "Payez en toute sécurité avec MTN MoMo, Orange Money ou votre portefeuille HandyMan. L’argent est bloqué jusqu’à la fin du travail."
+      },
+      "relax": {
+        "title": "Suivez en toute sérénité",
+        "body": "Suivez votre pro en direct, échangez avec lui, notez la prestation et gagnez des points."
+      }
+    },
+    "cta": "Réserver un service"
+  },
+  "audiences": {
+    "eyebrow": "Pensé pour vous",
+    "title": "Pour les particuliers, les entreprises et les immeubles.",
+    "homes": {
+      "title": "Particuliers",
+      "points": [
+        "Réservez un pro vérifié en quelques minutes",
+        "Un prix clair avant le début des travaux",
+        "Payez avec MTN MoMo ou Orange Money",
+        "Gagnez des points à chaque réservation"
+      ],
+      "cta": "Réserver un service"
+    },
+    "businesses": {
+      "title": "Entreprises",
+      "points": [
+        "Comptes « Mon organisation » pour votre équipe",
+        "Signalétique, événements et aménagement de bureaux",
+        "Un interlocuteur dédié pour vos projets"
+      ],
+      "cta": "Demander un devis entreprise"
+    },
+    "buildings": {
+      "title": "Immeubles et résidences",
+      "points": [
+        "Les résidents rejoignent avec un code",
+        "Publiez des annonces et émettez des charges",
+        "Suivez les paiements et traitez les signalements"
+      ],
+      "cta": "Gérez votre immeuble avec HandyMan"
+    }
+  },
+  "earn": {
+    "eyebrow": "Gagnez avec HandyMan",
+    "title": "Une seule app pour trouver du travail et être payé.",
+    "body": "Pros, vendeurs et cuisines utilisent la même app. Choisissez « Je propose des services » à l’inscription.",
+    "tabsLabel": "Façons de gagner",
+    "tabs": {
+      "pros": {
+        "label": "Pros",
+        "title": "Proposez vos compétences",
+        "points": [
+          "Inscrivez-vous une fois et proposez toutes vos compétences",
+          "Fixez vos tarifs et votre zone d’intervention",
+          "Soyez payé pour chaque mission terminée"
+        ]
+      },
+      "sellers": {
+        "label": "Vendeurs",
+        "title": "Vendez dans la boutique HandyMan",
+        "points": [
+          "Proposez des articles neufs, reconditionnés ou d’occasion",
+          "Téléphones, maison, outils, construction, solaire et épicerie",
+          "Soyez payé en toute sécurité via l’app"
+        ]
+      },
+      "kitchens": {
+        "label": "Cuisines",
+        "title": "Mettez votre cuisine en ligne",
+        "points": [
+          "Gérez votre menu",
+          "Recevez et suivez les commandes",
+          "Suivez vos versements"
+        ]
+      }
+    },
+    "stepsLabel": "Comment s’inscrire",
+    "steps": [
+      "« Je propose des services »",
+      "Votre profil",
+      "Vérification",
+      "Recevez des demandes"
+    ],
+    "cta": "Commencer à gagner"
+  },
+  "download": {
+    "eyebrow": "Téléchargez l’app",
+    "title": "Téléchargez HandyMan Do IT.",
+    "bodyAndroid": "Gratuit sur Android et sur le web.",
+    "bodyAll": "Gratuit sur iOS et Android.",
+    "webApp": "Ouvrir l’app web",
+    "qrHint": "Scannez avec votre téléphone"
+  },
+  "whatsapp": {
+    "label": "Discutez avec nous sur WhatsApp"
   }
 }

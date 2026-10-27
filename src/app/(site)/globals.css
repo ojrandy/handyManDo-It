@@ -97,6 +97,51 @@
   }
 }
 
+/* Numbers map: towns light up one by one as the map scrolls into view (FR-HOME-06). Without
+   scroll-driven animation support, or under reduced motion, they are simply shown. */
+.town-light {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes town-light {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .town-map {
+      view-timeline-name: --town-map;
+    }
+
+    .town-light {
+      animation: town-light linear both;
+      animation-timeline: --town-map;
+      animation-range: entry calc(15% + var(--i) * 4%) entry calc(35% + var(--i) * 4%);
+    }
+
+    /* How it works: the connecting line draws as the steps scroll into view (FR-HOME-08). */
+    .how-steps {
+      view-timeline-name: --how-steps;
+    }
+
+    .how-line {
+      animation: draw-line linear both;
+      animation-timeline: --how-steps;
+      animation-range: entry 40% cover 45%;
+    }
+  }
+}
+
+@keyframes draw-line {
+  from {
+    transform: scaleX(0);
+  }
+}
+
 @utility grain {
   position: relative;
   isolation: isolate;

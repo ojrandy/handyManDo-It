@@ -75,7 +75,40 @@
   },
   "footer": {
     "rights": "All rights reserved.",
-    "hours": "Every day, 07:00–21:00 (WAT)"
+    "hours": "Every day, 07:00–21:00 (WAT)",
+    "label": "Footer",
+    "tagline": "Right at Home",
+    "columns": {
+      "services": "Services",
+      "company": "Company",
+      "support": "Support",
+      "legal": "Legal"
+    },
+    "links": {
+      "about": "About",
+      "ourWork": "Our work",
+      "careers": "Careers",
+      "blog": "Blog",
+      "becomeAPro": "Become a pro",
+      "businesses": "Businesses",
+      "buildings": "Buildings",
+      "shop": "Shop",
+      "food": "Food",
+      "contact": "Contact",
+      "faq": "FAQ",
+      "reviews": "Reviews",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "disclaimer": "Disclaimer"
+    },
+    "contactTitle": "Contact",
+    "call": "Call or WhatsApp",
+    "email": "Email",
+    "offices": {
+      "technical": "Technical direction",
+      "office": "Office"
+    },
+    "follow": "Follow us"
   },
   "notFound": {
     "metaTitle": "Page not found",
@@ -182,5 +215,159 @@
       "wallet": "Wallet",
       "profile": "Profile"
     }
+  },
+  "pillars": {
+    "eyebrow": "Why HandyMan",
+    "title": "Three promises on every job.",
+    "values": {
+      "punctual": {
+        "title": "Punctual",
+        "body": "Your pro arrives when agreed, and you follow every step live in the app."
+      },
+      "polite": {
+        "title": "Polite",
+        "body": "Respectful, tidy pros who treat your home or office like their own."
+      },
+      "professional": {
+        "title": "Professional",
+        "body": "Six years of projects across Cameroon, with photos of the work on every job."
+      }
+    },
+    "trustTitle": "Peace of mind, built in",
+    "trust": {
+      "verified": {
+        "title": "Verified pros",
+        "body": "Identity, documents and skills are checked before a pro can take a job."
+      },
+      "held": {
+        "title": "Money held until done",
+        "body": "Pay with Mobile Money or your wallet. The money is only released when the job is finished."
+      },
+      "tracking": {
+        "title": "Live tracking + photo proof",
+        "body": "Follow your pro on the map and see each stage with photos of the work."
+      },
+      "code": {
+        "title": "Completion code",
+        "body": "The job only closes when you share your private code."
+      }
+    }
+  },
+  "numbers": {
+    "eyebrow": "HandyMan in numbers",
+    "title": "Trusted across Cameroon.",
+    "body": "From Douala, Buea and Yaoundé to more than 120 towns and cities.",
+    "stats": {
+      "towns": "Towns & cities",
+      "years": "Years of experience",
+      "clients": "Happy clients",
+      "projects": "Signature projects"
+    },
+    "mapLabel": "Map of Cameroon with the towns we serve, including Douala, Buea and Yaoundé"
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "Book in three steps.",
+    "steps": {
+      "choose": {
+        "title": "Choose",
+        "body": "Pick a service or describe your task, add photos and get a clear price."
+      },
+      "book": {
+        "title": "Book & pay",
+        "body": "Pay securely with MTN MoMo, Orange Money or your HandyMan wallet. The money is held until the job is done."
+      },
+      "relax": {
+        "title": "Relax & track",
+        "body": "Follow your pro live, chat, rate the job and earn points."
+      }
+    },
+    "cta": "Book a service"
+  },
+  "audiences": {
+    "eyebrow": "Made for you",
+    "title": "For homes, businesses and buildings.",
+    "homes": {
+      "title": "Homes",
+      "points": [
+        "Book a verified pro in minutes",
+        "Clear price before anything starts",
+        "Pay with MTN MoMo or Orange Money",
+        "Earn points on every booking"
+      ],
+      "cta": "Book a service"
+    },
+    "businesses": {
+      "title": "Businesses",
+      "points": [
+        "“My organisation” accounts for your team",
+        "Signage, events and office projects",
+        "A dedicated contact for your projects"
+      ],
+      "cta": "Request a business quote"
+    },
+    "buildings": {
+      "title": "Buildings & estates",
+      "points": [
+        "Residents join with a code",
+        "Post notices and raise charges",
+        "Follow payments and handle issue reports"
+      ],
+      "cta": "Run your building on HandyMan"
+    }
+  },
+  "earn": {
+    "eyebrow": "Earn with HandyMan",
+    "title": "One app to find work and get paid.",
+    "body": "Pros, sellers and kitchens use the same app. Choose “I offer services” when you sign up.",
+    "tabsLabel": "Ways to earn",
+    "tabs": {
+      "pros": {
+        "label": "Pros",
+        "title": "Offer your skills",
+        "points": [
+          "Apply once and offer all your skills",
+          "Set your own rates and service area",
+          "Get paid for every completed job"
+        ]
+      },
+      "sellers": {
+        "label": "Sellers",
+        "title": "Sell in the HandyMan shop",
+        "points": [
+          "List new, refurbished or second-hand items",
+          "Phones, home, tools, building, solar and groceries",
+          "Get paid safely through the app"
+        ]
+      },
+      "kitchens": {
+        "label": "Kitchens",
+        "title": "Bring your kitchen online",
+        "points": [
+          "Manage your menu",
+          "Receive and follow orders",
+          "Track your payouts"
+        ]
+      }
+    },
+    "stepsLabel": "How sign-up works",
+    "steps": [
+      "“I offer services”",
+      "Your profile",
+      "Verification",
+      "Receive requests"
+    ],
+    "cta": "Start earning"
+  },
+  "download": {
+    "eyebrow": "Get the app",
+    "title": "Get HandyMan Do IT.",
+    "bodyAndroid": "Free on Android and on the web.",
+    "bodyAll": "Free on iOS & Android.",
+    "webApp": "Open the web app",
+    "qrHint": "Scan with your phone"
+  },
+  "whatsapp": {
+    "label": "Chat with us on WhatsApp"
   }
 }

@@ -17,4 +17,9 @@ export const site = {
     youtube: 'https://www.youtube.com/handymandoit',
   },
   stats: { towns: 120, years: 6, clients: 79, projects: 38 },
+  // Same values as the `site` global's offices default; labels live in messages (footer.offices).
+  offices: [
+    { key: 'technical', address: 'Mile 16 Shopping Mall', city: 'Buea' },
+    { key: 'office', address: 'Mobile Njo Njo, Bonapriso', city: 'Douala' },
+  ],
 } as const

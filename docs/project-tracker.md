@@ -95,19 +95,19 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 |---|---|---|---|
 | T-3.01 | Trusted-by marquee | FR-HOME-03 | ⬜ |
 | T-3.02 | Services bento | FR-HOME-04 | ⬜ |
-| T-3.03 | Pillars + trust features | FR-HOME-05 | ⬜ |
-| T-3.04 | Numbers + map | FR-HOME-06 | ⬜ |
+| T-3.03 | Pillars + trust features | FR-HOME-05 | ✅ copy in messages until the `home` global (T-1.03) |
+| T-3.04 | Numbers + map | FR-HOME-06 | ✅ counters (final value server-rendered), Natural Earth outline, towns light via CSS view timeline; numbers from `lib/site` until the `site` global is read |
 | T-3.05 | Scroll story (GSAP, lazy) + mobile swipe | FR-HOME-07 | ⬜ |
-| T-3.06 | How it works | FR-HOME-08 | ⬜ |
+| T-3.06 | How it works | FR-HOME-08 | ✅ line draws via CSS view timeline, static fallback |
 | T-3.07 | Mini-demo | FR-HOME-09 | ⬜ |
 | T-3.08 | Screens gallery | FR-HOME-10 | ⬜ |
 | T-3.09 | Testimonials | FR-HOME-11 | ⬜ |
-| T-3.10 | Audiences cards | FR-HOME-12 | ⬜ |
-| T-3.11 | Earn tabs | FR-HOME-13 | ⬜ |
+| T-3.10 | Audiences cards | FR-HOME-12 | ✅ |
+| T-3.11 | Earn tabs | FR-HOME-13 | ✅ ARIA tabs + step strip; per-tab photos with Phase 1 content |
 | T-3.12 | FAQ teaser | FR-HOME-14 | ⬜ |
-| T-3.13 | Download band | FR-HOME-15 | ⬜ |
+| T-3.13 | Download band | FR-HOME-15 | ✅ light + dark phones, QR on desktop; says "Android and the web" until an App Store URL exists (Q-3) |
 | T-3.14 | Latest posts | FR-HOME-16 | ⬜ |
-| T-3.15 | Footer + WhatsApp FAB | FR-GLB-02/03 | ⬜ |
+| T-3.15 | Footer + WhatsApp FAB | FR-GLB-02/03 | ✅ contact from `lib/site` until the `site` global is read; FAB shows after the first screen; `whatsapp_click` event in Phase 5 |
 | T-3.16 | Home perf budget check (JS < 170 KB) | NFR-PERF-02 | ⬜ |
 
 ## 6. Phase 4 — Inner pages
@@ -189,3 +189,4 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | 2026-10-24 | Security upgrade Next 16.4.2 + sharp 0.35.5 (ADR-016); Vitest hook timeout 60 s | Dev |
 | 2026-10-24 | Phase 2 built: header (mega-menu, mobile menu), smart Get the app + QR, store/payment badges, synced-story hero with phone + lifecycle notifications, light-data mode, film lightbox; deps lucide-react 1.52.0, qrcode 1.5.4 | Dev |
 | 2026-10-24 | Phase 2 accepted (owner started Phase 3); hero merged to main | Owner |
+| 2026-10-27 | Phase 3 batch 1: pillars, numbers + map, how it works, audiences, earn tabs, download band, footer, WhatsApp button | Dev |

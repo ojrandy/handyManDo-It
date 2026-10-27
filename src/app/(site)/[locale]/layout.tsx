@@ -5,7 +5,9 @@ import { Poppins, Sora } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
+import { Footer } from '@/components/sections/Footer'
 import { Header } from '@/components/sections/Header'
+import { WhatsAppFab } from '@/components/ui/WhatsAppFab'
 import { routing } from '@/i18n/routing'
 import { site } from '@/lib/site'
 import '../globals.css'
@@ -71,7 +73,10 @@ export default async function LocaleLayout({ children, params }: Props) {
   if (!hasLocale(routing.locales, locale)) notFound()
 
   setRequestLocale(locale)
-  const t = await getTranslations({ locale, namespace: 'nav' })
+  const [t, whatsapp] = await Promise.all([
+    getTranslations({ locale, namespace: 'nav' }),
+    getTranslations({ locale, namespace: 'whatsapp' }),
+  ])
 
   return (
     <html lang={locale} className={`${poppins.variable} ${sora.variable}`}>
@@ -85,6 +90,8 @@ export default async function LocaleLayout({ children, params }: Props) {
         <NextIntlClientProvider>
           <Header />
           {children}
+          <Footer />
+          <WhatsAppFab href={site.whatsappUrl} label={whatsapp('label')} />
         </NextIntlClientProvider>
       </body>
     </html>

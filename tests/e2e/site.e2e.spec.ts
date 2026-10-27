@@ -40,7 +40,8 @@ test.describe('Public site', () => {
 
   test('language switcher moves between the equivalent pages', async ({ page }) => {
     await page.goto('/fr')
-    await page.getByRole('button', { name: fr.language.en }).click()
+    // The footer has a second switcher; use the header's.
+    await page.getByRole('banner').getByRole('button', { name: fr.language.en }).click()
     await expect(page).toHaveURL(/\/en$/)
     await expect(page.locator('html')).toHaveAttribute('lang', 'en')
   })

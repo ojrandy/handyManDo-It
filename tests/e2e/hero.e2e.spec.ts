@@ -32,7 +32,10 @@ test.describe('Header', () => {
   test('"Get the app" opens the QR popover on desktop', async ({ page }) => {
     await page.goto('/en')
     await page.getByRole('banner').getByRole('button', { name: en.nav.getTheApp }).click()
-    await expect(page.getByRole('img', { name: en.getTheApp.qrAlt })).toBeVisible()
+    // Scoped to the popover: the download band shows the same QR further down the page.
+    await expect(
+      page.locator('[popover]').getByRole('img', { name: en.getTheApp.qrAlt }),
+    ).toBeVisible()
   })
 })
 

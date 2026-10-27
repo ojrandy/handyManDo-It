@@ -3,12 +3,13 @@ import { describe, expect, it } from 'vitest'
 import en from '@/messages/en.json'
 import fr from '@/messages/fr.json'
 
-type Messages = { [key: string]: string | Messages }
-
-// Flattens { a: { b: 'x' } } into [['a.b', 'x']] so the two trees can be compared key by key.
-function flatten(messages: Messages, prefix = ''): [string, string][] {
-  return Object.entries(messages).flatMap(([key, value]) =>
-    typeof value === 'string' ? [[`${prefix}${key}`, value]] : flatten(value, `${prefix}${key}.`),
+// Flattens { a: { b: 'x' }, c: ['y'] } into [['a.b', 'x'], ['c.0', 'y']] so the two trees
+// (including list lengths) can be compared key by key.
+function flatten(messages: object, prefix = ''): [string, string][] {
+  return Object.entries(messages).flatMap(([key, value]): [string, string][] =>
+    typeof value === 'string'
+      ? [[`${prefix}${key}`, value]]
+      : flatten(value as object, `${prefix}${key}.`),
   )
 }
 
