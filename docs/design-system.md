@@ -84,17 +84,17 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 | StoreBadges | ✅ | Official Google Play badge per locale (`public/badges`, unaltered); App Store hidden while `appStoreUrl` is empty. `store_click` event in Phase 5 |
 | GetTheApp | ✅ | Server wrapper renders the QR SVG; client button: Android → Play, iOS → App Store or web app, desktop → native `popover` with QR. Plain Play link before hydration / without JS |
 | Badge / PaymentBadges | ✅ | Text pills with brand-colour dots (no third-party logos until licensed) |
-| Accordion | ⬜ | Native `<details>` or ARIA disclosure; fires `faq_open` |
+| Accordion | ✅ (native `<details>`, `FaqTeaser`) | Native `<details>` or ARIA disclosure; fires `faq_open` |
 | Tabs | ✅ (`EarnTabs`) | ARIA tabs pattern with arrow-key nav |
-| Marquee | ⬜ | Pause on hover/focus; static under reduced motion |
+| Marquee | ✅ (CSS, `TrustedBy`) | Pause on hover/focus; static under reduced motion |
 | Counter | ✅ | Animates on view; final value in DOM for SR/no-JS |
 | Dialog / Lightbox | ✅ | Native modal `<dialog>` (focus contained, Esc closes), focus returned to trigger, backdrop click closes; `FilmLightbox` video `preload="none"`. Captions pending transcript |
-| Carousel (embla) | ⬜ | Keyboard + swipe; visible controls |
+| Carousel | ✅ scroll-snap + `CarouselControls` (no embla needed so far) | Keyboard + swipe; visible controls |
 | WhatsAppFab | ✅ (#128C7E for 3:1 icon contrast) | Bottom-right, delayed, safe-area aware |
 | Form fields | ⬜ | Label always visible, error text linked with `aria-describedby`, `aria-live` summary |
 | JsonLd | ⬜ | `<script type="application/ld+json">` server component |
 | device/Phone, device/Laptop | Phone ✅ · Laptop ⬜ | CSS frame with `overlay` slot; `AppHomeScreen` is an HTML recreation of the app Home screen until captured screens (T-1.09) |
-| sections/* | Header, Hero, Pillars, Numbers, HowItWorks, Audiences, Earn, DownloadBand, Footer ✅ · rest ⬜ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
+| sections/* | Header, Hero, TrustedBy, ServicesBento, Pillars, Numbers, HowItWorks, Testimonials, Audiences, Earn, FaqTeaser, DownloadBand, Footer ✅ · rest ⬜ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
 
 **Component rules**
 1. Server Component unless it needs interactivity; client logic in the smallest possible child.

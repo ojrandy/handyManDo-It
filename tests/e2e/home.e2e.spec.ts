@@ -12,11 +12,15 @@ test.describe('Home sections', () => {
     ] as const) {
       await page.goto(`/${locale}`)
       for (const title of [
+        m.trustedBy.label,
+        m.servicesSection.title,
         m.pillars.title,
         m.numbers.title,
         m.howItWorks.title,
+        m.testimonials.title,
         m.audiences.title,
         m.earn.title,
+        m.faq.title,
         m.download.title,
       ]) {
         await expect(page.getByRole('heading', { level: 2, name: title })).toBeVisible()
@@ -41,6 +45,50 @@ test.describe('Home sections', () => {
     await expect(page.getByRole('tabpanel')).toContainText(en.earn.tabs.sellers.title)
     await page.keyboard.press('End')
     await expect(tabs.last()).toHaveAttribute('aria-selected', 'true')
+  })
+})
+
+// Batch 2: trusted by, services bento, testimonials, FAQ (FR-HOME-03/04/11/14).
+test.describe('Home content sections', () => {
+  test('services bento links every service to its localized page', async ({ page }) => {
+    await page.goto('/fr')
+    const bento = page.getByRole('region', { name: fr.servicesSection.title })
+    await expect(
+      bento.getByRole('link', { name: new RegExp(fr.services.moving.name) }),
+    ).toHaveAttribute('href', '/fr/services/demenagement')
+    await expect(bento.getByRole('img', { name: fr.servicesSection.photos.events })).toBeVisible()
+  })
+
+  test('named partner logos have their names as alt text', async ({ page }) => {
+    await page.goto('/en')
+    await expect(page.getByRole('img', { name: 'KUKWA Constructions' })).toBeAttached()
+    await expect(page.getByRole('img', { name: 'Spectron Magazine' })).toBeAttached()
+  })
+
+  test('testimonials scroll with the next button and keep all quotes in the page', async ({
+    page,
+  }) => {
+    await page.goto('/en')
+    const track = page.getByRole('list', { name: en.testimonials.label })
+    await expect(track.getByRole('listitem')).toHaveCount(4)
+    await track.scrollIntoViewIfNeeded()
+    const before = await track.evaluate((el) => el.scrollLeft)
+    await page.getByRole('button', { name: en.testimonials.next }).click()
+    await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeGreaterThan(before)
+  })
+
+  test('FAQ opens from the keyboard and ships FAQPage structured data', async ({ page }) => {
+    await page.goto('/en')
+    const question = page.getByText(en.faq.items.payment.q, { exact: true })
+    await question.focus()
+    await page.keyboard.press('Enter')
+    await expect(page.getByText(en.faq.items.payment.a)).toBeVisible()
+
+    const data = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((scripts) => scripts.map((s) => JSON.parse(s.textContent || '{}')))
+    const faq = data.find((d) => d['@type'] === 'FAQPage')
+    expect(faq?.mainEntity).toHaveLength(8)
   })
 })
 

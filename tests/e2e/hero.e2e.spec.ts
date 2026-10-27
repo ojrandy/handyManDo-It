@@ -10,8 +10,9 @@ test.describe('Header', () => {
     await trigger.focus()
     await page.keyboard.press('Enter')
     await expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    // Scoped to the header: the home services grid has the same link.
     await expect(
-      page.getByRole('link', { name: new RegExp(en.services.moving.name) }),
+      page.getByRole('banner').getByRole('link', { name: new RegExp(en.services.moving.name) }),
     ).toBeVisible()
     await page.keyboard.press('Escape')
     await expect(trigger).toHaveAttribute('aria-expanded', 'false')

@@ -34,6 +34,13 @@
 
   --animate-float: float 7s ease-in-out infinite;
   --animate-notification-in: notification-in 600ms var(--ease-out-expo) both;
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
 
   @keyframes float {
     0%,

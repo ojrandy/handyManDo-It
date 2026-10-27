@@ -53,6 +53,7 @@ const nextConfig: NextConfig = {
       { pathname: '/badges/**' },
       { pathname: '/brand/**' },
       { pathname: '/icons/**' },
+      { pathname: '/images/**' },
       { pathname: '/video/**' },
     ],
     remotePatterns: mediaHost

@@ -29,7 +29,7 @@ export async function Pillars() {
   const t = await getTranslations('pillars')
 
   return (
-    <section aria-labelledby="pillars-title" className="bg-mist-50 py-20 md:py-28">
+    <section aria-labelledby="pillars-title" className="bg-mist-100 py-20 md:py-28">
       <div className="container-site">
         <SectionHeading id="pillars-title" eyebrow={t('eyebrow')} title={t('title')} />
 

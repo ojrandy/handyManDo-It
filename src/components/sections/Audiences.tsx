@@ -18,7 +18,7 @@ export async function Audiences() {
   ] as const
 
   return (
-    <section aria-labelledby="audiences-title" className="bg-mist-50 py-20 md:py-28">
+    <section aria-labelledby="audiences-title" className="bg-mist-100 py-20 md:py-28">
       <div className="container-site">
         <SectionHeading id="audiences-title" eyebrow={t('eyebrow')} title={t('title')} />
 

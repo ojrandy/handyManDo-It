@@ -3,10 +3,14 @@ import { setRequestLocale } from 'next-intl/server'
 import { Audiences } from '@/components/sections/Audiences'
 import { DownloadBand } from '@/components/sections/DownloadBand'
 import { Earn } from '@/components/sections/Earn'
+import { FaqTeaser } from '@/components/sections/FaqTeaser'
 import { Hero } from '@/components/sections/Hero'
 import { HowItWorks } from '@/components/sections/HowItWorks'
 import { Numbers } from '@/components/sections/Numbers'
 import { Pillars } from '@/components/sections/Pillars'
+import { ServicesBento } from '@/components/sections/ServicesBento'
+import { Testimonials } from '@/components/sections/Testimonials'
+import { TrustedBy } from '@/components/sections/TrustedBy'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -18,15 +22,17 @@ export default async function HomePage({ params }: Props) {
   return (
     <main id="main">
       <Hero />
-      {/* 5.3 Trusted by · 5.4 Services */}
+      <TrustedBy />
+      <ServicesBento />
       <Pillars />
       <Numbers />
       {/* 5.7 Scroll story */}
       <HowItWorks />
-      {/* 5.9 Mini-demo · 5.10 Screens gallery · 5.11 Testimonials */}
+      {/* 5.9 Mini-demo · 5.10 Screens gallery */}
+      <Testimonials />
       <Audiences />
       <Earn />
-      {/* 5.14 FAQ */}
+      <FaqTeaser />
       <DownloadBand />
       {/* 5.16 Latest posts */}
     </main>

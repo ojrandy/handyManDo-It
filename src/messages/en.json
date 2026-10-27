@@ -369,5 +369,110 @@
   },
   "whatsapp": {
     "label": "Chat with us on WhatsApp"
+  },
+  "trustedBy": {
+    "label": "Trusted by businesses across Cameroon",
+    "featured": "Featured on Spectron Magazine",
+    "partnerAlt": "Partner of HandyMan Do IT"
+  },
+  "servicesSection": {
+    "eyebrow": "Services",
+    "title": "Everything your home or business needs.",
+    "from": "From {price} FCFA",
+    "clearPrice": "Clear price before you book",
+    "alsoInApp": "Also in the app",
+    "shop": {
+      "name": "Shop",
+      "blurb": "New, refurbished and second-hand goods."
+    },
+    "food": {
+      "name": "Food",
+      "blurb": "Order from local kitchens."
+    },
+    "custom": "Need something custom?",
+    "quote": "Request a quote",
+    "photos": {
+      "interiorExteriorDesign": "Living room wall unit designed and built by HandyMan Do IT",
+      "remodeling": "News studio set built for Dash Media",
+      "upholsteryFurniture": "Yellow leather armchair from our upholstery workshop",
+      "repairsInstallations": "Office corner with installed window blinds",
+      "signage": "Event banner for the Crystal Hair Challenge 2022",
+      "events": "Conference stage set up by HandyMan Do IT",
+      "lighting": "Studio lighting installed for Dash TV",
+      "building": "Wood wall cladding work"
+    }
+  },
+  "testimonials": {
+    "eyebrow": "Reviews",
+    "title": "What our clients say.",
+    "label": "Client reviews",
+    "previous": "Previous review",
+    "next": "Next review",
+    "seeAll": "See all reviews",
+    "items": {
+      "emmanuel": {
+        "quote": "Handyman Do It transformed my living room with their fantastic interior design services. The team was incredibly professional, attentive to my needs, and delivered a stunning space that exceeded my expectations. I couldn’t be happier with the results and highly recommend their services!",
+        "name": "N Emmanuel",
+        "city": "Yaoundé",
+        "service": "Interior design"
+      },
+      "richard": {
+        "quote": "We recently hired Handyman Do It for our home remodeling project, and we are thrilled with the outcome. The team was innovative, detail-oriented, and dedicated to bringing our vision to life. Our new kitchen and bathroom look amazing, and the whole process was smooth and stress-free. Highly recommended.",
+        "name": "Richard S.",
+        "city": "Buea",
+        "service": "Remodeling"
+      },
+      "solpia": {
+        "quote": "Handyman Do It did an incredible job setting up for our corporate event. From the initial design concepts to the final setup, everything was handled with professionalism and creativity. The event looked stunning, and we received numerous compliments from our guests. Thank you for making our event a huge success!",
+        "name": "Solpia Cameroon",
+        "city": "Douala",
+        "service": "Events"
+      },
+      "mlounge": {
+        "quote": "I required a variety of signs for my new business, including LED and acrylic options. Handyman Do It’s signage team provided excellent designs and ensured that all signs were installed perfectly.",
+        "name": "M Lounge Exclusive",
+        "city": "Bonaberi, Douala",
+        "service": "Signage"
+      }
+    }
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Questions, answered.",
+    "seeAll": "See all questions",
+    "items": {
+      "payment": {
+        "q": "How do I pay?",
+        "a": "Pay in the app with MTN MoMo, Orange Money or your HandyMan wallet. Your money is held safely and only released to the pro when the job is finished."
+      },
+      "cities": {
+        "q": "Which cities do you cover?",
+        "a": "Douala, Buea and Yaoundé, and more than 120 towns and cities across Cameroon."
+      },
+      "price": {
+        "q": "How is the price decided?",
+        "a": "Describe the job and add photos, and you get a clear price before you book. For larger projects, request a quote and we prepare one for you."
+      },
+      "satisfaction": {
+        "q": "What if I’m not satisfied?",
+        "a": "Your payment stays held until the work is done, and the job only closes when you share your completion code. Refunds go back to your HandyMan wallet. Our support team is available every day from 07:00 to 21:00 (WAT)."
+      },
+      "vetting": {
+        "q": "How are the pros checked?",
+        "a": "Our team checks every pro’s identity, documents and skills before they can take jobs on HandyMan."
+      },
+      "tracking": {
+        "q": "Can I follow the job?",
+        "a": "Yes. Follow your pro on a live map and see each stage, from setting off to finished, with photos of the work."
+      },
+      "pros": {
+        "q": "How do I become a pro?",
+        "a": "Download the same app and choose “I offer services” when you sign up. Add your skills, rates and service area, get verified, then receive nearby requests."
+      },
+      "business": {
+        "q": "Do you work with businesses?",
+        "a": "Yes. “My organisation” accounts let your team book together, and we handle signage, events and office projects. Request a business quote to get started."
+      }
+    }
   }
 }
