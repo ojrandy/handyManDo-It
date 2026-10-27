@@ -120,11 +120,13 @@ export interface Config {
   globals: {
     site: Site;
     navigation: Navigation;
+    home: Home;
     seo: Seo;
   };
   globalsSelect: {
     site: SiteSelect<false> | SiteSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
+    home: HomeSelect<false> | HomeSelect<true>;
     seo: SeoSelect<false> | SeoSelect<true>;
   };
   locale: 'fr' | 'en';
@@ -1390,6 +1392,190 @@ export interface Navigation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    titleStart?: string | null;
+    titleHighlight?: string | null;
+    subtitle?: string | null;
+    values?: string | null;
+    /**
+     * Empty MP4 ⇒ designed background, timer-driven cues.
+     */
+    video?: {
+      mp4?: (number | null) | Media;
+      webm?: (number | null) | Media;
+      poster?: (number | null) | Media;
+    };
+    /**
+     * "Watch the film" lightbox.
+     */
+    film?: {
+      video?: (number | null) | Media;
+      poster?: (number | null) | Media;
+      captions?: (number | null) | Media;
+    };
+    cues?:
+      | {
+          /**
+           * Seconds into the video.
+           */
+          time: number;
+          icon?:
+            | (
+                | 'badge-check'
+                | 'shield-check'
+                | 'navigation'
+                | 'circle-check'
+                | 'key-round'
+                | 'clock'
+                | 'handshake'
+                | 'sparkles'
+                | 'wallet'
+                | 'smartphone'
+              )
+            | null;
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  pillars?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    values?:
+      | {
+          icon?:
+            | (
+                | 'badge-check'
+                | 'shield-check'
+                | 'navigation'
+                | 'circle-check'
+                | 'key-round'
+                | 'clock'
+                | 'handshake'
+                | 'sparkles'
+                | 'wallet'
+                | 'smartphone'
+              )
+            | null;
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    trustTitle?: string | null;
+    trust?:
+      | {
+          icon?:
+            | (
+                | 'badge-check'
+                | 'shield-check'
+                | 'navigation'
+                | 'circle-check'
+                | 'key-round'
+                | 'clock'
+                | 'handshake'
+                | 'sparkles'
+                | 'wallet'
+                | 'smartphone'
+              )
+            | null;
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  numbers?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    body?: string | null;
+  };
+  howItWorks?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    steps?:
+      | {
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  audiences?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          audience: 'homes' | 'businesses' | 'buildings';
+          title: string;
+          points?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  earn?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    body?: string | null;
+    tabs?:
+      | {
+          label: string;
+          title: string;
+          points?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    steps?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  services?: {
+    eyebrow?: string | null;
+    title?: string | null;
+  };
+  testimonials?: {
+    eyebrow?: string | null;
+    title?: string | null;
+  };
+  faq?: {
+    eyebrow?: string | null;
+    title?: string | null;
+  };
+  download?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    bodyAndroid?: string | null;
+    bodyAll?: string | null;
+  };
+  blog?: {
+    eyebrow?: string | null;
+    title?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "seo".
  */
 export interface Seo {
@@ -1512,6 +1698,168 @@ export interface NavigationSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home_select".
+ */
+export interface HomeSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        titleStart?: T;
+        titleHighlight?: T;
+        subtitle?: T;
+        values?: T;
+        video?:
+          | T
+          | {
+              mp4?: T;
+              webm?: T;
+              poster?: T;
+            };
+        film?:
+          | T
+          | {
+              video?: T;
+              poster?: T;
+              captions?: T;
+            };
+        cues?:
+          | T
+          | {
+              time?: T;
+              icon?: T;
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  pillars?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        values?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+        trustTitle?: T;
+        trust?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  numbers?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        body?: T;
+      };
+  howItWorks?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        steps?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  audiences?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              audience?: T;
+              title?: T;
+              points?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  earn?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        body?: T;
+        tabs?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              points?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        steps?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+      };
+  services?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+      };
+  testimonials?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+      };
+  faq?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+      };
+  download?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        bodyAndroid?: T;
+        bodyAll?: T;
+      };
+  blog?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+      };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

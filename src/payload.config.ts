@@ -24,6 +24,7 @@ import { Submissions } from './collections/Submissions'
 import { Team } from './collections/Team'
 import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
+import { Home } from './globals/Home'
 import { Navigation } from './globals/Navigation'
 import { Seo } from './globals/Seo'
 import { Site } from './globals/Site'
@@ -83,7 +84,7 @@ export default buildConfig({
     Submissions,
     Files,
   ],
-  globals: [Site, Navigation, Seo],
+  globals: [Site, Navigation, Home, Seo],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
