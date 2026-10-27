@@ -72,9 +72,9 @@ name (required), logo (media, required; its alt should be the partner name), url
 ### 3.8 `faqs` ✅
 question (L, required), answer (richText L, required; also used for FAQPage JSON-LD), category (select, required, indexed: payments, coverage, quotes, cancellations, guarantee, safety, pros, business), service (rel, optional, indexed), showOnHome (bool, default false), order. Public read, editor write; revalidates `faqs`. Listed on services via the `faqs` join.
 
-### 3.9 `posts` + `categories` ⬜
-posts: title (L), slug, excerpt (L), cover (media), content (richText L), categories (rel[]), author (rel users), publishedAt, legacyUrl (text, for redirect audit), meta. Drafts on.
-categories: title (L), slug.
+### 3.9 `posts` + `categories` ✅
+posts: title (L, required), slug (**not** localized: one URL per article, since most migrated posts exist in one language and legacy redirects target one URL), excerpt (textarea L), cover (media), content (richText L, required), categories (rel[]), publishedAt (indexed; stamped on first publish unless set, so imports keep the WordPress date), author (rel users, defaults to the editor; user records are private, so pages credit the company in Article JSON-LD), legacyUrl (unique), meta (SEO tab). Drafts on; `publishedOrEditor` read; revalidates `posts`. Default sort newest first.
+categories: title (L, required), slug (shared by both locales). Public read, editor write; revalidates `categories` and `posts`.
 
 ### 3.10 `jobs` ⬜
 title (L), slug, location, type (select: full-time, part-time, contract), description (richText L), open (bool), closesAt (date).

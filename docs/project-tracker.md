@@ -63,11 +63,11 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | ID | Task | Req | Status |
 |---|---|---|---|
 | T-1.01 | Collections: services, projects, testimonials, team, partners, faqs | FR-CMS-01 | ✅ 2026-10-27: team + partners, services, projects + testimonials, faqs (one migration each, branches 1–4) |
-| T-1.02 | Collections: posts, categories, jobs, appScreens, submissions (+ private files) | FR-CMS-01 | ⬜ |
+| T-1.02 | Collections: posts, categories, jobs, appScreens, submissions (+ private files) | FR-CMS-01 | 🔄 posts + categories ✅ (`add_posts_categories`, 2026-10-27) |
 | T-1.03 | Globals: navigation, home (with hero cues), seo | FR-CMS-01 | ⬜ |
 | T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | 🔄 `src/hooks/revalidate.ts` (tag-based) on `site` + `media`; each new collection adds it |
 | T-1.05 | Drafts + live preview | FR-CMS-03, FR-CMS-05 | ⬜ |
-| T-1.06 | SEO plugin + redirects plugin config | FR-SEO-01 | 🔄 SEO plugin on services + projects (tabbed, localized meta, import map regenerated); redirects in branch 10 |
+| T-1.06 | SEO plugin + redirects plugin config | FR-SEO-01 | 🔄 SEO plugin on services + projects + posts (tabbed, localized meta, import map regenerated); redirects in branch 10 |
 | T-1.07 | `scripts/seed.ts` (idempotent) from old site | — | ⬜ |
 | T-1.08 | `scripts/migrate-wordpress.ts` (20 posts + media, legacyUrl) | FR-PG-11 | ⬜ |
 | T-1.09 | `scripts/capture-screens.ts` (fr/en × light/dark) | FR-HOME-10 | ⬜ |
@@ -222,3 +222,4 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | 2026-10-27 | Phase 1 branch 2: `services` collection (drafts, localized slug unique per locale, built-in `key`, icon, SEO tab) + migration; `src/lib/service-keys.ts` shared by site and CMS | Dev |
 | 2026-10-27 | Phase 1 branch 3: `projects` (drafts, SEO, before/after) + `testimonials` + migration; `services` lists both via `join` fields (ADR-017); public joins verified to hide draft projects | Dev |
 | 2026-10-27 | Phase 1 branch 4: `faqs` collection (category, optional service, showOnHome) + migration; `services.faqs` join; int-test global setup boots Payload once (fixes a dev schema-push race between parallel test files) | Dev |
+| 2026-10-27 | Phase 1 branch 5: `posts` (drafts, SEO, auto publishedAt, unique legacyUrl, shared slug) + `categories` + migration | Dev |

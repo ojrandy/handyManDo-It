@@ -10,9 +10,11 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { Categories } from './collections/Categories'
 import { Faqs } from './collections/Faqs'
 import { Media } from './collections/Media'
 import { Partners } from './collections/Partners'
+import { Posts } from './collections/Posts'
 import { Projects } from './collections/Projects'
 import { Services } from './collections/Services'
 import { Team } from './collections/Team'
@@ -49,7 +51,18 @@ export default buildConfig({
     defaultLocale: 'fr',
     fallback: true,
   },
-  collections: [Users, Media, Services, Projects, Testimonials, Faqs, Team, Partners],
+  collections: [
+    Users,
+    Media,
+    Services,
+    Projects,
+    Testimonials,
+    Faqs,
+    Posts,
+    Categories,
+    Team,
+    Partners,
+  ],
   globals: [Site],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -78,11 +91,11 @@ export default buildConfig({
   plugins: [
     // Adds a localized meta group (title, description, image) in an SEO tab.
     seoPlugin({
-      collections: [Services.slug, Projects.slug],
+      collections: [Services.slug, Projects.slug, Posts.slug],
       uploadsCollection: Media.slug,
       tabbedUI: true,
       generateTitle: ({ doc }) => `${doc.title} · HandyMan Do IT`,
-      generateDescription: ({ doc }) => doc.summary ?? '',
+      generateDescription: ({ doc }) => doc.summary ?? doc.excerpt ?? '',
     }),
     s3Storage({
       enabled: useR2,

@@ -3,6 +3,7 @@ import * as migration_20261027_135007_add_team_partners from './20261027_135007_
 import * as migration_20261027_140524_add_services from './20261027_140524_add_services';
 import * as migration_20261027_141521_add_projects_testimonials from './20261027_141521_add_projects_testimonials';
 import * as migration_20261027_143241_add_faqs from './20261027_143241_add_faqs';
+import * as migration_20261027_151415_add_posts_categories from './20261027_151415_add_posts_categories';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20261027_143241_add_faqs.up,
     down: migration_20261027_143241_add_faqs.down,
-    name: '20261027_143241_add_faqs'
+    name: '20261027_143241_add_faqs',
+  },
+  {
+    up: migration_20261027_151415_add_posts_categories.up,
+    down: migration_20261027_151415_add_posts_categories.down,
+    name: '20261027_151415_add_posts_categories'
   },
 ];
