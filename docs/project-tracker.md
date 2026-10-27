@@ -64,7 +64,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 |---|---|---|---|
 | T-1.01 | Collections: services, projects, testimonials, team, partners, faqs | FR-CMS-01 | ✅ 2026-10-27: team + partners, services, projects + testimonials, faqs (one migration each, branches 1–4) |
 | T-1.02 | Collections: posts, categories, jobs, appScreens, submissions (+ private files) | FR-CMS-01 | ✅ 2026-10-27: posts + categories, jobs + submissions + private files, app screens (branches 5–7) |
-| T-1.03 | Globals: navigation, home (with hero cues), seo | FR-CMS-01 | ⬜ |
+| T-1.03 | Globals: navigation, home (with hero cues), seo | FR-CMS-01 | 🔄 navigation + seo ✅ (`add_navigation_seo_globals`, 2026-10-27); home in branch 9 |
 | T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | 🔄 `src/hooks/revalidate.ts` (tag-based) on `site` + `media`; each new collection adds it |
 | T-1.05 | Drafts + live preview | FR-CMS-03, FR-CMS-05 | ⬜ |
 | T-1.06 | SEO plugin + redirects plugin config | FR-SEO-01 | 🔄 SEO plugin on services + projects + posts (tabbed, localized meta, import map regenerated); redirects in branch 10 |
@@ -225,3 +225,4 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | 2026-10-27 | Phase 1 branch 5: `posts` (drafts, SEO, auto publishedAt, unique legacyUrl, shared slug) + `categories` + migration | Dev |
 | 2026-10-27 | Phase 1 branch 6: `jobs`, `submissions` (read-only except status, email to site inbox, 24-month purge), private `files` (PDF/DOC ≤ 5 MB, random names, separate `S3_PRIVATE_BUCKET`) + migration | Dev |
 | 2026-10-27 | Phase 1 branch 7: `app-screens` collection (key × lang × theme unique) + migration | Dev |
+| 2026-10-27 | Phase 1 branch 8: `navigation` (header with mega-menu children, footer columns; shared `linkField`: site page / document / external) and `seo` (defaults + Organization JSON-LD) globals + migration | Dev |

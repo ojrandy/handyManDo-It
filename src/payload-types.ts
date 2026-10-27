@@ -119,9 +119,13 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'en') | ('fr' | 'en')[];
   globals: {
     site: Site;
+    navigation: Navigation;
+    seo: Seo;
   };
   globalsSelect: {
     site: SiteSelect<false> | SiteSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
+    seo: SeoSelect<false> | SeoSelect<true>;
   };
   locale: 'fr' | 'en';
   widgets: {
@@ -1207,6 +1211,219 @@ export interface Site {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  header?:
+    | {
+        link: {
+          label: string;
+          type: 'page' | 'doc' | 'external';
+          page?:
+            | (
+                | '/'
+                | '/services'
+                | '/businesses'
+                | '/buildings'
+                | '/shop'
+                | '/food'
+                | '/become-a-pro'
+                | '/our-work'
+                | '/reviews'
+                | '/about'
+                | '/careers'
+                | '/blog'
+                | '/faq'
+                | '/contact'
+                | '/legal/privacy'
+                | '/legal/terms'
+                | '/legal/disclaimer'
+              )
+            | null;
+          doc?:
+            | ({
+                relationTo: 'services';
+                value: number | Service;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: number | Project;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'jobs';
+                value: number | Job;
+              } | null);
+          url?: string | null;
+        };
+        children?:
+          | {
+              link: {
+                label: string;
+                type: 'page' | 'doc' | 'external';
+                page?:
+                  | (
+                      | '/'
+                      | '/services'
+                      | '/businesses'
+                      | '/buildings'
+                      | '/shop'
+                      | '/food'
+                      | '/become-a-pro'
+                      | '/our-work'
+                      | '/reviews'
+                      | '/about'
+                      | '/careers'
+                      | '/blog'
+                      | '/faq'
+                      | '/contact'
+                      | '/legal/privacy'
+                      | '/legal/terms'
+                      | '/legal/disclaimer'
+                    )
+                  | null;
+                doc?:
+                  | ({
+                      relationTo: 'services';
+                      value: number | Service;
+                    } | null)
+                  | ({
+                      relationTo: 'projects';
+                      value: number | Project;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null)
+                  | ({
+                      relationTo: 'jobs';
+                      value: number | Job;
+                    } | null);
+                url?: string | null;
+              };
+              description?: string | null;
+              icon?:
+                | (
+                    | 'palette'
+                    | 'sofa'
+                    | 'wrench'
+                    | 'hammer'
+                    | 'signpost'
+                    | 'party-popper'
+                    | 'lightbulb'
+                    | 'hard-hat'
+                    | 'truck'
+                    | 'package'
+                    | 'car'
+                    | 'paint-roller'
+                    | 'plug'
+                    | 'droplets'
+                    | 'shield-check'
+                  )
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerColumns?:
+    | {
+        title: string;
+        links?:
+          | {
+              link: {
+                label: string;
+                type: 'page' | 'doc' | 'external';
+                page?:
+                  | (
+                      | '/'
+                      | '/services'
+                      | '/businesses'
+                      | '/buildings'
+                      | '/shop'
+                      | '/food'
+                      | '/become-a-pro'
+                      | '/our-work'
+                      | '/reviews'
+                      | '/about'
+                      | '/careers'
+                      | '/blog'
+                      | '/faq'
+                      | '/contact'
+                      | '/legal/privacy'
+                      | '/legal/terms'
+                      | '/legal/disclaimer'
+                    )
+                  | null;
+                doc?:
+                  | ({
+                      relationTo: 'services';
+                      value: number | Service;
+                    } | null)
+                  | ({
+                      relationTo: 'projects';
+                      value: number | Project;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null)
+                  | ({
+                      relationTo: 'jobs';
+                      value: number | Job;
+                    } | null);
+                url?: string | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo".
+ */
+export interface Seo {
+  id: number;
+  /**
+   * Home page title, and the suffix of other page titles.
+   */
+  defaultTitle: string;
+  defaultDescription: string;
+  /**
+   * Share image when a page has none. 1200×630.
+   */
+  ogImage?: (number | null) | Media;
+  /**
+   * Organization structured data (JSON-LD).
+   */
+  organization?: {
+    legalName?: string | null;
+    foundingDate?: string | null;
+    /**
+     * Official profiles (social, app stores).
+     */
+    sameAs?:
+      | {
+          url: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site_select".
  */
 export interface SiteSelect<T extends boolean = true> {
@@ -1236,6 +1453,89 @@ export interface SiteSelect<T extends boolean = true> {
   instagram?: T;
   x?: T;
   youtube?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              label?: T;
+              type?: T;
+              page?: T;
+              doc?: T;
+              url?: T;
+            };
+        children?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    label?: T;
+                    type?: T;
+                    page?: T;
+                    doc?: T;
+                    url?: T;
+                  };
+              description?: T;
+              icon?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  footerColumns?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    label?: T;
+                    type?: T;
+                    page?: T;
+                    doc?: T;
+                    url?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo_select".
+ */
+export interface SeoSelect<T extends boolean = true> {
+  defaultTitle?: T;
+  defaultDescription?: T;
+  ogImage?: T;
+  organization?:
+    | T
+    | {
+        legalName?: T;
+        foundingDate?: T;
+        sameAs?:
+          | T
+          | {
+              url?: T;
+              id?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

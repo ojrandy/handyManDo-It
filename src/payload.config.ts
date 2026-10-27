@@ -24,6 +24,8 @@ import { Submissions } from './collections/Submissions'
 import { Team } from './collections/Team'
 import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
+import { Navigation } from './globals/Navigation'
+import { Seo } from './globals/Seo'
 import { Site } from './globals/Site'
 
 const filename = fileURLToPath(import.meta.url)
@@ -81,7 +83,7 @@ export default buildConfig({
     Submissions,
     Files,
   ],
-  globals: [Site],
+  globals: [Site, Navigation, Seo],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

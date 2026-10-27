@@ -93,14 +93,15 @@ files (private uploads, group Inbox): PDF/DOC/DOCX only (Payload also checks the
 Tabs — **Contact:** phone, whatsappUrl, email, hours (L), offices[] {label L, address, city, mapUrl}. **Apps:** webAppUrl, playStoreUrl, appStoreUrl (empty ⇒ iOS badge hidden), rating, reviewCount (empty ⇒ rating row hidden). **Stats:** towns, years, clients, projects. **Social:** facebook, instagram, x, youtube.
 Defaults come from `src/lib/site.ts`. ⬜ Add revalidation hook (`revalidateTag('site')`).
 
-### 4.2 `navigation` ⬜
-header[] {label L, link (internal pathname key or external URL), children[] for mega-menu {label L, description L, icon, link}}; footer columns[] {title L, links[]}.
+### 4.2 `navigation` ✅ (access: public read, editor update)
+header[] (≤ 8) {link, children[] (≤ 16, non-empty ⇒ mega-menu) {link, description L, icon (service icon names)}}; footerColumns[] (≤ 4) {title L, links[] {link}}. Revalidates `navigation`.
+**Link** (`src/fields/link.ts`, reused everywhere): label (L) + type `page` (a static key of `routing.pathnames`, so the site resolves the translated URL per locale) | `doc` (relationship to services, projects, posts or jobs) | `external` (https://, mailto:, tel:). The target matching the type is required. The page list is a database enum: adding a static route to `routing.pathnames` needs a migration (the CI drift check catches it).
 
 ### 4.3 `home` ⬜
 One group per home section (PLAN.md §5.2–5.16) with localized copy. Hero: video (media, mp4), videoWebm (media), poster (media), filmUrl (media), cues[] {timeSeconds number, text L, icon}. Drafts on.
 
-### 4.4 `seo` ⬜
-defaultTitle (L), defaultDescription (L), ogImage (media), organisation JSON-LD fields (legalName, foundingDate, sameAs[]).
+### 4.4 `seo` ✅ (access: public read, **admin** update)
+defaultTitle (L, required, default "HandyMan Do IT"), defaultDescription (L, required, ≤ 160, no default so each language is written, not inherited), ogImage (media, 1200×630), organization {legalName, foundingDate, sameAs[] {url https}}. Revalidates `seo`.
 
 ## 5. Redirects
 

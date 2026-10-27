@@ -6,6 +6,7 @@ import * as migration_20261027_143241_add_faqs from './20261027_143241_add_faqs'
 import * as migration_20261027_151415_add_posts_categories from './20261027_151415_add_posts_categories';
 import * as migration_20261027_154349_add_jobs_submissions from './20261027_154349_add_jobs_submissions';
 import * as migration_20261027_165018_add_app_screens from './20261027_165018_add_app_screens';
+import * as migration_20261027_170611_add_navigation_seo_globals from './20261027_170611_add_navigation_seo_globals';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20261027_165018_add_app_screens.up,
     down: migration_20261027_165018_add_app_screens.down,
-    name: '20261027_165018_add_app_screens'
+    name: '20261027_165018_add_app_screens',
+  },
+  {
+    up: migration_20261027_170611_add_navigation_seo_globals.up,
+    down: migration_20261027_170611_add_navigation_seo_globals.down,
+    name: '20261027_170611_add_navigation_seo_globals'
   },
 ];
