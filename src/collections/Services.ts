@@ -92,5 +92,21 @@ export const Services: CollectionConfig = {
       admin: { position: 'sidebar', description: 'Tile size in the home services grid.' },
     },
     orderField,
+    // Virtual lists (no column): the link is stored once, on the project/testimonial (ADR-017).
+    {
+      name: 'projects',
+      type: 'join',
+      collection: 'projects',
+      on: 'service',
+      defaultSort: '-date',
+      admin: { defaultColumns: ['title', 'city', 'date', '_status'] },
+    },
+    {
+      name: 'testimonials',
+      type: 'join',
+      collection: 'testimonials',
+      on: 'service',
+      admin: { defaultColumns: ['name', 'city', 'rating'] },
+    },
   ],
 }

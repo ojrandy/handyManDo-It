@@ -70,6 +70,8 @@ export interface Config {
     users: User;
     media: Media;
     services: Service;
+    projects: Project;
+    testimonials: Testimonial;
     team: Team;
     partners: Partner;
     'payload-kv': PayloadKv;
@@ -77,11 +79,18 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    services: {
+      projects: 'projects';
+      testimonials: 'testimonials';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -297,6 +306,16 @@ export interface Service {
    * Lower numbers come first.
    */
   order?: number | null;
+  projects?: {
+    docs?: (number | Project)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  testimonials?: {
+    docs?: (number | Testimonial)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -308,6 +327,88 @@ export interface Service {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  /**
+   * URL segment. Filled from the title when empty; changing it changes the URL.
+   */
+  slug: string;
+  service: number | Service;
+  city: string;
+  client?: string | null;
+  date?: string | null;
+  /**
+   * Shown on the home page.
+   */
+  featured?: boolean | null;
+  cover: number | Media;
+  gallery?: (number | Media)[] | null;
+  /**
+   * Both images enable the before/after slider.
+   */
+  beforeAfter?: {
+    before?: (number | null) | Media;
+    after?: (number | null) | Media;
+  };
+  story?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  name: string;
+  city: string;
+  quote: string;
+  service?: (number | null) | Service;
+  /**
+   * Stars, 1–5. Empty hides the stars.
+   */
+  rating?: number | null;
+  /**
+   * Shown on the home page.
+   */
+  featured?: boolean | null;
+  /**
+   * Lower numbers come first.
+   */
+  order?: number | null;
+  photo?: (number | null) | Media;
+  projectPhoto?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -380,6 +481,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'services';
         value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
       } | null)
     | ({
         relationTo: 'team';
@@ -548,6 +657,8 @@ export interface ServicesSelect<T extends boolean = true> {
   featuredOnHome?: T;
   size?: T;
   order?: T;
+  projects?: T;
+  testimonials?: T;
   meta?:
     | T
     | {
@@ -558,6 +669,55 @@ export interface ServicesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  service?: T;
+  city?: T;
+  client?: T;
+  date?: T;
+  featured?: T;
+  cover?: T;
+  gallery?: T;
+  beforeAfter?:
+    | T
+    | {
+        before?: T;
+        after?: T;
+      };
+  story?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  name?: T;
+  city?: T;
+  quote?: T;
+  service?: T;
+  rating?: T;
+  featured?: T;
+  order?: T;
+  photo?: T;
+  projectPhoto?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

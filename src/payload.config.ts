@@ -12,8 +12,10 @@ import { fileURLToPath } from 'url'
 
 import { Media } from './collections/Media'
 import { Partners } from './collections/Partners'
+import { Projects } from './collections/Projects'
 import { Services } from './collections/Services'
 import { Team } from './collections/Team'
+import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
 import { Site } from './globals/Site'
 
@@ -46,7 +48,7 @@ export default buildConfig({
     defaultLocale: 'fr',
     fallback: true,
   },
-  collections: [Users, Media, Services, Team, Partners],
+  collections: [Users, Media, Services, Projects, Testimonials, Team, Partners],
   globals: [Site],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -75,11 +77,11 @@ export default buildConfig({
   plugins: [
     // Adds a localized meta group (title, description, image) in an SEO tab.
     seoPlugin({
-      collections: [Services.slug],
+      collections: [Services.slug, Projects.slug],
       uploadsCollection: Media.slug,
       tabbedUI: true,
       generateTitle: ({ doc }) => `${doc.title} · HandyMan Do IT`,
-      generateDescription: ({ doc }) => doc.summary,
+      generateDescription: ({ doc }) => doc.summary ?? '',
     }),
     s3Storage({
       enabled: useR2,

@@ -55,13 +55,13 @@ Access: create/delete admin; read/update admin or self. Hook: first user ever cr
 Sizes (WebP): `thumb` 480, `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read; create/update/delete `isEditor` (2026-10-23). ⬜ Separate private collection for CVs (§3.12).
 
 ### 3.3 `services` ✅
-title (L, required), slug (L; unique per locale, index `(slug, _locale)`, so FR and EN may share a slug), key (select of the 11 built-in `ServiceKey`s from `src/lib/service-keys.ts`, unique, optional for new services), icon (select of Lucide names in the same file), heroImage (media), summary (textarea L, required), body (richText L), inclusions (array{text}, localized as a whole), process (array{title, text}, localized as a whole), fromPrice (number FCFA, optional → fallback label), featuredOnHome (bool, default true), size (`large`/`small` for bento), order, meta (SEO plugin tab: localized title/description/image). Drafts on (20 versions). Access: `publishedOrEditor` read, editor write. Revalidates tag `services`. FAQs and related projects arrive as `join` fields with branches 3–4 (ADR-017).
+title (L, required), slug (L; unique per locale, index `(slug, _locale)`, so FR and EN may share a slug), key (select of the 11 built-in `ServiceKey`s from `src/lib/service-keys.ts`, unique, optional for new services), icon (select of Lucide names in the same file), heroImage (media), summary (textarea L, required), body (richText L), inclusions (array{text}, localized as a whole), process (array{title, text}, localized as a whole), fromPrice (number FCFA, optional → fallback label), featuredOnHome (bool, default true), size (`large`/`small` for bento), order, meta (SEO plugin tab: localized title/description/image). Drafts on (20 versions). Access: `publishedOrEditor` read, editor write. Revalidates tag `services`. Join fields (virtual, ADR-017): `projects` (on `projects.service`) and `testimonials` (on `testimonials.service`); `faqs` follows in branch 4. Public reads of the join respect the joined collection's access, so draft projects stay hidden.
 
-### 3.4 `projects` ⬜
-title (L), slug (L), service (rel services), city (text), client (text), cover (media), gallery (media[]), before / after (media), story (richText L), featured (bool), date, meta.
+### 3.4 `projects` ✅
+title (L, required), slug (L, unique per locale), service (rel services, required, indexed), city (required), client, date (month), featured (bool), cover (media, required), gallery (media[]), beforeAfter group {before, after} (both ⇒ slider), story (richText L), meta (SEO tab). Drafts on; `publishedOrEditor` read; revalidates `projects`. Default sort newest first.
 
-### 3.5 `testimonials` ⬜
-name, city, service (rel), quote (textarea L), photo (media), projectPhoto (media), rating (1–5), featured (bool), order. Seed: N Emmanuel (Yaoundé), Richard S. (Buea), Solpia Cameroon (Douala), M Lounge Exclusive (Bonaberi).
+### 3.5 `testimonials` ✅
+name, city (required), quote (textarea L, required), service (rel, optional, indexed), rating (1–5, empty hides stars), featured (default true), order, photo, projectPhoto. Public read, editor write; revalidates `testimonials`. Seed: N Emmanuel (Yaoundé), Richard S. (Buea), Solpia Cameroon (Douala), M Lounge Exclusive (Bonaberi).
 
 ### 3.6 `team` ✅
 name (required), role (L, required), photo (media), bio (textarea L), order. Group Company; public read, editor write; revalidates tag `team`. Seed: J. Batholomew, Mbeng Nkeng S., ANU Ernest.
