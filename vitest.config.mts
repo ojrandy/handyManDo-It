@@ -9,6 +9,7 @@ export default defineConfig({
     // per file with a `// @vitest-environment jsdom` comment; it is slow to boot.
     environment: 'node',
     setupFiles: ['./vitest.setup.ts'],
+    globalSetup: ['./tests/int/globalSetup.ts'],
     include: ['tests/int/**/*.int.spec.ts'],
     // getPayload() connects and checks the schema in beforeAll; 10 s is too tight on slow machines.
     hookTimeout: 60_000,

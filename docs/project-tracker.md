@@ -62,7 +62,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 
 | ID | Task | Req | Status |
 |---|---|---|---|
-| T-1.01 | Collections: services, projects, testimonials, team, partners, faqs | FR-CMS-01 | 🔄 team + partners ✅ (`add_team_partners`), services ✅ (`add_services`), projects + testimonials ✅ (`add_projects_testimonials`), 2026-10-27 |
+| T-1.01 | Collections: services, projects, testimonials, team, partners, faqs | FR-CMS-01 | ✅ 2026-10-27: team + partners, services, projects + testimonials, faqs (one migration each, branches 1–4) |
 | T-1.02 | Collections: posts, categories, jobs, appScreens, submissions (+ private files) | FR-CMS-01 | ⬜ |
 | T-1.03 | Globals: navigation, home (with hero cues), seo | FR-CMS-01 | ⬜ |
 | T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | 🔄 `src/hooks/revalidate.ts` (tag-based) on `site` + `media`; each new collection adds it |
@@ -221,3 +221,4 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | 2026-10-27 | Phase 1 branch 1: `team` + `partners` collections and migration; `npm run migrate:check` (drift + empty-DB apply), drift check in CI | Dev |
 | 2026-10-27 | Phase 1 branch 2: `services` collection (drafts, localized slug unique per locale, built-in `key`, icon, SEO tab) + migration; `src/lib/service-keys.ts` shared by site and CMS | Dev |
 | 2026-10-27 | Phase 1 branch 3: `projects` (drafts, SEO, before/after) + `testimonials` + migration; `services` lists both via `join` fields (ADR-017); public joins verified to hide draft projects | Dev |
+| 2026-10-27 | Phase 1 branch 4: `faqs` collection (category, optional service, showOnHome) + migration; `services.faqs` join; int-test global setup boots Payload once (fixes a dev schema-push race between parallel test files) | Dev |

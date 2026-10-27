@@ -55,7 +55,7 @@ Access: create/delete admin; read/update admin or self. Hook: first user ever cr
 Sizes (WebP): `thumb` 480, `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read; create/update/delete `isEditor` (2026-10-23). ⬜ Separate private collection for CVs (§3.12).
 
 ### 3.3 `services` ✅
-title (L, required), slug (L; unique per locale, index `(slug, _locale)`, so FR and EN may share a slug), key (select of the 11 built-in `ServiceKey`s from `src/lib/service-keys.ts`, unique, optional for new services), icon (select of Lucide names in the same file), heroImage (media), summary (textarea L, required), body (richText L), inclusions (array{text}, localized as a whole), process (array{title, text}, localized as a whole), fromPrice (number FCFA, optional → fallback label), featuredOnHome (bool, default true), size (`large`/`small` for bento), order, meta (SEO plugin tab: localized title/description/image). Drafts on (20 versions). Access: `publishedOrEditor` read, editor write. Revalidates tag `services`. Join fields (virtual, ADR-017): `projects` (on `projects.service`) and `testimonials` (on `testimonials.service`); `faqs` follows in branch 4. Public reads of the join respect the joined collection's access, so draft projects stay hidden.
+title (L, required), slug (L; unique per locale, index `(slug, _locale)`, so FR and EN may share a slug), key (select of the 11 built-in `ServiceKey`s from `src/lib/service-keys.ts`, unique, optional for new services), icon (select of Lucide names in the same file), heroImage (media), summary (textarea L, required), body (richText L), inclusions (array{text}, localized as a whole), process (array{title, text}, localized as a whole), fromPrice (number FCFA, optional → fallback label), featuredOnHome (bool, default true), size (`large`/`small` for bento), order, meta (SEO plugin tab: localized title/description/image). Drafts on (20 versions). Access: `publishedOrEditor` read, editor write. Revalidates tag `services`. Join fields (virtual, ADR-017): `projects` (on `projects.service`) and `testimonials` (on `testimonials.service`); `faqs` (on `faqs.service`). Public reads of the join respect the joined collection's access, so draft projects stay hidden.
 
 ### 3.4 `projects` ✅
 title (L, required), slug (L, unique per locale), service (rel services, required, indexed), city (required), client, date (month), featured (bool), cover (media, required), gallery (media[]), beforeAfter group {before, after} (both ⇒ slider), story (richText L), meta (SEO tab). Drafts on; `publishedOrEditor` read; revalidates `projects`. Default sort newest first.
@@ -69,8 +69,8 @@ name (required), role (L, required), photo (media), bio (textarea L), order. Gro
 ### 3.7 `partners` ✅
 name (required), logo (media, required; its alt should be the partner name), url (http/https only), order. Group Marketing; public read, editor write; revalidates tag `partners`. Unknown names (Q-10) are seeded as placeholders.
 
-### 3.8 `faqs` ⬜
-question (L), answer (richText L), category (select: payments, coverage, quotes, cancellations, guarantee, safety, pros, business), service (rel, optional), showOnHome (bool), order.
+### 3.8 `faqs` ✅
+question (L, required), answer (richText L, required; also used for FAQPage JSON-LD), category (select, required, indexed: payments, coverage, quotes, cancellations, guarantee, safety, pros, business), service (rel, optional, indexed), showOnHome (bool, default false), order. Public read, editor write; revalidates `faqs`. Listed on services via the `faqs` join.
 
 ### 3.9 `posts` + `categories` ⬜
 posts: title (L), slug, excerpt (L), cover (media), content (richText L), categories (rel[]), author (rel users), publishedAt, legacyUrl (text, for redirect audit), meta. Drafts on.

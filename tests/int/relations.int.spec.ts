@@ -3,6 +3,8 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import config from '@/payload.config'
 
+import { paragraph } from '../helpers/richText'
+
 let payload: Payload
 const context = { disableRevalidate: true }
 const prefix = 'int-test-rel'
@@ -10,8 +12,8 @@ let serviceId: number
 let mediaId: number
 
 const cleanUp = async () => {
-  for (const collection of ['projects', 'testimonials', 'services'] as const) {
-    const field = collection === 'testimonials' ? 'name' : 'title'
+  for (const collection of ['projects', 'testimonials', 'faqs', 'services'] as const) {
+    const field = { testimonials: 'name', faqs: 'question' }[collection as string] ?? 'title'
     await payload.delete({ collection, where: { [field]: { like: prefix } }, context })
   }
   await payload.delete({ collection: 'media', where: { alt: { like: prefix } }, context })
@@ -72,6 +74,16 @@ describe('service joins', () => {
       data: { name: `${prefix} Emmanuel`, city: 'Yaoundé', quote: 'Top', service: serviceId },
       context,
     })
+    await payload.create({
+      collection: 'faqs',
+      data: {
+        question: `${prefix} How long?`,
+        answer: paragraph('Two days.'),
+        category: 'quotes',
+        service: serviceId,
+      },
+      context,
+    })
   })
 
   afterAll(cleanUp)
@@ -86,6 +98,7 @@ describe('service joins', () => {
     const titles = service.projects?.docs?.map((doc) => typeof doc === 'object' && doc.title)
     expect(titles).toEqual([`${prefix} published`])
     expect(service.testimonials?.docs).toHaveLength(1)
+    expect(service.faqs?.docs).toHaveLength(1)
   })
 
   it('refuses a project without a service', async () => {
@@ -93,6 +106,16 @@ describe('service joins', () => {
       payload.create({
         collection: 'projects',
         data: { title: `${prefix} orphan`, slug: '', city: 'Buea', cover: mediaId } as never,
+        context,
+      }),
+    ).rejects.toThrow()
+  })
+
+  it('requires an FAQ category', async () => {
+    await expect(
+      payload.create({
+        collection: 'faqs',
+        data: { question: `${prefix} x`, answer: paragraph('x') } as never,
         context,
       }),
     ).rejects.toThrow()

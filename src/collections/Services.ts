@@ -108,5 +108,13 @@ export const Services: CollectionConfig = {
       on: 'service',
       admin: { defaultColumns: ['name', 'city', 'rating'] },
     },
+    {
+      name: 'faqs',
+      type: 'join',
+      collection: 'faqs',
+      on: 'service',
+      defaultSort: 'order',
+      admin: { defaultColumns: ['question', 'category', 'order'] },
+    },
   ],
 }

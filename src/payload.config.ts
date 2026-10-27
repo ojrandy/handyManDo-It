@@ -10,6 +10,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { Faqs } from './collections/Faqs'
 import { Media } from './collections/Media'
 import { Partners } from './collections/Partners'
 import { Projects } from './collections/Projects'
@@ -48,7 +49,7 @@ export default buildConfig({
     defaultLocale: 'fr',
     fallback: true,
   },
-  collections: [Users, Media, Services, Projects, Testimonials, Team, Partners],
+  collections: [Users, Media, Services, Projects, Testimonials, Faqs, Team, Partners],
   globals: [Site],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

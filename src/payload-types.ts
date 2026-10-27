@@ -72,6 +72,7 @@ export interface Config {
     services: Service;
     projects: Project;
     testimonials: Testimonial;
+    faqs: Faq;
     team: Team;
     partners: Partner;
     'payload-kv': PayloadKv;
@@ -83,6 +84,7 @@ export interface Config {
     services: {
       projects: 'projects';
       testimonials: 'testimonials';
+      faqs: 'faqs';
     };
   };
   collectionsSelect: {
@@ -91,6 +93,7 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -316,6 +319,11 @@ export interface Service {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  faqs?: {
+    docs?: (number | Faq)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -412,6 +420,41 @@ export interface Testimonial {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  question: string;
+  answer: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  category: 'payments' | 'coverage' | 'quotes' | 'cancellations' | 'guarantee' | 'safety' | 'pros' | 'business';
+  /**
+   * Also shown on this service page.
+   */
+  service?: (number | null) | Service;
+  showOnHome?: boolean | null;
+  /**
+   * Lower numbers come first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "team".
  */
 export interface Team {
@@ -489,6 +532,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'testimonials';
         value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'faqs';
+        value: number | Faq;
       } | null)
     | ({
         relationTo: 'team';
@@ -659,6 +706,7 @@ export interface ServicesSelect<T extends boolean = true> {
   order?: T;
   projects?: T;
   testimonials?: T;
+  faqs?: T;
   meta?:
     | T
     | {
@@ -716,6 +764,20 @@ export interface TestimonialsSelect<T extends boolean = true> {
   order?: T;
   photo?: T;
   projectPhoto?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  category?: T;
+  service?: T;
+  showOnHome?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
