@@ -1,5 +1,6 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage } from '@payloadcms/storage-s3'
@@ -10,6 +11,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { isEditor } from './access'
 import { AppScreens } from './collections/AppScreens'
 import { Categories } from './collections/Categories'
 import { Faqs } from './collections/Faqs'
@@ -24,10 +26,12 @@ import { Submissions } from './collections/Submissions'
 import { Team } from './collections/Team'
 import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
+import { redirectFromPath } from './fields/redirectFrom'
 import { Home } from './globals/Home'
 import { Navigation } from './globals/Navigation'
 import { Seo } from './globals/Seo'
 import { Site } from './globals/Site'
+import { revalidateCollection } from './hooks/revalidate'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -110,6 +114,22 @@ export default buildConfig({
     : undefined,
   sharp,
   plugins: [
+    // Editor-managed redirects. The fixed legacy map (PLAN.md §8) stays in next.config.ts.
+    redirectsPlugin({
+      collections: [Services.slug, Projects.slug, Posts.slug, Jobs.slug],
+      redirectTypes: ['301', '302'],
+      // Moved content is permanent; 302 stays available for temporary campaigns.
+      redirectTypeFieldOverride: { defaultValue: '301' },
+      overrides: {
+        admin: { group: 'Settings' },
+        access: { create: isEditor, update: isEditor, delete: isEditor },
+        hooks: revalidateCollection('redirects'),
+        fields: ({ defaultFields }) =>
+          defaultFields.map((field) =>
+            'name' in field && field.name === 'from' ? redirectFromPath(field) : field,
+          ),
+      },
+    }),
     // Adds a localized meta group (title, description, image) in an SEO tab.
     seoPlugin({
       collections: [Services.slug, Projects.slug, Posts.slug],

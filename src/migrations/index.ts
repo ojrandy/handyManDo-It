@@ -8,6 +8,7 @@ import * as migration_20261027_154349_add_jobs_submissions from './20261027_1543
 import * as migration_20261027_165018_add_app_screens from './20261027_165018_add_app_screens';
 import * as migration_20261027_170611_add_navigation_seo_globals from './20261027_170611_add_navigation_seo_globals';
 import * as migration_20261027_214123_add_home_global from './20261027_214123_add_home_global';
+import * as migration_20261027_221436_add_redirects from './20261027_221436_add_redirects';
 
 export const migrations = [
   {
@@ -58,6 +59,11 @@ export const migrations = [
   {
     up: migration_20261027_214123_add_home_global.up,
     down: migration_20261027_214123_add_home_global.down,
-    name: '20261027_214123_add_home_global'
+    name: '20261027_214123_add_home_global',
+  },
+  {
+    up: migration_20261027_221436_add_redirects.up,
+    down: migration_20261027_221436_add_redirects.down,
+    name: '20261027_221436_add_redirects'
   },
 ];

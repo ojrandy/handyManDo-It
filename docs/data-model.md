@@ -105,7 +105,7 @@ defaultTitle (L, required, default "HandyMan Do IT"), defaultDescription (L, req
 
 ## 5. Redirects
 
-`@payloadcms/plugin-redirects` is installed (not yet configured). Use it for **editor-managed** redirects; keep the fixed legacy map (PLAN.md §8) in `next.config.ts` `redirects()` so it's versioned and testable.
+`@payloadcms/plugin-redirects` ✅ adds the `redirects` collection (group Settings) for **editor-managed** redirects: from (unique; normalised to a bare path, so `https://handymandoit.com/blog/x/?a=1` is stored as `/blog/x`; `/` refused), to (a service, project, post or job, or a custom URL), type (301 default, 302). Public read (a request-level lookup may fetch it over REST), editor write; revalidates `redirects`. Applying them to requests is Phase 5. Keep the fixed legacy map (PLAN.md §8) in `next.config.ts` `redirects()` so it's versioned and testable.
 
 ## 6. Migrations
 
