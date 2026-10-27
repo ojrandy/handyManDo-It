@@ -1,6 +1,6 @@
 # Project Tracker
 
-Last updated: **2026-10-23** · Current phase: **Phase 0 — Foundations (in progress)** · Plan status: PLAN.md v1.1 **approved** (2026-10-23)
+Last updated: **2026-10-27** · Current phase: **Phase 0 — Foundations (in progress)** · Plan status: PLAN.md v1.1 **approved** (2026-10-23)
 
 Status: ✅ done · 🔄 in progress · ⬜ to do · ⛔ blocked · ➖ dropped
 Update this file in the same PR as the work. Every task lists the requirement IDs it satisfies.
@@ -12,7 +12,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | Phase | Goal | Sign-off gate | Status |
 |---|---|---|---|
 | 0. Foundations | Stack wired, i18n, tokens, CI, staging | Staging loads `/fr`, `/en`; `/admin` works | 🔄 code done; staging gate deferred (owner, 2026-10-24) |
-| 1. Content & assets | Migrations/seeds, CMS model, screens, video, FR copy | All content visible in CMS | ⬜ |
+| 1. Content & assets | Migrations/seeds, CMS model, screens, video, FR copy | All content visible in CMS | 🔄 build plan written 2026-10-27 (§3, data-model.md §8) |
 | 2. Hero prototype | Header + synced-story hero + light-data mode | **Owner approves the look** | ✅ owner moved on to Phase 3, 2026-10-24 (footage, captions, Lighthouse on device still open) |
 | 3. Home page | Sections 5.3–5.17 | Home complete in both locales | 🔄 |
 | 4. Inner pages | All §6 pages, forms, `/download` | Every page live on staging | ⬜ |
@@ -76,6 +76,25 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-1.12 | Access-control int tests (extend `tests/int/access.int.spec.ts` to the editor/admin matrix) | QA-AUTO-08 | ⬜ |
 | T-1.13 | `src/lib/payload.ts`: cached `getPayload()` + typed query helpers (architecture §6) | NFR-MAINT-01 | ⬜ |
 | T-1.14 | `site` global: `afterChange` → `revalidateTag('site')` when pages start reading it (part of T-1.04) | FR-CMS-04 | ⬜ |
+| T-1.15 | Switch home sections from `src/lib/*` (services, showcase, hero, site) to Payload reads; `lib` files stay as seed source and fallbacks | FR-CMS-01, FR-CMS-04 | ⬜ after branches 4 and 9 |
+
+**Build plan (2026-10-27).** One branch per row, one migration per branch, merged in order (data-model.md §8). Branch 0 is helpers only (no schema change).
+
+| # | Branch | Migration | Scope | Tasks |
+|---|---|---|---|---|
+| 0 | `chore/cms-helpers` | — | `src/access/`, `src/fields/slug.ts` + `order.ts`, `src/hooks/revalidate.ts`, `src/lib/payload.ts`, `site` revalidation | T-1.04, T-1.13, T-1.14 |
+| 1 | `feat/cms-team-partners` | `add-team-partners` | team, partners | T-1.01 |
+| 2 | `feat/cms-services` | `add-services` | services (drafts, SEO plugin) | T-1.01, T-1.06 |
+| 3 | `feat/cms-projects-testimonials` | `add-projects-testimonials` | projects, testimonials, joins on services | T-1.01 |
+| 4 | `feat/cms-faqs` | `add-faqs` | faqs, join on services | T-1.01 |
+| 5 | `feat/cms-blog` | `add-posts-categories` | categories, posts | T-1.02 |
+| 6 | `feat/cms-jobs-submissions` | `add-jobs-submissions` | jobs, private `files`, submissions | T-1.02 |
+| 7 | `feat/cms-app-screens` | `add-app-screens` | appScreens | T-1.02 |
+| 8 | `feat/cms-nav-seo` | `add-navigation-seo-globals` | navigation, seo globals | T-1.03 |
+| 9 | `feat/cms-home` | `add-home-global` | home global (hero cues) | T-1.03 |
+| 10 | `feat/cms-redirects` | `add-redirects` | redirects plugin | T-1.06 |
+
+Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field shapes match those files (service `key` + slugs + icon, hero cue keys) so T-1.15 is a swap.
 
 ## 4. Phase 2 — Hero prototype
 
@@ -179,6 +198,9 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | Q-10 | Names of 4 partner logos (lion, green frames, orange mountain, leaf) from the old site | Phase 6 | Generic alt "Partner of HandyMan Do IT" |
 | Q-11 | Cancellation policy (for the FAQ) | Phase 4 | Not stated; FAQ covers "not satisfied?" with facts only |
 | Q-12 | Higher-resolution project photos (old site has 500–750 px) | Phase 6 | Use the old-site files |
+| Q-13 | Services ↔ faqs/projects: child-side relationships + `join` fields on services instead of two-way relationships (ADR-017) | Phase 1, branch 3 | ✅ Approved by owner 2026-10-27: join fields |
+| Q-14 | Submissions 24-month retention without cron (NFR-PRIV-01): purge on each new submission, manual admin purge, or both | Phase 1, branch 6 | ✅ Approved by owner 2026-10-27: both |
+| Q-15 | Rename `appScreens.locale` to `lang` (avoids confusion with Payload's `locale` argument) | Phase 1, branch 7 | ✅ Approved by owner 2026-10-27: rename |
 
 ## 11. Change log
 
@@ -194,3 +216,4 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | 2026-10-24 | Phase 2 accepted (owner started Phase 3); hero merged to main | Owner |
 | 2026-10-27 | Phase 3 batch 1: pillars, numbers + map, how it works, audiences, earn tabs, download band, footer, WhatsApp button | Dev |
 | 2026-10-27 | Phase 3 batch 2: trusted-by marquee, services bento with real project photos, testimonials, FAQ + JSON-LD; open questions Q-10..Q-12 | Dev |
+| 2026-10-27 | Phase 1 CMS build plan: helpers, branch/migration order, migration rules (data-model §8, ADR-017 proposed); Q-13..Q-15; T-1.15 | Dev |

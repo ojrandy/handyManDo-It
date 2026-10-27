@@ -12,7 +12,7 @@ Status legend: ✅ implemented · 🟡 partial · ⬜ planned
 |---|---|
 | Localization | Config: locales `fr` (default) + `en`, `fallback: true`. Any human-readable text is `localized: true`. Numbers, URLs, booleans, relationships are not localized unless they genuinely differ per language. |
 | Slugs | `slug` field: unique, lowercase kebab-case, auto-generated from title on create, editable. **Localized** for collections whose URLs are translated (services, projects, jobs, posts if FR/EN articles differ). Service slugs fixed per PLAN.md §6. |
-| Access | Every collection/global declares `access` explicitly. Helpers live in `src/collections/Users.ts` (`isAdmin`, `isAdminOrSelf`, `isEditor`); add `publishedOrAuthenticated` there. |
+| Access | Every collection/global declares `access` explicitly. Helpers (`isAdmin`, `isAdminOrSelf`, `isEditor`) live in `src/collections/Users.ts` today; Phase 1 branch 0 moves them to `src/access/` and adds `anyone` and `publishedOrEditor` (§8). |
 | Drafts | `versions: { drafts: true }` on public content collections; public reads filter `_status: 'published'`. |
 | Revalidation | Every public collection/global has `afterChange` + `afterDelete` hooks that revalidate affected paths/tags (see architecture.md §4). Put shared hooks in `src/hooks/`. |
 | SEO | `@payloadcms/plugin-seo` adds `meta` group (title, description, image) on page-like collections. |
@@ -108,8 +108,12 @@ defaultTitle (L), defaultDescription (L), ogImage (media), organisation JSON-LD 
 ## 6. Migrations
 
 - Dev: Payload pushes schema automatically (`push` in dev). Don't rely on push anywhere else.
-- **No `src/migrations/` folder exists yet.** Before the first staging deploy run `npm run migrate:create -- --name initial` against a clean DB and commit it.
-- Each schema PR: one migration, named after the change (`add-services`, `faq-category`).
+- Baseline: `20261023_172405_initial` (T-0.13). Every later migration diffs against the previous one's `.json` snapshot.
+- Each schema branch: one migration, named after the change (`add-services`, `faq-category`), committed with `payload-types.ts`.
+- Verify on an **empty** database (`migrate:fresh` + `migrate:status` against a scratch DB), not the dev DB, which schema push has already changed.
+- Merge schema branches in order. If another schema branch lands first: delete your migration, rebase, run `migrate:create` again. Never hand-merge two migrations.
+- Never edit a migration that is on `main`; fix forward with a new one.
+- Content goes in seeds (`scripts/seed.ts`), not in `up()`. Migrations change structure only.
 - Destructive changes (rename/drop) need a two-step migration or a data copy in `up()`; document in the PR.
 - Production applies migrations on start (`npm run start:prod`). Take a Neon branch/snapshot before any destructive migration.
 
@@ -122,3 +126,24 @@ defaultTitle (L), defaultDescription (L), ogImage (media), organisation JSON-LD 
 | `scripts/capture-screens.ts` ⬜ | Playwright on app.handymandoit.com | appScreens (390×844 @3x, fr/en, light/dark) |
 
 Seeds must be **idempotent** (upsert by slug/key) and safe to re-run.
+
+## 8. Phase 1 build plan (approved 2026-10-27)
+
+**Branch 0: shared helpers, no schema change.**
+
+| File | Purpose |
+|---|---|
+| `src/access/index.ts` | `isAdmin`, `isEditor`, `isAdminOrSelf` (moved from `Users.ts`, re-exported there), `anyone`, `publishedOrEditor` (editors see all; public sees `_status: 'published'`) |
+| `src/fields/slug.ts` | `slugField({ from, localized })`: fills from the title in the edited locale when empty, kebab-case, unique, indexed, sidebar, editable |
+| `src/fields/order.ts` | Shared `order` number field (sidebar, default 0, indexed) |
+| `src/hooks/revalidate.ts` | `revalidateCollection({ paths, tags })` → `afterChange` + `afterDelete`. Paths for both locales via next-intl `getPathname`; also revalidates the previous slug's path; acts only on published or previously published docs; no-op when `context.disableRevalidate` (seeds) or outside Next |
+| `src/lib/payload.ts` | Cached `getPayload()` + typed query helpers (T-1.13) |
+
+**Order** (dependencies first; one migration each): team + partners → services → projects + testimonials → faqs → categories + posts → jobs + `files` + submissions → appScreens → navigation + seo → home → redirects. Branch table in project-tracker.md §3.
+
+**Approved changes to §3 (owner, 2026-10-27, Q-13..Q-15; §3 is updated as each branch lands):**
+- services keeps no `faqs` / `relatedProjects` relationship columns; the relationship lives on the child (`projects.service`, `faqs.service`, `testimonials.service`) and services shows them through Payload `join` fields (ADR-017).
+- services adds `key` (the existing `ServiceKey` values in `src/lib/services.ts`) so components can switch to Payload without changes (T-1.15).
+- `appScreens.locale` → `lang`.
+- submissions retention: purge older than 24 months on each new submission, plus a manual admin purge.
+- `files` (private CVs): own R2 prefix, Payload access control kept (`disablePayloadAccessControl: false`), read authenticated only.
