@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import { isEditor } from './Users'
+import { isEditor } from '@/access'
+import { revalidateCollection } from '@/hooks/revalidate'
 
 // Sizes are generated once at upload so the Hostinger server never resizes
 // images per request (docs/PLAN.md §2).
@@ -12,6 +13,8 @@ export const Media: CollectionConfig = {
     update: isEditor,
     delete: isEditor,
   },
+  // Pages embed media (alt, sizes) through depth-1 reads, which are tagged 'media' too.
+  hooks: revalidateCollection('media'),
   fields: [
     {
       name: 'alt',

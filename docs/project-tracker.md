@@ -65,7 +65,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-1.01 | Collections: services, projects, testimonials, team, partners, faqs | FR-CMS-01 | ⬜ |
 | T-1.02 | Collections: posts, categories, jobs, appScreens, submissions (+ private files) | FR-CMS-01 | ⬜ |
 | T-1.03 | Globals: navigation, home (with hero cues), seo | FR-CMS-01 | ⬜ |
-| T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | ⬜ |
+| T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | 🔄 `src/hooks/revalidate.ts` (tag-based) on `site` + `media`; each new collection adds it |
 | T-1.05 | Drafts + live preview | FR-CMS-03, FR-CMS-05 | ⬜ |
 | T-1.06 | SEO plugin + redirects plugin config | FR-SEO-01 | ⬜ |
 | T-1.07 | `scripts/seed.ts` (idempotent) from old site | — | ⬜ |
@@ -74,8 +74,8 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-1.10 | Hero video: select stock, encode MP4/WebM ×3, poster AVIF < 120 KB, cue list | FR-HOME-01 | ⬜ |
 | T-1.11 | French + English copy for all sections | FR-I18N-04 | ⬜ |
 | T-1.12 | Access-control int tests (extend `tests/int/access.int.spec.ts` to the editor/admin matrix) | QA-AUTO-08 | ⬜ |
-| T-1.13 | `src/lib/payload.ts`: cached `getPayload()` + typed query helpers (architecture §6) | NFR-MAINT-01 | ⬜ |
-| T-1.14 | `site` global: `afterChange` → `revalidateTag('site')` when pages start reading it (part of T-1.04) | FR-CMS-04 | ⬜ |
+| T-1.13 | `src/lib/payload.ts`: cached `getPayload()` + typed query helpers (architecture §6) | NFR-MAINT-01 | ✅ `getPayloadClient`, `getGlobal`, `findDocs` (tagged `unstable_cache`, public access rules), 2026-10-27 |
+| T-1.14 | `site` global: `afterChange` → `revalidateTag('site')` when pages start reading it (part of T-1.04) | FR-CMS-04 | ✅ hook in place 2026-10-27; pages switch in T-1.15 |
 | T-1.15 | Switch home sections from `src/lib/*` (services, showcase, hero, site) to Payload reads; `lib` files stay as seed source and fallbacks | FR-CMS-01, FR-CMS-04 | ⬜ after branches 4 and 9 |
 
 **Build plan (2026-10-27).** One branch per row, one migration per branch, merged in order (data-model.md §8). Branch 0 is helpers only (no schema change).
@@ -217,3 +217,4 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | 2026-10-27 | Phase 3 batch 1: pillars, numbers + map, how it works, audiences, earn tabs, download band, footer, WhatsApp button | Dev |
 | 2026-10-27 | Phase 3 batch 2: trusted-by marquee, services bento with real project photos, testimonials, FAQ + JSON-LD; open questions Q-10..Q-12 | Dev |
 | 2026-10-27 | Phase 1 CMS build plan: helpers, branch/migration order, migration rules (data-model §8, ADR-017 proposed); Q-13..Q-15; T-1.15 | Dev |
+| 2026-10-27 | Phase 1 branch 0: `src/access`, slug + order fields, tag-based revalidate hooks, `lib/payload.ts`; no schema change | Dev |

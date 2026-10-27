@@ -12,9 +12,9 @@ Status legend: ✅ implemented · 🟡 partial · ⬜ planned
 |---|---|
 | Localization | Config: locales `fr` (default) + `en`, `fallback: true`. Any human-readable text is `localized: true`. Numbers, URLs, booleans, relationships are not localized unless they genuinely differ per language. |
 | Slugs | `slug` field: unique, lowercase kebab-case, auto-generated from title on create, editable. **Localized** for collections whose URLs are translated (services, projects, jobs, posts if FR/EN articles differ). Service slugs fixed per PLAN.md §6. |
-| Access | Every collection/global declares `access` explicitly. Helpers (`isAdmin`, `isAdminOrSelf`, `isEditor`) live in `src/collections/Users.ts` today; Phase 1 branch 0 moves them to `src/access/` and adds `anyone` and `publishedOrEditor` (§8). |
+| Access | Every collection/global declares `access` explicitly. Helpers live in `src/access/`: `anyone`, `isAdmin`, `isEditor`, `isAdminOrSelf`, `publishedOrEditor` (drafts collections). |
 | Drafts | `versions: { drafts: true }` on public content collections; public reads filter `_status: 'published'`. |
-| Revalidation | Every public collection/global has `afterChange` + `afterDelete` hooks that revalidate affected paths/tags (see architecture.md §4). Put shared hooks in `src/hooks/`. |
+| Revalidation | Every public collection/global spreads `revalidateCollection('<slug>')` / `revalidateGlobal('<slug>')` from `src/hooks/revalidate.ts`. Pages read through `src/lib/payload.ts`, whose cached reads are tagged with the slug (+ `media`), so purging the tag refreshes every page in both locales (architecture.md §4). |
 | SEO | `@payloadcms/plugin-seo` adds `meta` group (title, description, image) on page-like collections. |
 | Ordering | Manual ordering via `order` number field (or Payload `orderable` when used). |
 | Admin | `admin.useAsTitle`, `defaultColumns`, `group` (Content, Marketing, Company, Inbox, Settings) set on every collection. |
