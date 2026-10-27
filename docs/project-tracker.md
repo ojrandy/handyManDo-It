@@ -63,7 +63,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | ID | Task | Req | Status |
 |---|---|---|---|
 | T-1.01 | Collections: services, projects, testimonials, team, partners, faqs | FR-CMS-01 | ✅ 2026-10-27: team + partners, services, projects + testimonials, faqs (one migration each, branches 1–4) |
-| T-1.02 | Collections: posts, categories, jobs, appScreens, submissions (+ private files) | FR-CMS-01 | 🔄 posts + categories ✅ (`add_posts_categories`, 2026-10-27) |
+| T-1.02 | Collections: posts, categories, jobs, appScreens, submissions (+ private files) | FR-CMS-01 | 🔄 posts + categories ✅ (`add_posts_categories`), jobs + submissions + private files ✅ (`add_jobs_submissions`), 2026-10-27 |
 | T-1.03 | Globals: navigation, home (with hero cues), seo | FR-CMS-01 | ⬜ |
 | T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | 🔄 `src/hooks/revalidate.ts` (tag-based) on `site` + `media`; each new collection adds it |
 | T-1.05 | Drafts + live preview | FR-CMS-03, FR-CMS-05 | ⬜ |
@@ -199,7 +199,7 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | Q-11 | Cancellation policy (for the FAQ) | Phase 4 | Not stated; FAQ covers "not satisfied?" with facts only |
 | Q-12 | Higher-resolution project photos (old site has 500–750 px) | Phase 6 | Use the old-site files |
 | Q-13 | Services ↔ faqs/projects: child-side relationships + `join` fields on services instead of two-way relationships (ADR-017) | Phase 1, branch 3 | ✅ Approved by owner 2026-10-27: join fields |
-| Q-14 | Submissions 24-month retention without cron (NFR-PRIV-01): purge on each new submission, manual admin purge, or both | Phase 1, branch 6 | ✅ Approved by owner 2026-10-27: both |
+| Q-14 | Submissions 24-month retention without cron (NFR-PRIV-01): purge on each new submission, manual admin purge, or both | Phase 1, branch 6 | ✅ Approved by owner 2026-10-27: both. Done: purge after each new submission; admins bulk-delete from the list; attachments are deleted with their submission |
 | Q-15 | Rename `appScreens.locale` to `lang` (avoids confusion with Payload's `locale` argument) | Phase 1, branch 7 | ✅ Approved by owner 2026-10-27: rename |
 
 ## 11. Change log
@@ -223,3 +223,4 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | 2026-10-27 | Phase 1 branch 3: `projects` (drafts, SEO, before/after) + `testimonials` + migration; `services` lists both via `join` fields (ADR-017); public joins verified to hide draft projects | Dev |
 | 2026-10-27 | Phase 1 branch 4: `faqs` collection (category, optional service, showOnHome) + migration; `services.faqs` join; int-test global setup boots Payload once (fixes a dev schema-push race between parallel test files) | Dev |
 | 2026-10-27 | Phase 1 branch 5: `posts` (drafts, SEO, auto publishedAt, unique legacyUrl, shared slug) + `categories` + migration | Dev |
+| 2026-10-27 | Phase 1 branch 6: `jobs`, `submissions` (read-only except status, email to site inbox, 24-month purge), private `files` (PDF/DOC ≤ 5 MB, random names, separate `S3_PRIVATE_BUCKET`) + migration | Dev |

@@ -42,7 +42,8 @@ If `payload migrate` ever fails on start with a pooler error (e.g. prepared stat
       "AllowedMethods": ["GET", "HEAD"], "AllowedHeaders": ["*"], "MaxAgeSeconds": 86400 }]
    ```
 5. R2 overview → **Manage API tokens → Create Account API token**: permission **Object Read & Write**, applied to **`handymandoit-media` only**. Copy the **Access Key ID** and **Secret Access Key** (the secret is shown once), plus the **S3 endpoint** `https://<account-id>.r2.cloudflarestorage.com`.
-6. Set `S3_BUCKET`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` and `MEDIA_PUBLIC_URL` (the r2.dev URL, or `https://media.handymandoit.com` later).
+6. Create a second bucket **`handymandoit-private`** for CV uploads. Do **not** enable public access or a custom domain on it. Add it to the API token from step 5.
+7. Set `S3_BUCKET`, `S3_PRIVATE_BUCKET`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` and `MEDIA_PUBLIC_URL` (the r2.dev URL, or `https://media.handymandoit.com` later).
 
 ### Hostinger
 1. hPanel → **Websites → Add website → Node.js Web App**. Choose the EU data centre.
@@ -59,7 +60,7 @@ If `payload migrate` ever fails on start with a pooler error (e.g. prepared stat
    | `NEXT_PUBLIC_SITE_URL` | The Hostinger temporary URL, `https://…`, no trailing slash |
    | `DATABASE_URL` | Neon `staging` pooled string (above) |
    | `PAYLOAD_SECRET` | New value: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. Never reuse the local one |
-   | `S3_BUCKET`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `MEDIA_PUBLIC_URL` | **Leave unset** until R2 is set up (ADR-014): uploads go to local disk and may be lost on redeploy |
+   | `S3_BUCKET`, `S3_PRIVATE_BUCKET`, `S3_ENDPOINT`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `MEDIA_PUBLIC_URL` | **Leave unset** until R2 is set up (ADR-014): uploads go to local disk and may be lost on redeploy |
    | `SMTP_HOST` … `EMAIL_FROM` | Leave `SMTP_HOST` unset for now (emails go to the log); `EMAIL_FROM` = `handymanservicesdoit@gmail.com` |
    | `NEXT_TELEMETRY_DISABLED` | `1` |
 

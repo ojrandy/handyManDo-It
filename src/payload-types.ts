@@ -77,6 +77,9 @@ export interface Config {
     categories: Category;
     team: Team;
     partners: Partner;
+    jobs: Job;
+    submissions: Submission;
+    files: File;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -100,6 +103,9 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
+    jobs: JobsSelect<false> | JobsSelect<true>;
+    submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
+    files: FilesSelect<false> | FilesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -559,6 +565,99 @@ export interface Partner {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs".
+ */
+export interface Job {
+  id: number;
+  title: string;
+  /**
+   * URL segment. Filled from the title when empty; changing it changes the URL.
+   */
+  slug: string;
+  location: string;
+  type: 'full-time' | 'part-time' | 'contract';
+  /**
+   * Closed roles stay visible but take no applications.
+   */
+  open?: boolean | null;
+  closesAt?: string | null;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Form entries. Deleted automatically after 24 months.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions".
+ */
+export interface Submission {
+  id: number;
+  status: 'new' | 'in-progress' | 'done' | 'spam';
+  type: 'contact' | 'quote-home' | 'quote-business' | 'partnership' | 'pro' | 'job';
+  name: string;
+  email?: string | null;
+  phone?: string | null;
+  city?: string | null;
+  message?: string | null;
+  job?: (number | null) | Job;
+  attachment?: (number | null) | File;
+  locale: 'fr' | 'en';
+  details?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  utm?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files".
+ */
+export interface File {
+  id: number;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -620,6 +719,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'partners';
         value: number | Partner;
+      } | null)
+    | ({
+        relationTo: 'jobs';
+        value: number | Job;
+      } | null)
+    | ({
+        relationTo: 'submissions';
+        value: number | Submission;
+      } | null)
+    | ({
+        relationTo: 'files';
+        value: number | File;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -916,6 +1027,58 @@ export interface PartnersSelect<T extends boolean = true> {
   order?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs_select".
+ */
+export interface JobsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  location?: T;
+  type?: T;
+  open?: T;
+  closesAt?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions_select".
+ */
+export interface SubmissionsSelect<T extends boolean = true> {
+  status?: T;
+  type?: T;
+  name?: T;
+  email?: T;
+  phone?: T;
+  city?: T;
+  message?: T;
+  job?: T;
+  attachment?: T;
+  locale?: T;
+  details?: T;
+  utm?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files_select".
+ */
+export interface FilesSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

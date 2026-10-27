@@ -23,6 +23,7 @@ Version 1.0 · 2026-10-23 · Complements [DEPLOY.md](DEPLOY.md) (first-time setu
 | `DATABASE_URL` | ✅ | server | Staging/prod: Neon **pooled** string with `sslmode=require`. Local: **always** the Docker DB (dev schema-push would alter Neon) |
 | `PAYLOAD_SECRET` | ✅ | server | 32+ random bytes, unique per env. Rotating it invalidates sessions |
 | `S3_BUCKET` | ✅ (staging/prod) | server | Empty ⇒ local disk (dev only) |
+| `S3_PRIVATE_BUCKET` | ✅ (staging/prod) | server | Private R2 bucket for CVs (`files`), **no public access**; same endpoint/keys as `S3_BUCKET`. Empty ⇒ local `private-files/` (dev only) |
 | `S3_ENDPOINT` | ✅ with bucket | server | `https://<account-id>.r2.cloudflarestorage.com` |
 | `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | ✅ with bucket | server | R2 token scoped to the one bucket, Object R/W |
 | `MEDIA_PUBLIC_URL` | ✅ with bucket | server + `next.config` | Public media origin; also feeds `images.remotePatterns` (build-time) |

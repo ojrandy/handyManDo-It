@@ -12,11 +12,14 @@ import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
 import { Faqs } from './collections/Faqs'
+import { Files } from './collections/Files'
+import { Jobs } from './collections/Jobs'
 import { Media } from './collections/Media'
 import { Partners } from './collections/Partners'
 import { Posts } from './collections/Posts'
 import { Projects } from './collections/Projects'
 import { Services } from './collections/Services'
+import { Submissions } from './collections/Submissions'
 import { Team } from './collections/Team'
 import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
@@ -27,6 +30,16 @@ const dirname = path.dirname(filename)
 
 // Media goes to Cloudflare R2 when configured; local disk otherwise (dev only).
 const useR2 = Boolean(process.env.S3_BUCKET)
+
+const r2Config = {
+  endpoint: process.env.S3_ENDPOINT,
+  region: 'auto',
+  forcePathStyle: true,
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+  },
+}
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SITE_URL || '',
@@ -62,6 +75,9 @@ export default buildConfig({
     Categories,
     Team,
     Partners,
+    Jobs,
+    Submissions,
+    Files,
   ],
   globals: [Site],
   editor: lexicalEditor(),
@@ -108,15 +124,15 @@ export default buildConfig({
         },
       },
       bucket: process.env.S3_BUCKET || '',
-      config: {
-        endpoint: process.env.S3_ENDPOINT,
-        region: 'auto',
-        forcePathStyle: true,
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
-        },
-      },
+      config: r2Config,
+    }),
+    // CVs live in a separate bucket with no public access: the media bucket is public, so a
+    // prefix in it would not be private. Files are streamed through Payload's access check.
+    s3Storage({
+      enabled: Boolean(process.env.S3_PRIVATE_BUCKET),
+      collections: { files: true },
+      bucket: process.env.S3_PRIVATE_BUCKET || '',
+      config: r2Config,
     }),
   ],
 })

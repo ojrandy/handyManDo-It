@@ -76,15 +76,16 @@ question (L, required), answer (richText L, required; also used for FAQPage JSON
 posts: title (L, required), slug (**not** localized: one URL per article, since most migrated posts exist in one language and legacy redirects target one URL), excerpt (textarea L), cover (media), content (richText L, required), categories (rel[]), publishedAt (indexed; stamped on first publish unless set, so imports keep the WordPress date), author (rel users, defaults to the editor; user records are private, so pages credit the company in Article JSON-LD), legacyUrl (unique), meta (SEO tab). Drafts on; `publishedOrEditor` read; revalidates `posts`. Default sort newest first.
 categories: title (L, required), slug (shared by both locales). Public read, editor write; revalidates `categories` and `posts`.
 
-### 3.10 `jobs` ⬜
-title (L), slug, location, type (select: full-time, part-time, contract), description (richText L), open (bool), closesAt (date).
+### 3.10 `jobs` ✅
+title (L, required), slug (L, unique per locale: `/careers/[slug]` is translated), location (required), type (select: full-time, part-time, contract), open (bool, default true, indexed; closed roles stay visible without the apply form), closesAt (date), description (richText L, required). Public read, editor write; revalidates `jobs`.
 
 ### 3.11 `appScreens` ⬜
 key (select: welcome, home, services, category, shop, food, help, tracking, wallet, chat, completion), locale (`fr`/`en`, **not** Payload-localized — one doc per locale×theme), theme (`light`/`dark`), image (media), caption (L). Unique index on (key, locale, theme).
 
-### 3.12 `submissions` ⬜
-type (select: contact, quote-home, quote-business, partnership, pro, job), name, email, phone, city, message, payload (json, extra form fields), job (rel jobs, optional), attachment (rel to private `files` upload collection), locale, utm (json), status (select: new, in-progress, done, spam), createdAt.
-Access: create **only via server route handler** (Local API with `overrideAccess`), no public REST create; read/update for authenticated; delete admin. Hook: `afterChange` on create → email notification. Retention: 24 months (NFR-PRIV-01).
+### 3.12 `submissions` ✅ + `files` ✅
+submissions: status (select: new, in-progress, done, spam; the only editable field), type (select: contact, quote-home, quote-business, partnership, pro, job), name, email, phone, city, message, job (rel jobs), attachment (upload → `files`), locale (fr/en), details (json, extra form fields; named `details`, not `payload`, to avoid confusion with Payload), utm (json), createdAt. Visitor-supplied fields are read-only for everyone (field access `update: false`, FR-FORM-02).
+Access: create **only via server route handler** (Local API with `overrideAccess`), no public REST create; read/update (status) editors; delete admin. Hooks: `afterChange` on create emails the `site` inbox, then deletes submissions older than 24 months (NFR-PRIV-01; no cron on Hostinger); `afterDelete` deletes the attachment, so purges and manual bulk deletes also remove CVs. Email or purge failures are logged and never undo the submission.
+files (private uploads, group Inbox): PDF/DOC/DOCX only (Payload also checks the real file content), ≤ 5 MB, stored under a random UUID name. Read editors, delete admin, no create/update via API. Local disk `private-files/` (gitignored) in dev; in staging/prod a **separate R2 bucket** `S3_PRIVATE_BUCKET` with no public access (the media bucket is public, so a prefix there would not be private). Files are streamed through Payload's access check.
 
 ## 4. Globals
 
