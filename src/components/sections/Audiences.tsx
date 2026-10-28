@@ -1,15 +1,23 @@
 import { ArrowRight, Briefcase, Building2, Check, House } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 import { buttonClasses } from '@/components/ui/button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Link } from '@/i18n/navigation'
-import { site } from '@/lib/site'
+import type { Locale } from '@/i18n/routing'
+import { getHome, getSiteSettings, pick } from '@/lib/home'
 
 // Homes / Businesses / Buildings (docs/PLAN.md §5.12, FR-HOME-12). The middle card is the dark,
-// featured one so the three read as distinct audiences.
+// featured one so the three read as distinct audiences. The cards and their links are fixed;
+// editors write each card's title and points (`home.audiences.items`, matched on audience).
 export async function Audiences() {
-  const t = await getTranslations('audiences')
+  const locale = (await getLocale()) as Locale
+  const [t, home, settings] = await Promise.all([
+    getTranslations('audiences'),
+    getHome(locale),
+    getSiteSettings(locale),
+  ])
+  const copy = home.audiences
 
   const cards = [
     { key: 'homes', icon: House, featured: false },
@@ -20,11 +28,19 @@ export async function Audiences() {
   return (
     <section aria-labelledby="audiences-title" className="bg-mist-100 py-20 md:py-28">
       <div className="container-site">
-        <SectionHeading id="audiences-title" eyebrow={t('eyebrow')} title={t('title')} />
+        <SectionHeading
+          id="audiences-title"
+          eyebrow={pick(copy?.eyebrow, t('eyebrow'))}
+          title={pick(copy?.title, t('title'))}
+        />
 
         <ul className="mt-12 grid gap-5 lg:grid-cols-3">
           {cards.map(({ key, icon: Icon, featured }) => {
-            const points = t.raw(`${key}.points`) as string[]
+            const item = copy?.items?.find(({ audience }) => audience === key)
+            const title = pick(item?.title, t(`${key}.title`))
+            const points = item?.points?.length
+              ? item.points.map(({ text }) => text)
+              : (t.raw(`${key}.points`) as string[])
             const cta = (
               <>
                 {t(`${key}.cta`)}
@@ -56,7 +72,7 @@ export async function Audiences() {
                 <h3
                   className={`mt-6 text-2xl font-bold ${featured ? 'text-white' : 'text-teal-700'}`}
                 >
-                  {t(`${key}.title`)}
+                  {title}
                 </h3>
                 <ul className="mt-5 flex-1 space-y-3">
                   {points.map((point) => (
@@ -73,7 +89,7 @@ export async function Audiences() {
                   ))}
                 </ul>
                 {key === 'homes' ? (
-                  <a href={site.webAppUrl} className={ctaClass}>
+                  <a href={settings.webAppUrl} className={ctaClass}>
                     {cta}
                   </a>
                 ) : (

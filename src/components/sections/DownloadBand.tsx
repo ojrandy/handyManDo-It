@@ -1,18 +1,27 @@
 import { ArrowUpRight } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 import { AppHomeScreen } from '@/components/device/AppHomeScreen'
 import { Phone } from '@/components/device/Phone'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { StoreBadges } from '@/components/ui/StoreBadges'
+import type { Locale } from '@/i18n/routing'
+import { getHome, getSiteSettings, pick } from '@/lib/home'
 import { qrSvg } from '@/lib/qr'
-import { site } from '@/lib/site'
 
 // Download band (docs/PLAN.md §5.15, FR-HOME-15). Says "iOS & Android" only once an App Store
 // URL exists (Q-3); until then "Android and the web", which is what is actually available.
 export async function DownloadBand() {
-  const [t, qr] = await Promise.all([getTranslations('download'), qrSvg(site.playStoreUrl)])
-  const qrAlt = (await getTranslations('getTheApp'))('qrAlt')
+  const locale = (await getLocale()) as Locale
+  const [t, getTheApp, home, settings] = await Promise.all([
+    getTranslations('download'),
+    getTranslations('getTheApp'),
+    getHome(locale),
+    getSiteSettings(locale),
+  ])
+  const copy = home.download
+  const qr = await qrSvg(settings.playStoreUrl)
+  const qrAlt = getTheApp('qrAlt')
 
   return (
     <section
@@ -28,15 +37,22 @@ export async function DownloadBand() {
           <SectionHeading
             id="download-title"
             tone="dark"
-            eyebrow={t('eyebrow')}
-            title={t('title')}
-            intro={site.appStoreUrl ? t('bodyAll') : t('bodyAndroid')}
+            eyebrow={pick(copy?.eyebrow, t('eyebrow'))}
+            title={pick(copy?.title, t('title'))}
+            intro={
+              settings.appStoreUrl
+                ? pick(copy?.bodyAll, t('bodyAll'))
+                : pick(copy?.bodyAndroid, t('bodyAndroid'))
+            }
           />
           <div className="mt-10 flex flex-wrap items-center gap-8">
             <div>
-              <StoreBadges />
+              <StoreBadges
+                playStoreUrl={settings.playStoreUrl}
+                appStoreUrl={settings.appStoreUrl}
+              />
               <a
-                href={site.webAppUrl}
+                href={settings.webAppUrl}
                 className="mt-5 inline-flex items-center gap-1.5 font-semibold text-gold-300 underline-offset-4 hover:underline"
               >
                 {t('webApp')}

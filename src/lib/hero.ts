@@ -17,7 +17,7 @@ export type HeroCue = {
 }
 
 // The app's real job lifecycle (docs/PLAN.md §5.2). Text lives in messages under
-// `hero.cues.<key>`. Moves to the `home` global's cue list in Phase 1 (T-1.03).
+// `hero.cues.<key>`. Seeds the `home` global's cue list, and stands in while that list is empty.
 export const heroCues: readonly HeroCue[] = [
   { key: 'quote', time: 2, icon: BadgeCheck },
   { key: 'paid', time: 6, icon: ShieldCheck },
@@ -29,11 +29,11 @@ export const heroCues: readonly HeroCue[] = [
 export type HeroVideo = {
   mp4: string
   webm?: string
-  poster: string
+  poster?: string
 }
 
-// Hero footage is chosen in T-1.10 (owner question Q-4). Until then the hero uses its
-// designed background and timer-driven notifications.
+// Hero footage is chosen in T-1.10 (owner question Q-4) and uploaded to the `home` global.
+// Until then the hero uses its designed background and timer-driven notifications.
 export const heroVideo: HeroVideo | null = null
 
 // The brand sting that opens the "Watch the film" lightbox (docs/PLAN.md §5.2).

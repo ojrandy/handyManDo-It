@@ -1,18 +1,29 @@
-import { ArrowRight, MapPin } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import { ArrowRight, BadgeCheck, MapPin } from 'lucide-react'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 import { AppHomeScreen } from '@/components/device/AppHomeScreen'
 import { buttonClasses } from '@/components/ui/button'
+import { CmsImage } from '@/components/ui/CmsImage'
 import { FilmLightbox } from '@/components/ui/FilmLightbox'
 import { GetTheApp } from '@/components/ui/GetTheApp'
+import { iconFor } from '@/components/ui/icons'
 import { PaymentBadges } from '@/components/ui/PaymentBadges'
-import { brandFilm, heroCues, heroVideo } from '@/lib/hero'
-import { site } from '@/lib/site'
+import type { Locale } from '@/i18n/routing'
+import { brandFilm, heroCues } from '@/lib/hero'
+import {
+  getHome,
+  getHomeTestimonials,
+  getSiteSettings,
+  heroVideoFrom,
+  pick,
+  pickList,
+} from '@/lib/home'
+import { imageSources, mediaUrl } from '@/lib/media'
 
 import { HeroStory } from './HeroStory'
 
-// Decorative initials until the testimonials collection supplies real client photos (T-1.01).
-const avatars = [
+// Initials stand in while no featured testimonial has a photo.
+const initials = [
   { initials: 'NE', tone: 'from-teal-400 to-teal-600' },
   { initials: 'RS', tone: 'from-gold-300 to-gold-500' },
   { initials: 'SC', tone: 'from-teal-500 to-night-800' },
@@ -22,15 +33,47 @@ const avatars = [
 // Synced-story hero (docs/PLAN.md §5.2, FR-HOME-01). All copy is server-rendered, so the H1
 // is the LCP element and never waits for the video island.
 export async function Hero() {
-  const t = await getTranslations('hero')
+  const locale = (await getLocale()) as Locale
+  const [t, home, settings, testimonials] = await Promise.all([
+    getTranslations('hero'),
+    getHome(locale),
+    getSiteSettings(locale),
+    getHomeTestimonials(locale),
+  ])
+  const copy = home.hero
 
-  const cues = heroCues.map(({ key, time, icon: Icon }) => ({
-    key,
-    time,
-    icon: <Icon className="size-4" strokeWidth={2} />,
-    title: t(`cues.${key}.title`),
-    body: t(`cues.${key}.body`),
-  }))
+  const cues = pickList(
+    copy?.cues,
+    (cue, index) => {
+      const Icon = iconFor(cue.icon, BadgeCheck)
+      return {
+        key: cue.id ?? String(index),
+        time: cue.time,
+        icon: <Icon className="size-4" strokeWidth={2} />,
+        title: cue.title,
+        body: cue.body ?? '',
+      }
+    },
+    () =>
+      heroCues.map(({ key, time, icon: Icon }) => ({
+        key,
+        time,
+        icon: <Icon className="size-4" strokeWidth={2} />,
+        title: t(`cues.${key}.title`),
+        body: t(`cues.${key}.body`),
+      })),
+  )
+  // The story clock walks the cues in order, whatever order editors entered them in.
+  cues.sort((a, b) => a.time - b.time)
+
+  const film = {
+    src: mediaUrl(copy?.film?.video) ?? brandFilm.src,
+    poster: mediaUrl(copy?.film?.poster) ?? brandFilm.poster,
+  }
+  const faces = testimonials
+    .map(({ photo }) => imageSources(photo))
+    .filter((sources) => sources.length)
+    .slice(0, 4)
 
   return (
     <section
@@ -39,7 +82,7 @@ export async function Hero() {
     >
       <HeroStory
         cues={cues}
-        video={heroVideo}
+        video={heroVideoFrom(copy?.video)}
         screen={<AppHomeScreen />}
         labels={{
           app: t('notification.app'),
@@ -50,15 +93,15 @@ export async function Hero() {
       >
         <p className="mb-6 inline-flex items-center gap-2 text-sm font-medium tracking-[0.2em] text-gold-300 uppercase">
           <MapPin aria-hidden className="size-4" />
-          {t('eyebrow')}
+          {pick(copy?.eyebrow, t('eyebrow'))}
         </p>
         <h1
           id="hero-title"
           className="max-w-3xl text-5xl leading-[1.05] font-bold sm:text-6xl lg:text-7xl"
         >
-          {t('titleStart')}{' '}
+          {pick(copy?.titleStart, t('titleStart'))}{' '}
           <span className="relative inline-block text-gold-300">
-            {t('titleHighlight')}
+            {pick(copy?.titleHighlight, t('titleHighlight'))}
             <svg
               aria-hidden
               viewBox="0 0 300 12"
@@ -75,17 +118,19 @@ export async function Hero() {
             </svg>
           </span>
         </h1>
-        <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/80">{t('subtitle')}</p>
+        <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/80">
+          {pick(copy?.subtitle, t('subtitle'))}
+        </p>
 
         <div className="mt-10 flex flex-wrap items-center gap-3">
-          <a href={site.webAppUrl} className={buttonClasses({ size: 'lg' })}>
+          <a href={settings.webAppUrl} className={buttonClasses({ size: 'lg' })}>
             {t('primaryCta')}
             <ArrowRight aria-hidden className="size-5" />
           </a>
           <GetTheApp label={t('secondaryCta')} variant="secondary" size="lg" />
           <FilmLightbox
-            src={brandFilm.src}
-            poster={brandFilm.poster}
+            src={film.src}
+            poster={film.poster}
             labels={{ open: t('watchFilm'), title: t('film.title'), close: t('film.close') }}
           />
         </div>
@@ -93,22 +138,35 @@ export async function Hero() {
         <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
           <div className="flex items-center gap-3">
             <div aria-hidden className="flex -space-x-1.5">
-              {avatars.map(({ initials, tone }) => (
-                <span
-                  key={initials}
-                  className={`grid size-9 place-items-center rounded-full bg-gradient-to-br text-[11px] font-semibold text-night-900 ring-2 ring-night-900 ${tone}`}
-                >
-                  {initials}
-                </span>
-              ))}
+              {faces.length
+                ? faces.map((sources) => (
+                    <CmsImage
+                      key={sources[0].url}
+                      sources={sources}
+                      alt=""
+                      width={36}
+                      height={36}
+                      className="size-9 rounded-full object-cover ring-2 ring-night-900"
+                    />
+                  ))
+                : initials.map(({ initials, tone }) => (
+                    <span
+                      key={initials}
+                      className={`grid size-9 place-items-center rounded-full bg-gradient-to-br text-[11px] font-semibold text-night-900 ring-2 ring-night-900 ${tone}`}
+                    >
+                      {initials}
+                    </span>
+                  ))}
             </div>
             <p className="text-sm font-medium text-white/85">
-              {t('trust.clients', { count: site.stats.clients })}
+              {t('trust.clients', { count: settings.stats.clients })}
             </p>
           </div>
           <PaymentBadges />
         </div>
-        <p className="mt-8 text-sm tracking-wide text-white/50">{t('values')}</p>
+        <p className="mt-8 text-sm tracking-wide text-white/50">
+          {pick(copy?.values, t('values'))}
+        </p>
       </HeroStory>
 
       {/* The animated phone is decorative; this is the same story for screen readers. */}

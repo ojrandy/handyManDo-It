@@ -1,9 +1,11 @@
 import { ArrowRight, ChefHat, Store, Wrench } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 import { buttonClasses } from '@/components/ui/button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Link } from '@/i18n/navigation'
+import type { Locale } from '@/i18n/routing'
+import { getHome, pick, pickList } from '@/lib/home'
 
 import { EarnTabs } from './EarnTabs'
 
@@ -16,8 +18,34 @@ const tabs = [
 // Earn with HandyMan (docs/PLAN.md §5.13, FR-HOME-13): tabs per audience plus a step strip that
 // mirrors the app's real sign-up. Tab photos arrive with the Phase 1 content.
 export async function Earn() {
-  const t = await getTranslations('earn')
-  const steps = t.raw('steps') as string[]
+  const locale = (await getLocale()) as Locale
+  const [t, home] = await Promise.all([getTranslations('earn'), getHome(locale)])
+  const copy = home.earn
+
+  const steps = pickList(
+    copy?.steps,
+    ({ text }) => text,
+    () => t.raw('steps') as string[],
+  )
+  // CMS tabs have no icon field: they take the icons in order (pros, sellers, kitchens).
+  const tabItems = pickList(
+    copy?.tabs,
+    (tab, index) => ({
+      key: tab.id ?? String(index),
+      label: tab.label,
+      title: tab.title,
+      points: tab.points?.map(({ text }) => text) ?? [],
+      Icon: tabs[index % tabs.length].icon,
+    }),
+    () =>
+      tabs.map(({ key, icon }) => ({
+        key,
+        label: t(`tabs.${key}.label`),
+        title: t(`tabs.${key}.title`),
+        points: t.raw(`tabs.${key}.points`) as string[],
+        Icon: icon,
+      })),
+  )
 
   return (
     <section
@@ -29,9 +57,9 @@ export async function Earn() {
           <SectionHeading
             id="earn-title"
             tone="dark"
-            eyebrow={t('eyebrow')}
-            title={t('title')}
-            intro={t('body')}
+            eyebrow={pick(copy?.eyebrow, t('eyebrow'))}
+            title={pick(copy?.title, t('title'))}
+            intro={pick(copy?.body, t('body'))}
           />
           <h3 className="mt-10 text-sm font-semibold tracking-wide text-white/70 uppercase">
             {t('stepsLabel')}
@@ -57,11 +85,8 @@ export async function Earn() {
 
         <EarnTabs
           label={t('tabsLabel')}
-          tabs={tabs.map(({ key, icon: Icon }) => ({
-            key,
-            label: t(`tabs.${key}.label`),
-            title: t(`tabs.${key}.title`),
-            points: t.raw(`tabs.${key}.points`) as string[],
+          tabs={tabItems.map(({ Icon, ...tab }) => ({
+            ...tab,
             icon: <Icon aria-hidden className="size-6" strokeWidth={1.75} />,
           }))}
         />
