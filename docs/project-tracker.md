@@ -65,7 +65,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-1.01 | Collections: services, projects, testimonials, team, partners, faqs | FR-CMS-01 | ✅ 2026-10-27: team + partners, services, projects + testimonials, faqs (one migration each, branches 1–4) |
 | T-1.02 | Collections: posts, categories, jobs, appScreens, submissions (+ private files) | FR-CMS-01 | ✅ 2026-10-27: posts + categories, jobs + submissions + private files, app screens (branches 5–7) |
 | T-1.03 | Globals: navigation, home (with hero cues), seo | FR-CMS-01 | ✅ 2026-10-27: navigation + seo (branch 8), home with drafts + hero cues (branch 9) |
-| T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | ✅ 2026-10-27: every public collection and global purges its tag (`src/hooks/revalidate.ts`); takes effect on pages once they read through `src/lib/payload.ts` (T-1.15) |
+| T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | ✅ 2026-10-27: every public collection and global purges its tag (`src/hooks/revalidate.ts`); in effect on the home page since T-1.15 |
 | T-1.05 | Drafts + live preview | FR-CMS-03, FR-CMS-05 | ⬜ |
 | T-1.06 | SEO plugin + redirects plugin config | FR-SEO-01 | ✅ 2026-10-27: SEO tab on services, projects, posts; redirects collection (editor write, normalised unique `from`, 301 default). Serving editor redirects at request time is Phase 5 |
 | T-1.07 | `scripts/seed.ts` (idempotent) from old site | FR-CMS-07 | ✅ 2026-10-28: `npm run seed` fills 11 services, 4 testimonials, 3 team, 8 partners, 9 FAQs (8 on home), `site`, `navigation`, `home` (published) from messages + `src/lib`; 22 media uploaded once. Matches on service key / name / logo file / FR question; skips existing records (`--update` overwrites); refuses non-local DB without `--force`. Team roles are placeholders (Q-16); cancellation FAQ written from the owner policy (cancel while the work has not started and the pro is not on the way; 50% refund once work has started; FR review in T-1.11) |
@@ -77,7 +77,8 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-1.12 | Access-control int tests (extend `tests/int/access.int.spec.ts` to the editor/admin matrix) | QA-AUTO-08 | ⬜ |
 | T-1.13 | `src/lib/payload.ts`: cached `getPayload()` + typed query helpers (architecture §6) | NFR-MAINT-01 | ✅ `getPayloadClient`, `getGlobal`, `findDocs` (tagged `unstable_cache`, public access rules), 2026-10-27 |
 | T-1.14 | `site` global: `afterChange` → `revalidateTag('site')` when pages start reading it (part of T-1.04) | FR-CMS-04 | ✅ hook in place 2026-10-27; pages switch in T-1.15 |
-| T-1.15 | Switch home sections from `src/lib/*` (services, showcase, hero, site) to Payload reads; `lib` files stay as seed source and fallbacks | FR-CMS-01, FR-CMS-04 | ⬜ after branches 4 and 9 |
+| T-1.15 | Switch home sections from `src/lib/*` (services, showcase, hero, site) to Payload reads; `lib` files stay as seed source and fallbacks | FR-CMS-01, FR-CMS-04 | ✅ 2026-10-28: all 11 home sections read `home`, `site`, services, partners, testimonials and FAQs through `src/lib/home.ts` (cached, tagged). Empty field or collection ⇒ messages / `src/lib` copy; a failed read throws so Next keeps the last good page. CMS images use their upload sizes (`CmsImage`). Hero avatars are now the featured testimonials' photos; partner `url` links the logo. CI reseeds before build (T-1.16). Build now needs a migrated DB (Q-17) |
+| T-1.17 | Header + footer read the `navigation` and `site` globals (menu, footer columns, contact, socials, store links); `GetTheApp`, `WhatsAppFab`, `StoreBadges` defaults from `site` | FR-CMS-01, FR-GLB-01/02 | ⬜ proposed 2026-10-28 (out of T-1.15, which covers home sections) |
 
 **Build plan (2026-10-27).** One branch per row, one migration per branch, merged in order (data-model.md §8). Branch 0 is helpers only (no schema change).
 
@@ -116,7 +117,7 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | T-3.01 | Trusted-by marquee | FR-HOME-03 | ✅ 8 logos from the old site, CSS marquee (pauses on hover/focus, static under reduced motion); names and 300 px logos confirmed from the live site 2026-10-28 (Q-10) |
 | T-3.02 | Services bento | FR-HOME-04 | ✅ 8 real project photos from the old site (low-res, Q-12), icon tiles for moving/packing/transport, Shop + Food, custom-quote tile; "Clear price before you book" until prices (Q-5) |
 | T-3.03 | Pillars + trust features | FR-HOME-05 | ✅ copy in messages until the `home` global (T-1.03) |
-| T-3.04 | Numbers + map | FR-HOME-06 | ✅ counters (final value server-rendered), Natural Earth outline, towns light via CSS view timeline; numbers from `lib/site` until the `site` global is read |
+| T-3.04 | Numbers + map | FR-HOME-06 | ✅ counters (final value server-rendered), Natural Earth outline, towns light via CSS view timeline; numbers from the `site` global (T-1.15) |
 | T-3.05 | Scroll story (GSAP, lazy) + mobile swipe | FR-HOME-07 | ⬜ |
 | T-3.06 | How it works | FR-HOME-08 | ✅ line draws via CSS view timeline, static fallback |
 | T-3.07 | Mini-demo | FR-HOME-09 | ⬜ |
@@ -203,6 +204,7 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | Q-14 | Submissions 24-month retention without cron (NFR-PRIV-01): purge on each new submission, manual admin purge, or both | Phase 1, branch 6 | ✅ Approved by owner 2026-10-27: both. Done: purge after each new submission; admins bulk-delete from the list; attachments are deleted with their submission |
 | Q-15 | Rename `appScreens.locale` to `lang` (avoids confusion with Payload's `locale` argument) | Phase 1, branch 7 | ✅ Approved by owner 2026-10-27: rename. Done (collection slug `app-screens`) |
 | Q-16 | Roles (FR + EN) and photos for J. Batholomew, Mbeng Nkeng S., ANU Ernest | Phase 4 (About) | Seeded as "Équipe HandyMan / HandyMan team"; edit in /admin, re-runs keep the edit |
+| Q-17 | Hostinger build command becomes `npm run migrate && npm run build`: pre-rendering now reads Payload, so the schema must be migrated before the build (fresh Neon DB or schema change would fail the build otherwise) | Before T-0.17 (first deploy) | Proposed 2026-10-28; DEPLOY.md and operations.md updated, owner to confirm |
 
 ## 11. Change log
 
@@ -230,4 +232,5 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | 2026-10-27 | Phase 1 branch 8: `navigation` (header with mega-menu children, footer columns; shared `linkField`: site page / document / external) and `seo` (defaults + Organization JSON-LD) globals + migration | Dev |
 | 2026-10-27 | Phase 1 branch 9: `home` global (one tab per section, drafts, hero video/film/cues; empty fields fall back to messages copy until T-1.15) + migration | Dev |
 | 2026-10-27 | Phase 1 branch 10: redirects plugin (`redirects` collection) + migration. CMS model for Phase 1 complete: 15 collections, 4 globals, 11 migrations | Dev |
+| 2026-10-28 | T-1.15: home sections read Payload (`src/lib/home.ts`, `CmsImage`, icon map); CI seeds before build; T-1.17 proposed (header/footer globals); Q-17 (migrate before build on Hostinger) | Dev |
 | 2026-10-28 | T-1.07 seed script (`npm run seed`, FR-CMS-07); owner decisions: skip existing by default, FAQs matched on FR question, new cancellation FAQ. Q-16 (team roles), T-1.16 (int tests overwrite dev globals). Q-10 resolved: 4 partner names and all 8 logos (300 px) from the live site; cancellation FAQ from the owner policy | Dev |
