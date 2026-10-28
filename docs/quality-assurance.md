@@ -125,6 +125,7 @@ Bug report template: *Title · Env/URL · Locale · Device/browser/viewport · S
 - Test admin for e2e: created/destroyed by `tests/helpers/seedUser.ts` (`e2e-admin@handymandoit.test`). **Never** run against staging/prod DBs; the helper refuses any `DATABASE_URL` host other than localhost.
 - Deployed-site smoke: `E2E_BASE_URL=https://<env> npm run test:smoke` runs `tests/e2e/site.e2e.spec.ts` only (no DB access), used for the Phase 0 staging gate and after every deploy.
 - Vitest runs in the `node` environment (int tests use the Payload Local API). Component tests opt in to jsdom per file with `// @vitest-environment jsdom`.
+- Int tests use their own database, `DATABASE_URL`'s name + `_test` (`handymandoit_test`), or `TEST_DATABASE_URL` if set (`tests/int/testDatabase.ts`). The global setup creates it on the same server when missing and Payload's dev schema push builds the tables, so tests never overwrite seeded dev content. Drop it (`docker compose exec postgres psql -U postgres -c "drop database handymandoit_test"`) to start from empty.
 - Seeds (`scripts/seed.ts`) are idempotent and the canonical demo content.
 - Never use real customer data in tests.
 

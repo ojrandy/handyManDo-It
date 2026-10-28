@@ -44,9 +44,9 @@ jobs:
       # Fails when the Payload config changed without a committed migration (data-model.md §6).
       - run: npm run migrate:check -- --drift
       - run: npm run test:int
-      # The home page reads Payload at build time (T-1.15). The int tests leave test copy in the
-      # globals (T-1.16), so reseed: e2e then sees the old-site content, as in local dev.
-      - run: npm run seed -- --update
+      # The home page reads Payload at build time (T-1.15). Seed so the build and e2e see the
+      # old-site content, as in local dev. Int tests used their own database (T-1.16).
+      - run: npm run seed
       - run: npm run build
       - run: npx --no-install playwright install --with-deps chromium
       - run: npm run test:e2e

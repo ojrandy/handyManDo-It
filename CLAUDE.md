@@ -38,7 +38,7 @@ npm run dev                 # http://localhost:3000 (→ /fr or /en), CMS at /ad
 npm run typecheck           # tsc --noEmit
 npm run lint                # eslint
 npm run build               # production build (heap capped at 3 GB for Hostinger)
-npm run test:int            # vitest  (tests/int/**/*.int.spec.ts, needs DB)
+npm run test:int            # vitest  (tests/int/**/*.int.spec.ts, own handymandoit_test DB)
 npm run test:e2e            # playwright (tests/e2e, needs DB + dev server)
 E2E_BASE_URL=https://… npm run test:smoke   # public smoke suite against a deployed site
 npm run seed                # fill the local CMS with old-site content (re-runnable; --update overwrites)

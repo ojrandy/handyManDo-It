@@ -11,8 +11,9 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     globalSetup: ['./tests/int/globalSetup.ts'],
     include: ['tests/int/**/*.int.spec.ts'],
-    // getPayload() connects and checks the schema in beforeAll; 10 s is too tight on slow machines.
-    hookTimeout: 60_000,
+    // getPayload() connects and checks the schema in beforeAll; with every file booting Payload in
+    // parallel, that takes 48–64 s on the dev machine.
+    hookTimeout: 120_000,
     // Saving a versioned global writes several tables; with every file sharing one database in
     // parallel, a single test can pass 5 s.
     testTimeout: 30_000,

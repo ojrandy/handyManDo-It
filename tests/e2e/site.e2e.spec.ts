@@ -56,7 +56,9 @@ test.describe('Public site', () => {
   })
 
   test('the admin is not covered by the site CSP', async ({ request }) => {
-    const response = await request.get('/admin/login')
+    // Under `next dev` the first /admin/login compile takes about 30 s.
+    test.slow()
+    const response = await request.get('/admin/login', { timeout: 80_000 })
     expect(response.headers()['content-security-policy']).toBeUndefined()
     expect(response.headers()['x-frame-options']).toBe('SAMEORIGIN')
   })
