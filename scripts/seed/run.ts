@@ -1,6 +1,8 @@
 import { existsSync, statSync } from 'node:fs'
 import path from 'node:path'
 
+import sharp from 'sharp'
+
 import type { CollectionSlug, Payload, RequiredDataFromCollectionSlug, Where } from 'payload'
 
 import type { ServiceKey } from '@/lib/service-keys'
@@ -54,6 +56,18 @@ type Outcome = 'created' | 'updated' | 'skipped'
 
 const errorMessage = (error: unknown) => (error instanceof Error ? error.message : String(error))
 
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+// Width and height of an image file, or null for files sharp cannot read (video).
+async function imageSize(file: string): Promise<{ width: number; height: number } | null> {
+  try {
+    const { width, height } = await sharp(file).metadata()
+    return width && height ? { width, height } : null
+  } catch {
+    return null
+  }
+}
+
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
 
@@ -103,21 +117,28 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
       depth: 0,
     })
     if (exact.docs[0]) return exact.docs[0].id
-    // A file already on disk under that name makes Payload store "name-1.webp"; match the
-    // renamed copy by size so a re-run still finds it.
-    const stem = filename.replace(/\.[^.]+$/, '')
+    // A file already on disk under that name makes Payload store "name-1.webp"; find the renamed
+    // copy so a re-run reuses it. Payload re-encodes some images on upload, so images match on
+    // their dimensions; other files (video) on their size.
+    const source = path.join(publicDir, file)
+    const ext = path.extname(filename)
+    const stem = filename.slice(0, -ext.length || undefined)
+    const renamedName = new RegExp(`^${escapeRegExp(stem)}-\\d+${escapeRegExp(ext)}$`)
+    const size = await imageSize(source)
     const renamed = await payload.find({
       collection: 'media',
-      where: {
-        and: [
-          { filename: { like: `${stem}-` } },
-          { filesize: { equals: statSync(path.join(publicDir, file)).size } },
-        ],
-      },
-      limit: 1,
+      where: { filename: { like: `${stem}-` } },
+      limit: 50,
       depth: 0,
     })
-    return renamed.docs[0]?.id ?? null
+    const match = renamed.docs.find(
+      (doc) =>
+        renamedName.test(doc.filename ?? '') &&
+        (size
+          ? doc.width === size.width && doc.height === size.height
+          : doc.filesize === statSync(source).size),
+    )
+    return match?.id ?? null
   }
 
   async function media(seed: MediaSeed): Promise<number | null> {
