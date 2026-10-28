@@ -68,7 +68,8 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | T-1.04 | Revalidation hooks for all public content | FR-CMS-04 | ✅ 2026-10-27: every public collection and global purges its tag (`src/hooks/revalidate.ts`); takes effect on pages once they read through `src/lib/payload.ts` (T-1.15) |
 | T-1.05 | Drafts + live preview | FR-CMS-03, FR-CMS-05 | ⬜ |
 | T-1.06 | SEO plugin + redirects plugin config | FR-SEO-01 | ✅ 2026-10-27: SEO tab on services, projects, posts; redirects collection (editor write, normalised unique `from`, 301 default). Serving editor redirects at request time is Phase 5 |
-| T-1.07 | `scripts/seed.ts` (idempotent) from old site | — | ⬜ |
+| T-1.07 | `scripts/seed.ts` (idempotent) from old site | FR-CMS-07 | ✅ 2026-10-28: `npm run seed` fills 11 services, 4 testimonials, 3 team, 8 partners, 9 FAQs (8 on home), `site`, `navigation`, `home` (published) from messages + `src/lib`; 22 media uploaded once. Matches on service key / name / logo file / FR question; skips existing records (`--update` overwrites); refuses non-local DB without `--force`. Team roles are placeholders (Q-16); cancellation FAQ written from the owner policy (cancel while the work has not started and the pro is not on the way; 50% refund once work has started; FR review in T-1.11) |
+| T-1.16 | Int tests share the dev DB: `home.int.spec` leaves test copy in `home`, `globals.int.spec` empties `navigation`. Restore globals after each spec (or a separate test DB); raise the 60 s `hookTimeout`, since parallel Payload boots take 48–64 s on the dev machine. Smoke e2e against `next dev`: `/admin/login` takes ~30 s on first compile, over the 30 s test timeout | QA-AUTO-03 | ⬜ until then, run `npm run seed -- --update` after `npm run test:int` |
 | T-1.08 | `scripts/migrate-wordpress.ts` (20 posts + media, legacyUrl) | FR-PG-11 | ⬜ |
 | T-1.09 | `scripts/capture-screens.ts` (fr/en × light/dark) | FR-HOME-10 | ⬜ |
 | T-1.10 | Hero video: select stock, encode MP4/WebM ×3, poster AVIF < 120 KB, cue list | FR-HOME-01 | ⬜ |
@@ -112,7 +113,7 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 
 | ID | Task | Req | Status |
 |---|---|---|---|
-| T-3.01 | Trusted-by marquee | FR-HOME-03 | ✅ 8 logos from the old site, CSS marquee (pauses on hover/focus, static under reduced motion); 4 partner names unknown (Q-10) |
+| T-3.01 | Trusted-by marquee | FR-HOME-03 | ✅ 8 logos from the old site, CSS marquee (pauses on hover/focus, static under reduced motion); names and 300 px logos confirmed from the live site 2026-10-28 (Q-10) |
 | T-3.02 | Services bento | FR-HOME-04 | ✅ 8 real project photos from the old site (low-res, Q-12), icon tiles for moving/packing/transport, Shop + Food, custom-quote tile; "Clear price before you book" until prices (Q-5) |
 | T-3.03 | Pillars + trust features | FR-HOME-05 | ✅ copy in messages until the `home` global (T-1.03) |
 | T-3.04 | Numbers + map | FR-HOME-06 | ✅ counters (final value server-rendered), Natural Earth outline, towns light via CSS view timeline; numbers from `lib/site` until the `site` global is read |
@@ -195,12 +196,13 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | Q-7 | Vector logo | Phase 2 | Traced SVG |
 | Q-8 | Native French reviewer | Phase 6 | — |
 | Q-9 | Error monitoring: Sentry? (ADR-011) | Phase 6 | Logs only |
-| Q-10 | Names of 4 partner logos (lion, green frames, orange mountain, leaf) from the old site | Phase 6 | Generic alt "Partner of HandyMan Do IT" |
+| Q-10 | Names of 4 partner logos (lion, green frames, orange mountain, leaf) from the old site | Phase 6 | ✅ Resolved 2026-10-28 from the live site: Spectron Limited LLC (lion), Web Spectron (green frames), Luxecam Tours Ltd (orange mountain), Kenta Beauty Clinic (leaf); logos replaced with the live 300 px originals |
 | Q-11 | Cancellation policy (for the FAQ) | Phase 4 | Not stated; FAQ covers "not satisfied?" with facts only |
 | Q-12 | Higher-resolution project photos (old site has 500–750 px) | Phase 6 | Use the old-site files |
 | Q-13 | Services ↔ faqs/projects: child-side relationships + `join` fields on services instead of two-way relationships (ADR-017) | Phase 1, branch 3 | ✅ Approved by owner 2026-10-27: join fields |
 | Q-14 | Submissions 24-month retention without cron (NFR-PRIV-01): purge on each new submission, manual admin purge, or both | Phase 1, branch 6 | ✅ Approved by owner 2026-10-27: both. Done: purge after each new submission; admins bulk-delete from the list; attachments are deleted with their submission |
 | Q-15 | Rename `appScreens.locale` to `lang` (avoids confusion with Payload's `locale` argument) | Phase 1, branch 7 | ✅ Approved by owner 2026-10-27: rename. Done (collection slug `app-screens`) |
+| Q-16 | Roles (FR + EN) and photos for J. Batholomew, Mbeng Nkeng S., ANU Ernest | Phase 4 (About) | Seeded as "Équipe HandyMan / HandyMan team"; edit in /admin, re-runs keep the edit |
 
 ## 11. Change log
 
@@ -228,3 +230,4 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | 2026-10-27 | Phase 1 branch 8: `navigation` (header with mega-menu children, footer columns; shared `linkField`: site page / document / external) and `seo` (defaults + Organization JSON-LD) globals + migration | Dev |
 | 2026-10-27 | Phase 1 branch 9: `home` global (one tab per section, drafts, hero video/film/cues; empty fields fall back to messages copy until T-1.15) + migration | Dev |
 | 2026-10-27 | Phase 1 branch 10: redirects plugin (`redirects` collection) + migration. CMS model for Phase 1 complete: 15 collections, 4 globals, 11 migrations | Dev |
+| 2026-10-28 | T-1.07 seed script (`npm run seed`, FR-CMS-07); owner decisions: skip existing by default, FAQs matched on FR question, new cancellation FAQ. Q-16 (team roles), T-1.16 (int tests overwrite dev globals). Q-10 resolved: 4 partner names and all 8 logos (300 px) from the live site; cancellation FAQ from the owner policy | Dev |

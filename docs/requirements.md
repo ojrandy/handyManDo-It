@@ -124,6 +124,7 @@ Every requirement has a stable ID. Code, tests, tracker items and PRs reference 
 | FR-CMS-04 | M | On publish, only affected pages revalidate | Change visible on site within 10 s, no redeploy |
 | FR-CMS-05 | S | Live preview | Preview shows draft in chosen locale |
 | FR-CMS-06 | M | Media alt text required + localized | Save blocked without alt |
+| FR-CMS-07 | M | Seed script fills the CMS with the old site's content in FR and EN | `npm run seed` twice: 2nd run creates nothing; refuses a non-local DB without `--force`; never overwrites editor changes without `--update` |
 
 ### 4.7 SEO and migration
 

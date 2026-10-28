@@ -67,7 +67,7 @@ name, city (required), quote (textarea L, required), service (rel, optional, ind
 name (required), role (L, required), photo (media), bio (textarea L), order. Group Company; public read, editor write; revalidates tag `team`. Seed: J. Batholomew, Mbeng Nkeng S., ANU Ernest.
 
 ### 3.7 `partners` ✅
-name (required), logo (media, required; its alt should be the partner name), url (http/https only), order. Group Marketing; public read, editor write; revalidates tag `partners`. Unknown names (Q-10) are seeded as placeholders.
+name (required), logo (media, required; its alt should be the partner name), url (http/https only), order. Group Marketing; public read, editor write; revalidates tag `partners`. Seeded with the 8 names and logos from the live site (Q-10).
 
 ### 3.8 `faqs` ✅
 question (L, required), answer (richText L, required; also used for FAQPage JSON-LD), category (select, required, indexed: payments, coverage, quotes, cancellations, guarantee, safety, pros, business), service (rel, optional, indexed), showOnHome (bool, default false), order. Public read, editor write; revalidates `faqs`. Listed on services via the `faqs` join.
@@ -124,11 +124,13 @@ defaultTitle (L, required, default "HandyMan Do IT"), defaultDescription (L, req
 
 | Script | Source | Fills |
 |---|---|---|
-| `scripts/seed.ts` ⬜ | Old site content + `lib/site.ts` | services (11), testimonials (4), team (3), partners (8), faqs, site, navigation, home |
+| `scripts/seed.ts` ✅ (`npm run seed`) | Old site content in `messages/*.json` + `lib/{site,services,hero,showcase}.ts` + `public/images` | services (11), testimonials (4), team (3), partners (8), faqs (9), site, navigation, home |
 | `scripts/migrate-wordpress.ts` ⬜ | WordPress REST API | posts (20), categories, media; records `legacyUrl` |
 | `scripts/capture-screens.ts` ⬜ | Playwright on app.handymandoit.com | appScreens (390×844 @3x, fr/en, light/dark) |
 
 Seeds must be **idempotent** (upsert by slug/key) and safe to re-run.
+
+`scripts/seed.ts` match keys: services `key`; testimonials and team `name`; partners the logo's media; faqs the French question; media the file name (or a renamed `name-N` copy of the same size). Each record is created in `fr`, then updated in `en`; non-localized arrays with localized fields (`site.offices`, `navigation`) reuse the `fr` row ids so both languages share rows. Existing records and already-filled globals are **skipped** so editors' changes survive; `--update` overwrites the seeded fields. A non-local `DATABASE_URL` is refused unless `--force`. Writes pass `disableRevalidate`.
 
 ## 8. Phase 1 build plan (approved 2026-10-27)
 

@@ -41,6 +41,7 @@ npm run build               # production build (heap capped at 3 GB for Hostinge
 npm run test:int            # vitest  (tests/int/**/*.int.spec.ts, needs DB)
 npm run test:e2e            # playwright (tests/e2e, needs DB + dev server)
 E2E_BASE_URL=https://… npm run test:smoke   # public smoke suite against a deployed site
+npm run seed                # fill the local CMS with old-site content (re-runnable; --update overwrites)
 npm run generate:types      # after ANY collection/global change → src/payload-types.ts
 npm run generate:importmap  # after adding custom admin components
 npm run migrate:create      # after ANY schema change destined for production
