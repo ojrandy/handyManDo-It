@@ -14,7 +14,7 @@ export async function TrustedBy() {
       <li key={`${partner.key}${copy ? '-copy' : ''}`} className="shrink-0">
         <Image
           src={partner.logo}
-          alt={copy ? '' : (partner.name ?? t('partnerAlt'))}
+          alt={copy ? '' : partner.name}
           width={80}
           height={80}
           className="size-16 rounded-card object-contain grayscale transition duration-300 hover:grayscale-0 sm:size-20"

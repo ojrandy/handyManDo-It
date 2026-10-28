@@ -6,23 +6,31 @@ import type { ServiceKey } from './services'
 
 export type Partner = {
   key: string
-  // Proper noun shown as alt text; null where the old site gives no name (owner question Q-10).
-  name: string | null
+  // Proper noun shown as alt text, as on the old site (Q-10).
+  name: string
   logo: string
 }
 
 export const partners: readonly Partner[] = [
-  { key: 'chef-nina', name: 'Chef Nina Cuisine', logo: '/images/partners/chef-nina.webp' },
+  { key: 'chef-nina', name: 'Chef Nina’s Cuisine', logo: '/images/partners/chef-nina.webp' },
   { key: 'augma-realty', name: 'AUGMA Realty', logo: '/images/partners/augma-realty.webp' },
   {
     key: 'kukwa-constructions',
     name: 'KUKWA Constructions',
     logo: '/images/partners/kukwa-constructions.webp',
   },
-  { key: 'partner-4', name: null, logo: '/images/partners/partner-4.webp' },
-  { key: 'partner-5', name: null, logo: '/images/partners/partner-5.webp' },
-  { key: 'partner-6', name: null, logo: '/images/partners/partner-6.webp' },
-  { key: 'partner-7', name: null, logo: '/images/partners/partner-7.webp' },
+  {
+    key: 'spectron-limited',
+    name: 'Spectron Limited LLC',
+    logo: '/images/partners/spectron-limited.webp',
+  },
+  { key: 'web-spectron', name: 'Web Spectron', logo: '/images/partners/web-spectron.webp' },
+  { key: 'luxecam-tours', name: 'Luxecam Tours Ltd', logo: '/images/partners/luxecam-tours.webp' },
+  {
+    key: 'kenta-beauty-clinic',
+    name: 'Kenta Beauty Clinic',
+    logo: '/images/partners/kenta-beauty-clinic.webp',
+  },
   {
     key: 'spectron-magazine',
     name: 'Spectron Magazine',
