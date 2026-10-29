@@ -1,6 +1,6 @@
 # Project Tracker
 
-Last updated: **2026-10-28** · Current phase: **Phase 0 — Foundations (in progress)** · Plan status: PLAN.md v1.1 **approved** (2026-10-23)
+Last updated: **2026-10-29** · Current phase: **Phase 4 — Inner pages (in progress)** · Plan status: PLAN.md v1.1 **approved** (2026-10-23)
 
 Status: ✅ done · 🔄 in progress · ⬜ to do · ⛔ blocked · ➖ dropped
 Update this file in the same PR as the work. Every task lists the requirement IDs it satisfies.
@@ -15,7 +15,7 @@ Update this file in the same PR as the work. Every task lists the requirement ID
 | 1. Content & assets | Migrations/seeds, CMS model, screens, video, FR copy | All content visible in CMS | 🔄 build plan written 2026-10-27 (§3, data-model.md §8) |
 | 2. Hero prototype | Header + synced-story hero + light-data mode | **Owner approves the look** | ✅ owner moved on to Phase 3, 2026-10-24 (footage, captions, Lighthouse on device still open) |
 | 3. Home page | Sections 5.3–5.17 | Home complete in both locales | 🔄 |
-| 4. Inner pages | All §6 pages, forms, `/download` | Every page live on staging | ⬜ |
+| 4. Inner pages | All §6 pages, forms, `/download` | Every page live on staging | 🔄 started 2026-10-29 (order and decisions in §6, ADR-022..025) |
 | 5. SEO & analytics | JSON-LD, sitemaps, hreflang, OG, redirects, GA4 | Rich results pass; events in DebugView | ⬜ |
 | 6. QA & launch | Device/perf/a11y audit, content review, DNS cut-over | Go-live | ⬜ |
 
@@ -135,7 +135,7 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 
 | ID | Task | Req | Status |
 |---|---|---|---|
-| T-4.01 | Services index + detail ×11 | FR-PG-01/02 | ⬜ |
+| T-4.01 | Services index + detail ×11 | FR-PG-01/02 | ✅ 2026-10-29: shared PageHero, Breadcrumbs (+ BreadcrumbList), CtaBand, Prose, JsonLd, FaqList, `lib/seo.ts` (canonical + hreflang). Index: filter on the new `services.category` (migration), pricing explainer, CTA. Detail: hero photo, old-site intro + inclusions for 6 services (FR translated, R-08 review; the other 5 had no old-site page and show summary, steps and FAQs only), steps (the service's own or the shared booking flow), related work, reviews, service FAQs (FAQPage), other services, sticky Book/Quote bar, Service JSON-LD (offer only with a from-price, Q-5). 22 pages pre-rendered. Language switch follows the translated slug (ADR-025). e2e `services.e2e.spec.ts` |
 | T-4.02 | Businesses, Buildings, Shop, Food | FR-PG-03..05 | ⬜ |
 | T-4.03 | Become a pro + application form | FR-PG-06 | ⬜ |
 | T-4.04 | Our work + case study | FR-PG-07 | ⬜ |
@@ -145,6 +145,8 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | T-4.08 | Contact + forms | FR-PG-13 | ⬜ |
 | T-4.09 | Form intake API (zod, honeypot, rate limit, store, email) | FR-FORM-* | ⬜ |
 | T-4.10 | `/download` route | FR-PG-14 | ⬜ |
+
+Delivery order (owner approved the recommendations 2026-10-29): 1 `feat/inner-templates-services` (shared templates, T-4.01) → 2 content pages (our work, reviews, about, FAQ, buildings, shop, food) → 3 forms (T-4.09) + contact, businesses, become a pro, careers → 4 blog → 5 legal (`legal` global, Q-18) + `/download`. Source text for 2, 3 and 5 comes from the old site (about, CSR, affiliations, careers, disclaimer, contact hours), read 2026-10-29.
 
 ## 7. Phase 5 — SEO & analytics
 
@@ -189,7 +191,7 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | # | Question | Needed by | Default if no answer |
 |---|---|---|---|
 | Q-1 | ~~Final sign-off of PLAN.md v1.1~~ | — | ✅ Approved by owner 2026-10-23 |
-| Q-2 | SMTP provider (Hostinger mail vs Resend) | Phase 4 | Hostinger SMTP |
+| Q-2 | SMTP provider (Hostinger mail vs Resend) | Phase 4 | ✅ 2026-10-29: owner accepted the recommendation, Hostinger SMTP; console output in local dev |
 | Q-3 | App Store URL | Launch | iOS badge hidden |
 | Q-4 | Real job footage | Phase 2 | 2026-10-29: owner chose old-site photos for now; hero uses a still (T-1.10). 2026-10-28: Mixkit (free commercial licence) has carpentry and building clips but none with Cameroonian or West African craftspeople, and Pexels blocks scripted search, so no clip was picked. Owner: send own footage, or pick a licensed clip (Pexels/Mixkit link); then `npm run encode:hero -- <clip> --upload` |
 | Q-5 | "From" prices per service (FCFA) | Phase 3 | "Clear price before you book" |
@@ -198,12 +200,13 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | Q-8 | Native French reviewer | Phase 6 | — |
 | Q-9 | Error monitoring: Sentry? (ADR-011) | Phase 6 | Logs only |
 | Q-10 | Names of 4 partner logos (lion, green frames, orange mountain, leaf) from the old site | Phase 6 | ✅ Resolved 2026-10-28 from the live site: Spectron Limited LLC (lion), Web Spectron (green frames), Luxecam Tours Ltd (orange mountain), Kenta Beauty Clinic (leaf); logos replaced with the live 300 px originals |
-| Q-11 | Cancellation policy (for the FAQ) | Phase 4 | Not stated; FAQ covers "not satisfied?" with facts only |
+| Q-11 | Cancellation policy (for the FAQ) | Phase 4 | ✅ Resolved 2026-10-28: cancellation FAQ seeded from the owner's policy (change log) |
 | Q-12 | Higher-resolution project photos (old site has 500–750 px) | Phase 6 | Use the old-site files |
 | Q-13 | Services ↔ faqs/projects: child-side relationships + `join` fields on services instead of two-way relationships (ADR-017) | Phase 1, branch 3 | ✅ Approved by owner 2026-10-27: join fields |
 | Q-14 | Submissions 24-month retention without cron (NFR-PRIV-01): purge on each new submission, manual admin purge, or both | Phase 1, branch 6 | ✅ Approved by owner 2026-10-27: both. Done: purge after each new submission; admins bulk-delete from the list; attachments are deleted with their submission |
 | Q-15 | Rename `appScreens.locale` to `lang` (avoids confusion with Payload's `locale` argument) | Phase 1, branch 7 | ✅ Approved by owner 2026-10-27: rename. Done (collection slug `app-screens`) |
-| Q-16 | Roles (FR + EN) and photos for J. Batholomew, Mbeng Nkeng S., ANU Ernest | Phase 4 (About) | Seeded as "Équipe HandyMan / HandyMan team"; edit in /admin, re-runs keep the edit |
+| Q-16 | Roles (FR + EN) and photos for J. Batholomew, Mbeng Nkeng S., ANU Ernest | Phase 4 (About) | 2026-10-29: roles found on the old site (company-info.html): Chief Operations, Chief Engineer, P.R Specialist; seeded with the About page (T-4.05). Photos still needed |
+| Q-18 | Privacy policy and terms of use: the old site links both, but both return 404 (only the disclaimer exists) | Before launch (Phase 6) | Phase 4 drafts both from facts the site can state (data the forms collect, 24-month retention, storage, contact), marked for owner/legal review; disclaimer and CSR text come from the old site |
 | Q-17 | Hostinger build command becomes `npm run migrate && npm run build`: pre-rendering now reads Payload, so the schema must be migrated before the build (fresh Neon DB or schema change would fail the build otherwise) | Before T-0.17 (first deploy) | Proposed 2026-10-28; DEPLOY.md and operations.md updated, owner to confirm |
 
 ## 11. Change log
@@ -241,4 +244,5 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | 2026-10-29 | Hero still photo from the old site (poster, slow zoom), real app screens in the hero and download-band phones; guest mode checked for logged-in screens (none reachable) | Dev |
 | 2026-10-29 | T-1.12 access matrix tests (2 fixes: `users.unlock` admin-only, `home` drafts private); T-1.17 header/footer/store links/WhatsApp from the `navigation` and `site` globals | Dev |
 | 2026-10-29 | T-3.05 scroll story (CSS sticky, ADR-021), T-3.07 mini-demo, T-3.08 screens gallery, T-3.14 latest posts, T-3.16 JS budget test; `findDocs` takes `fallbackLocale`; `track()` helper. Verified: typecheck, lint, messages int spec. Build/e2e pending (Docker down) | Dev |
+| 2026-10-29 | Phase 4 started. Decisions: `legal` global, native forms + zod, office map links, client-side blog filter (ADR-022..024); Q-2, Q-11 closed; Q-18 opened (privacy/terms missing on the old site). T-4.01 services index + detail with shared page templates, `services.category` + migration, SEO helper, language switch on translated slugs (ADR-025). Verified: typecheck, lint, `migrate:check --drift`, `test:int` 124/124, `build` (22 service pages), `test:e2e` 38/38 on the production build (the services detail test needed a retry in both full runs: `newPage` timed out before any page loaded; the spec passes 5/5 alone with no retries) | Dev |
 | 2026-10-29 | Phase 3 batch verified: typecheck, lint, `migrate:check` (13 migrations), `test:int` 121/121, `build`, `test:e2e` 33/33 on the production build (2 test locators fixed: hero phone list scoped to the hero; mini-demo test scrolls to the section so the lazy demo loads) | Dev |

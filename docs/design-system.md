@@ -79,12 +79,12 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 
 | Component | Status | Notes |
 |---|---|---|
-| LanguageSwitcher | ✅ | Pill group, `aria-pressed`, keeps equivalent page |
+| LanguageSwitcher | ✅ | Pill group, `aria-pressed`, keeps equivalent page: follows the page's hreflang alternate when there is one (translated slugs, ADR-025), else the same route and params |
 | Button | ✅ | `buttonClasses({ variant, size })` helper (`ui/button.ts`) applied to `Link`, `<a>`, `<button>` and popover triggers; variants `primary` (gold pill), `secondary` (outline on dark), `ghost` (no horizontal padding, aligns with copy); sizes sm/md/lg, min height 44 px; never a `<div>`. Light-background variants come with the first light section |
 | StoreBadges | ✅ | Official Google Play badge per locale (`public/badges`, unaltered); App Store hidden while `appStoreUrl` is empty. `store_click` event in Phase 5 |
 | GetTheApp | ✅ | Server wrapper renders the QR SVG; client button: Android → Play, iOS → App Store or web app, desktop → native `popover` with QR. Plain Play link before hydration / without JS |
 | Badge / PaymentBadges | ✅ | Text pills with brand-colour dots (no third-party logos until licensed) |
-| Accordion | ✅ (native `<details>`, `FaqTeaser`) | Native `<details>` or ARIA disclosure; fires `faq_open` |
+| Accordion | ✅ (native `<details>`, `FaqList`, used by `FaqTeaser` and service pages) | Native `<details>` or ARIA disclosure; fires `faq_open` |
 | Tabs | ✅ (`EarnTabs`) | ARIA tabs pattern with arrow-key nav |
 | Marquee | ✅ (CSS, `TrustedBy`) | Pause on hover/focus; static under reduced motion |
 | Counter | ✅ | Animates on view; final value in DOM for SR/no-JS |
@@ -92,9 +92,13 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 | Carousel | ✅ scroll-snap + `CarouselControls` (no embla needed so far) | Keyboard + swipe; visible controls |
 | WhatsAppFab | ✅ (#128C7E for 3:1 icon contrast) | Bottom-right, delayed, safe-area aware |
 | Form fields | ⬜ | Label always visible, error text linked with `aria-describedby`, `aria-live` summary |
-| JsonLd | ⬜ | `<script type="application/ld+json">` server component |
+| JsonLd | ✅ | `<script type="application/ld+json">` server component; escapes `<` |
+| Breadcrumbs | ✅ | `nav` with `aria-label`, ordered list, last crumb `aria-current="page"` (text, not a link); emits BreadcrumbList. Styled for the dark page hero |
+| FilterableGrid | ✅ | Toggle buttons (`aria-pressed`) in a labelled group; result count in a polite live region; all items visible without JS. No motion |
+| ServiceCard | ✅ | Whole card is the link; photo (`CmsImage`) or the service icon on a dark tile; title, summary, price label |
+| Prose | ✅ | Payload Lexical `RichText` with the site type scale (light backgrounds) |
 | device/Phone, device/Laptop | Phone ✅ · Laptop ⬜ | CSS frame with `overlay` slot; `AppScreenImage` fills it with a captured `app-screens` image (page language, theme), `AppHomeScreen` (HTML recreation) is the fallback while none is captured |
-| sections/* | Header, Hero, TrustedBy, ServicesBento, Pillars, Numbers, HowItWorks, Testimonials, Audiences, Earn, FaqTeaser, DownloadBand, Footer ✅ · rest ⬜ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
+| sections/* | Header, Hero, TrustedBy, ServicesBento, Pillars, Numbers, HowItWorks, Testimonials, Audiences, Earn, FaqTeaser, DownloadBand, Footer ✅ · inner pages: PageHero (dark: breadcrumbs, H1, lead, actions, optional photo preloaded), CtaBand (book in app + quote), PricingExplainer ✅ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
 
 **Component rules**
 1. Server Component unless it needs interactivity; client logic in the smallest possible child.
