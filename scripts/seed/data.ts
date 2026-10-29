@@ -3,13 +3,15 @@
 import type { Faq, Home, Navigation, Service, Site } from '@/payload-types'
 import type { Locale } from '@/i18n/routing'
 import { paragraph } from '@/lib/richText'
-import type { ServiceKey } from '@/lib/service-keys'
+import { defaultServiceCategory, type ServiceCategory, type ServiceKey } from '@/lib/service-keys'
 import { services } from '@/lib/services'
 import { heroCues } from '@/lib/hero'
 import { partners, testimonials } from '@/lib/showcase'
 import { site } from '@/lib/site'
 import en from '@/messages/en.json'
 import fr from '@/messages/fr.json'
+
+import { serviceContent } from './service-content'
 
 export type Localized<T> = Record<Locale, T>
 
@@ -54,10 +56,14 @@ export type ServiceSeed = {
   key: ServiceKey
   icon: Service['icon']
   size: 'large' | 'small'
+  category: ServiceCategory
   order: number
   title: Localized<string>
   slug: Localized<string>
   summary: Localized<string>
+  // Old-site copy for the detail page; absent for services the old site had no page for.
+  body: Localized<string> | null
+  inclusions: Localized<string[]>
   image: MediaSeed | null
 }
 
@@ -65,10 +71,13 @@ export const serviceSeeds: ServiceSeed[] = services.map(({ key, slug }, index) =
   key,
   icon: serviceIcons[key],
   size: largeServices.includes(key) ? 'large' : 'small',
+  category: defaultServiceCategory[key],
   order: (index + 1) * 10,
   title: both((m) => m.services[key].name),
   slug,
   summary: both((m) => m.services[key].blurb),
+  body: serviceContent[key]?.body ?? null,
+  inclusions: serviceContent[key]?.inclusions ?? { fr: [], en: [] },
   // Real project photos exist for 8 of the 11 services; the rest keep the designed tile.
   image: hasPhoto(key)
     ? {

@@ -4,13 +4,13 @@ import { isEditor, publishedOrEditor } from '@/access'
 import { orderField } from '@/fields/order'
 import { slugField } from '@/fields/slug'
 import { revalidateCollection } from '@/hooks/revalidate'
-import { serviceIcons, serviceKeys } from '@/lib/service-keys'
+import { serviceCategories, serviceIcons, serviceKeys } from '@/lib/service-keys'
 
 export const Services: CollectionConfig = {
   slug: 'services',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'fromPrice', 'featuredOnHome', 'order', '_status'],
+    defaultColumns: ['title', 'slug', 'category', 'fromPrice', 'order', '_status'],
     group: 'Content',
   },
   defaultSort: 'order',
@@ -45,6 +45,14 @@ export const Services: CollectionConfig = {
       required: true,
       options: serviceIcons.map((value) => ({ label: value, value })),
       admin: { position: 'sidebar' },
+    },
+    {
+      name: 'category',
+      type: 'select',
+      defaultValue: 'build',
+      index: true,
+      options: serviceCategories.map((value) => ({ label: value, value })),
+      admin: { position: 'sidebar', description: 'Filter group on the services page.' },
     },
     { name: 'heroImage', type: 'upload', relationTo: 'media' },
     { name: 'summary', type: 'textarea', required: true, localized: true },

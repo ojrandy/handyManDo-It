@@ -1,16 +1,17 @@
-import * as migration_20261023_172405_initial from './20261023_172405_initial';
-import * as migration_20261027_135007_add_team_partners from './20261027_135007_add_team_partners';
-import * as migration_20261027_140524_add_services from './20261027_140524_add_services';
-import * as migration_20261027_141521_add_projects_testimonials from './20261027_141521_add_projects_testimonials';
-import * as migration_20261027_143241_add_faqs from './20261027_143241_add_faqs';
-import * as migration_20261027_151415_add_posts_categories from './20261027_151415_add_posts_categories';
-import * as migration_20261027_154349_add_jobs_submissions from './20261027_154349_add_jobs_submissions';
-import * as migration_20261027_165018_add_app_screens from './20261027_165018_add_app_screens';
-import * as migration_20261027_170611_add_navigation_seo_globals from './20261027_170611_add_navigation_seo_globals';
-import * as migration_20261027_214123_add_home_global from './20261027_214123_add_home_global';
-import * as migration_20261027_221436_add_redirects from './20261027_221436_add_redirects';
-import * as migration_20261028_230912_hero_video_sizes from './20261028_230912_hero_video_sizes';
-import * as migration_20261029_084922_phone_size_pro_screen from './20261029_084922_phone_size_pro_screen';
+import * as migration_20261023_172405_initial from './20261023_172405_initial'
+import * as migration_20261027_135007_add_team_partners from './20261027_135007_add_team_partners'
+import * as migration_20261027_140524_add_services from './20261027_140524_add_services'
+import * as migration_20261027_141521_add_projects_testimonials from './20261027_141521_add_projects_testimonials'
+import * as migration_20261027_143241_add_faqs from './20261027_143241_add_faqs'
+import * as migration_20261027_151415_add_posts_categories from './20261027_151415_add_posts_categories'
+import * as migration_20261027_154349_add_jobs_submissions from './20261027_154349_add_jobs_submissions'
+import * as migration_20261027_165018_add_app_screens from './20261027_165018_add_app_screens'
+import * as migration_20261027_170611_add_navigation_seo_globals from './20261027_170611_add_navigation_seo_globals'
+import * as migration_20261027_214123_add_home_global from './20261027_214123_add_home_global'
+import * as migration_20261027_221436_add_redirects from './20261027_221436_add_redirects'
+import * as migration_20261028_230912_hero_video_sizes from './20261028_230912_hero_video_sizes'
+import * as migration_20261029_084922_phone_size_pro_screen from './20261029_084922_phone_size_pro_screen'
+import * as migration_20261029_225000_service_category from './20261029_225000_service_category'
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20261029_084922_phone_size_pro_screen.up,
     down: migration_20261029_084922_phone_size_pro_screen.down,
-    name: '20261029_084922_phone_size_pro_screen'
+    name: '20261029_084922_phone_size_pro_screen',
   },
-];
+  {
+    up: migration_20261029_225000_service_category.up,
+    down: migration_20261029_225000_service_category.down,
+    name: '20261029_225000_service_category',
+  },
+]

@@ -1,7 +1,7 @@
 import { getPayload, type Payload } from 'payload'
 import { beforeAll, describe, expect, it } from 'vitest'
 
-import { serviceKeys } from '@/lib/service-keys'
+import { serviceCategories, serviceKeys } from '@/lib/service-keys'
 import config from '@/payload.config'
 
 import {
@@ -27,6 +27,23 @@ describe('seed data', () => {
         expect(seed.slug[locale], `${seed.key} ${locale}`).toMatch(/^[a-z0-9-]+$/)
       }
     }
+  })
+
+  it('gives each service a filter group and the same inclusions count in both languages', () => {
+    for (const seed of serviceSeeds) {
+      expect(serviceCategories, seed.key).toContain(seed.category)
+      expect(seed.inclusions.fr.length, seed.key).toBe(seed.inclusions.en.length)
+      expect(Boolean(seed.body), seed.key).toBe(seed.inclusions.en.length > 0)
+    }
+    // The six services the old site had a page for.
+    expect(serviceSeeds.filter(({ body }) => body).map(({ key }) => key)).toEqual([
+      'interiorExteriorDesign',
+      'upholsteryFurniture',
+      'repairsInstallations',
+      'remodeling',
+      'signage',
+      'events',
+    ])
   })
 
   it('has the counts the plan asks for', () => {

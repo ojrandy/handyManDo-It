@@ -294,6 +294,10 @@ export interface Service {
     | 'plug'
     | 'droplets'
     | 'shield-check';
+  /**
+   * Filter group on the services page.
+   */
+  category?: ('design' | 'build' | 'moving' | 'business') | null;
   heroImage?: (number | null) | Media;
   summary: string;
   body?: {
@@ -971,6 +975,7 @@ export interface ServicesSelect<T extends boolean = true> {
   slug?: T;
   key?: T;
   icon?: T;
+  category?: T;
   heroImage?: T;
   summary?: T;
   body?: T;

@@ -3,6 +3,8 @@ import path from 'node:path'
 
 import type { CollectionSlug, Payload, RequiredDataFromCollectionSlug, Where } from 'payload'
 
+import type { Locale } from '@/i18n/routing'
+import { paragraph } from '@/lib/richText'
 import type { ServiceKey } from '@/lib/service-keys'
 
 import {
@@ -214,15 +216,21 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
         key: seed.key,
         icon: seed.icon,
         size: seed.size,
+        category: seed.category,
         order: seed.order,
         featuredOnHome: true,
         heroImage,
         _status: 'published' as const,
       }
-      return {
-        fr: { ...shared, title: seed.title.fr, slug: seed.slug.fr, summary: seed.summary.fr },
-        en: { ...shared, title: seed.title.en, slug: seed.slug.en, summary: seed.summary.en },
-      }
+      const localized = (locale: Locale) => ({
+        ...shared,
+        title: seed.title[locale],
+        slug: seed.slug[locale],
+        summary: seed.summary[locale],
+        body: seed.body ? paragraph(seed.body[locale]) : null,
+        inclusions: seed.inclusions[locale].map((text) => ({ text })),
+      })
+      return { fr: localized('fr'), en: localized('en') }
     })
     if (id !== null) serviceIds[seed.key] = id
   }
