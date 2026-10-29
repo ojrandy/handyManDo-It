@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Poppins, Sora } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import React from 'react'
+import { preconnect } from 'react-dom'
 
 import { Footer } from '@/components/sections/Footer'
 import { Header } from '@/components/sections/Header'
@@ -73,6 +74,9 @@ export default async function LocaleLayout({ children, params }: Props) {
   if (!hasLocale(routing.locales, locale)) notFound()
 
   setRequestLocale(locale)
+  // CMS images come from R2 on their own host in production: open that connection before the
+  // hero's LCP image is discovered (DNS + TLS cost several round trips on 4G).
+  if (process.env.MEDIA_PUBLIC_URL) preconnect(new URL(process.env.MEDIA_PUBLIC_URL).origin)
   const [t, whatsapp] = await Promise.all([
     getTranslations({ locale, namespace: 'nav' }),
     getTranslations({ locale, namespace: 'whatsapp' }),

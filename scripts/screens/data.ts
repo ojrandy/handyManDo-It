@@ -16,7 +16,7 @@ export type ScreenSpec = {
   // Gallery caption (FR-HOME-10).
   caption: Record<Lang, string>
   // Some screens are one tap away from their hash.
-  open?: 'firstCategory'
+  open?: 'firstCategory' | 'firstPro'
 }
 
 // Every screen reachable without signing in (PLAN.md §13). Tracking, wallet, chat and completion
@@ -64,6 +64,16 @@ export const screens: readonly ScreenSpec[] = [
     key: 'help',
     hash: 'help',
     caption: { fr: 'De l’aide tous les jours, 7 h – 21 h', en: 'Help every day, 7 am – 9 pm' },
+  },
+  {
+    // A real pro's public profile, shown with the owner's consent (2026-10-29).
+    key: 'pro',
+    hash: 'home',
+    open: 'firstPro',
+    caption: {
+      fr: 'Des pros vérifiés, notés par leurs clients',
+      en: 'Verified pros, rated by their clients',
+    },
   },
 ]
 

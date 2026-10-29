@@ -52,7 +52,7 @@ Access: create/delete admin; read/update admin or self. Hook: first user ever cr
 | caption | text, localized | |
 | (upload) | image/*, video/mp4, video/webm, application/pdf | focal point on |
 
-Sizes (WebP): `thumb` 480, `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read; create/update/delete `isEditor` (2026-10-23). ⬜ Separate private collection for CVs (§3.12).
+Sizes (WebP): `thumb` 480, `phone` 560 (a Phone frame's screen at 2×, q70; 2026-10-29), `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read; create/update/delete `isEditor` (2026-10-23). ⬜ Separate private collection for CVs (§3.12).
 
 ### 3.3 `services` ✅
 title (L, required), slug (L; unique per locale, index `(slug, _locale)`, so FR and EN may share a slug), key (select of the 11 built-in `ServiceKey`s from `src/lib/service-keys.ts`, unique, optional for new services), icon (select of Lucide names in the same file), heroImage (media), summary (textarea L, required), body (richText L), inclusions (array{text}, localized as a whole), process (array{title, text}, localized as a whole), fromPrice (number FCFA, optional → fallback label), featuredOnHome (bool, default true), size (`large`/`small` for bento), order, meta (SEO plugin tab: localized title/description/image). Drafts on (20 versions). Access: `publishedOrEditor` read, editor write. Revalidates tag `services`. Join fields (virtual, ADR-017): `projects` (on `projects.service`) and `testimonials` (on `testimonials.service`); `faqs` (on `faqs.service`). Public reads of the join respect the joined collection's access, so draft projects stay hidden.
@@ -80,7 +80,7 @@ categories: title (L, required), slug (shared by both locales). Public read, edi
 title (L, required), slug (L, unique per locale: `/careers/[slug]` is translated), location (required), type (select: full-time, part-time, contract), open (bool, default true, indexed; closed roles stay visible without the apply form), closesAt (date), description (richText L, required). Public read, editor write; revalidates `jobs`.
 
 ### 3.11 `app-screens` ✅ (`appScreens`)
-key (select: welcome, home, services, category, shop, food, help, tracking, wallet, chat, completion), lang (`fr`/`en`, **not** Payload-localized — one doc per language × theme; renamed from `locale`, Q-15), theme (`light`/`dark`, default light), image (media, required; 390×844 @3×), caption (L). Unique compound index (key, lang, theme). Public read, editor write; revalidates `app-screens`.
+key (select: welcome, home, services, category, shop, food, help, pro, tracking, wallet, chat, completion), lang (`fr`/`en`, **not** Payload-localized — one doc per language × theme; renamed from `locale`, Q-15), theme (`light`/`dark`, default light), image (media, required; 390×844 @3×), caption (L). Unique compound index (key, lang, theme). Public read, editor write; revalidates `app-screens`.
 
 ### 3.12 `submissions` ✅ + `files` ✅
 submissions: status (select: new, in-progress, done, spam; the only editable field), type (select: contact, quote-home, quote-business, partnership, pro, job), name, email, phone, city, message, job (rel jobs), attachment (upload → `files`), locale (fr/en), details (json, extra form fields; named `details`, not `payload`, to avoid confusion with Payload), utm (json), createdAt. Visitor-supplied fields are read-only for everyone (field access `update: false`, FR-FORM-02).
@@ -126,7 +126,7 @@ defaultTitle (L, required, default "HandyMan Do IT"), defaultDescription (L, req
 |---|---|---|
 | `scripts/seed.ts` ✅ (`npm run seed`) | Old site content in `messages/*.json` + `lib/{site,services,hero,showcase}.ts` + `public/images` | services (11), testimonials (4), team (3), partners (8), faqs (9), site, navigation, home |
 | `scripts/migrate-wordpress.ts` ✅ (`npm run migrate:wordpress`) | WordPress REST API (`WORDPRESS_API`, default the old blog) | posts (20, `en` locale), categories (2; “Uncategorized” dropped; FR names in the script), media (cover + inline images, originals capped at 2400 px); records `legacyUrl` |
-| `scripts/capture-screens.ts` ✅ (`npm run capture:screens`) | Playwright on app.handymandoit.com, signed out | app-screens: welcome, home, services, category, shop, food, help × fr/en × light/dark (1170×2532 WebP), captions FR/EN |
+| `scripts/capture-screens.ts` ✅ (`npm run capture:screens`) | Playwright on app.handymandoit.com, signed out | app-screens: welcome, home, services, category, shop, food, help, pro × fr/en × light/dark (1170×2532 WebP), captions FR/EN |
 | `scripts/encode-hero.ts` ✅ (`npm run encode:hero`, needs ffmpeg) | A licensed source clip | 480/720/1080p MP4 + WebM, AVIF poster ≤ 120 KB; `--upload` sets `home.hero.video`, `--cues` retimes the cues |
 
 Seeds must be **idempotent** (upsert by slug/key) and safe to re-run. Downloads and captures are cached in `.cache/` (gitignored).

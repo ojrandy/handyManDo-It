@@ -48,7 +48,7 @@ export async function Hero() {
 
   // The video's poster, shown under the overlay: the background itself while there is no footage
   // and in light-data mode, and until the first frame when there is. Dimmed by the overlay, it is
-  // never the LCP element, so it loads after the text and the phone screen.
+  // never the LCP element; HeroStory only mounts it once the page has loaded.
   const posterSources = imageSources(copy?.video?.poster)
   const backdrop = posterSources.length ? (
     <CmsImage

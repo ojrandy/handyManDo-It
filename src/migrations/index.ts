@@ -10,6 +10,7 @@ import * as migration_20261027_170611_add_navigation_seo_globals from './2026102
 import * as migration_20261027_214123_add_home_global from './20261027_214123_add_home_global';
 import * as migration_20261027_221436_add_redirects from './20261027_221436_add_redirects';
 import * as migration_20261028_230912_hero_video_sizes from './20261028_230912_hero_video_sizes';
+import * as migration_20261029_084922_phone_size_pro_screen from './20261029_084922_phone_size_pro_screen';
 
 export const migrations = [
   {
@@ -70,6 +71,11 @@ export const migrations = [
   {
     up: migration_20261028_230912_hero_video_sizes.up,
     down: migration_20261028_230912_hero_video_sizes.down,
-    name: '20261028_230912_hero_video_sizes'
+    name: '20261028_230912_hero_video_sizes',
+  },
+  {
+    up: migration_20261029_084922_phone_size_pro_screen.up,
+    down: migration_20261029_084922_phone_size_pro_screen.down,
+    name: '20261029_084922_phone_size_pro_screen'
   },
 ];

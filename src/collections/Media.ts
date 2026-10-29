@@ -33,6 +33,8 @@ export const Media: CollectionConfig = {
     focalPoint: true,
     imageSizes: [
       { name: 'thumb', width: 480, formatOptions: { format: 'webp', options: { quality: 78 } } },
+      // A phone frame's screen at 2× (268 px): the hero's LCP image on desktop.
+      { name: 'phone', width: 560, formatOptions: { format: 'webp', options: { quality: 70 } } },
       { name: 'card', width: 960, formatOptions: { format: 'webp', options: { quality: 80 } } },
       { name: 'wide', width: 1600, formatOptions: { format: 'webp', options: { quality: 80 } } },
       { name: 'hero', width: 2400, formatOptions: { format: 'webp', options: { quality: 78 } } },

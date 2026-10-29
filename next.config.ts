@@ -48,6 +48,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ['image/avif', 'image/webp'],
+    // The Media imageSizes widths, so each srcset width names a file that really has it (the
+    // CmsImage loader answers a width with the narrowest size covering it).
+    deviceSizes: [480, 560, 960, 1600, 2400],
     localPatterns: [
       { pathname: '/api/media/file/**' },
       { pathname: '/badges/**' },
