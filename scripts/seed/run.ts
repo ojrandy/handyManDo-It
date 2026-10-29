@@ -261,7 +261,13 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
   }
 
   for (const seed of faqSeeds) {
-    await upsert('faqs', seed.key, { question: { equals: seed.question.fr } }, async () => {
+    // Questions seeded before T-1.11 had plain spaces before "?"; match those too, so --update
+    // fixes them in place instead of adding a copy.
+    const plain = seed.question.fr.replace(/[  ]/g, ' ')
+    const where = {
+      or: [{ question: { equals: seed.question.fr } }, { question: { equals: plain } }],
+    }
+    await upsert('faqs', seed.key, where, async () => {
       const shared = { category: seed.category, showOnHome: seed.showOnHome, order: seed.order }
       return {
         fr: { ...shared, question: seed.question.fr, answer: faqAnswer(seed.answer.fr) },

@@ -53,7 +53,7 @@
     "cues": {
       "quote": {
         "title": "Prix clair reçu",
-        "body": "Tapisserie · 25 000 FCFA"
+        "body": "Tapisserie · 25 000 FCFA"
       },
       "paid": {
         "title": "Payé avec MTN MoMo",
@@ -75,7 +75,7 @@
   },
   "footer": {
     "rights": "Tous droits réservés.",
-    "hours": "Tous les jours, 07h00–21h00 (WAT)",
+    "hours": "Tous les jours, de 7 h à 21 h (WAT)",
     "label": "Pied de page",
     "tagline": "Right at Home",
     "columns": {
@@ -121,7 +121,7 @@
   "error": {
     "eyebrow": "Erreur",
     "title": "Un problème est survenu.",
-    "body": "Ce n’est pas de votre faute. Réessayez dans un instant ; si le problème continue, contactez-nous sur WhatsApp.",
+    "body": "Ce n’est pas de votre faute. Réessayez dans un instant ; si le problème continue, contactez-nous sur WhatsApp.",
     "retry": "Réessayer",
     "home": "Retour à l’accueil",
     "whatsapp": "Écrire sur WhatsApp"
@@ -204,7 +204,7 @@
   "phone": {
     "time": "9:41",
     "greeting": "Bonjour",
-    "question": "De quoi avez-vous besoin aujourd’hui ?",
+    "question": "De quoi avez-vous besoin aujourd’hui ?",
     "search": "Rechercher un service",
     "categories": "Catégories",
     "promoTitle": "Prix clair avant de réserver",
@@ -233,14 +233,14 @@
         "body": "Six ans de projets à travers le Cameroun, avec des photos du travail à chaque intervention."
       }
     },
-    "trustTitle": "La tranquillité, intégrée",
+    "trustTitle": "L’esprit tranquille, à chaque étape",
     "trust": {
       "verified": {
         "title": "Pros vérifiés",
         "body": "Identité, documents et compétences sont vérifiés avant qu’un pro puisse accepter une mission."
       },
       "held": {
-        "title": "Paiement bloqué jusqu’à la fin",
+        "title": "Paiement sécurisé jusqu’à la fin",
         "body": "Payez par Mobile Money ou portefeuille. L’argent n’est libéré qu’une fois le travail terminé."
       },
       "tracking": {
@@ -255,7 +255,7 @@
   },
   "numbers": {
     "eyebrow": "HandyMan en chiffres",
-    "title": "Une confiance partout au Cameroun.",
+    "title": "La confiance, partout au Cameroun.",
     "body": "De Douala, Buea et Yaoundé à plus de 120 villes.",
     "stats": {
       "towns": "Villes desservies",
@@ -275,7 +275,7 @@
       },
       "book": {
         "title": "Réservez et payez",
-        "body": "Payez en toute sécurité avec MTN MoMo, Orange Money ou votre portefeuille HandyMan. L’argent est bloqué jusqu’à la fin du travail."
+        "body": "Payez en toute sécurité avec MTN MoMo, Orange Money ou votre portefeuille HandyMan. L’argent reste sécurisé jusqu’à la fin du travail."
       },
       "relax": {
         "title": "Suivez en toute sérénité",
@@ -300,7 +300,7 @@
     "businesses": {
       "title": "Entreprises",
       "points": [
-        "Comptes « Mon organisation » pour votre équipe",
+        "Comptes « Mon organisation » pour votre équipe",
         "Signalétique, événements et aménagement de bureaux",
         "Un interlocuteur dédié pour vos projets"
       ],
@@ -309,8 +309,8 @@
     "buildings": {
       "title": "Immeubles et résidences",
       "points": [
-        "Les résidents rejoignent avec un code",
-        "Publiez des annonces et émettez des charges",
+        "Les résidents rejoignent l’immeuble avec un code",
+        "Publiez des avis et lancez les appels de charges",
         "Suivez les paiements et traitez les signalements"
       ],
       "cta": "Gérez votre immeuble avec HandyMan"
@@ -319,7 +319,7 @@
   "earn": {
     "eyebrow": "Gagnez avec HandyMan",
     "title": "Une seule app pour trouver du travail et être payé.",
-    "body": "Pros, vendeurs et cuisines utilisent la même app. Choisissez « Je propose des services » à l’inscription.",
+    "body": "Pros, vendeurs et cuisines utilisent la même app. Choisissez « Je propose des services » à l’inscription.",
     "tabsLabel": "Façons de gagner",
     "tabs": {
       "pros": {
@@ -352,7 +352,7 @@
     },
     "stepsLabel": "Comment s’inscrire",
     "steps": [
-      "« Je propose des services »",
+      "« Je propose des services »",
       "Votre profil",
       "Vérification",
       "Recevez des demandes"
@@ -388,7 +388,7 @@
       "name": "Repas",
       "blurb": "Commandez auprès de cuisines locales."
     },
-    "custom": "Besoin de quelque chose de sur mesure ?",
+    "custom": "Besoin de quelque chose de sur mesure ?",
     "quote": "Demander un devis",
     "photos": {
       "interiorExteriorDesign": "Meuble TV de salon conçu et réalisé par HandyMan Do IT",
@@ -410,7 +410,7 @@
     "seeAll": "Voir tous les avis",
     "items": {
       "emmanuel": {
-        "quote": "Handyman Do It a transformé mon salon grâce à son excellent service de design intérieur. L’équipe a été incroyablement professionnelle, à l’écoute de mes besoins, et m’a livré un espace magnifique qui a dépassé mes attentes. Je ne pourrais pas être plus satisfait du résultat et je recommande vivement leurs services !",
+        "quote": "Handyman Do It a transformé mon salon grâce à son excellent service de design intérieur. L’équipe a été incroyablement professionnelle, à l’écoute de mes besoins, et m’a livré un espace magnifique qui a dépassé mes attentes. Je ne pourrais pas être plus satisfait du résultat et je recommande vivement leurs services !",
         "name": "N Emmanuel",
         "city": "Yaoundé",
         "service": "Design intérieur"
@@ -422,7 +422,7 @@
         "service": "Rénovation"
       },
       "solpia": {
-        "quote": "Handyman Do It a fait un travail incroyable pour l’installation de notre événement d’entreprise. Des premiers concepts à l’installation finale, tout a été géré avec professionnalisme et créativité. L’événement était superbe et nos invités nous ont fait de nombreux compliments. Merci d’avoir fait de notre événement un grand succès !",
+        "quote": "Handyman Do It a fait un travail incroyable pour l’installation de notre événement d’entreprise. Des premiers concepts à l’installation finale, tout a été géré avec professionnalisme et créativité. L’événement était superbe et nos invités nous ont fait de nombreux compliments. Merci d’avoir fait de notre événement un grand succès !",
         "name": "Solpia Cameroon",
         "city": "Douala",
         "service": "Événements"
@@ -441,36 +441,36 @@
     "seeAll": "Voir toutes les questions",
     "items": {
       "payment": {
-        "q": "Comment payer ?",
+        "q": "Comment payer ?",
         "a": "Payez dans l’app avec MTN MoMo, Orange Money ou votre portefeuille HandyMan. Votre argent est conservé en sécurité et n’est versé au pro qu’une fois le travail terminé."
       },
       "cities": {
-        "q": "Quelles villes couvrez-vous ?",
+        "q": "Quelles villes couvrez-vous ?",
         "a": "Douala, Buea et Yaoundé, ainsi que plus de 120 villes à travers le Cameroun."
       },
       "price": {
-        "q": "Comment le prix est-il fixé ?",
-        "a": "Décrivez le travail et ajoutez des photos : vous recevez un prix clair avant de réserver. Pour les projets plus importants, demandez un devis et nous vous le préparons."
+        "q": "Comment le prix est-il fixé ?",
+        "a": "Décrivez le travail et ajoutez des photos : vous recevez un prix clair avant de réserver. Pour les projets plus importants, demandez un devis et nous vous le préparons."
       },
       "satisfaction": {
-        "q": "Et si je ne suis pas satisfait ?",
-        "a": "Votre paiement reste bloqué jusqu’à la fin du travail, et la mission ne se clôture que lorsque vous donnez votre code de fin. Les remboursements sont crédités sur votre portefeuille HandyMan. Notre assistance est disponible tous les jours de 07h00 à 21h00 (WAT)."
+        "q": "Et si je ne suis pas satisfait ?",
+        "a": "Votre paiement reste sécurisé jusqu’à la fin du travail, et la mission ne se clôture que lorsque vous donnez votre code de fin. Les remboursements sont crédités sur votre portefeuille HandyMan. Notre assistance est disponible tous les jours, de 7 h à 21 h (WAT)."
       },
       "vetting": {
-        "q": "Comment les pros sont-ils vérifiés ?",
+        "q": "Comment les pros sont-ils vérifiés ?",
         "a": "Notre équipe vérifie l’identité, les documents et les compétences de chaque pro avant qu’il puisse accepter des missions sur HandyMan."
       },
       "tracking": {
-        "q": "Puis-je suivre l’intervention ?",
+        "q": "Puis-je suivre l’intervention ?",
         "a": "Oui. Suivez votre pro sur une carte en direct et voyez chaque étape, du départ à la fin, avec des photos du travail."
       },
       "pros": {
-        "q": "Comment devenir pro ?",
-        "a": "Téléchargez la même app et choisissez « Je propose des services » à l’inscription. Ajoutez vos compétences, vos tarifs et votre zone, faites-vous vérifier, puis recevez des demandes près de chez vous."
+        "q": "Comment devenir pro ?",
+        "a": "Téléchargez la même app et choisissez « Je propose des services » à l’inscription. Ajoutez vos compétences, vos tarifs et votre zone, faites-vous vérifier, puis recevez des demandes près de chez vous."
       },
       "business": {
-        "q": "Travaillez-vous avec les entreprises ?",
-        "a": "Oui. Les comptes « Mon organisation » permettent à votre équipe de réserver ensemble, et nous réalisons signalétique, événements et aménagements de bureaux. Demandez un devis entreprise pour commencer."
+        "q": "Travaillez-vous avec les entreprises ?",
+        "a": "Oui. Les comptes « Mon organisation » permettent à votre équipe de réserver ensemble, et nous réalisons signalétique, événements et aménagements de bureaux. Demandez un devis entreprise pour commencer."
       }
     }
   }

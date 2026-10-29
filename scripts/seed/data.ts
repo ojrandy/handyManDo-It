@@ -181,14 +181,14 @@ export type FaqSeed = {
   answer: Localized<string>
 }
 
-// Policy from the owner (2026-10-28); the old site had no cancellation FAQ. Native-speaker
-// review of the French under T-1.11.
+// Policy from the owner (2026-10-28); the old site had no cancellation FAQ. French reviewed in
+// T-1.11; native-speaker sign-off is T-6.03.
 const cancelFaq: Omit<FaqSeed, 'order' | 'showOnHome'> = {
   key: 'cancel',
   category: 'cancellations',
-  question: { fr: 'Puis-je annuler une réservation ?', en: 'Can I cancel a booking?' },
+  question: { fr: 'Puis-je annuler une réservation ?', en: 'Can I cancel a booking?' },
   answer: {
-    fr: 'Oui, depuis la réservation dans l’app, tant que le travail n’a pas commencé et que votre pro n’est pas déjà en route. Si vous annulez une fois le travail commencé, vous êtes remboursé à 50 %. Les remboursements sont versés sur votre portefeuille HandyMan.',
+    fr: 'Oui, depuis la réservation dans l’app, tant que le travail n’a pas commencé et que votre pro n’est pas encore en route. Si vous annulez une fois le travail commencé, vous êtes remboursé à hauteur de 50 %. Les remboursements sont versés sur votre portefeuille HandyMan.',
     en: 'Yes, from the booking in the app, as long as the work hasn’t started and your pro isn’t already on the way. If you cancel once the work has started, you’re refunded 50%. Refunds go back to your HandyMan wallet.',
   },
 }

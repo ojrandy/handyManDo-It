@@ -28,4 +28,11 @@ describe('UI messages', () => {
   ])('%s.json has no empty values', (_locale, entries) => {
     expect(entries.filter(([, value]) => value.trim() === '').map(([key]) => key)).toEqual([])
   })
+
+  // French puts a space before ? ! : ; and inside « », and groups thousands with a space. A plain
+  // space there lets the line wrap and leave the mark alone at the start of the next line.
+  it('fr.json uses no-break spaces in French punctuation', () => {
+    const breakable = / [?!:;»%]|« |\d \d{3}\b/
+    expect(frEntries.filter(([, value]) => breakable.test(value)).map(([key]) => key)).toEqual([])
+  })
 })
