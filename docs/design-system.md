@@ -69,7 +69,7 @@ French strings run ~15–25 % longer than English: design every heading and butt
 |---|---|
 | Easing | `ease-out-expo` = `cubic-bezier(0.16, 1, 0.3, 1)` |
 | Durations | micro 150 ms · UI 250 ms · section reveals 600–800 ms |
-| Libraries | CSS first; `motion` for component transitions; **GSAP ScrollTrigger** only for the scroll story (lazy-loaded); `lenis` optional smooth scroll (off under reduced motion) |
+| Libraries | CSS first; `motion` for component transitions; scroll story uses CSS `sticky` + IntersectionObserver, no GSAP (ADR-021); `lenis` optional smooth scroll (off under reduced motion) |
 | Reduced motion | Global CSS already neutralises animations. Components must also **branch logic**: no pinning, no autoplay video, no marquee, counters show final numbers, carousels don't auto-advance |
 | Performance | Animate `transform`/`opacity` only. No layout-thrashing scroll handlers; use IntersectionObserver |
 

@@ -72,7 +72,7 @@ Every requirement has a stable ID. Code, tests, tracker items and PRs reference 
 | FR-HOME-04 | M | Services bento grid (2 large + 9 small + Shop + Food) linking to service pages | Each tile: photo, icon, "From X FCFA" or fallback "Clear price before you book" |
 | FR-HOME-05 | M | Value pillars (Punctual, Polite, Professional) + 4 trust features | Copy from CMS |
 | FR-HOME-06 | S | Animated counters + Cameroon map | Numbers from `site` global; counters static under reduced motion |
-| FR-HOME-07 | M | Pinned scroll story, 6 chapters, laptop + phone finale; horizontal swipe on mobile | No pinning < 768 px; GSAP loaded only when in view |
+| FR-HOME-07 | M | Pinned scroll story, 6 chapters, laptop + phone finale; horizontal swipe on mobile | No pinning < 768 px or under reduced motion; no animation library on first load (ADR-021, was: GSAP loaded only when in view) |
 | FR-HOME-08 | M | How it works (3 steps) | Line draws on scroll; static fallback |
 | FR-HOME-09 | S | Interactive mini-demo phone (category → pros → booking sheet) | Keyboard & screen-reader operable; fires `demo_interact {step}` |
 | FR-HOME-10 | S | 3D coverflow screens gallery with light/dark toggle, localized screenshots | Drag, swipe, arrow keys |

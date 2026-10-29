@@ -43,7 +43,7 @@ globals: site · navigation · home · seo
 | name | text | |
 | roles | select[] `admin`/`editor` | required, default `['editor']`, `saveToJWT`; only admins can change |
 
-Access: create/delete admin; read/update admin or self. Hook: first user ever created becomes admin.
+Access: create/delete/unlock admin (Payload's default would let any signed-in user unlock a locked account); read/update admin or self. Hook: first user ever created becomes admin. The full role matrix is tested in `tests/int/access.int.spec.ts` (T-1.12).
 
 ### 3.2 `media` ✅
 | Field | Type | Notes |
@@ -52,7 +52,7 @@ Access: create/delete admin; read/update admin or self. Hook: first user ever cr
 | caption | text, localized | |
 | (upload) | image/*, video/mp4, video/webm, application/pdf | focal point on |
 
-Sizes (WebP): `thumb` 480, `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read; create/update/delete `isEditor` (2026-10-23). ⬜ Separate private collection for CVs (§3.12).
+Sizes (WebP): `thumb` 480, `phone` 560 (a Phone frame's screen at 2×, q70; 2026-10-29), `card` 960, `wide` 1600, `hero` 2400. Storage: R2 prefix `media/` when `S3_BUCKET` set. Access: public read; create/update/delete `isEditor` (2026-10-23). ⬜ Separate private collection for CVs (§3.12).
 
 ### 3.3 `services` ✅
 title (L, required), slug (L; unique per locale, index `(slug, _locale)`, so FR and EN may share a slug), key (select of the 11 built-in `ServiceKey`s from `src/lib/service-keys.ts`, unique, optional for new services), icon (select of Lucide names in the same file), heroImage (media), summary (textarea L, required), body (richText L), inclusions (array{text}, localized as a whole), process (array{title, text}, localized as a whole), fromPrice (number FCFA, optional → fallback label), featuredOnHome (bool, default true), size (`large`/`small` for bento), order, meta (SEO plugin tab: localized title/description/image). Drafts on (20 versions). Access: `publishedOrEditor` read, editor write. Revalidates tag `services`. Join fields (virtual, ADR-017): `projects` (on `projects.service`) and `testimonials` (on `testimonials.service`); `faqs` (on `faqs.service`). Public reads of the join respect the joined collection's access, so draft projects stay hidden.
@@ -80,7 +80,7 @@ categories: title (L, required), slug (shared by both locales). Public read, edi
 title (L, required), slug (L, unique per locale: `/careers/[slug]` is translated), location (required), type (select: full-time, part-time, contract), open (bool, default true, indexed; closed roles stay visible without the apply form), closesAt (date), description (richText L, required). Public read, editor write; revalidates `jobs`.
 
 ### 3.11 `app-screens` ✅ (`appScreens`)
-key (select: welcome, home, services, category, shop, food, help, tracking, wallet, chat, completion), lang (`fr`/`en`, **not** Payload-localized — one doc per language × theme; renamed from `locale`, Q-15), theme (`light`/`dark`, default light), image (media, required; 390×844 @3×), caption (L). Unique compound index (key, lang, theme). Public read, editor write; revalidates `app-screens`.
+key (select: welcome, home, services, category, shop, food, help, pro, tracking, wallet, chat, completion), lang (`fr`/`en`, **not** Payload-localized — one doc per language × theme; renamed from `locale`, Q-15), theme (`light`/`dark`, default light), image (media, required; 390×844 @3×), caption (L). Unique compound index (key, lang, theme). Public read, editor write; revalidates `app-screens`.
 
 ### 3.12 `submissions` ✅ + `files` ✅
 submissions: status (select: new, in-progress, done, spam; the only editable field), type (select: contact, quote-home, quote-business, partnership, pro, job), name, email, phone, city, message, job (rel jobs), attachment (upload → `files`), locale (fr/en), details (json, extra form fields; named `details`, not `payload`, to avoid confusion with Payload), utm (json), createdAt. Visitor-supplied fields are read-only for everyone (field access `update: false`, FR-FORM-02).
@@ -91,13 +91,13 @@ files (private uploads, group Inbox): PDF/DOC/DOCX only (Payload also checks the
 
 ### 4.1 `site` ✅ (access: public read, admin update)
 Tabs — **Contact:** phone, whatsappUrl, email, hours (L), offices[] {label L, address, city, mapUrl}. **Apps:** webAppUrl, playStoreUrl, appStoreUrl (empty ⇒ iOS badge hidden), rating, reviewCount (empty ⇒ rating row hidden). **Stats:** towns, years, clients, projects. **Social:** facebook, instagram, x, youtube.
-Defaults come from `src/lib/site.ts`. Revalidates `site`. The home sections read it (stats, web app and store links, T-1.15); header and footer still use `src/lib/site.ts` until T-1.17.
+Defaults come from `src/lib/site.ts`. Revalidates `site`. Read through `getSiteSettings` (`src/lib/settings.ts`): home sections (T-1.15), header, footer, store badges, Get the app and the WhatsApp button (T-1.17). Empty contact fields fall back to `src/lib/site.ts`; empty hours/offices to the messages copy; an emptied social field hides its link; map links render only when http(s).
 
 ### 4.2 `navigation` ✅ (access: public read, editor update)
-header[] (≤ 8) {link, children[] (≤ 16, non-empty ⇒ mega-menu) {link, description L, icon (service icon names)}}; footerColumns[] (≤ 4) {title L, links[] {link}}. Revalidates `navigation`.
+header[] (≤ 8) {link, children[] (≤ 16, non-empty ⇒ mega-menu) {link, description L, icon (service icon names)}}; footerColumns[] (≤ 4) {title L, links[] {link}}. Revalidates `navigation`. Read through `getNavigation` (`src/lib/navigation.ts`, T-1.17), tagged also with `services`, `projects`, `posts`, `jobs` so a renamed slug refreshes the menus. Only the first header item with sub-links opens the mega-menu (its intro text stays in messages); links to unpublished docs and empty columns are skipped; an empty `header`/`footerColumns` keeps the built-in menus.
 **Link** (`src/fields/link.ts`, reused everywhere): label (L) + type `page` (a static key of `routing.pathnames`, so the site resolves the translated URL per locale) | `doc` (relationship to services, projects, posts or jobs) | `external` (https://, mailto:, tel:). The target matching the type is required. The page list is a database enum: adding a static route to `routing.pathnames` needs a migration (the CI drift check catches it).
 
-### 4.3 `home` ✅ (access: public read, editor update; drafts on, 20 versions)
+### 4.3 `home` ✅ (access: `publishedOrEditor` read, so `?draft=true` gives the public the published version; editor update; drafts on, 20 versions)
 One tab + group per section (PLAN.md §5.2–5.16): **hero** {eyebrow, titleStart, titleHighlight, subtitle, values, video {mp4, webm (720p), mp4Large, webmLarge (1080p, screens ≥ 1280 px), mp4Small, webmSmall (480p), poster (AVIF ≤ 120 KB; without an MP4 the hero shows it as a still background)}, film {video, poster, captions}, cues[] {time (s, required), icon, title, body}}; **pillars** {eyebrow, title, values[] {icon, title, body}, trustTitle, trust[] {icon, title, body}}; **numbers** {eyebrow, title, body}; **howItWorks** {eyebrow, title, steps[]}; **audiences** {eyebrow, title, items[] {audience homes/businesses/buildings, title, points[]}}; **earn** {eyebrow, title, body, tabs[] {label, title, points[]}, steps[]}; **services / testimonials / faq / blog** {eyebrow, title}; **download** {eyebrow, title, bodyAndroid, bodyAll}. Text is localized; arrays are localized as a whole (fields inside are not localized again). All section copy is optional: an empty field (or list with no rows) shows the messages/*.json copy instead (T-1.15, `src/lib/home.ts`). Audience cards are matched on `audience`; Earn tabs take their icons in row order. UI chrome (buttons, aria) stays in messages; counters in `site`. Revalidates `home`; draft saves don't purge.
 
 ### 4.4 `seo` ✅ (access: public read, **admin** update)
@@ -126,7 +126,7 @@ defaultTitle (L, required, default "HandyMan Do IT"), defaultDescription (L, req
 |---|---|---|
 | `scripts/seed.ts` ✅ (`npm run seed`) | Old site content in `messages/*.json` + `lib/{site,services,hero,showcase}.ts` + `public/images` | services (11), testimonials (4), team (3), partners (8), faqs (9), site, navigation, home |
 | `scripts/migrate-wordpress.ts` ✅ (`npm run migrate:wordpress`) | WordPress REST API (`WORDPRESS_API`, default the old blog) | posts (20, `en` locale), categories (2; “Uncategorized” dropped; FR names in the script), media (cover + inline images, originals capped at 2400 px); records `legacyUrl` |
-| `scripts/capture-screens.ts` ✅ (`npm run capture:screens`) | Playwright on app.handymandoit.com, signed out | app-screens: welcome, home, services, category, shop, food, help × fr/en × light/dark (1170×2532 WebP), captions FR/EN |
+| `scripts/capture-screens.ts` ✅ (`npm run capture:screens`) | Playwright on app.handymandoit.com, signed out | app-screens: welcome, home, services, category, shop, food, help, pro × fr/en × light/dark (1170×2532 WebP), captions FR/EN |
 | `scripts/encode-hero.ts` ✅ (`npm run encode:hero`, needs ffmpeg) | A licensed source clip | 480/720/1080p MP4 + WebM, AVIF poster ≤ 120 KB; `--upload` sets `home.hero.video`, `--cues` retimes the cues |
 
 Seeds must be **idempotent** (upsert by slug/key) and safe to re-run. Downloads and captures are cached in `.cache/` (gitignored).
