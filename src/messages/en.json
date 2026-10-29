@@ -573,5 +573,64 @@
     "eyebrow": "Blog",
     "title": "Latest from the blog.",
     "seeAll": "All articles"
+  },
+  "breadcrumbs": {
+    "label": "Breadcrumb",
+    "home": "Home"
+  },
+  "ctaBand": {
+    "title": "Ready when you are.",
+    "body": "Book a verified pro in the app, or tell us about a bigger job and get a quote.",
+    "book": "Book in the app",
+    "quote": "Get a quote"
+  },
+  "servicesPage": {
+    "metaTitle": "Services",
+    "metaDescription": "Design, repairs, remodeling, moving, signage, events and more: book verified pros in Cameroon with a clear price first and Mobile Money payment held until the job is done.",
+    "eyebrow": "Services",
+    "title": "Every service, one app.",
+    "lead": "Verified pros for your home and business across Cameroon. See the price before you book, pay with Mobile Money and follow the job live.",
+    "filter": {
+      "label": "Filter services",
+      "all": "All",
+      "count": "{count, plural, one {# service} other {# services}}"
+    },
+    "categories": {
+      "design": "Design & furniture",
+      "build": "Repairs & building",
+      "moving": "Moving & delivery",
+      "business": "Business & events"
+    },
+    "pricing": {
+      "eyebrow": "Pricing",
+      "title": "How pricing works",
+      "points": {
+        "clear": {
+          "title": "A clear price first",
+          "body": "You see the price in the app before you book. Nothing starts until you agree."
+        },
+        "held": {
+          "title": "Money held until done",
+          "body": "Pay with MTN MoMo, Orange Money or your HandyMan wallet. The money is only released when the job is finished."
+        },
+        "code": {
+          "title": "Close with your code",
+          "body": "The job only closes when you share your private completion code."
+        },
+        "quote": {
+          "title": "Bigger jobs, a detailed quote",
+          "body": "Remodeling, events or a whole office? Tell us about it and we send you a quote."
+        }
+      }
+    },
+    "detail": {
+      "actions": "Book this service",
+      "included": "What’s included",
+      "process": "How it works",
+      "work": "Recent work",
+      "reviews": "What clients say",
+      "faq": "Questions about {service}",
+      "other": "Other services"
+    }
   }
 }

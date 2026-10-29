@@ -17,9 +17,22 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
   const [isPending, startTransition] = useTransition()
 
   function select(locale: Locale) {
+    // Slug pages translate the slug (/fr/services/demenagement ↔ /en/services/moving), so the
+    // current params would lead to a 404. Their hreflang alternate (src/lib/seo.ts) names the
+    // page in the other language.
+    const alternate = document.querySelector<HTMLLinkElement>(
+      `link[rel="alternate"][hreflang="${locale}"]`,
+    )
+    const translated =
+      alternate && new URL(alternate.href).pathname.replace(new RegExp(`^/${locale}(?=/|$)`), '')
     startTransition(() => {
-      // @ts-expect-error -- params always match the current pathname
-      router.replace({ pathname, params }, { locale })
+      if (translated) {
+        // @ts-expect-error -- an already localized path; next-intl passes unknown paths through
+        router.replace(translated, { locale })
+      } else {
+        // @ts-expect-error -- params always match the current pathname
+        router.replace({ pathname, params }, { locale })
+      }
     })
   }
 

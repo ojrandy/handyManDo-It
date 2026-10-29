@@ -11,6 +11,9 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     globalSetup: ['./tests/int/globalSetup.ts'],
     include: ['tests/int/**/*.int.spec.ts'],
+    // next-intl imports `next/navigation` without an extension, which plain Node ESM can't
+    // resolve; letting Vite transform it makes localized paths (src/lib/seo.ts) testable.
+    server: { deps: { inline: ['next-intl'] } },
     // getPayload() connects and checks the schema in beforeAll; with every file booting Payload in
     // parallel, that takes 48–64 s on the dev machine.
     hookTimeout: 120_000,

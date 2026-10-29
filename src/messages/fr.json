@@ -573,5 +573,64 @@
     "eyebrow": "Blog",
     "title": "Derniers articles du blog.",
     "seeAll": "Tous les articles"
+  },
+  "breadcrumbs": {
+    "label": "Fil d’Ariane",
+    "home": "Accueil"
+  },
+  "ctaBand": {
+    "title": "On s’en occupe quand vous voulez.",
+    "body": "Réservez un pro vérifié dans l’appli, ou parlez-nous d’un projet plus important pour recevoir un devis.",
+    "book": "Réserver dans l’appli",
+    "quote": "Demander un devis"
+  },
+  "servicesPage": {
+    "metaTitle": "Services",
+    "metaDescription": "Design, réparations, rénovation, déménagement, signalétique, événements et plus : réservez des pros vérifiés au Cameroun, prix clair d’abord, paiement Mobile Money sécurisé jusqu’à la fin du travail.",
+    "eyebrow": "Services",
+    "title": "Tous les services, une seule appli.",
+    "lead": "Des pros vérifiés pour votre maison et votre entreprise partout au Cameroun. Voyez le prix avant de réserver, payez par Mobile Money et suivez la mission en direct.",
+    "filter": {
+      "label": "Filtrer les services",
+      "all": "Tous",
+      "count": "{count, plural, one {# service} other {# services}}"
+    },
+    "categories": {
+      "design": "Design et mobilier",
+      "build": "Réparations et construction",
+      "moving": "Déménagement et livraison",
+      "business": "Entreprises et événements"
+    },
+    "pricing": {
+      "eyebrow": "Tarifs",
+      "title": "Comment les prix fonctionnent",
+      "points": {
+        "clear": {
+          "title": "Un prix clair d’abord",
+          "body": "Vous voyez le prix dans l’appli avant de réserver. Rien ne commence sans votre accord."
+        },
+        "held": {
+          "title": "Paiement sécurisé jusqu’à la fin",
+          "body": "Payez avec MTN MoMo, Orange Money ou votre portefeuille HandyMan. L’argent n’est versé qu’une fois le travail terminé."
+        },
+        "code": {
+          "title": "Clôturez avec votre code",
+          "body": "La mission ne se clôture que lorsque vous donnez votre code privé."
+        },
+        "quote": {
+          "title": "Gros projets, devis détaillé",
+          "body": "Rénovation, événement ou bureaux entiers ? Décrivez votre projet et nous vous envoyons un devis."
+        }
+      }
+    },
+    "detail": {
+      "actions": "Réserver ce service",
+      "included": "Ce qui est inclus",
+      "process": "Comment ça marche",
+      "work": "Réalisations récentes",
+      "reviews": "Ce que disent nos clients",
+      "faq": "Questions sur : {service}",
+      "other": "Autres services"
+    }
   }
 }
