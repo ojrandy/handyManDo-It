@@ -108,8 +108,9 @@ export function HeroStory({ cues, video, screen, labels, children }: Props) {
             poster={video.poster}
             className="absolute inset-0 size-full object-cover"
           >
-            {video.webm ? <source src={video.webm} type="video/webm" /> : null}
-            <source src={video.mp4} type="video/mp4" />
+            {video.sources.map(({ src, type, media }) => (
+              <source key={src} src={src} type={type} media={media} />
+            ))}
           </video>
         ) : null}
         <div

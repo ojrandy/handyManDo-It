@@ -26,9 +26,15 @@ export const heroCues: readonly HeroCue[] = [
   { key: 'released', time: 18, icon: KeyRound },
 ]
 
+export type HeroVideoSource = {
+  src: string
+  type: 'video/webm' | 'video/mp4'
+  // Viewport condition; the browser plays the first source that matches and that it can decode.
+  media?: string
+}
+
 export type HeroVideo = {
-  mp4: string
-  webm?: string
+  sources: HeroVideoSource[]
   poster?: string
 }
 

@@ -63,15 +63,26 @@ export function pickList<T, U>(
   return items?.length ? items.map(map) : fallback()
 }
 
-// Hero footage needs at least the MP4; without it the hero keeps its designed background.
+// Hero footage needs at least the 720p MP4; without it the hero keeps its designed background.
+// Sources run largest first, WebM before MP4 in each size: the browser takes the first one whose
+// `media` matches. Browsers that ignore `media` on video sources take the first playable file.
 export function heroVideoFrom(video: NonNullable<Home['hero']>['video']): HeroVideo | null {
   const mp4 = mediaUrl(video?.mp4)
   if (!mp4) return null
-  return {
-    mp4,
-    webm: mediaUrl(video?.webm) ?? undefined,
-    poster: mediaUrl(video?.poster) ?? undefined,
-  }
+  // Without a 480p file, small screens play the 720p one.
+  const hasSmall = Boolean(mediaUrl(video?.mp4Small))
+  const sizes = [
+    { webm: video?.webmLarge, mp4: video?.mp4Large, media: '(min-width: 1280px)' },
+    { webm: video?.webm, mp4: video?.mp4, media: hasSmall ? '(min-width: 640px)' : undefined },
+    { webm: video?.webmSmall, mp4: video?.mp4Small, media: undefined },
+  ]
+  const sources = sizes.flatMap(({ webm, mp4, media }) =>
+    [
+      { src: mediaUrl(webm), type: 'video/webm' as const, media },
+      { src: mediaUrl(mp4), type: 'video/mp4' as const, media },
+    ].flatMap(({ src, ...rest }) => (src ? [{ src, ...rest }] : [])),
+  )
+  return { sources, poster: mediaUrl(video?.poster) ?? undefined }
 }
 
 // Large tiles first (they anchor the bento grid), each group in editor order.

@@ -1461,11 +1461,18 @@ export interface Home {
     subtitle?: string | null;
     values?: string | null;
     /**
-     * Empty MP4 ⇒ designed background, timer-driven cues.
+     * Empty MP4 ⇒ designed background, timer-driven cues. Files come from `npm run encode:hero`.
      */
     video?: {
       mp4?: (number | null) | Media;
       webm?: (number | null) | Media;
+      mp4Large?: (number | null) | Media;
+      webmLarge?: (number | null) | Media;
+      mp4Small?: (number | null) | Media;
+      webmSmall?: (number | null) | Media;
+      /**
+       * AVIF under 120 KB (NFR-PERF-02).
+       */
       poster?: (number | null) | Media;
     };
     /**
@@ -1778,6 +1785,10 @@ export interface HomeSelect<T extends boolean = true> {
           | {
               mp4?: T;
               webm?: T;
+              mp4Large?: T;
+              webmLarge?: T;
+              mp4Small?: T;
+              webmSmall?: T;
               poster?: T;
             };
         film?:

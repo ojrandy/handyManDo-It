@@ -59,14 +59,41 @@ describe('imageSources', () => {
 })
 
 describe('heroVideoFrom', () => {
-  it('needs an MP4; WebM and poster are optional', () => {
+  const file = (url: string) => media({ url })
+
+  it('needs the 720p MP4; other sizes, WebM and poster are optional', () => {
     expect(heroVideoFrom(undefined)).toBeNull()
-    expect(heroVideoFrom({ poster: media() })).toBeNull()
-    expect(heroVideoFrom({ mp4: media({ url: '/hero.mp4' }) })).toEqual({
-      mp4: '/hero.mp4',
-      webm: undefined,
+    expect(heroVideoFrom({ poster: media(), mp4Large: file('/1080.mp4') })).toBeNull()
+    expect(heroVideoFrom({ mp4: file('/720.mp4') })).toEqual({
+      sources: [{ src: '/720.mp4', type: 'video/mp4', media: undefined }],
       poster: undefined,
     })
+  })
+
+  it('lists sources largest first, WebM before MP4, each with its viewport condition', () => {
+    const video = heroVideoFrom({
+      mp4Large: file('/1080.mp4'),
+      webmLarge: file('/1080.webm'),
+      mp4: file('/720.mp4'),
+      webm: file('/720.webm'),
+      mp4Small: file('/480.mp4'),
+      webmSmall: file('/480.webm'),
+      poster: file('/poster.avif'),
+    })
+    expect(video?.sources.map(({ src, media }) => [src, media])).toEqual([
+      ['/1080.webm', '(min-width: 1280px)'],
+      ['/1080.mp4', '(min-width: 1280px)'],
+      ['/720.webm', '(min-width: 640px)'],
+      ['/720.mp4', '(min-width: 640px)'],
+      ['/480.webm', undefined],
+      ['/480.mp4', undefined],
+    ])
+    expect(video?.poster).toBe('/poster.avif')
+  })
+
+  it('lets small screens play 720p when there is no 480p file', () => {
+    const video = heroVideoFrom({ mp4: file('/720.mp4'), mp4Large: file('/1080.mp4') })
+    expect(video?.sources.map(({ media }) => media)).toEqual(['(min-width: 1280px)', undefined])
   })
 })
 

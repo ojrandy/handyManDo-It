@@ -87,11 +87,24 @@ export const Home: GlobalConfig = {
           {
             name: 'video',
             type: 'group',
-            admin: { description: 'Empty MP4 ⇒ designed background, timer-driven cues.' },
+            admin: {
+              description:
+                'Empty MP4 ⇒ designed background, timer-driven cues. Files come from `npm run encode:hero`.',
+            },
             fields: [
-              { name: 'mp4', type: 'upload', relationTo: 'media' },
-              { name: 'webm', type: 'upload', relationTo: 'media' },
-              { name: 'poster', type: 'upload', relationTo: 'media' },
+              { name: 'mp4', type: 'upload', relationTo: 'media', label: 'MP4 (720p)' },
+              { name: 'webm', type: 'upload', relationTo: 'media', label: 'WebM (720p)' },
+              // Screens ≥ 1280 px get 1080p, phones and small tablets 480p (PLAN.md §2: 3 sizes).
+              { name: 'mp4Large', type: 'upload', relationTo: 'media', label: 'MP4 (1080p)' },
+              { name: 'webmLarge', type: 'upload', relationTo: 'media', label: 'WebM (1080p)' },
+              { name: 'mp4Small', type: 'upload', relationTo: 'media', label: 'MP4 (480p)' },
+              { name: 'webmSmall', type: 'upload', relationTo: 'media', label: 'WebM (480p)' },
+              {
+                name: 'poster',
+                type: 'upload',
+                relationTo: 'media',
+                admin: { description: 'AVIF under 120 KB (NFR-PERF-02).' },
+              },
             ],
           },
           {

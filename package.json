@@ -11,6 +11,7 @@
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "migrate:check": "node scripts/check-migrations.mjs",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/seed.ts",
+    "encode:hero": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/encode-hero.ts",
     "capture:screens": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/capture-screens.ts",
     "migrate:wordpress": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/migrate-wordpress.ts",
     "start:prod": "npm run migrate && npm run start",
