@@ -93,7 +93,7 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 | WhatsAppFab | ✅ (#128C7E for 3:1 icon contrast) | Bottom-right, delayed, safe-area aware |
 | Form fields | ⬜ | Label always visible, error text linked with `aria-describedby`, `aria-live` summary |
 | JsonLd | ⬜ | `<script type="application/ld+json">` server component |
-| device/Phone, device/Laptop | Phone ✅ · Laptop ⬜ | CSS frame with `overlay` slot; `AppHomeScreen` is an HTML recreation of the app Home screen until captured screens (T-1.09) |
+| device/Phone, device/Laptop | Phone ✅ · Laptop ⬜ | CSS frame with `overlay` slot; `AppScreenImage` fills it with a captured `app-screens` image (page language, theme), `AppHomeScreen` (HTML recreation) is the fallback while none is captured |
 | sections/* | Header, Hero, TrustedBy, ServicesBento, Pillars, Numbers, HowItWorks, Testimonials, Audiences, Earn, FaqTeaser, DownloadBand, Footer ✅ · rest ⬜ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
 
 **Component rules**

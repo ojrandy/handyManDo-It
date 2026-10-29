@@ -118,6 +118,8 @@ prompt.md                phase-by-phase prompt library
 - Local `.env` `DATABASE_URL` must be the Docker DB. Dev mode schema-pushes to whatever it points at, so a Neon string there alters staging outside migrations. Neon strings live in Hostinger env vars only.
 - Run e2e beside another server with `E2E_PORT=3100 npm run test:e2e`; only one `next dev` per directory is allowed.
 - `S3_BUCKET` empty ⇒ uploads go to local `/media` (gitignored). Fine for dev, never for staging/prod.
+- Scripts (`seed`, `migrate:wordpress`, `capture:screens`, `encode:hero`) write outside Next, so they can't purge cache tags. Locally, `next build` and `next dev` then keep serving the old CMS reads from `.next/cache/fetch-cache` (dev: `.next/dev/cache/fetch-cache`): delete that folder after running a script. CI builds from a clean checkout and is unaffected.
+- CMS media URLs are absolute to the configured server URL (`localhost:3000` locally). A local server on another port gets them blocked by the site CSP (`img-src 'self'`), so images look broken there.
 - `MEDIA_PUBLIC_URL` drives both `next/image` remotePatterns and R2 file URLs — set it in every non-local environment.
 - The Users hook makes the **first** created user an admin. Create the real admin on a fresh DB before exposing `/admin`.
 - `.npmrc` uses `legacy-peer-deps=true`; keep using `npm ci` in CI/Hostinger.
