@@ -2,7 +2,7 @@ import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintex
 import { cache } from 'react'
 
 import type { Locale } from '@/i18n/routing'
-import type { Faq, Home, Service } from '@/payload-types'
+import type { AppScreen, Faq, Home, Service } from '@/payload-types'
 
 import type { HeroVideo } from './hero'
 import { mediaUrl } from './media'
@@ -17,6 +17,17 @@ import { site } from './site'
 // purpose: Next then keeps serving the last good page instead of caching a fallback one.
 
 export const getHome = cache((locale: Locale) => getGlobal('home', locale))
+
+// Captured app screens in the page's language (T-1.09); each one is a key × theme pair.
+export const getAppScreens = cache((locale: Locale) =>
+  findDocs('app-screens', locale, { where: { lang: { equals: locale } } }),
+)
+
+export const findScreen = (
+  screens: readonly AppScreen[],
+  key: AppScreen['key'],
+  theme: AppScreen['theme'],
+): AppScreen | undefined => screens.find((screen) => screen.key === key && screen.theme === theme)
 
 export const getHomeServices = cache((locale: Locale) =>
   findDocs('services', locale, { where: { featuredOnHome: { equals: true } }, sort: 'order' }),

@@ -2,6 +2,7 @@ import { ArrowRight, BadgeCheck, MapPin } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { AppHomeScreen } from '@/components/device/AppHomeScreen'
+import { AppScreenImage } from '@/components/device/AppScreenImage'
 import { buttonClasses } from '@/components/ui/button'
 import { CmsImage } from '@/components/ui/CmsImage'
 import { FilmLightbox } from '@/components/ui/FilmLightbox'
@@ -11,6 +12,8 @@ import { PaymentBadges } from '@/components/ui/PaymentBadges'
 import type { Locale } from '@/i18n/routing'
 import { brandFilm, heroCues } from '@/lib/hero'
 import {
+  findScreen,
+  getAppScreens,
   getHome,
   getHomeTestimonials,
   getSiteSettings,
@@ -34,13 +37,30 @@ const initials = [
 // is the LCP element and never waits for the video island.
 export async function Hero() {
   const locale = (await getLocale()) as Locale
-  const [t, home, settings, testimonials] = await Promise.all([
+  const [t, home, settings, testimonials, screens] = await Promise.all([
     getTranslations('hero'),
     getHome(locale),
     getSiteSettings(locale),
     getHomeTestimonials(locale),
+    getAppScreens(locale),
   ])
   const copy = home.hero
+
+  // The video's poster, shown under the overlay: the background itself while there is no footage
+  // and in light-data mode, and until the first frame when there is. Dimmed by the overlay, it is
+  // never the LCP element, so it loads after the text and the phone screen.
+  const posterSources = imageSources(copy?.video?.poster)
+  const backdrop = posterSources.length ? (
+    <CmsImage
+      sources={posterSources}
+      alt=""
+      fill
+      sizes="100vw"
+      fetchPriority="low"
+      loading="eager"
+      className="object-cover motion-safe:animate-slow-zoom"
+    />
+  ) : null
 
   const cues = pickList(
     copy?.cues,
@@ -83,7 +103,14 @@ export async function Hero() {
       <HeroStory
         cues={cues}
         video={heroVideoFrom(copy?.video)}
-        screen={<AppHomeScreen />}
+        screen={
+          <AppScreenImage
+            screen={findScreen(screens, 'home', 'light')}
+            fallback={<AppHomeScreen />}
+            eager
+          />
+        }
+        backdrop={backdrop}
         labels={{
           app: t('notification.app'),
           now: t('notification.now'),

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import { bentoOrder, faqText, heroVideoFrom, pick, pickList } from '@/lib/home'
+import { bentoOrder, faqText, findScreen, heroVideoFrom, pick, pickList } from '@/lib/home'
 import { imageSources } from '@/lib/media'
 import { paragraph } from '@/lib/richText'
-import type { Media, Service } from '@/payload-types'
+import type { AppScreen, Media, Service } from '@/payload-types'
 
 // Pure helpers behind the home sections' Payload reads (T-1.15). No database needed.
 
@@ -94,6 +94,20 @@ describe('heroVideoFrom', () => {
   it('lets small screens play 720p when there is no 480p file', () => {
     const video = heroVideoFrom({ mp4: file('/720.mp4'), mp4Large: file('/1080.mp4') })
     expect(video?.sources.map(({ media }) => media)).toEqual(['(min-width: 1280px)', undefined])
+  })
+})
+
+describe('findScreen', () => {
+  it('picks the screen by key and theme, or nothing (the HTML rebuild stands in)', () => {
+    const screen = (id: number, key: AppScreen['key'], theme: AppScreen['theme']) =>
+      ({ id, key, theme, lang: 'fr' }) as AppScreen
+    const screens = [
+      screen(1, 'home', 'light'),
+      screen(2, 'home', 'dark'),
+      screen(3, 'shop', 'light'),
+    ]
+    expect(findScreen(screens, 'home', 'dark')?.id).toBe(2)
+    expect(findScreen(screens, 'shop', 'dark')).toBeUndefined()
   })
 })
 

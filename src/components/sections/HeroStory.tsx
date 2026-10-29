@@ -19,6 +19,8 @@ type Props = {
   cues: StoryCue[]
   video: HeroVideo | null
   screen: React.ReactNode
+  // Still photo under the overlay (the video's poster); null keeps the designed background.
+  backdrop?: React.ReactNode
   labels: { app: string; now: string; pause: string; play: string }
   children: React.ReactNode
 }
@@ -33,7 +35,7 @@ const VISIBLE_NOTIFICATIONS = 3
  * own clock (requestVideoFrameCallback, so within a frame of each cue) when video plays, and a
  * timer in light-data mode, where the video element is never rendered and never requested.
  */
-export function HeroStory({ cues, video, screen, labels, children }: Props) {
+export function HeroStory({ cues, video, screen, backdrop = null, labels, children }: Props) {
   const light = useLightData()
   const playVideo = light === false && video !== null
   const [active, setActive] = useState(0)
@@ -98,6 +100,7 @@ export function HeroStory({ cues, video, screen, labels, children }: Props) {
   return (
     <>
       <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+        {backdrop}
         {playVideo && video ? (
           <video
             ref={videoRef}
@@ -115,7 +118,7 @@ export function HeroStory({ cues, video, screen, labels, children }: Props) {
         ) : null}
         <div
           className={`absolute inset-0 ${
-            playVideo
+            playVideo || backdrop
               ? 'bg-gradient-to-r from-night-950/95 via-night-900/80 to-teal-600/40'
               : 'bg-[radial-gradient(55%_50%_at_78%_35%,rgb(28_93_112/0.6),transparent_70%),radial-gradient(40%_40%_at_12%_90%,rgb(231_171_52/0.16),transparent_70%)]'
           }`}

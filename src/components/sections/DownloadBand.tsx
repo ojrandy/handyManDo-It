@@ -2,22 +2,24 @@ import { ArrowUpRight } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { AppHomeScreen } from '@/components/device/AppHomeScreen'
+import { AppScreenImage } from '@/components/device/AppScreenImage'
 import { Phone } from '@/components/device/Phone'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { StoreBadges } from '@/components/ui/StoreBadges'
 import type { Locale } from '@/i18n/routing'
-import { getHome, getSiteSettings, pick } from '@/lib/home'
+import { findScreen, getAppScreens, getHome, getSiteSettings, pick } from '@/lib/home'
 import { qrSvg } from '@/lib/qr'
 
 // Download band (docs/PLAN.md §5.15, FR-HOME-15). Says "iOS & Android" only once an App Store
 // URL exists (Q-3); until then "Android and the web", which is what is actually available.
 export async function DownloadBand() {
   const locale = (await getLocale()) as Locale
-  const [t, getTheApp, home, settings] = await Promise.all([
+  const [t, getTheApp, home, settings, screens] = await Promise.all([
     getTranslations('download'),
     getTranslations('getTheApp'),
     getHome(locale),
     getSiteSettings(locale),
+    getAppScreens(locale),
   ])
   const copy = home.download
   const qr = await qrSvg(settings.playStoreUrl)
@@ -78,12 +80,18 @@ export async function DownloadBand() {
           {/* zoom scales the whole device, so the screen's pixel-sized text stays in proportion. */}
           <div className="translate-y-8 [zoom:0.6] sm:[zoom:0.78]">
             <Phone>
-              <AppHomeScreen />
+              <AppScreenImage
+                screen={findScreen(screens, 'home', 'light')}
+                fallback={<AppHomeScreen />}
+              />
             </Phone>
           </div>
           <div className="-translate-y-4 [zoom:0.6] sm:[zoom:0.78]">
             <Phone>
-              <AppHomeScreen theme="dark" />
+              <AppScreenImage
+                screen={findScreen(screens, 'home', 'dark')}
+                fallback={<AppHomeScreen theme="dark" />}
+              />
             </Phone>
           </div>
         </div>

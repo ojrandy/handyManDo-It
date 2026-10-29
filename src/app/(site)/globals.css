@@ -35,6 +35,17 @@
   --animate-float: float 7s ease-in-out infinite;
   --animate-notification-in: notification-in 600ms var(--ease-out-expo) both;
   --animate-marquee: marquee 40s linear infinite;
+  --animate-slow-zoom: slow-zoom 30s ease-in-out infinite alternate;
+
+  /* Hero still: a slow push-in so the photo reads as a scene, not a wallpaper. */
+  @keyframes slow-zoom {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.08);
+    }
+  }
 
   @keyframes marquee {
     to {

@@ -1,12 +1,15 @@
-// Encodes the hero footage and attaches it to the `home` global (T-1.10, FR-HOME-01).
+// Prepares the hero background and attaches it to the `home` global (T-1.10, FR-HOME-01).
 //
 //   npm run encode:hero -- <source.mp4> [--start=0] [--duration=20] [--poster-at=1]
 //                          [--cues=2,6,10,14,18] [--upload] [--force]
+//   npm run encode:hero -- --poster=<photo.jpg> [--alt-fr=…] [--alt-en=…] [--upload] [--force]
 //
-// Writes .cache/hero/hero-{480,720,1080}p.{webm,mp4} (silent, 24 fps) and hero-poster.avif
-// (≤ 120 KB, NFR-PERF-02). With --upload, the files go to Media and the published `home` global
-// points at them; --cues moves the notification cues to new timestamps (seconds, in order).
-// Needs ffmpeg on PATH (or FFMPEG_PATH). Source footage must be licensed for commercial use.
+// With a video: writes .cache/hero/hero-{480,720,1080}p.{webm,mp4} (silent, 24 fps) and
+// hero-poster.avif from a frame. With --poster only: the hero is that still photo (no footage
+// needed, no ffmpeg). The poster is AVIF at the best quality within 120 KB (NFR-PERF-02).
+// --upload sends the files to Media and points the published `home` global at them; --cues moves
+// the notification cues to new timestamps (seconds, in order). Footage and photos must be ours or
+// licensed for commercial use.
 import 'dotenv/config'
 
 import { existsSync, mkdirSync } from 'node:fs'
@@ -31,16 +34,20 @@ const number = (name: string, fallback: number) => {
 
 const outDir = path.resolve('.cache/hero')
 
-// Alt text for the footage files; the video itself is decorative (aria-hidden) on the page.
+// Alt text for the uploaded files. The hero itself shows them as decoration (aria-hidden).
 const alt = {
-  fr: 'Un artisan HandyMan intervient chez un client',
-  en: 'A HandyMan pro at work in a customer’s home',
+  fr: option('alt-fr') ?? 'Des pros HandyMan au travail sur un chantier',
+  en: option('alt-en') ?? 'HandyMan pros at work on a job',
 }
 
 async function main(): Promise<number> {
   const input = args.find((arg) => !arg.startsWith('--'))
-  if (!input || !existsSync(input)) {
-    console.error('Usage: npm run encode:hero -- <source video> [--start=s] [--duration=s] …')
+  const still = option('poster')
+  if ((!input && !still) || (input && !existsSync(input)) || (still && !existsSync(still))) {
+    console.error(
+      'Usage: npm run encode:hero -- <source video> [--start=s] [--duration=s] …\n' +
+        '   or: npm run encode:hero -- --poster=<photo> [--upload]',
+    )
     return 2
   }
   const clip = { start: number('start', 0), duration: number('duration', 20) }
@@ -50,16 +57,21 @@ async function main(): Promise<number> {
     return 2
   }
 
-  await assertFfmpeg()
   mkdirSync(outDir, { recursive: true })
-  console.log(`Encoding ${clip.duration} s from ${clip.start} s of ${input}…`)
-  const files = await encode(input, outDir, clip)
+  let files: Awaited<ReturnType<typeof encode>> = []
+  if (input) {
+    await assertFfmpeg()
+    console.log(`Encoding ${clip.duration} s from ${clip.start} s of ${input}…`)
+    files = await encode(input, outDir, clip)
+  }
 
-  const frame = await extractFrame(
-    input,
-    clip.start + number('poster-at', 1),
-    path.join(outDir, 'hero-poster.png'),
-  )
+  const frame =
+    still ??
+    (await extractFrame(
+      input!,
+      clip.start + number('poster-at', 1),
+      path.join(outDir, 'hero-poster.png'),
+    ))
   const poster = path.join(outDir, 'hero-poster.avif')
   const bytes = await posterAvif(frame, poster)
   console.log(`  ✓ hero-poster.avif ${Math.round(bytes / 1024)} KB`)
@@ -72,7 +84,7 @@ async function main(): Promise<number> {
   console.log(`Uploading to ${target.host}/${target.database}…`)
   const payload = await getPayload({ config })
   await attachHeroVideo(payload, files, poster, alt, cues)
-  console.log('✓ Hero video attached to the published home page.')
+  console.log(`✓ Hero ${files.length ? 'video' : 'photo'} attached to the published home page.`)
   return 0
 }
 
