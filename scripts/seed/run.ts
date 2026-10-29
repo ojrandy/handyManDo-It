@@ -1,7 +1,5 @@
-import { existsSync, statSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import path from 'node:path'
-
-import sharp from 'sharp'
 
 import type { CollectionSlug, Payload, RequiredDataFromCollectionSlug, Where } from 'payload'
 
@@ -21,6 +19,7 @@ import {
   teamSeeds,
   testimonialSeeds,
 } from './data'
+import { findMedia } from './media'
 
 export type Counts = { created: number; updated: number; skipped: number; failed: number }
 
@@ -55,18 +54,6 @@ const context = { disableRevalidate: true }
 type Outcome = 'created' | 'updated' | 'skipped'
 
 const errorMessage = (error: unknown) => (error instanceof Error ? error.message : String(error))
-
-const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-
-// Width and height of an image file, or null for files sharp cannot read (video).
-async function imageSize(file: string): Promise<{ width: number; height: number } | null> {
-  try {
-    const { width, height } = await sharp(file).metadata()
-    return width && height ? { width, height } : null
-  } catch {
-    return null
-  }
-}
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -108,39 +95,6 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
   // --- Media: uploaded once, then found by file name and reused. ------------------------------
   const mediaIds = new Map<string, number | null>()
 
-  async function findMedia(file: string): Promise<number | null> {
-    const filename = path.basename(file)
-    const exact = await payload.find({
-      collection: 'media',
-      where: { filename: { equals: filename } },
-      limit: 1,
-      depth: 0,
-    })
-    if (exact.docs[0]) return exact.docs[0].id
-    // A file already on disk under that name makes Payload store "name-1.webp"; find the renamed
-    // copy so a re-run reuses it. Payload re-encodes some images on upload, so images match on
-    // their dimensions; other files (video) on their size.
-    const source = path.join(publicDir, file)
-    const ext = path.extname(filename)
-    const stem = filename.slice(0, -ext.length || undefined)
-    const renamedName = new RegExp(`^${escapeRegExp(stem)}-\\d+${escapeRegExp(ext)}$`)
-    const size = await imageSize(source)
-    const renamed = await payload.find({
-      collection: 'media',
-      where: { filename: { like: `${stem}-` } },
-      limit: 50,
-      depth: 0,
-    })
-    const match = renamed.docs.find(
-      (doc) =>
-        renamedName.test(doc.filename ?? '') &&
-        (size
-          ? doc.width === size.width && doc.height === size.height
-          : doc.filesize === statSync(source).size),
-    )
-    return match?.id ?? null
-  }
-
   async function media(seed: MediaSeed): Promise<number | null> {
     const cached = mediaIds.get(seed.file)
     if (cached !== undefined) return cached
@@ -148,7 +102,7 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
     try {
       const filePath = path.join(publicDir, seed.file)
       if (!existsSync(filePath)) throw new Error(`missing file public/${seed.file}`)
-      id = await findMedia(seed.file)
+      id = await findMedia(payload, filePath)
       if (id !== null && !update) {
         record('media', 'skipped')
       } else if (id !== null) {
@@ -406,7 +360,8 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
   return summary
 }
 
-export const totals = (summary: Summary): Counts =>
+// Shared with scripts/wordpress: any step → counts record, printed in insertion order.
+export const totals = (summary: Record<string, Counts>): Counts =>
   Object.values(summary).reduce(
     (sum, counts) => ({
       created: sum.created + counts.created,
@@ -417,12 +372,9 @@ export const totals = (summary: Summary): Counts =>
     { created: 0, updated: 0, skipped: 0, failed: 0 },
   )
 
-export function formatSummary(summary: Summary): string {
+export function formatSummary(summary: Record<string, Counts>): string {
   const header = ['', 'created', 'updated', 'skipped', 'failed']
-  const rows = [
-    ...steps.map((step) => [step, summary[step]] as const),
-    ['total', totals(summary)] as const,
-  ]
+  const rows = [...Object.entries(summary), ['total', totals(summary)] as const]
   const pad = (cells: (string | number)[]) =>
     cells
       .map((cell, index) => (index === 0 ? String(cell).padEnd(14) : String(cell).padStart(8)))

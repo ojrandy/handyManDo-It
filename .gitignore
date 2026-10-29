@@ -42,6 +42,8 @@ next-env.d.ts
 
 /media
 /private-files
+# downloads and captures made by scripts/ (WordPress import, app screens, hero video)
+/.cache
 
 # Playwright
 node_modules/
