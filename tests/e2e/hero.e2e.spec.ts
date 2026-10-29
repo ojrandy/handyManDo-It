@@ -44,7 +44,8 @@ test.describe('Hero', () => {
   test('lifecycle notifications arrive in order and pause stops them', async ({ page }) => {
     await page.goto('/en')
     // The animated list lives in the aria-hidden phone; the sr-only list is static.
-    const phone = page.locator('div[aria-hidden="true"] ol')
+    // Scoped to the hero: the scroll story further down has its own decorative phone list.
+    const phone = page.locator('section[aria-labelledby="hero-title"] div[aria-hidden="true"] ol')
     await expect(phone).toContainText(en.hero.cues.paid.title, { timeout: 10_000 })
 
     await page.getByRole('button', { name: en.hero.story.pause }).click()

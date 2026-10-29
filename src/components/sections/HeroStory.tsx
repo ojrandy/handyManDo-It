@@ -1,7 +1,7 @@
 'use client'
 
 import { Pause, Play } from 'lucide-react'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 import { Phone } from '@/components/device/Phone'
 import type { HeroVideo } from '@/lib/hero'
@@ -30,6 +30,19 @@ const LOOP_TAIL_SECONDS = 4
 const TICK_SECONDS = 0.25
 const VISIBLE_NOTIFICATIONS = 3
 
+// True once the window has loaded. The backdrop photo is dimmed decoration (~110 KB) and waits for
+// it, so it never shares the connection with the phone screenshot, the LCP image on desktop.
+const onPageLoad = (callback: () => void) => {
+  window.addEventListener('load', callback)
+  return () => window.removeEventListener('load', callback)
+}
+const usePageLoaded = () =>
+  useSyncExternalStore(
+    onPageLoad,
+    () => document.readyState === 'complete',
+    () => false,
+  )
+
 /**
  * Client island of the synced-story hero (FR-HOME-01/02). Notifications follow the footage's
  * own clock (requestVideoFrameCallback, so within a frame of each cue) when video plays, and a
@@ -40,6 +53,7 @@ export function HeroStory({ cues, video, screen, backdrop = null, labels, childr
   const playVideo = light === false && video !== null
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
+  const pageLoaded = usePageLoaded()
   const videoRef = useRef<HTMLVideoElement>(null)
   const timeRef = useRef(cues[0]?.time ?? 0)
   const loopLength = (cues.at(-1)?.time ?? 0) + LOOP_TAIL_SECONDS
@@ -100,7 +114,7 @@ export function HeroStory({ cues, video, screen, backdrop = null, labels, childr
   return (
     <>
       <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
-        {backdrop}
+        {pageLoaded ? backdrop : null}
         {playVideo && video ? (
           <video
             ref={videoRef}

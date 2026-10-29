@@ -251,7 +251,7 @@ const serviceLink = (label: string, id: number): NavLink => ({
 
 type NavigationData = Pick<Navigation, 'header' | 'footerColumns'>
 
-// Mirrors the current Header and Footer components, so switching them to the global (T-1.15)
+// Mirrors the built-in menus in Header and Footer, so switching them to the global (T-1.17)
 // changes nothing visible.
 export function navigationData(
   locale: Locale,
@@ -283,8 +283,11 @@ export function navigationData(
     footerColumns: [
       {
         title: m.footer.columns.services,
+        // Six services by their short names, then the overview, like the built-in footer.
         links: [
-          ...serviceLinks.map((link) => ({ link })),
+          ...serviceSeeds.slice(0, 6).map(({ key }) => ({
+            link: serviceLink(m.services[key].short, serviceIds[key]),
+          })),
           { link: pageLink(m.nav.allServices, '/services') },
         ],
       },

@@ -473,5 +473,105 @@
         "a": "Oui. Les comptes « Mon organisation » permettent à votre équipe de réserver ensemble, et nous réalisons signalétique, événements et aménagements de bureaux. Demandez un devis entreprise pour commencer."
       }
     }
+  },
+  "story": {
+    "eyebrow": "L’app, pas à pas",
+    "title": "De votre liste de tâches au travail bien fait.",
+    "label": "Chapitres",
+    "chapters": {
+      "browse": {
+        "title": "Qu’y a-t-il sur votre liste ?",
+        "body": "Choisissez une catégorie ou décrivez le travail avec vos mots, photos à l’appui."
+      },
+      "price": {
+        "title": "Un prix clair",
+        "body": "Vous voyez le prix avant de réserver. Pas de marchandage, pas de surprise le jour J."
+      },
+      "pay": {
+        "title": "Payez en sécurité",
+        "body": "Payez avec MTN MoMo, Orange Money ou votre portefeuille. L’argent reste sécurisé jusqu’à la fin du travail."
+      },
+      "track": {
+        "title": "Suivez en direct",
+        "body": "Suivez votre pro vérifié sur la carte et échangez avec lui dans l’app."
+      },
+      "code": {
+        "title": "Clôturez avec votre code",
+        "body": "Satisfait ? Partagez votre code de fin de travail. Le pro n’est payé qu’à ce moment-là."
+      },
+      "rewards": {
+        "title": "Gagnez des points",
+        "body": "Chaque travail terminé vous rapporte des points pour votre prochaine réservation."
+      },
+      "finale": {
+        "title": "Réservez depuis n’importe quel appareil.",
+        "body": "Sur le web et sur Android, avec le même compte."
+      }
+    },
+    "screens": {
+      "service": "Tapisserie",
+      "job": "Retapisser un canapé 3 places",
+      "clearPrice": "Prix clair",
+      "price": "25 000 FCFA",
+      "book": "Réserver",
+      "payment": "Paiement",
+      "wallet": "Portefeuille HandyMan",
+      "held": "Sécurisé jusqu’à la fin du travail",
+      "pay": "Payer 25 000 FCFA",
+      "onTheWay": "Votre pro est en route",
+      "eta": "Arrivée dans 12 min",
+      "verified": "Pro vérifié",
+      "message": "Message",
+      "finished": "Travail terminé",
+      "photos": "Photos ajoutées",
+      "shareCode": "Donnez ce code à votre pro",
+      "rewards": "Récompenses",
+      "earned": "+50 points",
+      "balance": "Solde",
+      "points": "1 250 points",
+      "useNext": "À utiliser sur votre prochaine réservation"
+    }
+  },
+  "demo": {
+    "eyebrow": "Essayez",
+    "title": "Essayez, sans rien télécharger.",
+    "intro": "Touchez une catégorie, choisissez un pro et ouvrez la réservation. Données d’exemple : rien n’est réservé.",
+    "label": "Démo interactive de l’app",
+    "loading": "Chargement de la démo…",
+    "prosTitle": "Pros près de chez vous",
+    "back": "Retour",
+    "verified": "Vérifié",
+    "jobs": "travaux",
+    "bookTitle": "Réserver : {service}",
+    "when": "Quand ?",
+    "slots": {
+      "today": "Aujourd’hui",
+      "tomorrow": "Demain",
+      "weekend": "Ce week-end"
+    },
+    "payWith": "Payer avec",
+    "priceNote": "Prix clair avant de payer. L’argent reste sécurisé jusqu’à la fin du travail.",
+    "confirm": "Envoyer la demande",
+    "doneTitle": "Demande envoyée",
+    "doneBody": "C’était une démo, rien n’a été réservé. Prêt à le faire pour de vrai ?",
+    "cta": "Pour de vrai : ouvrir l’app",
+    "restart": "Recommencer"
+  },
+  "gallery": {
+    "eyebrow": "Écrans",
+    "title": "Découvrez la vraie app.",
+    "intro": "Captures de l’app, dans votre langue.",
+    "label": "Écrans de l’app",
+    "slide": "{n} sur {total}",
+    "previous": "Écran précédent",
+    "next": "Écran suivant",
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Derniers articles du blog.",
+    "seeAll": "Tous les articles"
   }
 }

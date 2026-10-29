@@ -4,7 +4,8 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { buttonClasses } from '@/components/ui/button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import type { Locale } from '@/i18n/routing'
-import { getHome, getSiteSettings, pick, pickList } from '@/lib/home'
+import { getHome, pick, pickList } from '@/lib/home'
+import { getSiteSettings } from '@/lib/settings'
 
 const steps = ['choose', 'book', 'relax'] as const
 

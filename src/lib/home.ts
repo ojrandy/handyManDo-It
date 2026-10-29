@@ -7,7 +7,6 @@ import type { AppScreen, Faq, Home, Service } from '@/payload-types'
 import type { HeroVideo } from './hero'
 import { mediaUrl } from './media'
 import { findDocs, getGlobal } from './payload'
-import { site } from './site'
 
 // Home page content from Payload (T-1.15). Each read is tagged in src/lib/payload.ts, so a
 // publish refreshes the page; cache() makes the sections share one read per render.
@@ -45,21 +44,15 @@ export const getHomeFaqs = cache((locale: Locale) =>
   findDocs('faqs', locale, { where: { showOnHome: { equals: true } }, sort: 'order' }),
 )
 
-// Contact and app links merged over the src/lib/site defaults.
-export const getSiteSettings = cache(async (locale: Locale) => {
-  const doc = await getGlobal('site', locale)
-  return {
-    webAppUrl: doc.webAppUrl || site.webAppUrl,
-    playStoreUrl: doc.playStoreUrl || site.playStoreUrl,
-    appStoreUrl: doc.appStoreUrl || site.appStoreUrl,
-    stats: {
-      towns: doc.towns ?? site.stats.towns,
-      years: doc.years ?? site.stats.years,
-      clients: doc.clients ?? site.stats.clients,
-      projects: doc.projects ?? site.stats.projects,
-    },
-  }
-})
+// Newest three posts for the home teaser. Imported posts are English-only,
+// so French pages show them in English (ADR-019).
+export const getLatestPosts = cache((locale: Locale) =>
+  findDocs('posts', locale, {
+    sort: '-publishedAt',
+    limit: 3,
+    fallbackLocale: 'en',
+  }),
+)
 
 // An editor's text, or the fallback while the field is empty.
 export const pick = (value: string | null | undefined, fallback: string): string =>

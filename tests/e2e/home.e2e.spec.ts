@@ -114,3 +114,89 @@ test.describe('Footer and WhatsApp', () => {
     await expect(fab).toHaveAttribute('href', /^https:\/\/wa\.me\//)
   })
 })
+
+// Batch 3: scroll story, mini-demo, screens gallery, latest posts (FR-HOME-07/09/10/16).
+test.describe('Home showcase sections', () => {
+  test('scroll story pins on desktop and follows the chapter in view', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/en')
+    await expect(page.getByRole('heading', { level: 2, name: en.story.title })).toBeVisible()
+    const chapters = page.getByRole('list', { name: en.story.label }).getByRole('listitem')
+    await expect(chapters).toHaveCount(7)
+
+    const pay = chapters.nth(2)
+    await pay.scrollIntoViewIfNeeded()
+    await page.evaluate(() => window.scrollBy(0, 1))
+    await expect(pay).toHaveAttribute('data-current', '')
+    await expect(page.locator('#scroll-story [data-for="2"]').first()).toHaveAttribute(
+      'data-current',
+      '',
+    )
+  })
+
+  test('scroll story is a horizontal swipe on phones, with no pinning', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/fr')
+    const track = page.getByRole('list', { name: fr.story.label })
+    await track.scrollIntoViewIfNeeded()
+    expect(await track.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(true)
+    const stagePosition = await page
+      .locator('#scroll-story [aria-hidden]')
+      .first()
+      .evaluate((el) => getComputedStyle(el).position)
+    expect(stagePosition).not.toBe('sticky')
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
+  })
+
+  test('mini-demo works from the keyboard and reports each step', async ({ page }) => {
+    await page.goto('/en')
+    // The demo's code loads only once its section nears the viewport, so scroll to the section.
+    await page.locator('section[aria-labelledby="demo-title"]').scrollIntoViewIfNeeded()
+    const demo = page.getByRole('group', { name: en.demo.label })
+    await demo.getByRole('button', { name: en.services.moving.short }).press('Enter')
+    await expect(page.getByRole('heading', { name: en.demo.prosTitle })).toBeFocused()
+    await demo.getByRole('button').nth(1).press('Enter')
+    await demo.getByRole('button', { name: en.demo.slots.tomorrow }).click()
+    await expect(demo.getByRole('button', { name: en.demo.slots.tomorrow })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    await demo.getByRole('button', { name: en.demo.confirm }).click()
+    await expect(page.getByRole('heading', { name: en.demo.doneTitle })).toBeFocused()
+    await expect(demo.getByRole('link', { name: en.demo.cta })).toBeVisible()
+
+    const steps = await page.evaluate(() =>
+      (window.dataLayer ?? []).filter((e) => e.event === 'demo_interact').map((e) => e.step),
+    )
+    expect(steps).toEqual(['pros', 'booking', 'done'])
+  })
+
+  test('screens gallery moves with the arrow keys and swaps theme', async ({ page }) => {
+    await page.goto('/en')
+    const gallery = page.getByRole('region', { name: en.gallery.label })
+    // Hidden until the app screens are captured (`npm run capture:screens`).
+    test.skip((await gallery.count()) === 0, 'no captured app screens in this database')
+    await gallery.scrollIntoViewIfNeeded()
+    const caption = gallery.locator('[aria-live="polite"]')
+    const first = await caption.textContent()
+    await gallery.locator('[tabindex="0"]').focus()
+    await page.keyboard.press('ArrowRight')
+    await expect(caption).not.toHaveText(first ?? '')
+    await gallery.getByRole('button', { name: en.gallery.dark }).click()
+    await expect(gallery.getByRole('button', { name: en.gallery.dark })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    await expect(gallery.getByRole('img', { name: /dark theme/ })).toBeVisible()
+  })
+
+  test('latest posts link to their articles', async ({ page }) => {
+    await page.goto('/fr')
+    const section = page.getByRole('region', { name: fr.blog.title })
+    // Hidden until posts exist (`npm run migrate:wordpress`).
+    test.skip((await section.count()) === 0, 'no published posts in this database')
+    const cards = section.getByRole('listitem')
+    expect(await cards.count()).toBeLessThanOrEqual(3)
+    await expect(cards.first().getByRole('link')).toHaveAttribute('href', /^\/fr\/blog\/.+/)
+  })
+})

@@ -72,6 +72,7 @@ export const Site: GlobalConfig = {
         },
         {
           label: 'Social',
+          description: 'Leave a field empty to hide that link.',
           fields: [
             { name: 'facebook', type: 'text', defaultValue: site.socials.facebook },
             { name: 'instagram', type: 'text', defaultValue: site.socials.instagram },

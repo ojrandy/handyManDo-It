@@ -473,5 +473,105 @@
         "a": "Yes. “My organisation” accounts let your team book together, and we handle signage, events and office projects. Request a business quote to get started."
       }
     }
+  },
+  "story": {
+    "eyebrow": "The app, step by step",
+    "title": "From your to-do list to a job well done.",
+    "label": "Chapters",
+    "chapters": {
+      "browse": {
+        "title": "What’s on your to-do list?",
+        "body": "Pick a category or describe the job in your own words, with photos."
+      },
+      "price": {
+        "title": "Get a clear price",
+        "body": "You see the price before you book. No haggling, no surprise on the day."
+      },
+      "pay": {
+        "title": "Pay safely",
+        "body": "Pay with MTN MoMo, Orange Money or your wallet. The money is held until the job is done."
+      },
+      "track": {
+        "title": "Track live",
+        "body": "Follow your verified pro on the map and chat with them in the app."
+      },
+      "code": {
+        "title": "Close with your code",
+        "body": "Happy with the work? Share your completion code. Only then is the pro paid."
+      },
+      "rewards": {
+        "title": "Earn rewards",
+        "body": "Every completed job earns points for your next booking."
+      },
+      "finale": {
+        "title": "Book from any device.",
+        "body": "On the web and on Android, with the same account."
+      }
+    },
+    "screens": {
+      "service": "Upholstery",
+      "job": "Sofa reupholstery, 3 seats",
+      "clearPrice": "Clear price",
+      "price": "25,000 FCFA",
+      "book": "Book now",
+      "payment": "Payment",
+      "wallet": "HandyMan wallet",
+      "held": "Held until the job is done",
+      "pay": "Pay 25,000 FCFA",
+      "onTheWay": "Your pro is on the way",
+      "eta": "Arrives in 12 min",
+      "verified": "Verified pro",
+      "message": "Message",
+      "finished": "Job finished",
+      "photos": "Photos added",
+      "shareCode": "Share this code with your pro",
+      "rewards": "Rewards",
+      "earned": "+50 points",
+      "balance": "Balance",
+      "points": "1,250 points",
+      "useNext": "Use them on your next booking"
+    }
+  },
+  "demo": {
+    "eyebrow": "Try it",
+    "title": "Try it, no download needed.",
+    "intro": "Tap a category, pick a pro and open the booking sheet. Sample data: nothing is booked.",
+    "label": "Interactive app demo",
+    "loading": "Loading the demo…",
+    "prosTitle": "Pros near you",
+    "back": "Back",
+    "verified": "Verified",
+    "jobs": "jobs",
+    "bookTitle": "Book {service}",
+    "when": "When?",
+    "slots": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "weekend": "This weekend"
+    },
+    "payWith": "Pay with",
+    "priceNote": "Clear price before you pay. The money is held until the job is done.",
+    "confirm": "Send request",
+    "doneTitle": "Request sent",
+    "doneBody": "This was a demo, nothing was booked. Ready to do it for real?",
+    "cta": "Do it for real: open the app",
+    "restart": "Start again"
+  },
+  "gallery": {
+    "eyebrow": "Screens",
+    "title": "See the real app.",
+    "intro": "Captured from the app, in your language.",
+    "label": "App screens",
+    "slide": "{n} of {total}",
+    "previous": "Previous screen",
+    "next": "Next screen",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Latest from the blog.",
+    "seeAll": "All articles"
   }
 }

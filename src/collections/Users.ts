@@ -25,6 +25,8 @@ export const Users: CollectionConfig = {
     delete: isAdmin,
     read: isAdminOrSelf,
     update: isAdminOrSelf,
+    // Payload's default lets any signed-in user unlock an account locked after failed logins.
+    unlock: isAdmin,
   },
   fields: [
     { name: 'name', type: 'text' },

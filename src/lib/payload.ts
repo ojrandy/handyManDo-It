@@ -12,14 +12,19 @@ export const getPayloadClient = () => getPayload({ config })
 // access rules
 // (`overrideAccess: false`) so drafts and private collections never reach a page.
 
-export const getGlobal = <S extends GlobalSlug>(slug: S, locale: Locale) =>
+// `tags` adds the collections a global links to, so renaming a linked doc refreshes the read.
+export const getGlobal = <S extends GlobalSlug>(
+  slug: S,
+  locale: Locale,
+  tags: readonly CollectionSlug[] = [],
+) =>
   unstable_cache(
     async () => {
       const payload = await getPayloadClient()
       return payload.findGlobal({ slug, locale, depth: 1, overrideAccess: false })
     },
     ['global', slug, locale],
-    { tags: [slug, 'media'] },
+    { tags: [slug, 'media', ...tags] },
   )()
 
 type FindOptions = {
@@ -27,6 +32,7 @@ type FindOptions = {
   sort?: string
   limit?: number
   depth?: number
+  fallbackLocale?: Locale
 }
 
 export const findDocs = <C extends CollectionSlug>(

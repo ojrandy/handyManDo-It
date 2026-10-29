@@ -1,7 +1,7 @@
 'use client'
 
 import { Play, X } from 'lucide-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 import { buttonClasses } from './button'
 
@@ -12,13 +12,16 @@ type Props = {
 }
 
 // Brand film in a native modal <dialog>: focus is contained, Esc closes, and the video is
-// only requested when the visitor asks for it (preload="none").
+// only requested when the visitor asks for it (preload="none"). So is the poster: a 100 KB image
+// next to the hero would compete with its LCP image for bandwidth.
 export function FilmLightbox({ src, poster, labels }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const [opened, setOpened] = useState(false)
 
   const open = () => {
+    setOpened(true)
     dialogRef.current?.showModal()
     videoRef.current?.play().catch(() => {})
   }
@@ -63,7 +66,7 @@ export function FilmLightbox({ src, poster, labels }: Props) {
             controls
             playsInline
             preload="none"
-            poster={poster}
+            poster={opened ? poster : undefined}
             className="aspect-video w-full rounded-panel bg-black shadow-float"
           >
             <source src={src} type="video/mp4" />

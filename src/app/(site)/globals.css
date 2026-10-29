@@ -75,6 +75,10 @@
   }
 }
 
+/* Scroll story (FR-HOME-07): the phone pins only on wide screens with motion allowed; elsewhere
+   the chapters are a horizontal swipe (NFR-A11Y-02). StoryObserver uses the same query. */
+@custom-variant pinned (@media (width >= 48rem) and (prefers-reduced-motion: no-preference));
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;

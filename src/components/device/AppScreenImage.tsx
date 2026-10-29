@@ -9,9 +9,14 @@ type Props = {
   // Shown while the screen hasn't been captured into the CMS (fresh database).
   fallback: React.ReactNode
   // Above the fold. In the hero on wide screens the screenshot is the largest image, so it is the
-  // LCP element there: fetch it first (about 40 KB at 480 px).
+  // LCP element there: preloaded from the head, at high priority.
   eager?: boolean
 }
+
+// The screen inside a Phone frame is 268 px wide from `sm` up (244 px below). Phones get the
+// 560 px file at 3× too (2.3× density, indistinguishable on UI text) instead of the 960 px one:
+// under the hero copy there, it should cost ~40 KB, not ~95 KB.
+const sizes = '(min-width: 640px) 268px, 186px'
 
 // A captured app screenshot filling a Phone frame. Decorative: the frames that hold it are
 // aria-hidden, and the surrounding copy says what the app does.
@@ -23,8 +28,9 @@ export function AppScreenImage({ screen, fallback, eager = false }: Props) {
       sources={sources}
       alt=""
       fill
-      sizes="18rem"
-      loading={eager ? 'eager' : 'lazy'}
+      sizes={sizes}
+      preload={eager}
+      loading={eager ? undefined : 'lazy'}
       fetchPriority={eager ? 'high' : 'low'}
       className="object-cover object-top"
     />

@@ -1,6 +1,6 @@
 import type { Field, GlobalConfig } from 'payload'
 
-import { anyone, isEditor } from '@/access'
+import { isEditor, publishedOrEditor } from '@/access'
 import { revalidateGlobal } from '@/hooks/revalidate'
 
 // Lucide names the home sections can show next to a cue, pillar or trust point.
@@ -68,7 +68,8 @@ export const Home: GlobalConfig = {
   admin: { group: 'Content' },
   versions: { drafts: true, max: 20 },
   access: {
-    read: anyone,
+    // Unpublished drafts stay private (?draft=true would otherwise return them to anyone).
+    read: publishedOrEditor,
     update: isEditor,
   },
   hooks: {

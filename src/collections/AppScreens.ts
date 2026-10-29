@@ -11,6 +11,7 @@ export const appScreenKeys = [
   'shop',
   'food',
   'help',
+  'pro',
   'tracking',
   'wallet',
   'chat',

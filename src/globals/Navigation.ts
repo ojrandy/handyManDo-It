@@ -36,7 +36,11 @@ export const Navigation: GlobalConfig = {
                   name: 'children',
                   type: 'array',
                   maxRows: 16,
-                  admin: { initCollapsed: true },
+                  admin: {
+                    initCollapsed: true,
+                    description:
+                      'Sub-links open a mega-menu. The header has one: only the first item with sub-links opens it.',
+                  },
                   fields: [
                     linkField(),
                     { name: 'description', type: 'text', localized: true },

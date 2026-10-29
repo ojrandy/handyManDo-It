@@ -1,30 +1,65 @@
+import { Wrench } from 'lucide-react'
 import Image from 'next/image'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { GetTheApp } from '@/components/ui/GetTheApp'
+import { iconFor } from '@/components/ui/icons'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 import { StoreBadges } from '@/components/ui/StoreBadges'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
+import { getNavigation } from '@/lib/navigation'
 import { services } from '@/lib/services'
 import { site } from '@/lib/site'
 
-import { HeaderShell, type HeaderNavItem } from './HeaderShell'
+import { HeaderShell, type HeaderItem } from './HeaderShell'
 
+const iconClass = 'size-5'
+
+type Route = Extract<HeaderItem, { external: false }>['href'] & string
+
+// Menu from the `navigation` global (T-1.17); the built-in menu below covers an unfilled global.
 export async function Header() {
   const [t, s, locale] = await Promise.all([
     getTranslations('nav'),
     getTranslations('services'),
     getLocale() as Promise<Locale>,
   ])
+  const { header } = await getNavigation(locale)
 
-  const navItems: HeaderNavItem[] = [
-    { key: 'businesses', label: t('businesses'), href: '/businesses' },
-    { key: 'becomeAPro', label: t('becomeAPro'), href: '/become-a-pro' },
-    { key: 'ourWork', label: t('ourWork'), href: '/our-work' },
-    { key: 'about', label: t('about'), href: '/about' },
-    { key: 'blog', label: t('blog'), href: '/blog' },
-  ]
+  const page = (key: string, label: string, href: Route): HeaderItem => ({
+    key,
+    label,
+    external: false,
+    href,
+  })
+
+  const items: HeaderItem[] = header.length
+    ? header.map(({ children, ...item }) => ({
+        ...item,
+        children: children?.map(({ icon, ...entry }) => {
+          const Icon = iconFor(icon, Wrench)
+          return { ...entry, icon: <Icon className={iconClass} strokeWidth={1.75} /> }
+        }),
+      }))
+    : [
+        {
+          ...page('services', t('services'), '/services'),
+          children: services.map(({ key, slug, icon: Icon }) => ({
+            key,
+            label: s(`${key}.name`),
+            description: s(`${key}.blurb`),
+            external: false,
+            href: { pathname: '/services/[slug]', params: { slug: slug[locale] } },
+            icon: <Icon className={iconClass} strokeWidth={1.75} />,
+          })),
+        },
+        page('businesses', t('businesses'), '/businesses'),
+        page('becomeAPro', t('becomeAPro'), '/become-a-pro'),
+        page('ourWork', t('ourWork'), '/our-work'),
+        page('about', t('about'), '/about'),
+        page('blog', t('blog'), '/blog'),
+      ]
 
   const logo = (
     <Link href="/" aria-label={t('home')} className="flex shrink-0 items-center gap-3 rounded-lg">
@@ -53,19 +88,11 @@ export async function Header() {
           <LanguageSwitcher />
         </div>
       }
-      services={services.map(({ key, slug, icon: Icon }) => ({
-        key,
-        name: s(`${key}.name`),
-        blurb: s(`${key}.blurb`),
-        href: { pathname: '/services/[slug]', params: { slug: slug[locale] } },
-        icon: <Icon className="size-5" strokeWidth={1.75} />,
-      }))}
-      navItems={navItems}
+      items={items}
       labels={{
         main: t('main'),
-        services: t('services'),
-        servicesIntro: t('servicesIntro'),
-        allServices: t('allServices'),
+        menuIntro: t('servicesIntro'),
+        menuAll: t('allServices'),
         openMenu: t('openMenu'),
         closeMenu: t('closeMenu'),
       }}

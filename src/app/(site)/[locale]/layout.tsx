@@ -4,11 +4,13 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Poppins, Sora } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import React from 'react'
+import { preconnect } from 'react-dom'
 
 import { Footer } from '@/components/sections/Footer'
 import { Header } from '@/components/sections/Header'
 import { WhatsAppFab } from '@/components/ui/WhatsAppFab'
 import { routing } from '@/i18n/routing'
+import { getSiteSettings } from '@/lib/settings'
 import { site } from '@/lib/site'
 import '../globals.css'
 
@@ -34,6 +36,11 @@ type Props = {
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
+
+// Root-level files such as /robots.txt skip the proxy and would render here with the file name
+// as the locale; the localized 404 then reads headers and fails as static-to-dynamic. Unknown
+// locales get a plain 404 instead.
+export const dynamicParams = false
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
@@ -73,9 +80,13 @@ export default async function LocaleLayout({ children, params }: Props) {
   if (!hasLocale(routing.locales, locale)) notFound()
 
   setRequestLocale(locale)
-  const [t, whatsapp] = await Promise.all([
+  // CMS images come from R2 on their own host in production: open that connection before the
+  // hero's LCP image is discovered (DNS + TLS cost several round trips on 4G).
+  if (process.env.MEDIA_PUBLIC_URL) preconnect(new URL(process.env.MEDIA_PUBLIC_URL).origin)
+  const [t, whatsapp, settings] = await Promise.all([
     getTranslations({ locale, namespace: 'nav' }),
     getTranslations({ locale, namespace: 'whatsapp' }),
+    getSiteSettings(locale),
   ])
 
   return (
@@ -91,7 +102,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           <Header />
           {children}
           <Footer />
-          <WhatsAppFab href={site.whatsappUrl} label={whatsapp('label')} />
+          <WhatsAppFab href={settings.whatsappUrl} label={whatsapp('label')} />
         </NextIntlClientProvider>
       </body>
     </html>

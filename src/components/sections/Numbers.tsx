@@ -3,7 +3,8 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { Counter } from '@/components/ui/Counter'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import type { Locale } from '@/i18n/routing'
-import { getHome, getSiteSettings, pick } from '@/lib/home'
+import { getHome, pick } from '@/lib/home'
+import { getSiteSettings } from '@/lib/settings'
 
 import { CameroonMap } from './CameroonMap'
 

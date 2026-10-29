@@ -7,7 +7,8 @@ import { Phone } from '@/components/device/Phone'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { StoreBadges } from '@/components/ui/StoreBadges'
 import type { Locale } from '@/i18n/routing'
-import { findScreen, getAppScreens, getHome, getSiteSettings, pick } from '@/lib/home'
+import { findScreen, getAppScreens, getHome, pick } from '@/lib/home'
+import { getSiteSettings } from '@/lib/settings'
 import { qrSvg } from '@/lib/qr'
 
 // Download band (docs/PLAN.md §5.15, FR-HOME-15). Says "iOS & Android" only once an App Store

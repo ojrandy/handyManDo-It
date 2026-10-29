@@ -3,23 +3,25 @@ import Image from 'next/image'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
+import { NavAnchor } from '@/components/ui/NavAnchor'
 import { StoreBadges } from '@/components/ui/StoreBadges'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
+import { getNavigation, type NavColumn, type NavLink } from '@/lib/navigation'
 import { services } from '@/lib/services'
+import { getSiteSettings } from '@/lib/settings'
 import { site } from '@/lib/site'
-
-const socials = [
-  { key: 'facebook', label: 'Facebook' },
-  { key: 'instagram', label: 'Instagram' },
-  { key: 'x', label: 'X' },
-  { key: 'youtube', label: 'YouTube' },
-] as const
 
 const linkClass = 'text-sm text-white/70 transition-colors hover:text-white'
 
-// Footer (docs/PLAN.md §5.17, FR-GLB-02). Contact data comes from lib/site, which seeds the `site`
-// global; it switches to the global when pages start reading Payload (Phase 1).
+type Route = Extract<NavLink, { external: false }>['href'] & string
+type OfficeKey = (typeof site.offices)[number]['key']
+
+// The services overview link stands out at the end of its column, as in the built-in menu.
+const isOverview = (link: NavLink) => !link.external && link.href === '/services'
+
+// Footer (docs/PLAN.md §5.17, FR-GLB-02). Columns come from the `navigation` global, contact data
+// from the `site` global (T-1.17); the built-in columns below cover an unfilled global.
 export async function Footer() {
   const [t, nav, s, hero, locale] = await Promise.all([
     getTranslations('footer'),
@@ -28,27 +30,64 @@ export async function Footer() {
     getTranslations('hero'),
     getLocale() as Promise<Locale>,
   ])
+  const [{ footer }, settings] = await Promise.all([getNavigation(locale), getSiteSettings(locale)])
   const year = new Date().getFullYear()
 
-  const company = [
-    { href: '/about', label: t('links.about') },
-    { href: '/our-work', label: t('links.ourWork') },
-    { href: '/careers', label: t('links.careers') },
-    { href: '/blog', label: t('links.blog') },
-    { href: '/become-a-pro', label: t('links.becomeAPro') },
-  ] as const
-  const support = [
-    { href: '/contact', label: t('links.contact') },
-    { href: '/faq', label: t('links.faq') },
-    { href: '/reviews', label: t('links.reviews') },
-    { href: '/businesses', label: t('links.businesses') },
-    { href: '/buildings', label: t('links.buildings') },
-  ] as const
-  const legal = [
-    { href: '/legal/privacy', label: t('links.privacy') },
-    { href: '/legal/terms', label: t('links.terms') },
-    { href: '/legal/disclaimer', label: t('links.disclaimer') },
-  ] as const
+  const page = (label: string, href: Route): NavLink => ({
+    key: href,
+    label,
+    external: false,
+    href,
+  })
+
+  const columns: NavColumn[] = footer.length
+    ? footer
+    : [
+        {
+          key: 'services',
+          title: t('columns.services'),
+          links: [
+            ...services.slice(0, 6).map<NavLink>(({ key, slug }) => ({
+              key,
+              label: s(`${key}.short`),
+              external: false,
+              href: { pathname: '/services/[slug]', params: { slug: slug[locale] } },
+            })),
+            page(nav('allServices'), '/services'),
+          ],
+        },
+        {
+          key: 'company',
+          title: t('columns.company'),
+          links: [
+            page(t('links.about'), '/about'),
+            page(t('links.ourWork'), '/our-work'),
+            page(t('links.careers'), '/careers'),
+            page(t('links.blog'), '/blog'),
+            page(t('links.becomeAPro'), '/become-a-pro'),
+          ],
+        },
+        {
+          key: 'support',
+          title: t('columns.support'),
+          links: [
+            page(t('links.contact'), '/contact'),
+            page(t('links.faq'), '/faq'),
+            page(t('links.reviews'), '/reviews'),
+            page(t('links.businesses'), '/businesses'),
+            page(t('links.buildings'), '/buildings'),
+          ],
+        },
+        {
+          key: 'legal',
+          title: t('columns.legal'),
+          links: [
+            page(t('links.privacy'), '/legal/privacy'),
+            page(t('links.terms'), '/legal/terms'),
+            page(t('links.disclaimer'), '/legal/disclaimer'),
+          ],
+        },
+      ]
 
   return (
     <footer className="grain relative overflow-hidden bg-night-950 pt-20 pb-10 text-white">
@@ -61,49 +100,30 @@ export async function Footer() {
             </Link>
             <p className="mt-6 font-display text-2xl font-semibold text-gold-300">{t('tagline')}</p>
             <p className="mt-2 text-sm text-white/60">{hero('values')}</p>
-            <StoreBadges className="mt-8" />
+            <StoreBadges
+              className="mt-8"
+              playStoreUrl={settings.playStoreUrl}
+              appStoreUrl={settings.appStoreUrl}
+            />
           </div>
 
           <nav aria-label={t('label')} className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-            <div>
-              <h2 className="text-sm font-semibold tracking-wide text-white uppercase">
-                {t('columns.services')}
-              </h2>
-              <ul className="mt-4 space-y-2.5">
-                {services.slice(0, 6).map(({ key, slug }) => (
-                  <li key={key}>
-                    <Link
-                      href={{ pathname: '/services/[slug]', params: { slug: slug[locale] } }}
-                      className={linkClass}
-                    >
-                      {s(`${key}.short`)}
-                    </Link>
-                  </li>
-                ))}
-                <li>
-                  <Link href="/services" className={`${linkClass} font-semibold text-gold-300`}>
-                    {nav('allServices')}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            {(
-              [
-                ['company', company],
-                ['support', support],
-                ['legal', legal],
-              ] as const
-            ).map(([column, links]) => (
-              <div key={column}>
+            {columns.map((column) => (
+              <div key={column.key}>
                 <h2 className="text-sm font-semibold tracking-wide text-white uppercase">
-                  {t(`columns.${column}`)}
+                  {column.title}
                 </h2>
                 <ul className="mt-4 space-y-2.5">
-                  {links.map((link) => (
-                    <li key={link.href}>
-                      <Link href={link.href} className={linkClass}>
+                  {column.links.map((link) => (
+                    <li key={link.key}>
+                      <NavAnchor
+                        to={link}
+                        className={
+                          isOverview(link) ? `${linkClass} font-semibold text-gold-300` : linkClass
+                        }
+                      >
                         {link.label}
-                      </Link>
+                      </NavAnchor>
                     </li>
                   ))}
                 </ul>
@@ -116,56 +136,70 @@ export async function Footer() {
           <address className="space-y-3 text-sm not-italic">
             <h2 className="text-sm font-semibold tracking-wide uppercase">{t('contactTitle')}</h2>
             <a
-              href={`tel:${site.phone}`}
+              href={settings.phone.href}
               className="flex items-center gap-2.5 text-white/80 hover:text-white"
             >
               <Phone aria-hidden className="size-4 text-gold-300" />
               <span>
-                {site.phoneDisplay} <span className="text-white/50">· {t('call')}</span>
+                {settings.phone.display} <span className="text-white/50">· {t('call')}</span>
               </span>
             </a>
             <a
-              href={`mailto:${site.email}`}
+              href={`mailto:${settings.email}`}
               className="flex items-center gap-2.5 text-white/80 hover:text-white"
             >
               <Mail aria-hidden className="size-4 text-gold-300" />
-              {site.email}
+              {settings.email}
             </a>
             <p className="flex items-center gap-2.5 text-white/80">
               <Clock aria-hidden className="size-4 text-gold-300" />
-              {t('hours')}
+              {settings.hours ?? t('hours')}
             </p>
           </address>
 
           <div className="space-y-3 text-sm">
-            {site.offices.map((office) => (
-              <p key={office.key} className="flex gap-2.5 text-white/80">
-                <MapPin aria-hidden className="mt-0.5 size-4 shrink-0 text-gold-300" />
-                <span>
-                  <span className="block font-semibold text-white">
-                    {t(`offices.${office.key}`)}
+            {settings.offices.map((office) => {
+              const address = `${office.address}, ${office.city}`
+              return (
+                <p key={office.key} className="flex gap-2.5 text-white/80">
+                  <MapPin aria-hidden className="mt-0.5 size-4 shrink-0 text-gold-300" />
+                  <span>
+                    <span className="block font-semibold text-white">
+                      {office.label ?? t(`offices.${office.key as OfficeKey}`)}
+                    </span>
+                    {office.mapUrl ? (
+                      <a
+                        href={office.mapUrl}
+                        className="underline-offset-4 hover:text-white hover:underline"
+                      >
+                        {address}
+                      </a>
+                    ) : (
+                      address
+                    )}
                   </span>
-                  {office.address}, {office.city}
-                </span>
-              </p>
-            ))}
+                </p>
+              )
+            })}
           </div>
 
-          <div>
-            <h2 className="text-sm font-semibold tracking-wide uppercase">{t('follow')}</h2>
-            <ul className="mt-3 flex flex-wrap gap-2">
-              {socials.map(({ key, label }) => (
-                <li key={key}>
-                  <a
-                    href={site.socials[key]}
-                    className="inline-flex min-h-11 items-center rounded-full border border-white/15 px-4 text-sm text-white/80 hover:bg-white/10 hover:text-white"
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {settings.socials.length ? (
+            <div>
+              <h2 className="text-sm font-semibold tracking-wide uppercase">{t('follow')}</h2>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {settings.socials.map(({ key, label, url }) => (
+                  <li key={key}>
+                    <a
+                      href={url}
+                      className="inline-flex min-h-11 items-center rounded-full border border-white/15 px-4 text-sm text-white/80 hover:bg-white/10 hover:text-white"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-12 flex flex-col-reverse items-start justify-between gap-6 border-t border-white/10 pt-8 sm:flex-row sm:items-center">

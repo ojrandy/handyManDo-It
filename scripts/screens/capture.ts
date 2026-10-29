@@ -15,7 +15,7 @@ export type CaptureOptions = {
 
 // The app's static files are content-hashed and its host is slow from some networks (a cold load
 // took four minutes from the dev machine), so they are kept on disk between screenshots and runs.
-async function cacheStaticFiles(context: BrowserContext, cacheDir: string) {
+export async function cacheStaticFiles(context: BrowserContext, cacheDir: string) {
   mkdirSync(cacheDir, { recursive: true })
   await context.route(
     /^https:\/\/app\.handymandoit\.com\/(_next\/static|fonts|assets)\//,
@@ -96,6 +96,8 @@ async function open(page: Page, spec: ScreenSpec, lang: Lang, theme: Theme) {
       .first()
       .click()
   }
+  // The home screen lists featured pros; each card opens that pro's public profile.
+  if (spec.open === 'firstPro') await page.locator('main button.tech-card').first().click()
   await settle(page)
 }
 

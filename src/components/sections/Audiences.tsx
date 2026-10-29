@@ -5,7 +5,8 @@ import { buttonClasses } from '@/components/ui/button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { getHome, getSiteSettings, pick } from '@/lib/home'
+import { getHome, pick } from '@/lib/home'
+import { getSiteSettings } from '@/lib/settings'
 
 // Homes / Businesses / Buildings (docs/PLAN.md §5.12, FR-HOME-12). The middle card is the dark,
 // featured one so the three read as distinct audiences. The cards and their links are fixed;
