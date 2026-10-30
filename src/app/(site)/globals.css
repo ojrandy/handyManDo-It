@@ -20,6 +20,8 @@
   --color-mist-200: #dfe8eb;
   --color-slate-500: #5b7480;
   --color-ink: #183d49;
+  /* Form errors only (6.5:1 on white). */
+  --color-danger: #b3261e;
 
   --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;

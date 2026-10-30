@@ -44,9 +44,21 @@ export const getFaqs = cache((locale: Locale) => findDocs('faqs', locale, { sort
 
 export const getTeam = cache((locale: Locale) => findDocs('team', locale, { sort: 'order' }))
 
+// Roles for /careers (FR-PG-10): open ones first, newest first. Closed roles keep their page
+// (shared links still work) but take no applications.
+export const getJobs = cache((locale: Locale) =>
+  findDocs('jobs', locale, { sort: ['-open', '-createdAt'] }),
+)
+
+export const getJob = cache(async (locale: Locale, slug: string) => {
+  const [doc] = await findDocs('jobs', locale, { where: { slug: { equals: slug } }, limit: 1 })
+  return doc ?? null
+})
+
 const slugRoutes = {
   services: { list: getServices, pathname: '/services/[slug]' },
   projects: { list: getProjects, pathname: '/our-work/[slug]' },
+  jobs: { list: getJobs, pathname: '/careers/[slug]' },
 } as const
 
 // A document's URL in every locale, found by id because each language has its own slug. Null

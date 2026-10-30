@@ -42,6 +42,8 @@ const notifyAndPurge: CollectionAfterChangeHook = async ({ doc, operation, req }
         `Phone: ${doc.phone ?? '-'}`,
         `City: ${doc.city ?? '-'}`,
         `Language: ${doc.locale}`,
+        // Company, service, skills…: the form's extra fields.
+        ...Object.entries(doc.details ?? {}).map(([key, value]) => `${key}: ${String(value)}`),
         '',
         doc.message ?? '',
         '',

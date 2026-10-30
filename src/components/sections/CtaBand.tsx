@@ -16,7 +16,10 @@ type Props = {
 // Closing call to action of inner pages: book in the app, or ask for a quote (FR-GLB-04).
 export async function CtaBand({ title, body, secondary }: Props) {
   const t = await getTranslations('ctaBand')
-  const second = secondary ?? { label: t('quote'), href: '/contact' }
+  const second = secondary ?? {
+    label: t('quote'),
+    href: { pathname: '/contact', query: { type: 'quote' } },
+  }
 
   return (
     <section

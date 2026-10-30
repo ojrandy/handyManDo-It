@@ -870,5 +870,293 @@
       "body": "Mettez votre cuisine en ligne : gérez votre menu, recevez les commandes et suivez vos versements.",
       "cta": "Rejoindre comme cuisine"
     }
+  },
+  "forms": {
+    "fields": {
+      "name": "Nom complet",
+      "email": "E-mail",
+      "phone": "Téléphone (WhatsApp)",
+      "city": "Ville",
+      "company": "Entreprise",
+      "subject": "Objet",
+      "service": "Service",
+      "skills": "Vos compétences",
+      "message": "Message",
+      "cv": "Votre CV"
+    },
+    "labels": {
+      "quote-home": {
+        "message": "Décrivez les travaux"
+      },
+      "quote-business": {
+        "company": "Entreprise ou organisation",
+        "message": "Décrivez le projet"
+      },
+      "partnership": {
+        "company": "Organisation",
+        "message": "Votre proposition"
+      },
+      "pro": {
+        "skills": "Vos compétences (ex. plomberie, carrelage, tapisserie)",
+        "message": "Votre expérience"
+      },
+      "job": {
+        "message": "Lettre de motivation"
+      }
+    },
+    "optional": "facultatif",
+    "serviceAny": "Je ne sais pas / autre chose",
+    "cvHint": "PDF ou Word, 5 Mo maximum.",
+    "honeypot": "Laissez ce champ vide",
+    "consent": "J’accepte que HandyMan Do IT conserve mes coordonnées pour me répondre, comme expliqué dans la <link>politique de confidentialité</link>.",
+    "submit": {
+      "default": "Envoyer",
+      "quote-home": "Demander mon devis",
+      "quote-business": "Demander un devis",
+      "pro": "Envoyer ma candidature",
+      "job": "Envoyer ma candidature"
+    },
+    "sending": "Envoi…",
+    "success": {
+      "title": "Merci, c’est bien reçu.",
+      "body": "Notre équipe vous répond rapidement, par téléphone ou par e-mail.",
+      "pro": "Notre équipe vous appelle pour la suite. En attendant, téléchargez l’appli et choisissez « Je propose des services ».",
+      "job": "Nous lisons votre candidature et vous contactons si votre profil correspond à un poste."
+    },
+    "errors": {
+      "summary": "{count, plural, one {# champ demande} other {# champs demandent}} votre attention.",
+      "required": "Merci de remplir ce champ.",
+      "tooLong": "Ce texte est trop long.",
+      "email": "Saisissez une adresse e-mail valide.",
+      "phone": "Saisissez un numéro de téléphone valide.",
+      "contactMethod": "Indiquez un e-mail ou un numéro de téléphone pour que nous puissions répondre.",
+      "consent": "Merci d’accepter pour que nous puissions vous répondre.",
+      "fileType": "Envoyez un fichier PDF ou Word.",
+      "fileSize": "Le fichier dépasse 5 Mo.",
+      "rateLimit": "Trop de messages depuis cette connexion. Réessayez dans quelques minutes, ou écrivez-nous sur WhatsApp.",
+      "tooFast": "C’était rapide ! Vérifiez vos informations et renvoyez.",
+      "expired": "Cette page est ouverte depuis longtemps. Merci de renvoyer.",
+      "jobClosed": "Ce poste ne reçoit plus de candidatures.",
+      "server": "Un problème est survenu de notre côté. Réessayez, ou écrivez-nous sur WhatsApp.",
+      "network": "Pas de connexion. Vérifiez votre réseau et réessayez."
+    }
+  },
+  "contactPage": {
+    "metaTitle": "Nous contacter",
+    "metaDescription": "Appelez, écrivez sur WhatsApp ou envoyez un message à HandyMan Do IT : questions, devis et partenariats. Bureaux à Buea et Douala, tous les jours de 7 h à 21 h.",
+    "eyebrow": "Contact",
+    "title": "Parlons-en.",
+    "lead": "Une question, un projet plus important à chiffrer ou une idée de partenariat : envoyez-nous un message, ou joignez-nous sur WhatsApp tous les jours.",
+    "chooser": {
+      "legend": "Comment pouvons-nous vous aider ?",
+      "contact": "Une question",
+      "quote-home": "Un devis",
+      "partnership": "Un partenariat"
+    },
+    "channels": {
+      "title": "Autres façons de nous joindre",
+      "whatsapp": "WhatsApp",
+      "whatsappBody": "Le moyen le plus rapide de nous joindre.",
+      "call": "Appelez-nous",
+      "email": "E-mail",
+      "hours": "Horaires",
+      "offices": "Nos bureaux",
+      "openMap": "Ouvrir dans Maps"
+    }
+  },
+  "businessesPage": {
+    "metaTitle": "Pour les entreprises et organisations",
+    "metaDescription": "Enseignes, événements, aménagement de bureaux et mobilier pour les organisations au Cameroun : un seul contact, un devis clair et des équipes vérifiées.",
+    "eyebrow": "Entreprises",
+    "title": "Des projets bien faits, pour votre organisation.",
+    "lead": "Enseignes, événements, aménagement de bureaux et mobilier : un seul contact du devis à la livraison, des équipes vérifiées et un paiement sécurisé jusqu’à la fin des travaux.",
+    "quoteCta": "Demander un devis entreprise",
+    "features": {
+      "title": "Pensé pour les organisations",
+      "items": [
+        {
+          "title": "Comptes « Mon organisation »",
+          "body": "Votre équipe réserve et suit les travaux depuis un seul compte d’organisation dans l’appli."
+        },
+        {
+          "title": "Enseignes, événements et bureaux",
+          "body": "Enseignes, stands et scènes, aménagement de bureaux et mobilier sur mesure."
+        },
+        {
+          "title": "Un interlocuteur dédié",
+          "body": "Une seule personne suit votre projet, de la première visite à la livraison."
+        },
+        {
+          "title": "Prix clair, paiement protégé",
+          "body": "Un devis clair avant le début des travaux ; le paiement est sécurisé jusqu’à la fin du chantier."
+        }
+      ]
+    },
+    "work": {
+      "title": "Réalisations récentes pour des organisations",
+      "body": "Événements, studios et projets solidaires réalisés avec nos clients.",
+      "all": "Voir toutes nos réalisations"
+    },
+    "quote": {
+      "title": "Demander un devis entreprise",
+      "body": "Parlez-nous du projet. Nous revenons vers vous avec des questions ou une visite, puis un devis clair."
+    }
+  },
+  "proPage": {
+    "metaTitle": "Devenir pro : gagnez avec HandyMan Do IT",
+    "metaDescription": "Pros, vendeurs et cuisines gagnent avec l’appli HandyMan Do IT : des demandes près de chez vous, vos propres tarifs, un paiement sécurisé jusqu’à la fin du travail.",
+    "eyebrow": "Devenir pro",
+    "title": "Gagnez avec votre savoir-faire.",
+    "lead": "Pros, vendeurs et cuisines utilisent la même appli que les clients. Choisissez « Je propose des services » à l’inscription, ou laissez vos coordonnées et nous vous appelons.",
+    "applyCta": "Postuler ici",
+    "benefits": {
+      "title": "Pourquoi les pros choisissent HandyMan",
+      "items": [
+        {
+          "title": "Des demandes près de chez vous",
+          "body": "Recevez des travaux dans votre zone, dans plus de 120 villes."
+        },
+        {
+          "title": "Vos tarifs, votre zone",
+          "body": "Indiquez vos compétences, vos tarifs et l’endroit où vous travaillez."
+        },
+        {
+          "title": "Un paiement garanti",
+          "body": "Le client paie avant les travaux. L’argent est sécurisé et vous est versé une fois le travail terminé."
+        },
+        {
+          "title": "Plus que des réparations",
+          "body": "Vendez des articles neufs, reconditionnés ou d’occasion dans la boutique, ou mettez votre cuisine en ligne."
+        }
+      ]
+    },
+    "requirements": {
+      "title": "Ce qu’il vous faut",
+      "body": "Chaque pro est vérifié par notre équipe avant d’être visible par les clients.",
+      "items": [
+        "Une pièce d’identité valide",
+        "Une preuve de votre savoir-faire : photos de travaux ou références",
+        "Un smartphone avec l’appli HandyMan Do IT",
+        "Un numéro Mobile Money"
+      ]
+    },
+    "steps": {
+      "title": "Quatre étapes jusqu’à votre premier travail",
+      "items": [
+        {
+          "title": "« Je propose des services »",
+          "body": "Téléchargez l’appli et choisissez « Je propose des services » à l’inscription."
+        },
+        {
+          "title": "Votre profil",
+          "body": "Ajoutez vos compétences, tarifs, zone et photos de vos travaux."
+        },
+        {
+          "title": "Vérification",
+          "body": "Notre équipe vérifie votre identité, vos documents et vos compétences."
+        },
+        {
+          "title": "Recevez des demandes",
+          "body": "Acceptez des travaux près de chez vous et soyez payé une fois terminés."
+        }
+      ]
+    },
+    "payouts": {
+      "title": "Comment vous êtes payé",
+      "items": [
+        "Le client voit un prix clair et paie d’avance, par Mobile Money ou avec le portefeuille HandyMan.",
+        "L’argent est sécurisé pendant que vous travaillez. Chaque étape s’affiche dans l’appli, avec des photos.",
+        "Une fois le travail terminé, le client donne le code de fin et le paiement vous est versé."
+      ]
+    },
+    "form": {
+      "title": "Postuler ici",
+      "body": "Laissez vos coordonnées et notre équipe vous appelle pour finaliser votre inscription."
+    },
+    "app": {
+      "title": "Vous préférez l’appli ?",
+      "body": "Inscrivez-vous directement : choisissez « Je propose des services » et suivez les étapes."
+    }
+  },
+  "careersPage": {
+    "metaTitle": "Carrières",
+    "metaDescription": "Rejoignez l’équipe HandyMan Do IT au Cameroun : techniciens, designers, chefs de projet, service client et apprentis.",
+    "eyebrow": "Carrières",
+    "title": "Rejoignez l’équipe HandyMan Do IT.",
+    "lead": "Nous offrons à nos clients une expérience de qualité, par le savoir-faire et le service. Si vous cherchez une carrière motivante où l’on apprend chaque jour, rejoignez-nous.",
+    "why": {
+      "title": "Pourquoi travailler avec nous",
+      "items": [
+        {
+          "title": "L’exigence de qualité",
+          "body": "Nous visons haut, sommes fiers de nos résultats et progressons sans cesse."
+        },
+        {
+          "title": "Des métiers variés",
+          "body": "Réparations, installations, rénovation, tapisserie, mobilier et plus : des postes pour de nombreux talents."
+        },
+        {
+          "title": "Évoluer",
+          "body": "Formation continue, accompagnement et de quoi construire une carrière dans la durée."
+        },
+        {
+          "title": "L’esprit d’équipe",
+          "body": "Communication ouverte, partage d’idées et respect : chacun se sent valorisé et soutenu."
+        },
+        {
+          "title": "Un travail utile",
+          "body": "Chaque projet améliore des maisons et des entreprises de notre communauté."
+        }
+      ]
+    },
+    "areas": {
+      "title": "Où vous pourriez trouver votre place",
+      "items": [
+        {
+          "title": "Techniciens qualifiés",
+          "body": "Électricité, plomberie, menuiserie et petits travaux, avec le souci du détail."
+        },
+        {
+          "title": "Designers et rénovateurs",
+          "body": "Mettez votre créativité au service de projets qui transforment les espaces."
+        },
+        {
+          "title": "Chefs de projet",
+          "body": "Menez les projets du début à la fin : dans les délais, dans le budget, avec un haut niveau de qualité."
+        },
+        {
+          "title": "Service client",
+          "body": "Guidez nos clients dans nos services et veillez à leur satisfaction."
+        },
+        {
+          "title": "Apprentis et stagiaires",
+          "body": "Commencez par la pratique, accompagné par des pros expérimentés."
+        }
+      ]
+    },
+    "roles": {
+      "title": "Postes ouverts",
+      "empty": "Aucun poste ouvert pour le moment. Envoyez-nous une candidature spontanée ci-dessous : nous les lisons toutes.",
+      "view": "Voir le poste",
+      "closes": "Candidature avant le {date}",
+      "closed": "Fermé",
+      "types": {
+        "full-time": "Temps plein",
+        "part-time": "Temps partiel",
+        "contract": "Contrat"
+      }
+    },
+    "apply": {
+      "title": "Candidature spontanée",
+      "body": "Envoyez votre CV et dites-nous ce que vous aimeriez faire."
+    },
+    "detail": {
+      "back": "Tous les postes",
+      "location": "Lieu",
+      "type": "Type",
+      "closesAt": "Candidature avant le",
+      "applyTitle": "Postuler à ce poste",
+      "closed": "Ce poste est fermé et ne reçoit plus de candidatures. Consultez les autres postes ouverts, ou envoyez une candidature spontanée."
+    }
   }
 }

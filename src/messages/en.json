@@ -870,5 +870,293 @@
       "body": "Bring your kitchen online: manage your menu, receive orders and track your payouts.",
       "cta": "Join as a kitchen"
     }
+  },
+  "forms": {
+    "fields": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone (WhatsApp)",
+      "city": "Town or city",
+      "company": "Company",
+      "subject": "Subject",
+      "service": "Service",
+      "skills": "Your skills",
+      "message": "Message",
+      "cv": "Your CV"
+    },
+    "labels": {
+      "quote-home": {
+        "message": "Describe the job"
+      },
+      "quote-business": {
+        "company": "Company or organisation",
+        "message": "Describe the project"
+      },
+      "partnership": {
+        "company": "Organisation",
+        "message": "Your proposal"
+      },
+      "pro": {
+        "skills": "Your skills (e.g. plumbing, tiling, upholstery)",
+        "message": "Your experience"
+      },
+      "job": {
+        "message": "Cover letter"
+      }
+    },
+    "optional": "optional",
+    "serviceAny": "Not sure / something else",
+    "cvHint": "PDF or Word, up to 5 MB.",
+    "honeypot": "Leave this field empty",
+    "consent": "I agree that HandyMan Do IT keeps my details to answer me, as described in the <link>privacy policy</link>.",
+    "submit": {
+      "default": "Send",
+      "quote-home": "Request my quote",
+      "quote-business": "Request a quote",
+      "pro": "Send my application",
+      "job": "Send my application"
+    },
+    "sending": "Sending…",
+    "success": {
+      "title": "Thank you, we have it.",
+      "body": "Our team will get back to you soon, by phone or email.",
+      "pro": "Our team will call you about the next steps. Meanwhile, you can get the app and choose “I offer services”.",
+      "job": "We will read your application and contact you if your profile matches a role."
+    },
+    "errors": {
+      "summary": "{count, plural, one {# field needs} other {# fields need}} your attention.",
+      "required": "Please fill in this field.",
+      "tooLong": "This is too long.",
+      "email": "Enter a valid email address.",
+      "phone": "Enter a valid phone number.",
+      "contactMethod": "Give us an email or a phone number so we can reply.",
+      "consent": "Please accept so we can answer you.",
+      "fileType": "Send a PDF or Word file.",
+      "fileSize": "The file is larger than 5 MB.",
+      "rateLimit": "Too many messages from this connection. Try again in a few minutes, or write to us on WhatsApp.",
+      "tooFast": "That was quick! Please check your details and send again.",
+      "expired": "This page has been open for a long time. Please send again.",
+      "jobClosed": "This role no longer takes applications.",
+      "server": "Something went wrong on our side. Please try again, or write to us on WhatsApp.",
+      "network": "No connection. Check your network and try again."
+    }
+  },
+  "contactPage": {
+    "metaTitle": "Contact us",
+    "metaDescription": "Call, WhatsApp or write to HandyMan Do IT: questions, quotes and partnerships. Offices in Buea and Douala, every day from 07:00 to 21:00.",
+    "eyebrow": "Contact",
+    "title": "Talk to us.",
+    "lead": "A question, a bigger job to price, or a partnership idea: send us a message, or reach us on WhatsApp every day.",
+    "chooser": {
+      "legend": "What can we help with?",
+      "contact": "A question",
+      "quote-home": "A quote",
+      "partnership": "A partnership"
+    },
+    "channels": {
+      "title": "Other ways to reach us",
+      "whatsapp": "WhatsApp",
+      "whatsappBody": "The quickest way to reach us.",
+      "call": "Call us",
+      "email": "Email",
+      "hours": "Opening hours",
+      "offices": "Our offices",
+      "openMap": "Open in Maps"
+    }
+  },
+  "businessesPage": {
+    "metaTitle": "For businesses and organisations",
+    "metaDescription": "Signage, events, office remodels and furniture for organisations in Cameroon: one contact, a clear quote and verified crews.",
+    "eyebrow": "Businesses",
+    "title": "Projects done right, for your organisation.",
+    "lead": "Signage, events, office remodels and furniture: one contact from quote to handover, verified crews and payment held until the work is done.",
+    "quoteCta": "Request a business quote",
+    "features": {
+      "title": "Built for organisations",
+      "items": [
+        {
+          "title": "“My organisation” accounts",
+          "body": "Your team books and follows jobs from one organisation account in the app."
+        },
+        {
+          "title": "Signage, events and offices",
+          "body": "Signboards, stands and stages, office remodels and made-to-measure furniture."
+        },
+        {
+          "title": "A dedicated contact",
+          "body": "One person follows your project from the first visit to the handover."
+        },
+        {
+          "title": "Clear price, protected payment",
+          "body": "A clear quote before work starts; payment is held until the job is done."
+        }
+      ]
+    },
+    "work": {
+      "title": "Recent work for organisations",
+      "body": "Events, studios and community projects we built with our clients.",
+      "all": "See all our work"
+    },
+    "quote": {
+      "title": "Request a business quote",
+      "body": "Tell us about the project. We reply with questions or a visit, then a clear quote."
+    }
+  },
+  "proPage": {
+    "metaTitle": "Become a pro: earn with HandyMan Do IT",
+    "metaDescription": "Pros, sellers and kitchens earn with the HandyMan Do IT app: requests near you, your own rates, payment held safely until the job is done.",
+    "eyebrow": "Become a pro",
+    "title": "Earn with your skills.",
+    "lead": "Pros, sellers and kitchens use the same app as customers. Choose “I offer services” when you sign up, or leave your details and we will call you.",
+    "applyCta": "Apply here",
+    "benefits": {
+      "title": "Why pros join HandyMan",
+      "items": [
+        {
+          "title": "Requests near you",
+          "body": "Receive jobs in your service area, in 120+ towns and cities."
+        },
+        {
+          "title": "Your rates, your area",
+          "body": "Set your skills, your rates and where you work."
+        },
+        {
+          "title": "Payment you can count on",
+          "body": "The customer pays before the job. The money is held and released to you when the work is done."
+        },
+        {
+          "title": "More than repairs",
+          "body": "Sell new, refurbished or second-hand items in the shop, or bring your kitchen online."
+        }
+      ]
+    },
+    "requirements": {
+      "title": "What you need",
+      "body": "Every pro is checked by our team before customers can see them.",
+      "items": [
+        "A valid identity document",
+        "Proof of your skills: photos of past jobs or references",
+        "A smartphone with the HandyMan Do IT app",
+        "A Mobile Money number"
+      ]
+    },
+    "steps": {
+      "title": "Four steps to your first job",
+      "items": [
+        {
+          "title": "“I offer services”",
+          "body": "Download the app and choose “I offer services” at sign-up."
+        },
+        {
+          "title": "Your profile",
+          "body": "Add your skills, rates, service area and photos of your work."
+        },
+        {
+          "title": "Verification",
+          "body": "Our team checks your identity, documents and skills."
+        },
+        {
+          "title": "Receive requests",
+          "body": "Accept jobs near you and get paid when they are done."
+        }
+      ]
+    },
+    "payouts": {
+      "title": "How you get paid",
+      "items": [
+        "The customer sees a clear price and pays up front, with Mobile Money or the HandyMan wallet.",
+        "The money is held safely while you work. Each stage is shown in the app, with photos.",
+        "When the job is done, the customer hands over the completion code and the payment is released to you."
+      ]
+    },
+    "form": {
+      "title": "Apply here",
+      "body": "Leave your details and our team will call you to finish your sign-up."
+    },
+    "app": {
+      "title": "Prefer the app?",
+      "body": "Sign up directly: choose “I offer services” and follow the steps."
+    }
+  },
+  "careersPage": {
+    "metaTitle": "Careers",
+    "metaDescription": "Join the HandyMan Do IT team in Cameroon: technicians, designers, project managers, customer service and apprentices.",
+    "eyebrow": "Careers",
+    "title": "Join the HandyMan Do IT team.",
+    "lead": "We create great experiences for our clients through quality craftsmanship and service. If you want a rewarding career where you keep learning, join us.",
+    "why": {
+      "title": "Why work with us",
+      "items": [
+        {
+          "title": "Commitment to excellence",
+          "body": "We hold ourselves to high standards, take pride in our results and keep improving."
+        },
+        {
+          "title": "Diverse opportunities",
+          "body": "Repairs, installations, remodeling, upholstery, furniture and more: roles for many skills."
+        },
+        {
+          "title": "Professional growth",
+          "body": "Ongoing training, mentoring and room to build a long-term career."
+        },
+        {
+          "title": "Teamwork",
+          "body": "Open communication, shared ideas and respect, so everyone feels valued and supported."
+        },
+        {
+          "title": "Work that matters",
+          "body": "Every project makes homes and businesses in our community better."
+        }
+      ]
+    },
+    "areas": {
+      "title": "Where you could fit",
+      "items": [
+        {
+          "title": "Skilled technicians",
+          "body": "Electrical, plumbing, carpentry and general handyman work, with an eye for detail."
+        },
+        {
+          "title": "Designers and remodelers",
+          "body": "Bring your creative vision to projects that transform spaces."
+        },
+        {
+          "title": "Project managers",
+          "body": "Lead projects from start to finish: on time, on budget, to a high standard."
+        },
+        {
+          "title": "Customer service",
+          "body": "Help our clients find their way through our services and keep them satisfied."
+        },
+        {
+          "title": "Apprentices and trainees",
+          "body": "Start with hands-on experience and mentoring from experienced pros."
+        }
+      ]
+    },
+    "roles": {
+      "title": "Open roles",
+      "empty": "No open roles right now. Send us an open application below: we read every one.",
+      "view": "View the role",
+      "closes": "Apply by {date}",
+      "closed": "Closed",
+      "types": {
+        "full-time": "Full-time",
+        "part-time": "Part-time",
+        "contract": "Contract"
+      }
+    },
+    "apply": {
+      "title": "Open application",
+      "body": "Send your CV and tell us what you would like to do."
+    },
+    "detail": {
+      "back": "All roles",
+      "location": "Location",
+      "type": "Type",
+      "closesAt": "Apply by",
+      "applyTitle": "Apply for this role",
+      "closed": "This role is closed and no longer takes applications. See the other open roles, or send an open application."
+    }
   }
 }

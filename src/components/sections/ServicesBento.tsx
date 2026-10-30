@@ -169,7 +169,7 @@ export async function ServicesBento() {
                 {t('custom')}
               </span>
               <Link
-                href="/contact"
+                href={{ pathname: '/contact', query: { type: 'quote' } }}
                 className={buttonClasses({
                   variant: 'primary',
                   size: 'sm',
