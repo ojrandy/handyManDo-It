@@ -94,11 +94,13 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 | Form fields | ⬜ | Label always visible, error text linked with `aria-describedby`, `aria-live` summary |
 | JsonLd | ✅ | `<script type="application/ld+json">` server component; escapes `<` |
 | Breadcrumbs | ✅ | `nav` with `aria-label`, ordered list, last crumb `aria-current="page"` (text, not a link); emits BreadcrumbList. Styled for the dark page hero |
-| FilterableGrid | ✅ | Toggle buttons (`aria-pressed`) in a labelled group; result count in a polite live region; all items visible without JS. No motion |
+| FilterableGrid | ✅ | Filter groups (one labelled `role="group"` each) of toggle buttons (`aria-pressed`); a group with fewer than two options is hidden; result count in a polite live region; all items visible without JS. No motion. Grid or masonry (`listClassName`) |
+| ProjectCard | ✅ | Whole card is the link; cover at its own aspect ratio (masonry), title, service, city |
+| BeforeAfter | ✅ | Native range input over two photos (arrows/Home/End, labelled); focus ring on the figure; no animation |
 | ServiceCard | ✅ | Whole card is the link; photo (`CmsImage`) or the service icon on a dark tile; title, summary, price label |
 | Prose | ✅ | Payload Lexical `RichText` with the site type scale (light backgrounds) |
 | device/Phone, device/Laptop | Phone ✅ · Laptop ⬜ | CSS frame with `overlay` slot; `AppScreenImage` fills it with a captured `app-screens` image (page language, theme), `AppHomeScreen` (HTML recreation) is the fallback while none is captured |
-| sections/* | Header, Hero, TrustedBy, ServicesBento, Pillars, Numbers, HowItWorks, Testimonials, Audiences, Earn, FaqTeaser, DownloadBand, Footer ✅ · inner pages: PageHero (dark: breadcrumbs, H1, lead, actions, optional photo preloaded), CtaBand (book in app + quote), PricingExplainer ✅ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
+| sections/* | Header, Hero, TrustedBy, ServicesBento, Pillars, Numbers, HowItWorks, Testimonials, Audiences, Earn, FaqTeaser, DownloadBand, Footer ✅ · inner pages: PageHero (dark: breadcrumbs, H1, lead, actions, optional photo preloaded), CtaBand (book in app + quote), PricingExplainer, FeatureSplit (checklists beside a captured app screen), AppOfferPage (Shop/Food) ✅ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
 
 **Component rules**
 1. Server Component unless it needs interactivity; client logic in the smallest possible child.

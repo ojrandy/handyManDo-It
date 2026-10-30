@@ -1,6 +1,6 @@
 # Project Tracker
 
-Last updated: **2026-10-29** · Current phase: **Phase 4 — Inner pages (in progress)** · Plan status: PLAN.md v1.1 **approved** (2026-10-23)
+Last updated: **2026-10-30** · Current phase: **Phase 4 — Inner pages (in progress)** · Plan status: PLAN.md v1.1 **approved** (2026-10-23)
 
 Status: ✅ done · 🔄 in progress · ⬜ to do · ⛔ blocked · ➖ dropped
 Update this file in the same PR as the work. Every task lists the requirement IDs it satisfies.
@@ -136,10 +136,10 @@ Phase 2/3 sections are unaffected: they read `src/lib/*`, not Payload. Field sha
 | ID | Task | Req | Status |
 |---|---|---|---|
 | T-4.01 | Services index + detail ×11 | FR-PG-01/02 | ✅ 2026-10-29: shared PageHero, Breadcrumbs (+ BreadcrumbList), CtaBand, Prose, JsonLd, FaqList, `lib/seo.ts` (canonical + hreflang). Index: filter on the new `services.category` (migration), pricing explainer, CTA. Detail: hero photo, old-site intro + inclusions for 6 services (FR translated, R-08 review; the other 5 had no old-site page and show summary, steps and FAQs only), steps (the service's own or the shared booking flow), related work, reviews, service FAQs (FAQPage), other services, sticky Book/Quote bar, Service JSON-LD (offer only with a from-price, Q-5). 22 pages pre-rendered. Language switch follows the translated slug (ADR-025). e2e `services.e2e.spec.ts` |
-| T-4.02 | Businesses, Buildings, Shop, Food | FR-PG-03..05 | ⬜ |
+| T-4.02 | Businesses, Buildings, Shop, Food | FR-PG-03..05 | 🔄 2026-10-30: Buildings (managers/residents checklists, 3 steps, contact), Shop and Food (`AppOfferPage`: what you find, captured app screen, seller/kitchen sign-up to /become-a-pro) done; facts from PLAN.md "What the app offers". Businesses waits for the B2B quote form (branch 3) |
 | T-4.03 | Become a pro + application form | FR-PG-06 | ⬜ |
-| T-4.04 | Our work + case study | FR-PG-07 | ⬜ |
-| T-4.05 | Reviews, About, FAQ, Legal | FR-PG-08/09/12/15 | ⬜ |
+| T-4.04 | Our work + case study | FR-PG-07 | ✅ 2026-10-30: 9 projects seeded from the old "Our Works" gallery (54 photos saved as WebP in `public/images/projects/`, alt text per photo, FR translated), `projects.city` now optional (no locations on the old site; W.A.F. is Douala from its photos). Masonry with service filter (city filter appears once 2+ cities exist), case study with facts, story, gallery, before/after slider (keyboard range input) when both photos exist, more projects, CreativeWork JSON-LD |
+| T-4.05 | Reviews, About, FAQ, Legal | FR-PG-08/09/12/15 | 🔄 2026-10-30: Reviews (all testimonials, Review JSON-LD; AggregateRating and stars only with real figures, Q-6), About (story, mission, values, numbers, team with old-site roles, `#partners` with parent company and affiliates, `#csr` from the old CSR policy), FAQ (by category, topic index, one FAQPage block, WhatsApp/contact box) done. Legal is branch 5 (Q-18) |
 | T-4.06 | Careers + apply (CV upload) | FR-PG-10 | ⬜ |
 | T-4.07 | Blog index + article | FR-PG-11 | ⬜ |
 | T-4.08 | Contact + forms | FR-PG-13 | ⬜ |
@@ -201,11 +201,11 @@ Delivery order (owner approved the recommendations 2026-10-29): 1 `feat/inner-te
 | Q-9 | Error monitoring: Sentry? (ADR-011) | Phase 6 | Logs only |
 | Q-10 | Names of 4 partner logos (lion, green frames, orange mountain, leaf) from the old site | Phase 6 | ✅ Resolved 2026-10-28 from the live site: Spectron Limited LLC (lion), Web Spectron (green frames), Luxecam Tours Ltd (orange mountain), Kenta Beauty Clinic (leaf); logos replaced with the live 300 px originals |
 | Q-11 | Cancellation policy (for the FAQ) | Phase 4 | ✅ Resolved 2026-10-28: cancellation FAQ seeded from the owner's policy (change log) |
-| Q-12 | Higher-resolution project photos (old site has 500–750 px) | Phase 6 | Use the old-site files |
+| Q-12 | Higher-resolution project photos (old site has 500–750 px) | Phase 6 | Use the old-site files (now also the 54 Our work photos). Owner: also send cities, clients and dates for the 9 projects |
 | Q-13 | Services ↔ faqs/projects: child-side relationships + `join` fields on services instead of two-way relationships (ADR-017) | Phase 1, branch 3 | ✅ Approved by owner 2026-10-27: join fields |
 | Q-14 | Submissions 24-month retention without cron (NFR-PRIV-01): purge on each new submission, manual admin purge, or both | Phase 1, branch 6 | ✅ Approved by owner 2026-10-27: both. Done: purge after each new submission; admins bulk-delete from the list; attachments are deleted with their submission |
 | Q-15 | Rename `appScreens.locale` to `lang` (avoids confusion with Payload's `locale` argument) | Phase 1, branch 7 | ✅ Approved by owner 2026-10-27: rename. Done (collection slug `app-screens`) |
-| Q-16 | Roles (FR + EN) and photos for J. Batholomew, Mbeng Nkeng S., ANU Ernest | Phase 4 (About) | 2026-10-29: roles found on the old site (company-info.html): Chief Operations, Chief Engineer, P.R Specialist; seeded with the About page (T-4.05). Photos still needed |
+| Q-16 | Roles (FR + EN) and photos for J. Batholomew, Mbeng Nkeng S., ANU Ernest | Phase 4 (About) | Roles ✅ seeded 2026-10-30 from the old site (Chief Operations, Chief Engineer, PR Specialist; FR: Responsable des opérations, Responsable de l’ingénierie, Relations publiques). Photos still needed: the About page shows initials meanwhile |
 | Q-18 | Privacy policy and terms of use: the old site links both, but both return 404 (only the disclaimer exists) | Before launch (Phase 6) | Phase 4 drafts both from facts the site can state (data the forms collect, 24-month retention, storage, contact), marked for owner/legal review; disclaimer and CSR text come from the old site |
 | Q-17 | Hostinger build command becomes `npm run migrate && npm run build`: pre-rendering now reads Payload, so the schema must be migrated before the build (fresh Neon DB or schema change would fail the build otherwise) | Before T-0.17 (first deploy) | Proposed 2026-10-28; DEPLOY.md and operations.md updated, owner to confirm |
 
@@ -244,5 +244,6 @@ Delivery order (owner approved the recommendations 2026-10-29): 1 `feat/inner-te
 | 2026-10-29 | Hero still photo from the old site (poster, slow zoom), real app screens in the hero and download-band phones; guest mode checked for logged-in screens (none reachable) | Dev |
 | 2026-10-29 | T-1.12 access matrix tests (2 fixes: `users.unlock` admin-only, `home` drafts private); T-1.17 header/footer/store links/WhatsApp from the `navigation` and `site` globals | Dev |
 | 2026-10-29 | T-3.05 scroll story (CSS sticky, ADR-021), T-3.07 mini-demo, T-3.08 screens gallery, T-3.14 latest posts, T-3.16 JS budget test; `findDocs` takes `fallbackLocale`; `track()` helper. Verified: typecheck, lint, messages int spec. Build/e2e pending (Docker down) | Dev |
+| 2026-10-30 | Phase 4 branch 2: Our work + case studies (9 projects, 54 photos from the old gallery; `projects.city` optional + migration), Reviews, About (#partners, #csr), FAQ, Buildings, Shop, Food; team roles and affiliate websites seeded; `FilterableGrid` filter groups, `FaqList` shared FAQPage builder, `docPaths` for translated slugs. Fix during the work: project photos sharing file names (`1.webp`) were matched as one media by the seed; photos now carry their project slug, sequential uploads, regression test. Verified: typecheck, lint, `migrate:check --drift`, `test:int` 125/125, `build`, `test:e2e` 46/46 on the production build | Dev |
 | 2026-10-29 | Phase 4 started. Decisions: `legal` global, native forms + zod, office map links, client-side blog filter (ADR-022..024); Q-2, Q-11 closed; Q-18 opened (privacy/terms missing on the old site). T-4.01 services index + detail with shared page templates, `services.category` + migration, SEO helper, language switch on translated slugs (ADR-025). Verified: typecheck, lint, `migrate:check --drift`, `test:int` 124/124, `build` (22 service pages), `test:e2e` 38/38 on the production build (the services detail test needed a retry in both full runs: `newPage` timed out before any page loaded; the spec passes 5/5 alone with no retries) | Dev |
 | 2026-10-29 | Phase 3 batch verified: typecheck, lint, `migrate:check` (13 migrations), `test:int` 121/121, `build`, `test:e2e` 33/33 on the production build (2 test locators fixed: hero phone list scoped to the hero; mini-demo test scrolls to the section so the lazy demo loads) | Dev |
