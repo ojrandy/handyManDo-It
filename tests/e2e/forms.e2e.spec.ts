@@ -78,6 +78,15 @@ test.describe('Form pages', () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
   })
 
+  test('contact page and footer show support and office hours (Q-19)', async ({ page }) => {
+    await page.goto('/en/contact')
+    const main = page.locator('main')
+    await expect(main.getByText(en.contactPage.channels.support)).toBeVisible()
+    await expect(main.getByText(en.contactPage.channels.visits)).toBeVisible()
+    await expect(main.getByText(en.footer.officeHours)).toBeVisible()
+    await expect(page.locator('footer').getByText(en.footer.officeHours)).toBeVisible()
+  })
+
   // The long email address and the chooser pills once widened the contact grid by 13–46 px.
   test('form pages fit a 390 px phone', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 })

@@ -29,6 +29,17 @@ export const Site: GlobalConfig = {
               type: 'text',
               localized: true,
               defaultValue: 'Every day, 07:00–21:00 (WAT)',
+              admin: { description: 'Support by phone and WhatsApp.' },
+            },
+            {
+              // Visits to the offices keep shorter hours than phone/WhatsApp support (Q-19).
+              name: 'officeHours',
+              type: 'text',
+              localized: true,
+              admin: {
+                description:
+                  'Office visits, one line. Empty shows: Mon–Thu 08:00–17:00 · Fri–Sat 09:00–16:00 · Sun closed.',
+              },
             },
             {
               name: 'offices',

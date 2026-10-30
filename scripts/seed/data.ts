@@ -308,6 +308,7 @@ export function siteData(locale: Locale): SiteData {
     whatsappUrl: site.whatsappUrl,
     email: site.email,
     hours: m.footer.hours,
+    officeHours: m.footer.officeHours,
     offices: site.offices.map((office) => ({
       label: m.footer.offices[office.key],
       address: office.address,

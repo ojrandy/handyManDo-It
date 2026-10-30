@@ -1266,7 +1266,14 @@ export interface Site {
   phone: string;
   whatsappUrl: string;
   email: string;
+  /**
+   * Support by phone and WhatsApp.
+   */
   hours?: string | null;
+  /**
+   * Office visits, one line. Empty shows: Mon–Thu 08:00–17:00 · Fri–Sat 09:00–16:00 · Sun closed.
+   */
+  officeHours?: string | null;
   offices?:
     | {
         label: string;
@@ -1798,6 +1805,7 @@ export interface SiteSelect<T extends boolean = true> {
   whatsappUrl?: T;
   email?: T;
   hours?: T;
+  officeHours?: T;
   offices?:
     | T
     | {

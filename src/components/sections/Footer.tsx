@@ -151,9 +151,19 @@ export async function Footer() {
               <Mail aria-hidden className="size-4 text-gold-300" />
               {settings.email}
             </a>
-            <p className="flex items-center gap-2.5 text-white/80">
-              <Clock aria-hidden className="size-4 text-gold-300" />
-              {settings.hours ?? t('hours')}
+            {/* Support (phone/WhatsApp) and office visits keep different hours (Q-19). */}
+            <p className="flex gap-2.5 text-white/80">
+              <Clock aria-hidden className="mt-0.5 size-4 shrink-0 text-gold-300" />
+              <span>
+                <span className="block">
+                  <span className="font-semibold text-white">{t('supportLabel')} </span>
+                  {settings.hours ?? t('hours')}
+                </span>
+                <span className="block">
+                  <span className="font-semibold text-white">{t('officeHoursLabel')} </span>
+                  {settings.officeHours ?? t('officeHours')}
+                </span>
+              </span>
             </p>
           </address>
 

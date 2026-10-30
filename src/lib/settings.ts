@@ -51,6 +51,7 @@ export function siteSettingsFrom(doc: Partial<Site>) {
     email: doc.email || site.email,
     // Null keeps the messages copy, which is translated.
     hours: doc.hours?.trim() || null,
+    officeHours: doc.officeHours?.trim() || null,
     offices: doc.offices?.length
       ? doc.offices.map<Office>(({ id, label, address, city, mapUrl }, index) => ({
           key: id ?? String(index),

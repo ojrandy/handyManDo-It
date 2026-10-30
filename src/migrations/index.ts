@@ -15,6 +15,7 @@ import * as migration_20261029_225000_service_category from './20261029_225000_s
 import * as migration_20261030_083110_project_city_optional from './20261030_083110_project_city_optional'
 import * as migration_20261030_110258_hero_slides from './20261030_110258_hero_slides'
 import * as migration_20261030_142004_add_legal_global from './20261030_142004_add_legal_global'
+import * as migration_20261030_173750_site_office_hours from './20261030_173750_site_office_hours'
 
 export const migrations = [
   {
@@ -101,5 +102,10 @@ export const migrations = [
     up: migration_20261030_142004_add_legal_global.up,
     down: migration_20261030_142004_add_legal_global.down,
     name: '20261030_142004_add_legal_global',
+  },
+  {
+    up: migration_20261030_173750_site_office_hours.up,
+    down: migration_20261030_173750_site_office_hours.down,
+    name: '20261030_173750_site_office_hours',
   },
 ]

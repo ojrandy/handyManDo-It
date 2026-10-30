@@ -114,7 +114,10 @@
       "technical": "Direction technique",
       "office": "Bureau"
     },
-    "follow": "Suivez-nous"
+    "follow": "Suivez-nous",
+    "supportLabel": "Assistance :",
+    "officeHoursLabel": "Bureaux :",
+    "officeHours": "Lun–jeu de 8 h à 17 h · ven–sam de 9 h à 16 h · dim fermé"
   },
   "notFound": {
     "metaTitle": "Page introuvable",
@@ -961,7 +964,9 @@
       "email": "E-mail",
       "hours": "Horaires",
       "offices": "Nos bureaux",
-      "openMap": "Ouvrir dans Maps"
+      "openMap": "Ouvrir dans Maps",
+      "support": "Assistance par téléphone et WhatsApp",
+      "visits": "Visites aux bureaux"
     }
   },
   "businessesPage": {

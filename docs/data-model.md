@@ -90,6 +90,7 @@ files (private uploads, group Inbox): PDF/DOC/DOCX only (Payload also checks the
 ## 4. Globals
 
 ### 4.1 `site` ✅ (access: public read, admin update)
+2026-10-30: `officeHours` (text L, optional; office visits, shown beside the support `hours`; empty ⇒ messages copy; migration `site_office_hours`, Q-19).
 Tabs — **Contact:** phone, whatsappUrl, email, hours (L), offices[] {label L, address, city, mapUrl}. **Apps:** webAppUrl, playStoreUrl, appStoreUrl (empty ⇒ iOS badge hidden), rating, reviewCount (empty ⇒ rating row hidden). **Stats:** towns, years, clients, projects. **Social:** facebook, instagram, x, youtube.
 Defaults come from `src/lib/site.ts`. Revalidates `site`. Read through `getSiteSettings` (`src/lib/settings.ts`): home sections (T-1.15), header, footer, store badges, Get the app and the WhatsApp button (T-1.17). Empty contact fields fall back to `src/lib/site.ts`; empty hours/offices to the messages copy; an emptied social field hides its link; map links render only when http(s).
 

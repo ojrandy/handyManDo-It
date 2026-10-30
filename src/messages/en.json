@@ -114,7 +114,10 @@
       "technical": "Technical direction",
       "office": "Office"
     },
-    "follow": "Follow us"
+    "follow": "Follow us",
+    "supportLabel": "Support:",
+    "officeHoursLabel": "Offices:",
+    "officeHours": "Mon–Thu 08:00–17:00 · Fri–Sat 09:00–16:00 · Sun closed"
   },
   "notFound": {
     "metaTitle": "Page not found",
@@ -961,7 +964,9 @@
       "email": "Email",
       "hours": "Opening hours",
       "offices": "Our offices",
-      "openMap": "Open in Maps"
+      "openMap": "Open in Maps",
+      "support": "Phone and WhatsApp support",
+      "visits": "Office visits"
     }
   },
   "businessesPage": {

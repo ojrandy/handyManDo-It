@@ -108,7 +108,18 @@ export default async function ContactPage({ params }: Props) {
                 <Clock aria-hidden className="size-5 text-teal-600" />
                 {t('channels.hours')}
               </h3>
-              <p className="mt-2 text-slate-500">{settings.hours ?? footer('hours')}</p>
+              <dl className="mt-3 space-y-2">
+                <div>
+                  <dt className="text-sm font-semibold text-teal-700">{t('channels.support')}</dt>
+                  <dd className="text-slate-500">{settings.hours ?? footer('hours')}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-semibold text-teal-700">{t('channels.visits')}</dt>
+                  <dd className="text-slate-500">
+                    {settings.officeHours ?? footer('officeHours')}
+                  </dd>
+                </div>
+              </dl>
             </div>
 
             <div>
