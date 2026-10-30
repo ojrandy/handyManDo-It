@@ -37,6 +37,9 @@ export function siteSettingsFrom(doc: Partial<Site>) {
     webAppUrl: doc.webAppUrl || site.webAppUrl,
     playStoreUrl: doc.playStoreUrl || site.playStoreUrl,
     appStoreUrl: doc.appStoreUrl || site.appStoreUrl,
+    // Both empty until the Play Store figures are confirmed (Q-6): ratings stay hidden.
+    rating: doc.rating ?? null,
+    reviewCount: doc.reviewCount ?? null,
     stats: {
       towns: doc.towns ?? site.stats.towns,
       years: doc.years ?? site.stats.years,

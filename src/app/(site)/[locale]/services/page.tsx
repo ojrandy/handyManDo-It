@@ -51,13 +51,19 @@ export default async function ServicesPage({ params }: Props) {
         <div className="container-site">
           <FilterableGrid
             namespace="servicesPage.filter"
-            filters={serviceCategories.map((value) => ({
-              value,
-              label: t(`categories.${value}`),
-            }))}
+            groups={[
+              {
+                key: 'category',
+                label: t('filter.label'),
+                options: serviceCategories.map((value) => ({
+                  value,
+                  label: t(`categories.${value}`),
+                })),
+              },
+            ]}
             items={services.map((service) => ({
               id: String(service.id),
-              category: service.category ?? null,
+              tags: { category: service.category ?? null },
               node: <ServiceCard service={service} price={price(service.fromPrice)} />,
             }))}
           />

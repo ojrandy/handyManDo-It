@@ -14,7 +14,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 import { ServiceCard } from '@/components/ui/ServiceCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { formatPrice, getService, getServices, servicePaths } from '@/lib/catalog'
+import { docPaths, formatPrice, getService, getServices } from '@/lib/catalog'
 import { asMedia, imageSources } from '@/lib/media'
 import { absoluteUrl, pageMetadata } from '@/lib/seo'
 import { site } from '@/lib/site'
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
   const service = await getService(locale as Locale, slug)
   if (!service) return {}
-  const paths = await servicePaths(service.id)
+  const paths = await docPaths('services', service.id)
   if (!paths) return { title: service.meta?.title || service.title }
   return pageMetadata({
     locale: locale as Locale,

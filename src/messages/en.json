@@ -632,5 +632,237 @@
       "faq": "Questions about {service}",
       "other": "Other services"
     }
+  },
+  "workPage": {
+    "metaTitle": "Our work",
+    "metaDescription": "Furniture, interiors, TV studios and events made by HandyMan Do IT in Cameroon: photos of our projects.",
+    "eyebrow": "Our work",
+    "title": "Made by HandyMan Do IT.",
+    "lead": "Furniture, interiors, studios and events built by our team. A few of the projects behind our reviews.",
+    "filter": {
+      "label": "Filter projects",
+      "all": "All",
+      "count": "{count, plural, one {# project} other {# projects}}"
+    },
+    "cities": "City",
+    "empty": "Projects are on their way. In the meantime, see our services.",
+    "detail": {
+      "facts": "Project details",
+      "service": "Service",
+      "client": "Client",
+      "city": "City",
+      "date": "Date",
+      "photos": "Photos",
+      "beforeAfter": "Before and after",
+      "before": "Before",
+      "after": "After",
+      "compare": "Compare before and after",
+      "more": "More projects",
+      "ctaTitle": "Planning something similar?",
+      "ctaBody": "Book a verified pro in the app, or tell us about your project and get a quote."
+    }
+  },
+  "reviewsPage": {
+    "metaTitle": "Reviews",
+    "metaDescription": "What homes and businesses say about HandyMan Do IT: reviews from Douala, Buea, Yaoundé and beyond.",
+    "eyebrow": "Reviews",
+    "title": "What our clients say.",
+    "lead": "Reviews from the homes and businesses we have worked with.",
+    "rating": "{rating} out of 5 from {count, plural, one {# review} other {# reviews}}",
+    "service": "Service: {service}"
+  },
+  "aboutPage": {
+    "metaTitle": "About us",
+    "metaDescription": "HandyMan Do IT: a Cameroonian design, craft and events company with {years}+ years of projects, now an app to book verified pros.",
+    "eyebrow": "About us",
+    "title": "Craft first. Now in an app.",
+    "lead": "HandyMan Do IT is a Cameroonian company for interiors, furniture, signage and events. After {years}+ years of projects, we built the app so every job gets the same care.",
+    "story": {
+      "title": "Our story",
+      "body": [
+        "We started as a design and craft company: interior and exterior design, upholstery and furniture, repairs, signage and event set-up. We work with families, SMEs and organisations, from the media to private businesses.",
+        "The HandyMan Do IT app brings that standard to every booking: verified pros, a clear price before anything starts, payment held until the job is done, and live tracking. It serves more than {towns} towns and cities across Cameroon."
+      ]
+    },
+    "mission": {
+      "title": "Our mission",
+      "body": "Under the umbrella of Spectron Limited LLC, our mission is to contribute to the modern design and development of Cameroon, with distinctive design services and modern ways of working that improve customer service in a digital world."
+    },
+    "values": {
+      "title": "What we stand for"
+    },
+    "numbers": {
+      "title": "In numbers"
+    },
+    "team": {
+      "title": "Our team",
+      "intro": "Our success is built on the expertise and dedication of our team."
+    },
+    "partners": {
+      "title": "Partners and affiliations",
+      "parentLabel": "Our parent company",
+      "parentName": "Spectron Limited LLC",
+      "parentBody": "Spectron Limited LLC works in investment management, business consulting and crowdfunding. HandyMan Do IT operates under its umbrella.",
+      "affiliatesLabel": "Executive affiliates",
+      "affiliates": {
+        "webSpectron": "Web Spectron: web design and digital experiences",
+        "kukwa": "KUKWA Constructions: building and construction",
+        "augma": "AUGMA Realty: property management and real estate"
+      },
+      "logosLabel": "Companies we work with",
+      "visit": "{name} website (opens in a new tab)"
+    },
+    "csr": {
+      "title": "Corporate social responsibility",
+      "intro": "We aim to run our business ethically, responsibly and sustainably, and to contribute to the communities we serve.",
+      "areas": {
+        "environment": {
+          "title": "Environment",
+          "points": [
+            "Energy-efficient practices, and sustainable options suggested to clients",
+            "Less waste: recycling, reusing materials and using fewer resources",
+            "Eco-friendly products and materials whenever possible"
+          ]
+        },
+        "community": {
+          "title": "Community",
+          "points": [
+            "Support for local charities and community projects",
+            "Taking part in community events",
+            "Training and apprenticeships with local schools and vocational institutions"
+          ]
+        },
+        "workplace": {
+          "title": "Workplace",
+          "points": [
+            "Equal opportunities, with no discrimination of any kind",
+            "Ongoing training and career development",
+            "A culture of respect and collaboration"
+          ]
+        },
+        "ethics": {
+          "title": "Ethics",
+          "points": [
+            "Compliance with the law and industry standards",
+            "Integrity, transparency and accountability",
+            "Fair treatment of customers, suppliers and employees"
+          ]
+        }
+      },
+      "governance": "A CSR committee with members from across the company sets our initiatives, checks we follow this policy and reviews it regularly."
+    }
+  },
+  "faqPage": {
+    "metaTitle": "FAQ",
+    "metaDescription": "Answers about payments, quotes, coverage, safety and working as a pro with HandyMan Do IT.",
+    "eyebrow": "FAQ",
+    "title": "Questions and answers.",
+    "lead": "Everything about booking, paying and working with HandyMan Do IT.",
+    "categories": {
+      "payments": "Payments",
+      "coverage": "Where we work",
+      "quotes": "Prices and quotes",
+      "cancellations": "Cancellations",
+      "guarantee": "Guarantee",
+      "safety": "Safety and trust",
+      "pros": "For pros",
+      "business": "For businesses"
+    },
+    "nav": "Topics",
+    "more": {
+      "title": "Still have a question?",
+      "body": "Write to us on WhatsApp or send us a message. Support is available every day.",
+      "whatsapp": "Chat on WhatsApp",
+      "contact": "Contact us"
+    }
+  },
+  "buildingsPage": {
+    "metaTitle": "For buildings and estates",
+    "metaDescription": "Residences, estates and property managers run their building in the HandyMan Do IT app: notices, charges and issue reports.",
+    "eyebrow": "Buildings & estates",
+    "title": "Run your building on HandyMan.",
+    "lead": "Residences, estates and property managers manage their building in the app: notices, charges and issue reports in one place.",
+    "managers": {
+      "title": "For managers",
+      "points": [
+        "Post notices to every resident",
+        "Raise charges and follow payments",
+        "Receive issue reports and follow them up",
+        "Book verified pros for repairs and maintenance"
+      ]
+    },
+    "residents": {
+      "title": "For residents",
+      "points": [
+        "Join your building with a code",
+        "See notices and charges in the app",
+        "Report an issue with photos",
+        "Book a pro for your own home"
+      ]
+    },
+    "steps": {
+      "title": "How to start",
+      "items": [
+        {
+          "title": "Add your building",
+          "body": "Create your residence or estate in the app."
+        },
+        {
+          "title": "Invite residents",
+          "body": "Residents join with your building’s code."
+        },
+        {
+          "title": "Manage in one place",
+          "body": "Notices, charges and issue reports, all in the app."
+        }
+      ]
+    },
+    "ctaTitle": "Bring your building online.",
+    "ctaBody": "Get the app, or talk to us about your residence or estate.",
+    "contact": "Talk to us"
+  },
+  "shopPage": {
+    "metaTitle": "Shop",
+    "metaDescription": "New, refurbished and second-hand goods in the HandyMan Do IT app: phones, home, tools, building, solar and groceries.",
+    "eyebrow": "Shop",
+    "title": "Shop in the same app.",
+    "lead": "New, refurbished and second-hand goods from local sellers, next to the pros who can install them.",
+    "features": {
+      "title": "What you find",
+      "points": [
+        "Phones and electronics",
+        "Home and furniture",
+        "Tools and building materials",
+        "Solar equipment",
+        "Groceries",
+        "New, refurbished and second-hand items"
+      ]
+    },
+    "sell": {
+      "title": "Sell in the HandyMan shop",
+      "body": "List new, refurbished or second-hand items and get paid safely through the app.",
+      "cta": "Start selling"
+    }
+  },
+  "foodPage": {
+    "metaTitle": "Food",
+    "metaDescription": "Order from local kitchens in the HandyMan Do IT app and follow your order.",
+    "eyebrow": "Food",
+    "title": "Order from local kitchens.",
+    "lead": "Meals from kitchens near you, in the same app you use to book a pro.",
+    "features": {
+      "title": "How it works",
+      "points": [
+        "Browse the menus of local kitchens",
+        "Order in the app",
+        "Follow your order",
+        "Pay with Mobile Money or your HandyMan wallet"
+      ]
+    },
+    "sell": {
+      "title": "Run a kitchen?",
+      "body": "Bring your kitchen online: manage your menu, receive orders and track your payouts.",
+      "cta": "Join as a kitchen"
+    }
   }
 }

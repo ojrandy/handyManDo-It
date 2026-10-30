@@ -29,7 +29,7 @@ export const getGlobal = <S extends GlobalSlug>(
 
 type FindOptions = {
   where?: Where
-  sort?: string
+  sort?: string | string[]
   limit?: number
   depth?: number
   fallbackLocale?: Locale

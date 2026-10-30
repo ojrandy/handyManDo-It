@@ -632,5 +632,237 @@
       "faq": "Questions sur : {service}",
       "other": "Autres services"
     }
+  },
+  "workPage": {
+    "metaTitle": "Nos réalisations",
+    "metaDescription": "Mobilier, intérieurs, studios TV et événements réalisés par HandyMan Do IT au Cameroun : photos de nos projets.",
+    "eyebrow": "Nos réalisations",
+    "title": "Réalisé par HandyMan Do IT.",
+    "lead": "Mobilier, intérieurs, studios et événements réalisés par notre équipe. Quelques-uns des projets derrière nos avis.",
+    "filter": {
+      "label": "Filtrer les projets",
+      "all": "Tous",
+      "count": "{count, plural, one {# projet} other {# projets}}"
+    },
+    "cities": "Ville",
+    "empty": "Les projets arrivent bientôt. En attendant, découvrez nos services.",
+    "detail": {
+      "facts": "Détails du projet",
+      "service": "Service",
+      "client": "Client",
+      "city": "Ville",
+      "date": "Date",
+      "photos": "Photos",
+      "beforeAfter": "Avant et après",
+      "before": "Avant",
+      "after": "Après",
+      "compare": "Comparer avant et après",
+      "more": "Autres projets",
+      "ctaTitle": "Un projet similaire ?",
+      "ctaBody": "Réservez un pro vérifié dans l’appli, ou décrivez-nous votre projet pour recevoir un devis."
+    }
+  },
+  "reviewsPage": {
+    "metaTitle": "Avis",
+    "metaDescription": "Ce que les particuliers et les entreprises disent de HandyMan Do IT : avis de Douala, Buea, Yaoundé et d’ailleurs.",
+    "eyebrow": "Avis",
+    "title": "Ce que disent nos clients.",
+    "lead": "Les avis des particuliers et des entreprises avec qui nous avons travaillé.",
+    "rating": "{rating} sur 5, {count, plural, one {# avis} other {# avis}}",
+    "service": "Service : {service}"
+  },
+  "aboutPage": {
+    "metaTitle": "À propos",
+    "metaDescription": "HandyMan Do IT : une entreprise camerounaise de design, d’artisanat et d’événementiel, {years} ans et plus de projets, aujourd’hui une appli pour réserver des pros vérifiés.",
+    "eyebrow": "À propos",
+    "title": "Le savoir-faire d’abord. Désormais dans une appli.",
+    "lead": "HandyMan Do IT est une entreprise camerounaise d’aménagement, de mobilier, de signalétique et d’événementiel. Après plus de {years} ans de projets, nous avons créé l’appli pour que chaque mission reçoive le même soin.",
+    "story": {
+      "title": "Notre histoire",
+      "body": [
+        "Nous avons commencé comme entreprise de design et d’artisanat : design intérieur et extérieur, tapisserie et mobilier, réparations, signalétique et installation d’événements. Nous travaillons avec des familles, des PME et des organisations, des médias aux entreprises privées.",
+        "L’appli HandyMan Do IT apporte ce niveau d’exigence à chaque réservation : des pros vérifiés, un prix clair avant que rien ne commence, un paiement sécurisé jusqu’à la fin du travail et un suivi en direct. Elle couvre plus de {towns} villes au Cameroun."
+      ]
+    },
+    "mission": {
+      "title": "Notre mission",
+      "body": "Sous l’égide de Spectron Limited LLC, notre mission est de contribuer à l’aménagement et au développement modernes du Cameroun, avec des services de design singuliers et des méthodes de travail modernes qui améliorent le service client dans un monde numérique."
+    },
+    "values": {
+      "title": "Nos valeurs"
+    },
+    "numbers": {
+      "title": "En chiffres"
+    },
+    "team": {
+      "title": "Notre équipe",
+      "intro": "Notre réussite repose sur l’expertise et l’engagement de notre équipe."
+    },
+    "partners": {
+      "title": "Partenaires et affiliations",
+      "parentLabel": "Notre société mère",
+      "parentName": "Spectron Limited LLC",
+      "parentBody": "Spectron Limited LLC est active dans la gestion d’investissements, le conseil aux entreprises et le financement participatif. HandyMan Do IT opère sous son égide.",
+      "affiliatesLabel": "Sociétés affiliées",
+      "affiliates": {
+        "webSpectron": "Web Spectron : conception web et expériences numériques",
+        "kukwa": "KUKWA Constructions : bâtiment et construction",
+        "augma": "AUGMA Realty : gestion immobilière et immobilier"
+      },
+      "logosLabel": "Entreprises avec qui nous travaillons",
+      "visit": "Site de {name} (nouvel onglet)"
+    },
+    "csr": {
+      "title": "Responsabilité sociétale",
+      "intro": "Nous voulons mener notre activité de façon éthique, responsable et durable, et contribuer aux communautés que nous servons.",
+      "areas": {
+        "environment": {
+          "title": "Environnement",
+          "points": [
+            "Des pratiques économes en énergie, et des solutions durables proposées aux clients",
+            "Moins de déchets : recycler, réutiliser les matériaux et consommer moins de ressources",
+            "Des produits et matériaux écologiques dès que possible"
+          ]
+        },
+        "community": {
+          "title": "Communauté",
+          "points": [
+            "Soutien aux associations et projets locaux",
+            "Participation aux événements de la communauté",
+            "Formation et apprentissage avec les écoles et centres de formation locaux"
+          ]
+        },
+        "workplace": {
+          "title": "Travail",
+          "points": [
+            "Égalité des chances, sans aucune discrimination",
+            "Formation continue et évolution de carrière",
+            "Une culture du respect et de la collaboration"
+          ]
+        },
+        "ethics": {
+          "title": "Éthique",
+          "points": [
+            "Respect de la loi et des normes du secteur",
+            "Intégrité, transparence et responsabilité",
+            "Traitement équitable des clients, fournisseurs et employés"
+          ]
+        }
+      },
+      "governance": "Un comité RSE réunissant des membres de toute l’entreprise définit nos initiatives, veille au respect de cette politique et la révise régulièrement."
+    }
+  },
+  "faqPage": {
+    "metaTitle": "FAQ",
+    "metaDescription": "Réponses sur les paiements, les devis, les zones couvertes, la sécurité et le travail de pro avec HandyMan Do IT.",
+    "eyebrow": "FAQ",
+    "title": "Questions et réponses.",
+    "lead": "Tout sur la réservation, le paiement et le travail avec HandyMan Do IT.",
+    "categories": {
+      "payments": "Paiements",
+      "coverage": "Où nous intervenons",
+      "quotes": "Prix et devis",
+      "cancellations": "Annulations",
+      "guarantee": "Garantie",
+      "safety": "Sécurité et confiance",
+      "pros": "Pour les pros",
+      "business": "Pour les entreprises"
+    },
+    "nav": "Thèmes",
+    "more": {
+      "title": "Encore une question ?",
+      "body": "Écrivez-nous sur WhatsApp ou envoyez-nous un message. L’assistance est disponible tous les jours.",
+      "whatsapp": "Discuter sur WhatsApp",
+      "contact": "Nous contacter"
+    }
+  },
+  "buildingsPage": {
+    "metaTitle": "Immeubles et résidences",
+    "metaDescription": "Résidences, cités et gestionnaires gèrent leur immeuble dans l’appli HandyMan Do IT : annonces, charges et signalements.",
+    "eyebrow": "Immeubles et résidences",
+    "title": "Gérez votre immeuble sur HandyMan.",
+    "lead": "Résidences, cités et gestionnaires gèrent leur immeuble dans l’appli : annonces, charges et signalements au même endroit.",
+    "managers": {
+      "title": "Pour les gestionnaires",
+      "points": [
+        "Publiez des annonces pour tous les résidents",
+        "Appelez les charges et suivez les paiements",
+        "Recevez les signalements et suivez-les",
+        "Réservez des pros vérifiés pour les réparations et l’entretien"
+      ]
+    },
+    "residents": {
+      "title": "Pour les résidents",
+      "points": [
+        "Rejoignez votre immeuble avec un code",
+        "Consultez annonces et charges dans l’appli",
+        "Signalez un problème avec des photos",
+        "Réservez un pro pour votre logement"
+      ]
+    },
+    "steps": {
+      "title": "Pour commencer",
+      "items": [
+        {
+          "title": "Ajoutez votre immeuble",
+          "body": "Créez votre résidence ou votre cité dans l’appli."
+        },
+        {
+          "title": "Invitez les résidents",
+          "body": "Les résidents rejoignent l’immeuble avec son code."
+        },
+        {
+          "title": "Gérez au même endroit",
+          "body": "Annonces, charges et signalements, tout dans l’appli."
+        }
+      ]
+    },
+    "ctaTitle": "Mettez votre immeuble en ligne.",
+    "ctaBody": "Téléchargez l’appli, ou parlez-nous de votre résidence ou de votre cité.",
+    "contact": "Nous parler"
+  },
+  "shopPage": {
+    "metaTitle": "Boutique",
+    "metaDescription": "Produits neufs, reconditionnés et d’occasion dans l’appli HandyMan Do IT : téléphones, maison, outillage, construction, solaire et épicerie.",
+    "eyebrow": "Boutique",
+    "title": "Faites vos achats dans la même appli.",
+    "lead": "Des produits neufs, reconditionnés et d’occasion de vendeurs locaux, à côté des pros qui peuvent les installer.",
+    "features": {
+      "title": "Ce que vous trouvez",
+      "points": [
+        "Téléphones et électronique",
+        "Maison et mobilier",
+        "Outillage et matériaux de construction",
+        "Équipement solaire",
+        "Épicerie",
+        "Articles neufs, reconditionnés et d’occasion"
+      ]
+    },
+    "sell": {
+      "title": "Vendez dans la boutique HandyMan",
+      "body": "Publiez des articles neufs, reconditionnés ou d’occasion et soyez payé en toute sécurité via l’appli.",
+      "cta": "Commencer à vendre"
+    }
+  },
+  "foodPage": {
+    "metaTitle": "Repas",
+    "metaDescription": "Commandez auprès de cuisines locales dans l’appli HandyMan Do IT et suivez votre commande.",
+    "eyebrow": "Repas",
+    "title": "Commandez auprès des cuisines locales.",
+    "lead": "Des repas de cuisines près de chez vous, dans l’appli qui vous sert à réserver un pro.",
+    "features": {
+      "title": "Comment ça marche",
+      "points": [
+        "Parcourez les menus des cuisines locales",
+        "Commandez dans l’appli",
+        "Suivez votre commande",
+        "Payez par Mobile Money ou avec votre portefeuille HandyMan"
+      ]
+    },
+    "sell": {
+      "title": "Vous avez une cuisine ?",
+      "body": "Mettez votre cuisine en ligne : gérez votre menu, recevez les commandes et suivez vos versements.",
+      "cta": "Rejoindre comme cuisine"
+    }
   }
 }

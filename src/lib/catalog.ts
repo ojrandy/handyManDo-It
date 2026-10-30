@@ -22,21 +22,45 @@ export const getService = cache(async (locale: Locale, slug: string) => {
   return doc ?? null
 })
 
-// The service's URL in every locale, found by id because each language has its own slug.
-export async function servicePaths(id: number): Promise<LocalizedPaths | null> {
-  const slugs = await Promise.all(
-    routing.locales.map(async (locale) => {
-      const docs = await getServices(locale)
-      return [locale, docs.find((doc) => doc.id === id)?.slug] as const
-    }),
-  )
+// Published projects: featured first, then newest (FR-PG-07).
+export const getProjects = cache((locale: Locale) =>
+  findDocs('projects', locale, { sort: ['-featured', '-date', '-createdAt'] }),
+)
+
+export const getProject = cache(async (locale: Locale, slug: string) => {
+  const [doc] = await findDocs('projects', locale, {
+    where: { slug: { equals: slug } },
+    limit: 1,
+    depth: 2,
+  })
+  return doc ?? null
+})
+
+export const getTestimonials = cache((locale: Locale) =>
+  findDocs('testimonials', locale, { sort: 'order' }),
+)
+
+export const getFaqs = cache((locale: Locale) => findDocs('faqs', locale, { sort: 'order' }))
+
+export const getTeam = cache((locale: Locale) => findDocs('team', locale, { sort: 'order' }))
+
+const slugRoutes = {
+  services: { list: getServices, pathname: '/services/[slug]' },
+  projects: { list: getProjects, pathname: '/our-work/[slug]' },
+} as const
+
+// A document's URL in every locale, found by id because each language has its own slug. Null
+// when it is missing in a language (the page then gets no hreflang alternates).
+export async function docPaths(
+  collection: keyof typeof slugRoutes,
+  id: number,
+): Promise<LocalizedPaths | null> {
+  const { list, pathname } = slugRoutes[collection]
   const paths: Partial<LocalizedPaths> = {}
-  for (const [locale, slug] of slugs) {
+  for (const locale of routing.locales) {
+    const slug = (await list(locale)).find((doc) => doc.id === id)?.slug
     if (!slug) return null
-    paths[locale] = getPathname({
-      locale,
-      href: { pathname: '/services/[slug]', params: { slug } },
-    })
+    paths[locale] = getPathname({ locale, href: { pathname, params: { slug } } })
   }
   return paths as LocalizedPaths
 }

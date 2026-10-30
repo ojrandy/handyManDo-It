@@ -24,6 +24,16 @@ export const faqItem = (faq: Faq): FaqItem => ({
   answer: <RichText data={faq.answer} className={answerClass} />,
 })
 
+export const faqPageData = (items: FaqItem[]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map(({ question, text }) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: { '@type': 'Answer', text },
+  })),
+})
+
 // Questions as native <details> (keyboard and screen-reader support without JS), with FAQPage
 // structured data built from the same content (FR-SEO-03). Set `structuredData={false}` when
 // another list on the page already emits it: Google reads one FAQPage per page.
@@ -50,19 +60,7 @@ export function FaqList({
           </details>
         ))}
       </div>
-      {structuredData ? (
-        <JsonLd
-          data={{
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: items.map(({ question, text }) => ({
-              '@type': 'Question',
-              name: question,
-              acceptedAnswer: { '@type': 'Answer', text },
-            })),
-          }}
-        />
-      ) : null}
+      {structuredData ? <JsonLd data={faqPageData(items)} /> : null}
     </>
   )
 }
