@@ -93,7 +93,7 @@ export default async function BusinessesPage({ params }: Props) {
         aria-labelledby="quote-title"
         className="scroll-mt-24 bg-mist-50 py-16 md:py-24"
       >
-        <div className="container-site grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+        <div className="container-site grid gap-10 lg:grid-cols-[1fr_1.4fr] [&>*]:min-w-0">
           <div>
             <h2 id="quote-title" className="text-3xl font-bold text-teal-700 sm:text-4xl">
               {t('quote.title')}

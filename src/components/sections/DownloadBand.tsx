@@ -10,6 +10,7 @@ import type { Locale } from '@/i18n/routing'
 import { findScreen, getAppScreens, getHome, pick } from '@/lib/home'
 import { getSiteSettings } from '@/lib/settings'
 import { qrSvg } from '@/lib/qr'
+import { absoluteUrl } from '@/lib/seo'
 
 // Download band (docs/PLAN.md §5.15, FR-HOME-15). Says "iOS & Android" only once an App Store
 // URL exists (Q-3); until then "Android and the web", which is what is actually available.
@@ -23,7 +24,8 @@ export async function DownloadBand() {
     getAppScreens(locale),
   ])
   const copy = home.download
-  const qr = await qrSvg(settings.playStoreUrl)
+  // Opens /download on the phone that scans it, which picks the store (T-4.10).
+  const qr = await qrSvg(absoluteUrl('/download'))
   const qrAlt = getTheApp('qrAlt')
 
   return (

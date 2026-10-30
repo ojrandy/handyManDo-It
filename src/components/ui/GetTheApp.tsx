@@ -2,6 +2,7 @@ import { getLocale, getTranslations } from 'next-intl/server'
 
 import type { Locale } from '@/i18n/routing'
 import { qrSvg } from '@/lib/qr'
+import { absoluteUrl } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/settings'
 
 import type { ButtonSize, ButtonVariant } from './button'
@@ -17,14 +18,14 @@ type Props = {
 
 // Server wrapper: resolves labels, store links (`site` global) and the QR, then hands them to the
 // client button.
-// The QR points at the Play listing until /download exists (T-4.10), which will pick the store.
+// The QR opens /download on the phone that scans it, which picks the store (T-4.10).
 export async function GetTheApp({ label, variant, size, className }: Props) {
   const [t, nav, settings] = await Promise.all([
     getTranslations('getTheApp'),
     getTranslations('nav'),
     getLocale().then((locale) => getSiteSettings(locale as Locale)),
   ])
-  const qr = await qrSvg(settings.playStoreUrl)
+  const qr = await qrSvg(absoluteUrl('/download'))
 
   return (
     <GetTheAppButton

@@ -74,7 +74,7 @@ export default async function ContactPage({ params }: Props) {
       />
 
       <section aria-label={t('chooser.legend')} className="bg-mist-50 py-16 md:py-24">
-        <div className="container-site grid gap-12 lg:grid-cols-[1.4fr_1fr]">
+        <div className="container-site grid gap-12 lg:grid-cols-[1.4fr_1fr] [&>*]:min-w-0">
           <ContactForms
             services={services.map(({ key, slug, title }) => ({ key: key ?? slug, title }))}
           />

@@ -124,12 +124,14 @@ export interface Config {
     navigation: Navigation;
     home: Home;
     seo: Seo;
+    legal: Legal;
   };
   globalsSelect: {
     site: SiteSelect<false> | SiteSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
     home: HomeSelect<false> | HomeSelect<true>;
     seo: SeoSelect<false> | SeoSelect<true>;
+    legal: LegalSelect<false> | LegalSelect<true>;
   };
   locale: 'fr' | 'en';
   widgets: {
@@ -1320,6 +1322,7 @@ export interface Navigation {
                 | '/blog'
                 | '/faq'
                 | '/contact'
+                | '/get-the-app'
                 | '/legal/privacy'
                 | '/legal/terms'
                 | '/legal/disclaimer'
@@ -1368,6 +1371,7 @@ export interface Navigation {
                       | '/blog'
                       | '/faq'
                       | '/contact'
+                      | '/get-the-app'
                       | '/legal/privacy'
                       | '/legal/terms'
                       | '/legal/disclaimer'
@@ -1442,6 +1446,7 @@ export interface Navigation {
                       | '/blog'
                       | '/faq'
                       | '/contact'
+                      | '/get-the-app'
                       | '/legal/privacy'
                       | '/legal/terms'
                       | '/legal/disclaimer'
@@ -1706,6 +1711,80 @@ export interface Seo {
           id?: string | null;
         }[]
       | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Privacy policy, terms of use and disclaimer. Have changes reviewed before saving.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal".
+ */
+export interface Legal {
+  id: number;
+  privacy: {
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    /**
+     * Shown on the page. Change it when the text changes.
+     */
+    lastUpdated: string;
+  };
+  terms: {
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    /**
+     * Shown on the page. Change it when the text changes.
+     */
+    lastUpdated: string;
+  };
+  disclaimer: {
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    /**
+     * Shown on the page. Change it when the text changes.
+     */
+    lastUpdated: string;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1996,6 +2075,33 @@ export interface SeoSelect<T extends boolean = true> {
               url?: T;
               id?: T;
             };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal_select".
+ */
+export interface LegalSelect<T extends boolean = true> {
+  privacy?:
+    | T
+    | {
+        content?: T;
+        lastUpdated?: T;
+      };
+  terms?:
+    | T
+    | {
+        content?: T;
+        lastUpdated?: T;
+      };
+  disclaimer?:
+    | T
+    | {
+        content?: T;
+        lastUpdated?: T;
       };
   updatedAt?: T;
   createdAt?: T;

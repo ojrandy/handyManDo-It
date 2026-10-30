@@ -66,6 +66,7 @@ const globals: Matrix = {
   site: { read: [Y, Y, Y], update: [N, N, Y] },
   seo: { read: [Y, Y, Y], update: [N, N, Y] },
   navigation: { read: [Y, Y, Y], update: [N, Y, Y] },
+  legal: { read: [Y, Y, Y], update: [N, Y, Y] },
   home: { read: [Q, Y, Y], update: [N, Y, Y], readVersions: [N, Y, Y] },
 }
 

@@ -14,6 +14,7 @@ import * as migration_20261029_084922_phone_size_pro_screen from './20261029_084
 import * as migration_20261029_225000_service_category from './20261029_225000_service_category'
 import * as migration_20261030_083110_project_city_optional from './20261030_083110_project_city_optional'
 import * as migration_20261030_110258_hero_slides from './20261030_110258_hero_slides'
+import * as migration_20261030_142004_add_legal_global from './20261030_142004_add_legal_global'
 
 export const migrations = [
   {
@@ -95,5 +96,10 @@ export const migrations = [
     up: migration_20261030_110258_hero_slides.up,
     down: migration_20261030_110258_hero_slides.down,
     name: '20261030_110258_hero_slides',
+  },
+  {
+    up: migration_20261030_142004_add_legal_global.up,
+    down: migration_20261030_142004_add_legal_global.down,
+    name: '20261030_142004_add_legal_global',
   },
 ]

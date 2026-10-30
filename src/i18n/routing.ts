@@ -28,6 +28,8 @@ export const routing = defineRouting({
     '/blog/[slug]': '/blog/[slug]',
     '/faq': '/faq',
     '/contact': '/contact',
+    // Where /download sends desktop browsers (QR code + badges).
+    '/get-the-app': { fr: '/telecharger', en: '/get-the-app' },
     '/legal/privacy': { fr: '/mentions/confidentialite', en: '/legal/privacy' },
     '/legal/terms': { fr: '/mentions/conditions', en: '/legal/terms' },
     '/legal/disclaimer': { fr: '/mentions/avertissement', en: '/legal/disclaimer' },

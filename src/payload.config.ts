@@ -28,6 +28,7 @@ import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
 import { redirectFromPath } from './fields/redirectFrom'
 import { Home } from './globals/Home'
+import { Legal } from './globals/Legal'
 import { Navigation } from './globals/Navigation'
 import { Seo } from './globals/Seo'
 import { Site } from './globals/Site'
@@ -88,7 +89,7 @@ export default buildConfig({
     Submissions,
     Files,
   ],
-  globals: [Site, Navigation, Home, Seo],
+  globals: [Site, Navigation, Home, Seo, Legal],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

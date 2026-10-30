@@ -1,6 +1,6 @@
 // Seed content for the CMS (T-1.07), built from what the repo already holds: old-site copy in
 // messages/*.json and the defaults in src/lib. Pure data, no database, so it can be unit-tested.
-import type { Faq, Home, Navigation, Service, Site } from '@/payload-types'
+import type { Faq, Home, Legal, Navigation, Service, Site } from '@/payload-types'
 import type { Locale } from '@/i18n/routing'
 import { paragraph } from '@/lib/richText'
 import { defaultServiceCategory, type ServiceCategory, type ServiceKey } from '@/lib/service-keys'
@@ -11,6 +11,7 @@ import { site } from '@/lib/site'
 import en from '@/messages/en.json'
 import fr from '@/messages/fr.json'
 
+import { legalContent, legalUpdated, type LegalBlock } from './legal-content'
 import { projectContent } from './project-content'
 import { serviceContent } from './service-content'
 
@@ -498,4 +499,52 @@ export function homeData(
       bodyAll: m.download.bodyAll,
     },
   }
+}
+
+// ---------------------------------------------------------------------------------------------
+// Legal pages (FR-PG-15, ADR-022): privacy and terms drafted for review, disclaimer from the old
+// site (scripts/seed/legal-content.ts, Q-18).
+
+const node = { direction: 'ltr' as const, format: '' as const, indent: 0, version: 1 }
+const text = (value: string) => ({ type: 'text', text: value, version: 1 })
+
+function lexical(blocks: LegalBlock[], locale: Locale) {
+  const typeset = locale === 'fr' ? frenchSpaces : (value: string) => value
+  return {
+    root: {
+      type: 'root',
+      ...node,
+      children: blocks.map((block) => {
+        if ('h' in block) {
+          return { type: 'heading', tag: 'h2', ...node, children: [text(typeset(block.h))] }
+        }
+        if ('ul' in block) {
+          return {
+            type: 'list',
+            listType: 'bullet',
+            tag: 'ul',
+            start: 1,
+            ...node,
+            children: block.ul.map((item, index) => ({
+              type: 'listitem',
+              value: index + 1,
+              ...node,
+              children: [text(typeset(item))],
+            })),
+          }
+        }
+        return { type: 'paragraph', ...node, children: [text(typeset(block.p))] }
+      }),
+    },
+  }
+}
+
+type LegalData = Omit<Legal, 'id' | 'createdAt' | 'updatedAt'>
+
+export function legalData(locale: Locale): LegalData {
+  const page = (key: keyof typeof legalContent) => ({
+    content: lexical(legalContent[key][locale], locale) as LegalData['privacy']['content'],
+    lastUpdated: legalUpdated[key],
+  })
+  return { privacy: page('privacy'), terms: page('terms'), disclaimer: page('disclaimer') }
 }

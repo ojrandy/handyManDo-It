@@ -13,6 +13,7 @@ import {
   filmMedia,
   heroSlides,
   homeData,
+  legalData,
   type Localized,
   type MediaSeed,
   navigationData,
@@ -38,6 +39,7 @@ export const steps = [
   'site',
   'navigation',
   'home',
+  'legal',
 ] as const
 
 export type Step = (typeof steps)[number]
@@ -326,7 +328,7 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
 
   // --- Globals: always exist, so "seeded" means the editor-facing content is already there. ----
   async function global(
-    slug: 'site' | 'navigation' | 'home',
+    slug: 'site' | 'navigation' | 'home' | 'legal',
     isSeeded: (doc: Record<string, unknown>) => boolean,
     write: () => Promise<void>,
   ) {
@@ -409,6 +411,22 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
           slug: 'home',
           locale,
           data: { ...homeData(locale, film, slides), _status: 'published' },
+          depth: 0,
+          context,
+        })
+      }
+    },
+  )
+
+  await global(
+    'legal',
+    (doc) => isRecord(doc.privacy) && Boolean(doc.privacy.content),
+    async () => {
+      for (const locale of ['fr', 'en'] as const) {
+        await payload.updateGlobal({
+          slug: 'legal',
+          locale,
+          data: legalData(locale),
           depth: 0,
           context,
         })

@@ -31,7 +31,7 @@ services ◀──(service)── projects ──(featured)──▶ home
    │  └──(service)── testimonials
    └──▶ faqs (by service or category)
 team · partners · jobs · appScreens · submissions
-globals: site · navigation · home · seo
+globals: site · navigation · home · seo · legal
 ```
 
 ## 3. Collections
@@ -102,6 +102,9 @@ One tab + group per section (PLAN.md §5.2–5.16): **hero** {eyebrow, titleStar
 
 ### 4.4 `seo` ✅ (access: public read, **admin** update)
 defaultTitle (L, required, default "HandyMan Do IT"), defaultDescription (L, required, ≤ 160, no default so each language is written, not inherited), ogImage (media, 1200×630), organization {legalName, foundingDate, sameAs[] {url https}}. Revalidates `seo`.
+
+### 4.5 `legal` ✅ (access: public read, editor update; 2026-10-30, migration `add_legal_global`)
+One tab per page (ADR-022): **privacy**, **terms**, **disclaimer**, each {content (richText L, required), lastUpdated (date, required, shown on the page)}. No drafts: the text should be reviewed before saving. Seeded from `scripts/seed/legal-content.ts` (disclaimer from the old site; privacy and terms drafted from what the site does, Q-18). Revalidates `legal`. Adding the `/get-the-app` route in the same migration appended it to the navigation link-page enums (link options come from `routing.pathnames`).
 
 ## 5. Redirects
 

@@ -77,4 +77,14 @@ test.describe('Form pages', () => {
     await expect(cv).toHaveAttribute('accept', '.pdf,.doc,.docx')
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
   })
+
+  // The long email address and the chooser pills once widened the contact grid by 13–46 px.
+  test('form pages fit a 390 px phone', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    for (const path of ['/fr/contact', '/en/contact', '/fr/entreprises', '/en/become-a-pro']) {
+      await page.goto(path)
+      const width = await page.evaluate(() => document.documentElement.scrollWidth)
+      expect(width, path).toBeLessThanOrEqual(390)
+    }
+  })
 })

@@ -9,6 +9,7 @@ import config from '@/payload.config'
 import {
   faqSeeds,
   homeData,
+  legalData,
   navigationData,
   partnerSeeds,
   projectSeeds,
@@ -81,6 +82,15 @@ describe('seed data', () => {
       navigationData('en', ids).header?.[1].link.label,
     )
     expect(homeData('fr', {}).hero?.titleStart).not.toBe(homeData('en', {}).hero?.titleStart)
+  })
+
+  it('writes the three legal pages in both languages, with French spacing', () => {
+    const [fr, en] = [legalData('fr'), legalData('en')]
+    for (const key of ['privacy', 'terms', 'disclaimer'] as const) {
+      expect(fr[key].content.root.children.length).toBeGreaterThan(3)
+      expect(JSON.stringify(fr[key].content)).not.toBe(JSON.stringify(en[key].content))
+      expect(JSON.stringify(fr[key].content)).not.toMatch(/ [;:!?»]|« /)
+    }
   })
 })
 

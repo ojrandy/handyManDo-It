@@ -192,7 +192,7 @@
   "getTheApp": {
     "qrTitle": "Scan to get the app",
     "qrBody": "Point your phone’s camera at the code.",
-    "qrAlt": "QR code to HandyMan Do IT on Google Play",
+    "qrAlt": "QR code to download the HandyMan Do IT app",
     "orUseWeb": "Or use the web app",
     "close": "Close"
   },
@@ -1183,5 +1183,40 @@
       "share": "Questions about your own project?",
       "shareBody": "Book a verified pro in the app, or ask us for a quote."
     }
+  },
+  "legalPage": {
+    "privacy": {
+      "metaTitle": "Privacy policy",
+      "metaDescription": "What personal data the HandyMan Do IT website collects through its forms, why, how long we keep it and your rights.",
+      "title": "Privacy policy"
+    },
+    "terms": {
+      "metaTitle": "Terms of use",
+      "metaDescription": "The terms that apply to your use of the HandyMan Do IT website.",
+      "title": "Terms of use"
+    },
+    "disclaimer": {
+      "metaTitle": "Disclaimer",
+      "metaDescription": "The information on the HandyMan Do IT website is general information: what we guarantee and what we do not.",
+      "title": "Disclaimer"
+    },
+    "eyebrow": "Legal",
+    "updated": "Last updated: {date}",
+    "others": "Other legal pages",
+    "questions": "Questions? Write to <link>{email}</link>."
+  },
+  "appPage": {
+    "metaTitle": "Get the HandyMan Do IT app",
+    "metaDescription": "Download HandyMan Do IT on Android, or use the web app on any phone or computer. Scan the QR code to open it on your phone.",
+    "eyebrow": "Get the app",
+    "title": "HandyMan Do IT, on your phone.",
+    "lead": "Book verified pros, see a clear price first and pay safely with Mobile Money. Scan the code with your phone’s camera, or pick your store.",
+    "qrTitle": "Scan to download",
+    "qrBody": "Point your phone’s camera at the code.",
+    "qrAlt": "QR code to download the HandyMan Do IT app",
+    "webTitle": "No download needed",
+    "webBody": "The web app works in any browser, on phones and computers.",
+    "webCta": "Open the web app",
+    "iphone": "On iPhone: open the web app in Safari, tap Share, then “Add to Home Screen”."
   }
 }

@@ -192,7 +192,7 @@
   "getTheApp": {
     "qrTitle": "Scannez pour installer l’app",
     "qrBody": "Ouvrez l’appareil photo de votre téléphone et visez le code.",
-    "qrAlt": "QR code vers HandyMan Do IT sur Google Play",
+    "qrAlt": "QR code pour télécharger l’appli HandyMan Do IT",
     "orUseWeb": "Ou utilisez l’app web",
     "close": "Fermer"
   },
@@ -1183,5 +1183,40 @@
       "share": "Des questions sur votre propre projet ?",
       "shareBody": "Réservez un pro vérifié dans l’appli, ou demandez-nous un devis."
     }
+  },
+  "legalPage": {
+    "privacy": {
+      "metaTitle": "Politique de confidentialité",
+      "metaDescription": "Les données personnelles que le site HandyMan Do IT collecte avec ses formulaires, pourquoi, combien de temps nous les gardons et vos droits.",
+      "title": "Politique de confidentialité"
+    },
+    "terms": {
+      "metaTitle": "Conditions d’utilisation",
+      "metaDescription": "Les conditions qui s’appliquent à votre utilisation du site HandyMan Do IT.",
+      "title": "Conditions d’utilisation"
+    },
+    "disclaimer": {
+      "metaTitle": "Avertissement",
+      "metaDescription": "Les informations du site HandyMan Do IT sont des informations générales : ce que nous garantissons et ce que nous ne garantissons pas.",
+      "title": "Avertissement"
+    },
+    "eyebrow": "Mentions légales",
+    "updated": "Dernière mise à jour : {date}",
+    "others": "Autres mentions légales",
+    "questions": "Des questions ? Écrivez à <link>{email}</link>."
+  },
+  "appPage": {
+    "metaTitle": "Télécharger l’appli HandyMan Do IT",
+    "metaDescription": "Téléchargez HandyMan Do IT sur Android, ou utilisez l’appli web sur n’importe quel téléphone ou ordinateur. Scannez le QR code pour l’ouvrir sur votre téléphone.",
+    "eyebrow": "Télécharger l’appli",
+    "title": "HandyMan Do IT, sur votre téléphone.",
+    "lead": "Réservez des pros vérifiés, voyez un prix clair d’abord et payez en toute sécurité avec Mobile Money. Scannez le code avec l’appareil photo de votre téléphone, ou choisissez votre magasin.",
+    "qrTitle": "Scannez pour télécharger",
+    "qrBody": "Pointez l’appareil photo de votre téléphone vers le code.",
+    "qrAlt": "QR code pour télécharger l’appli HandyMan Do IT",
+    "webTitle": "Sans téléchargement",
+    "webBody": "L’appli web fonctionne dans n’importe quel navigateur, sur téléphone et ordinateur.",
+    "webCta": "Ouvrir l’appli web",
+    "iphone": "Sur iPhone : ouvrez l’appli web dans Safari, touchez Partager, puis « Sur l’écran d’accueil »."
   }
 }
