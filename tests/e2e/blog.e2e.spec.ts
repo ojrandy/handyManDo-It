@@ -64,6 +64,18 @@ test.describe('Blog', () => {
     await expect(page.locator('article div[lang="en"]')).toHaveCount(1)
   })
 
+  test('inline images use the sizes made at upload, lazily', async ({ page }) => {
+    await page.goto(
+      '/en/blog/professional-carpentry-installations-design-services-for-homes-and-businesses-in-cameroon',
+    )
+    const images = page.locator('article img')
+    expect(await images.count()).toBeGreaterThan(0)
+    const first = images.first()
+    await expect(first).toHaveAttribute('loading', 'lazy')
+    await expect(first).toHaveAttribute('srcset', /\.webp \d+w/)
+    await expect(first).not.toHaveAttribute('alt', '')
+  })
+
   test('unknown article is a 404', async ({ page }) => {
     const response = await page.goto('/en/blog/no-such-article')
     expect(response?.status()).toBe(404)
