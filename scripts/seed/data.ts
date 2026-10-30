@@ -11,6 +11,7 @@ import { site } from '@/lib/site'
 import en from '@/messages/en.json'
 import fr from '@/messages/fr.json'
 
+import { projectContent } from './project-content'
 import { serviceContent } from './service-content'
 
 export type Localized<T> = Record<Locale, T>
@@ -120,8 +121,8 @@ export const testimonialSeeds: TestimonialSeed[] = testimonials.map(({ key, phot
 })
 
 // ---------------------------------------------------------------------------------------------
-// Team (PLAN.md §6, About). Matched on `name`. Roles are not on the old site (Q-16): editors
-// replace the placeholder in /admin and later runs leave their edits alone.
+// Team (PLAN.md §6, About). Matched on `name`. Roles as on the old site's company page (Q-16);
+// photos are still to come.
 
 export type TeamSeed = {
   name: string
@@ -129,11 +130,17 @@ export type TeamSeed = {
   role: Localized<string>
 }
 
-const teamRolePlaceholder: Localized<string> = { fr: 'Équipe HandyMan', en: 'HandyMan team' }
+const team: [string, Localized<string>][] = [
+  ['J. Batholomew', { en: 'Chief Operations', fr: 'Responsable des opérations' }],
+  ['Mbeng Nkeng S.', { en: 'Chief Engineer', fr: 'Responsable de l’ingénierie' }],
+  ['ANU Ernest', { en: 'PR Specialist', fr: 'Relations publiques' }],
+]
 
-export const teamSeeds: TeamSeed[] = ['J. Batholomew', 'Mbeng Nkeng S.', 'ANU Ernest'].map(
-  (name, index) => ({ name, order: (index + 1) * 10, role: teamRolePlaceholder }),
-)
+export const teamSeeds: TeamSeed[] = team.map(([name, role], index) => ({
+  name,
+  order: (index + 1) * 10,
+  role,
+}))
 
 // ---------------------------------------------------------------------------------------------
 // Partners (PLAN.md §5.3), names and logos as on the old site. Matched on the logo file, so an
@@ -142,15 +149,52 @@ export const teamSeeds: TeamSeed[] = ['J. Batholomew', 'Mbeng Nkeng S.', 'ANU Er
 export type PartnerSeed = {
   name: string
   order: number
+  url: string | null
   logo: MediaSeed
+}
+
+// Websites named on the old site's affiliations page.
+const partnerUrls: Record<string, string> = {
+  'Spectron Limited LLC': 'https://spectronlimitedllc.com/',
+  'Web Spectron': 'https://webspectron.com/',
+  'KUKWA Constructions': 'https://kukwaconstructions.com/',
 }
 
 export const partnerSeeds: PartnerSeed[] = partners.map(({ name, logo }, index) => ({
   name,
   order: (index + 1) * 10,
+  url: partnerUrls[name] ?? null,
   // The partner's name is the logo's alt text in both languages.
   logo: { file: logo.replace(/^\//, ''), alt: { fr: name, en: name } },
 }))
+
+// ---------------------------------------------------------------------------------------------
+// Projects (PLAN.md §6, Our work) from the old "Our Works" gallery. Matched on the French slug.
+
+// French typography: no-break space before ; : ! ? and inside « » (as in messages/fr.json).
+const frenchSpaces = (text: string) =>
+  text.replace(/ ([;:!?»])/g, '\u00a0$1').replace(/« /g, '«\u00a0')
+
+// `photos[0]` is the cover.
+export type ProjectSeed = Omit<(typeof projectContent)[number], 'photos' | 'cover'> & {
+  photos: MediaSeed[]
+}
+
+export const projectSeeds: ProjectSeed[] = projectContent.map(
+  ({ photos, story, cover = 1, ...rest }) => {
+    const media = photos.map((photoAlt, index) => ({
+      file: `images/projects/${rest.slug.en}/${rest.slug.en}-${index + 1}.webp`,
+      alt: { en: photoAlt.en, fr: frenchSpaces(photoAlt.fr) },
+    }))
+    return {
+      ...rest,
+      story: { en: story.en, fr: frenchSpaces(story.fr) },
+      photos: [media[cover - 1], ...media.filter((_, index) => index !== cover - 1)].filter(
+        (photo): photo is MediaSeed => Boolean(photo),
+      ),
+    }
+  },
+)
 
 // ---------------------------------------------------------------------------------------------
 // FAQs (PLAN.md §5.14). Matched on the French question. The home shows one per category.

@@ -36,7 +36,13 @@ export const Projects: CollectionConfig = {
       index: true,
       admin: { position: 'sidebar' },
     },
-    { name: 'city', type: 'text', required: true, admin: { position: 'sidebar' } },
+    {
+      // Optional: the old site's gallery names no locations. Empty hides the city on the site.
+      name: 'city',
+      type: 'text',
+      index: true,
+      admin: { position: 'sidebar' },
+    },
     { name: 'client', type: 'text', admin: { position: 'sidebar' } },
     {
       name: 'date',

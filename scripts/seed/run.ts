@@ -16,6 +16,7 @@ import {
   type MediaSeed,
   navigationData,
   partnerSeeds,
+  projectSeeds,
   serviceSeeds,
   siteData,
   teamSeeds,
@@ -29,6 +30,7 @@ export const steps = [
   'media',
   'services',
   'testimonials',
+  'projects',
   'team',
   'partners',
   'faqs',
@@ -249,6 +251,37 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
     })
   }
 
+  for (const seed of projectSeeds) {
+    const label = seed.slug.en
+    const service = serviceIds[seed.service]
+    if (!service) {
+      fail('projects', label, new Error(`service ${seed.service} unavailable`))
+      continue
+    }
+    await upsert('projects', label, { slug: { equals: seed.slug.fr } }, async () => {
+      // One upload at a time: parallel uploads race for unique file names in Payload.
+      const ids: number[] = []
+      for (const photo of seed.photos) ids.push(await required(photo))
+      const [cover, ...gallery] = ids
+      const shared = {
+        service,
+        client: seed.client,
+        city: seed.city,
+        featured: seed.featured,
+        cover: cover as number,
+        gallery,
+        _status: 'published' as const,
+      }
+      const localized = (locale: Locale) => ({
+        ...shared,
+        title: seed.title[locale],
+        slug: seed.slug[locale],
+        story: paragraph(seed.story[locale]),
+      })
+      return { fr: localized('fr'), en: localized('en') }
+    })
+  }
+
   for (const seed of teamSeeds) {
     await upsert('team', seed.name, { name: { equals: seed.name } }, async () => {
       const shared = { name: seed.name, order: seed.order }
@@ -263,7 +296,12 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
       continue
     }
     await upsert('partners', seed.name, { logo: { equals: logo } }, async () => {
-      const data = { name: seed.name, logo: await required(seed.logo), order: seed.order }
+      const data = {
+        name: seed.name,
+        logo: await required(seed.logo),
+        order: seed.order,
+        url: seed.url,
+      }
       return { fr: data, en: data }
     })
   }

@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs'
+
 import { getPayload, type Payload } from 'payload'
 import { beforeAll, describe, expect, it } from 'vitest'
 
@@ -9,6 +11,7 @@ import {
   homeData,
   navigationData,
   partnerSeeds,
+  projectSeeds,
   serviceSeeds,
   siteData,
   teamSeeds,
@@ -26,6 +29,16 @@ describe('seed data', () => {
         expect(seed.summary[locale], `${seed.key} ${locale}`).toBeTruthy()
         expect(seed.slug[locale], `${seed.key} ${locale}`).toMatch(/^[a-z0-9-]+$/)
       }
+    }
+  })
+
+  it('gives every project photo its own file name, so media matching never shares them', () => {
+    const files = projectSeeds.flatMap(({ photos }) => photos.map(({ file }) => file))
+    const names = files.map((file) => file.split('/').at(-1))
+    expect(new Set(names).size).toBe(names.length)
+    for (const file of files) expect(existsSync(`public/${file}`), file).toBe(true)
+    for (const { photos } of projectSeeds) {
+      for (const { alt } of photos) expect(alt.fr && alt.en).toBeTruthy()
     }
   })
 

@@ -380,7 +380,7 @@ export interface Project {
    */
   slug: string;
   service: number | Service;
-  city: string;
+  city?: string | null;
   client?: string | null;
   date?: string | null;
   /**
