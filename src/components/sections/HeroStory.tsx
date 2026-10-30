@@ -229,7 +229,7 @@ export function HeroStory({
           <>
             {/* Phones: the photo reads at the top, the copy sits on the dark lower half.
                 Desktops: dark behind the copy on the left, the photo opens up to the right. */}
-            <div className="absolute inset-0 bg-gradient-to-t from-night-950 from-30% via-night-950/65 via-55% to-night-950/0 lg:bg-gradient-to-r lg:from-night-950/95 lg:from-0% lg:via-night-900/65 lg:via-45% lg:to-night-900/15" />
+            <div className="absolute inset-0 bg-gradient-to-t from-night-950 from-25% via-night-950/80 via-65% to-night-950/10 lg:bg-gradient-to-r lg:from-night-950/95 lg:from-0% lg:via-night-900/65 lg:via-45% lg:to-night-900/15" />
             <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-night-950/70 to-transparent" />
           </>
         ) : (
@@ -275,7 +275,10 @@ export function HeroStory({
       ) : null}
 
       <div className="container-site grid min-h-svh content-end gap-14 pt-56 pb-28 sm:pt-64 lg:grid-cols-[1.1fr_0.9fr] lg:content-center lg:items-center lg:gap-8 lg:pt-24 lg:pb-24">
-        <div>{children}</div>
+        {/* Phones: a soft shadow keeps the copy readable over bright parts of a photo. */}
+        <div className="[text-shadow:0_1px_14px_rgb(10_28_37/0.75)] lg:[text-shadow:none]">
+          {children}
+        </div>
 
         <div aria-hidden className="relative hidden justify-end lg:flex">
           <div className="absolute top-1/2 -right-6 size-80 -translate-y-1/2 rounded-full bg-teal-500/30 blur-3xl" />

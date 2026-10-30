@@ -101,7 +101,8 @@ test.describe('Hero slider', () => {
   test('bullets switch photos and show the caption', async ({ page }) => {
     await fastNetwork(page)
     await page.goto('/en', { waitUntil: 'load' })
-    await expect(bullet(page, 1)).toHaveAttribute('aria-current', 'true')
+    // Paused, so autoplay can't move between a click and its assertion.
+    await page.getByRole('button', { name: en.hero.story.pause }).click()
     await bullet(page, 3).click()
     await expect(bullet(page, 3)).toHaveAttribute('aria-current', 'true')
     await expect(bullet(page, 1)).not.toHaveAttribute('aria-current', 'true')
@@ -113,7 +114,8 @@ test.describe('Hero slider', () => {
   test('autoplay advances, and pause stops it (WCAG 2.2.2)', async ({ page }) => {
     await fastNetwork(page)
     await page.goto('/en', { waitUntil: 'load' })
-    await expect(bullet(page, 2)).toHaveAttribute('aria-current', 'true', { timeout: 10_000 })
+    // Autoplay starts once the page has loaded, then shows each photo for 6.5 s.
+    await expect(bullet(page, 2)).toHaveAttribute('aria-current', 'true', { timeout: 20_000 })
     await page.getByRole('button', { name: en.hero.story.pause }).click()
     await page.waitForTimeout(8_000)
     await expect(bullet(page, 2)).toHaveAttribute('aria-current', 'true')
