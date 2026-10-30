@@ -32,7 +32,8 @@ type FindOptions = {
   sort?: string | string[]
   limit?: number
   depth?: number
-  fallbackLocale?: Locale
+  // `false` reads only what exists in `locale` (e.g. to tell English-only posts apart).
+  fallbackLocale?: Locale | false
 }
 
 export const findDocs = <C extends CollectionSlug>(

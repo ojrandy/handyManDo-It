@@ -1158,5 +1158,30 @@
       "applyTitle": "Postuler à ce poste",
       "closed": "Ce poste est fermé et ne reçoit plus de candidatures. Consultez les autres postes ouverts, ou envoyez une candidature spontanée."
     }
+  },
+  "blogPage": {
+    "metaTitle": "Blog : conseils et actualités",
+    "metaDescription": "Conseils maison, récits de chantiers et actualités HandyMan Do IT au Cameroun : design, réparations, tapisserie, événements et plus.",
+    "eyebrow": "Blog",
+    "title": "Conseils, réalisations et actualités.",
+    "lead": "Des idées pour votre maison et votre entreprise, des récits de nos chantiers et les nouvelles de HandyMan Do IT.",
+    "search": "Rechercher un article",
+    "searchPlaceholder": "Rechercher par titre ou sujet",
+    "filter": {
+      "label": "Catégories",
+      "all": "Tous",
+      "count": "{count, plural, =0 {Aucun article ne correspond} one {# article} other {# articles}}"
+    },
+    "empty": "Pas encore d’articles. Revenez bientôt.",
+    "readMore": "Lire l’article",
+    "englishOnly": "En anglais",
+    "detail": {
+      "back": "Tous les articles",
+      "published": "Publié le {date}",
+      "englishOnly": "Cet article n’est disponible qu’en anglais.",
+      "related": "À lire aussi",
+      "share": "Des questions sur votre propre projet ?",
+      "shareBody": "Réservez un pro vérifié dans l’appli, ou demandez-nous un devis."
+    }
   }
 }

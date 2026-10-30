@@ -96,6 +96,8 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 | JsonLd | ✅ | `<script type="application/ld+json">` server component; escapes `<` |
 | Breadcrumbs | ✅ | `nav` with `aria-label`, ordered list, last crumb `aria-current="page"` (text, not a link); emits BreadcrumbList. Styled for the dark page hero |
 | FilterableGrid | ✅ | Filter groups (one labelled `role="group"` each) of toggle buttons (`aria-pressed`); a group with fewer than two options is hidden; result count in a polite live region; all items visible without JS. No motion. Grid or masonry (`listClassName`) |
+| PostCard | ✅ | Whole card is the link (heading keeps the name); cover, date, “In English” badge and `lang="en"` for untranslated posts; used by the home, the blog index (h2) and related posts |
+| BlogList | ✅ | Search box (accent- and case-insensitive) + category toggles (`aria-pressed`) over the pre-rendered cards; polite live count; everything listed without JS |
 | ProjectCard | ✅ | Whole card is the link; cover at its own aspect ratio (masonry), title, service, city |
 | BeforeAfter | ✅ | Native range input over two photos (arrows/Home/End, labelled); focus ring on the figure; no animation |
 | ServiceCard | ✅ | Whole card is the link; photo (`CmsImage`) or the service icon on a dark tile; title, summary, price label |

@@ -1158,5 +1158,30 @@
       "applyTitle": "Apply for this role",
       "closed": "This role is closed and no longer takes applications. See the other open roles, or send an open application."
     }
+  },
+  "blogPage": {
+    "metaTitle": "Blog: tips and news",
+    "metaDescription": "Home tips, project stories and HandyMan Do IT news from Cameroon: design, repairs, upholstery, events and more.",
+    "eyebrow": "Blog",
+    "title": "Tips, projects and news.",
+    "lead": "Ideas for your home and business, stories from our projects, and news from HandyMan Do IT.",
+    "search": "Search articles",
+    "searchPlaceholder": "Search by title or topic",
+    "filter": {
+      "label": "Categories",
+      "all": "All",
+      "count": "{count, plural, =0 {No article matches} one {# article} other {# articles}}"
+    },
+    "empty": "No articles yet. Come back soon.",
+    "readMore": "Read the article",
+    "englishOnly": "In English",
+    "detail": {
+      "back": "All articles",
+      "published": "Published on {date}",
+      "englishOnly": "This article is only available in English.",
+      "related": "Keep reading",
+      "share": "Questions about your own project?",
+      "shareBody": "Book a verified pro in the app, or ask us for a quote."
+    }
   }
 }

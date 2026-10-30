@@ -8,6 +8,8 @@ type Props = {
   breadcrumbs: Crumb[]
   eyebrow?: string
   title: string
+  // Set when the title is in another language than the page (English-only posts, ADR-019).
+  titleLang?: string
   lead?: string
   image?: { sources: ImageSource[]; alt: string }
   // Calls to action under the lead.
@@ -16,7 +18,7 @@ type Props = {
 
 // Dark top of every inner page: breadcrumbs, H1, lead, actions, optional photo. Dark so the
 // transparent header reads the same as on the home hero. Labels the page's <main> via the H1.
-export function PageHero({ breadcrumbs, eyebrow, title, lead, image, children }: Props) {
+export function PageHero({ breadcrumbs, eyebrow, title, titleLang, lead, image, children }: Props) {
   const photo = image?.sources.length ? image : null
 
   return (
@@ -38,7 +40,11 @@ export function PageHero({ breadcrumbs, eyebrow, title, lead, image, children }:
               {eyebrow}
             </p>
           ) : null}
-          <h1 id="page-title" className="text-4xl leading-tight font-bold sm:text-5xl lg:text-6xl">
+          <h1
+            id="page-title"
+            lang={titleLang}
+            className="text-4xl leading-tight font-bold sm:text-5xl lg:text-6xl"
+          >
             {title}
           </h1>
           {lead ? <p className="mt-6 text-lg leading-relaxed text-white/80">{lead}</p> : null}
