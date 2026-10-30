@@ -21,9 +21,9 @@ import {
   pickList,
 } from '@/lib/home'
 import { getSiteSettings } from '@/lib/settings'
-import { imageSources, mediaUrl } from '@/lib/media'
+import { asMedia, imageSources, mediaUrl } from '@/lib/media'
 
-import { HeroStory } from './HeroStory'
+import { HeroStory, type HeroSlide } from './HeroStory'
 
 // Initials stand in while no featured testimonial has a photo.
 const initials = [
@@ -33,8 +33,9 @@ const initials = [
   { initials: 'ML', tone: 'from-gold-400 to-teal-500' },
 ]
 
-// Synced-story hero (docs/PLAN.md §5.2, FR-HOME-01). All copy is server-rendered, so the H1
-// is the LCP element and never waits for the video island.
+// Synced-story hero (docs/PLAN.md §5.2, FR-HOME-01). All copy is server-rendered and never waits
+// for the island. Behind it, a slider of our crews at work (home.hero.slides, ADR-026): the first
+// photo is preloaded at high priority, as it is the largest element on every screen.
 export async function Hero() {
   const locale = (await getLocale()) as Locale
   const [t, home, settings, testimonials, screens] = await Promise.all([
@@ -61,6 +62,30 @@ export async function Hero() {
       className="object-cover motion-safe:animate-slow-zoom"
     />
   ) : null
+
+  const slides: HeroSlide[] = (copy?.slides ?? []).flatMap((slide, index) => {
+    const media = asMedia(slide.image)
+    const sources = imageSources(media)
+    if (!media || !sources.length) return []
+    return [
+      {
+        key: slide.id ?? String(index),
+        caption: slide.caption ?? '',
+        image: (
+          <CmsImage
+            sources={sources}
+            alt=""
+            fill
+            sizes="100vw"
+            preload={index === 0}
+            fetchPriority={index === 0 ? 'high' : 'low'}
+            loading={index === 0 ? undefined : 'lazy'}
+            className="object-cover"
+          />
+        ),
+      },
+    ]
+  })
 
   const cues = pickList(
     copy?.cues,
@@ -110,21 +135,27 @@ export async function Hero() {
             eager
           />
         }
+        slides={slides}
         backdrop={backdrop}
         labels={{
           app: t('notification.app'),
           now: t('notification.now'),
           pause: t('story.pause'),
           play: t('story.play'),
+          slider: t('slider.label'),
+          previous: t('slider.previous'),
+          next: t('slider.next'),
+          // Raw: HeroStory fills {n} and {total} per bullet.
+          show: t.raw('slider.show') as string,
         }}
       >
-        <p className="mb-6 inline-flex items-center gap-2 text-sm font-medium tracking-[0.2em] text-gold-300 uppercase">
+        <p className="mb-4 inline-flex items-center gap-2 text-xs font-medium tracking-[0.2em] text-gold-300 uppercase sm:mb-6 sm:text-sm">
           <MapPin aria-hidden className="size-4" />
           {pick(copy?.eyebrow, t('eyebrow'))}
         </p>
         <h1
           id="hero-title"
-          className="max-w-3xl text-5xl leading-[1.05] font-bold sm:text-6xl lg:text-7xl"
+          className="max-w-3xl text-[2.6rem] leading-[1.05] font-bold sm:text-6xl lg:text-7xl"
         >
           {pick(copy?.titleStart, t('titleStart'))}{' '}
           <span className="relative inline-block text-gold-300">
@@ -145,11 +176,11 @@ export async function Hero() {
             </svg>
           </span>
         </h1>
-        <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/80">
+        <p className="mt-6 max-w-xl text-base leading-relaxed text-white/80 sm:mt-8 sm:text-lg">
           {pick(copy?.subtitle, t('subtitle'))}
         </p>
 
-        <div className="mt-10 flex flex-wrap items-center gap-3">
+        <div className="mt-8 flex flex-wrap items-center gap-3 sm:mt-10">
           <a href={settings.webAppUrl} className={buttonClasses({ size: 'lg' })}>
             {t('primaryCta')}
             <ArrowRight aria-hidden className="size-5" />
@@ -162,7 +193,7 @@ export async function Hero() {
           />
         </div>
 
-        <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 sm:mt-12">
           <div className="flex items-center gap-3">
             <div aria-hidden className="flex -space-x-1.5">
               {faces.length
@@ -189,9 +220,11 @@ export async function Hero() {
               {t('trust.clients', { count: settings.stats.clients })}
             </p>
           </div>
-          <PaymentBadges />
+          <div className="hidden sm:block">
+            <PaymentBadges />
+          </div>
         </div>
-        <p className="mt-8 text-sm tracking-wide text-white/50">
+        <p className="mt-8 hidden text-sm tracking-wide text-white/50 sm:block">
           {pick(copy?.values, t('values'))}
         </p>
       </HeroStory>

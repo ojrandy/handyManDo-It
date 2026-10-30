@@ -109,6 +109,22 @@ export const Home: GlobalConfig = {
             ],
           },
           {
+            // Background slider of real crews at work (trust). Used while there is no hero video;
+            // empty falls back to the video poster as a still.
+            name: 'slides',
+            type: 'array',
+            localized: true,
+            maxRows: 6,
+            admin: {
+              description:
+                'Photos of our people at work, 2–6, landscape or square, 1200 px wide or more. The first one loads first (LCP).',
+            },
+            fields: [
+              { name: 'image', type: 'upload', relationTo: 'media', required: true },
+              text('caption', false, false),
+            ],
+          },
+          {
             name: 'film',
             type: 'group',
             admin: { description: '"Watch the film" lightbox.' },

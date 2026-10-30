@@ -121,25 +121,30 @@ export const testimonialSeeds: TestimonialSeed[] = testimonials.map(({ key, phot
 })
 
 // ---------------------------------------------------------------------------------------------
-// Team (PLAN.md §6, About). Matched on `name`. Roles as on the old site's company page (Q-16);
-// photos are still to come.
+// Team (PLAN.md §6, About). Matched on `name`. Roles and portraits as on the old site's company
+// page (img/home/t1–t3.jpg, Q-16).
 
 export type TeamSeed = {
   name: string
   order: number
   role: Localized<string>
+  photo: MediaSeed
 }
 
-const team: [string, Localized<string>][] = [
-  ['J. Batholomew', { en: 'Chief Operations', fr: 'Responsable des opérations' }],
-  ['Mbeng Nkeng S.', { en: 'Chief Engineer', fr: 'Responsable de l’ingénierie' }],
-  ['ANU Ernest', { en: 'PR Specialist', fr: 'Relations publiques' }],
+const team: [string, Localized<string>, string][] = [
+  ['J. Batholomew', { en: 'Chief Operations', fr: 'Responsable des opérations' }, 'j-batholomew'],
+  ['Mbeng Nkeng S.', { en: 'Chief Engineer', fr: 'Responsable de l’ingénierie' }, 'mbeng-nkeng'],
+  ['ANU Ernest', { en: 'PR Specialist', fr: 'Relations publiques' }, 'anu-ernest'],
 ]
 
-export const teamSeeds: TeamSeed[] = team.map(([name, role], index) => ({
+export const teamSeeds: TeamSeed[] = team.map(([name, role, file], index) => ({
   name,
   order: (index + 1) * 10,
   role,
+  photo: {
+    file: `images/team/${file}.webp`,
+    alt: { en: `${name}, ${role.en}`, fr: `${name}, ${role.fr}` },
+  },
 }))
 
 // ---------------------------------------------------------------------------------------------
@@ -268,6 +273,30 @@ export const filmMedia = {
   video: { file: 'video/brand-intro.mp4', alt: both((m) => m.hero.film.title) },
   poster: { file: 'video/brand-intro-poster.jpg', alt: both((m) => m.hero.film.title) },
 } satisfies Record<string, MediaSeed>
+
+// Hero slider (FR-HOME-01): our crews at work, from the old site's hero slider. The first slide
+// loads first, so it should be the strongest photo of people working.
+export const heroSlides: { image: MediaSeed; caption: Localized<string> }[] = [
+  [
+    'crew-workshop',
+    'Our crew cutting timber on site',
+    'Notre équipe découpe le bois sur le chantier',
+  ],
+  [
+    'crew-team',
+    'Branded, verified HandyMan crews',
+    'Des équipes HandyMan identifiées et vérifiées',
+  ],
+  [
+    'crew-site',
+    'Our team after a signage installation',
+    'Notre équipe après la pose d’une enseigne',
+  ],
+  ['crew-night', 'On site, day and night', 'Sur le chantier, de jour comme de nuit'],
+].map(([file, en, fr]) => ({
+  image: { file: `images/hero/${file}.webp`, alt: { en, fr } },
+  caption: { en, fr },
+}))
 
 type SiteData = Omit<Site, 'id' | 'createdAt' | 'updatedAt'>
 
@@ -399,7 +428,11 @@ const entries = <K extends string, V>(record: Record<K, V>) => Object.entries(re
 
 type HomeData = Omit<Home, 'id' | 'createdAt' | 'updatedAt' | '_status'>
 
-export function homeData(locale: Locale, film: { video?: number; poster?: number }): HomeData {
+export function homeData(
+  locale: Locale,
+  film: { video?: number; poster?: number },
+  slides: number[] = [],
+): HomeData {
   const m = messages[locale]
   const heading = (section: { eyebrow: string; title: string }) => ({
     eyebrow: section.eyebrow,
@@ -413,7 +446,12 @@ export function homeData(locale: Locale, film: { video?: number; poster?: number
       titleHighlight: m.hero.titleHighlight,
       subtitle: m.hero.subtitle,
       values: m.hero.values,
-      // Hero footage waits on Q-4; the brand sting opens the film lightbox.
+      // Hero footage waits on Q-4; meanwhile the slider shows our crews.
+      slides: slides.map((image, index) => ({
+        image,
+        caption: heroSlides[index]?.caption[locale] ?? null,
+      })),
+      // The brand sting opens the film lightbox.
       film: { video: film.video ?? null, poster: film.poster ?? null },
       cues: heroCues.map(({ key, time }) => ({
         time,

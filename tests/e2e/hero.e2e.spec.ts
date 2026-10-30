@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
 import en from '../../src/messages/en.json'
 
@@ -75,6 +75,56 @@ test.describe('Hero', () => {
     // The background footage autoplays; the film lightbox's <video> is preload="none".
     await expect(page.locator('video[autoplay]')).toHaveCount(0)
     expect(media).toEqual([])
+    await context.close()
+  })
+})
+
+// Hero slider of our crews (home.hero.slides, ADR-026). Needs the seeded CMS: 4 slides.
+test.describe('Hero slider', () => {
+  const slider = (page: Page) => page.getByRole('group', { name: en.hero.slider.label })
+  const bullet = (page: Page, n: number) =>
+    slider(page).getByRole('button', { name: new RegExp(`^Show photo ${n} of 4`) })
+
+  test('bullets switch photos and show the caption', async ({ page }) => {
+    await page.goto('/en', { waitUntil: 'load' })
+    await expect(bullet(page, 1)).toHaveAttribute('aria-current', 'true')
+    await bullet(page, 3).click()
+    await expect(bullet(page, 3)).toHaveAttribute('aria-current', 'true')
+    await expect(bullet(page, 1)).not.toHaveAttribute('aria-current', 'true')
+    await expect(slider(page)).toContainText('Our team after a signage installation')
+    await slider(page).getByRole('button', { name: en.hero.slider.next }).click()
+    await expect(bullet(page, 4)).toHaveAttribute('aria-current', 'true')
+  })
+
+  test('autoplay advances, and pause stops it (WCAG 2.2.2)', async ({ page }) => {
+    await page.goto('/en', { waitUntil: 'load' })
+    await expect(bullet(page, 2)).toHaveAttribute('aria-current', 'true', { timeout: 10_000 })
+    await page.getByRole('button', { name: en.hero.story.pause }).click()
+    await page.waitForTimeout(8_000)
+    await expect(bullet(page, 2)).toHaveAttribute('aria-current', 'true')
+  })
+
+  test('phones get the photo and a floating notification, not the phone mock-up', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/en', { waitUntil: 'load' })
+    const hero = page.locator('section[aria-labelledby="hero-title"]')
+    await expect(hero.locator('ol.space-y-2')).toBeHidden()
+    await expect(hero.locator('.animate-notification-in').first()).toBeVisible({ timeout: 10_000 })
+    await expect(page.getByRole('link', { name: en.hero.primaryCta })).toBeInViewport()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
+  })
+
+  test('reduced motion shows one still photo and no slider controls', async ({ browser }) => {
+    const context = await browser.newContext({ reducedMotion: 'reduce' })
+    const page = await context.newPage()
+    await page.goto('/en', { waitUntil: 'load' })
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+    await expect(slider(page)).toHaveCount(0)
+    await expect(
+      page.locator('section[aria-labelledby="hero-title"] img[src*="crew-"]'),
+    ).toHaveCount(1)
     await context.close()
   })
 })

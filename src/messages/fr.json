@@ -71,6 +71,12 @@
         "title": "Code partagé · paiement libéré",
         "body": "+50 points de fidélité"
       }
+    },
+    "slider": {
+      "label": "Photos de nos équipes au travail",
+      "previous": "Photo précédente",
+      "next": "Photo suivante",
+      "show": "Afficher la photo {n} sur {total}"
     }
   },
   "footer": {

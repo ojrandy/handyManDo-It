@@ -2,7 +2,9 @@
 // 2026-10-29): nine photo groups under a heading each, no client, city or date. Six photos per
 // group (four for Dash Media) were saved to public/images/projects/<slug>/ as WebP; the old files
 // are 500–750 px wide (Q-12). Titles follow the old headings (typos fixed); the one-line stories
-// and alt texts describe what the photos show. City only where a photo names the place.
+// and alt texts describe what the photos show. Cities and dates were assigned by the owner
+// (2026-10-30), except Crystal Hair Challenge (its banner: Stade de Soppo, Buea, 3 Dec 2022) and
+// W.A.F. (its photos: Bonassama health district, Douala).
 // French is our translation (R-08 review).
 import type { Localized } from './data'
 import type { ServiceKey } from '@/lib/service-keys'
@@ -13,6 +15,8 @@ export type ProjectContent = {
   service: ServiceKey
   client: string | null
   city: string | null
+  // First day of the month (the field shows month and year).
+  date: string
   featured: boolean
   story: Localized<string>
   // One alt per photo, in file order (<slug>-1.webp, <slug>-2.webp, …).
@@ -29,7 +33,8 @@ export const projectContent: ProjectContent[] = [
     title: { en: 'Crystal Hair Challenge 2022', fr: 'Crystal Hair Challenge 2022' },
     service: 'events',
     client: 'Crystal Hair Challenge · Webspectron · Solpia Cameroon',
-    city: null,
+    city: 'Buea',
+    date: '2022-12-03',
     featured: true,
     story: {
       en: 'Branding and set-up for the Crystal Hair Challenge 2022: stage banner, sponsor photo wall, tents and product stands.',
@@ -67,7 +72,8 @@ export const projectContent: ProjectContent[] = [
     },
     service: 'upholsteryFurniture',
     client: null,
-    city: null,
+    city: 'Yaoundé',
+    date: '2024-03-01',
     featured: true,
     story: {
       en: 'Made-to-measure furniture from our workshop: TV wall units, wardrobes and storage, built and fitted in clients’ homes and offices.',
@@ -105,7 +111,8 @@ export const projectContent: ProjectContent[] = [
     },
     service: 'events',
     client: 'CWIL · Fabz Magazine',
-    city: null,
+    city: 'Douala',
+    date: '2023-03-01',
     featured: true,
     story: {
       en: 'Stage, backdrops, live TV set and a branded reception desk for the Corporate Women in Leadership event.',
@@ -143,7 +150,8 @@ export const projectContent: ProjectContent[] = [
     title: { en: 'Dash Media news studio', fr: 'Studio d’information Dash Media' },
     service: 'remodeling',
     client: 'Dash Media',
-    city: null,
+    city: 'Buea',
+    date: '2023-08-01',
     featured: true,
     story: {
       en: 'Design illustrations of the Dash TV news studio: news desk, screens, interview corner and lighting.',
@@ -173,7 +181,8 @@ export const projectContent: ProjectContent[] = [
     title: { en: 'Kitchen cabinets and imported doors', fr: 'Cuisines et portes importées' },
     service: 'remodeling',
     client: null,
-    city: null,
+    city: 'Limbe',
+    date: '2025-02-01',
     featured: false,
     story: {
       en: 'Wooden entrance doors supplied and fitted, and kitchens built with new cabinets and worktops.',
@@ -197,7 +206,8 @@ export const projectContent: ProjectContent[] = [
     },
     service: 'events',
     client: 'Soundz CMR',
-    city: null,
+    city: 'Douala',
+    date: '2023-11-01',
     featured: false,
     story: {
       en: 'Set and furniture for the Cameroon Talent Show: branded cubes, studio seating and the stage build.',
@@ -224,7 +234,8 @@ export const projectContent: ProjectContent[] = [
     title: { en: 'Upholstered beds', fr: 'Lits tapissés' },
     service: 'upholsteryFurniture',
     client: null,
-    city: null,
+    city: 'Yaoundé',
+    date: '2025-06-01',
     featured: true,
     story: {
       en: 'Beds and headboards made in our upholstery workshop, from a tufted baby cot to padded king-size headboards.',
@@ -244,7 +255,8 @@ export const projectContent: ProjectContent[] = [
     title: { en: 'Upholstered chairs and sofas', fr: 'Fauteuils et canapés tapissés' },
     service: 'upholsteryFurniture',
     client: null,
-    city: null,
+    city: 'Buea',
+    date: '2024-10-01',
     featured: false,
     story: {
       en: 'Chairs and sofas reupholstered or made new: leather armchairs, fabric sofas and corner units.',
@@ -264,8 +276,8 @@ export const projectContent: ProjectContent[] = [
     title: { en: 'Welfare Aid Future (W.A.F) donation', fr: 'Don Welfare Aid Future (W.A.F)' },
     service: 'events',
     client: 'Welfare Aid Future · Web Spectron',
-    // The photos show the Bonassama health district (Douala).
     city: 'Douala',
+    date: '2024-05-01',
     featured: false,
     story: {
       en: 'Community donation with Welfare Aid Future and Web Spectron at the Bonassama district medical centre, around the UN Sustainable Development Goals.',

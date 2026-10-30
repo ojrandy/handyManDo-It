@@ -71,6 +71,12 @@
         "title": "Code shared · payment released",
         "body": "+50 reward points"
       }
+    },
+    "slider": {
+      "label": "Photos of our crews at work",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "show": "Show photo {n} of {total}"
     }
   },
   "footer": {

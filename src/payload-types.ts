@@ -1503,6 +1503,16 @@ export interface Home {
       poster?: (number | null) | Media;
     };
     /**
+     * Photos of our people at work, 2–6, landscape or square, 1200 px wide or more. The first one loads first (LCP).
+     */
+    slides?:
+      | {
+          image: number | Media;
+          caption?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
      * "Watch the film" lightbox.
      */
     film?: {
@@ -1817,6 +1827,13 @@ export interface HomeSelect<T extends boolean = true> {
               mp4Small?: T;
               webmSmall?: T;
               poster?: T;
+            };
+        slides?:
+          | T
+          | {
+              image?: T;
+              caption?: T;
+              id?: T;
             };
         film?:
           | T

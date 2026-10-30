@@ -36,6 +36,38 @@
   --animate-notification-in: notification-in 600ms var(--ease-out-expo) both;
   --animate-marquee: marquee 40s linear infinite;
   --animate-slow-zoom: slow-zoom 30s ease-in-out infinite alternate;
+  /* Hero slider: each slide pushes in and pans for longer than it shows, so the motion carries
+     through the crossfade. Alternate slides pan in opposite directions. */
+  --animate-ken-burns-a: ken-burns-a 9s ease-out both;
+  --animate-ken-burns-b: ken-burns-b 9s ease-out both;
+  --animate-slide-progress: slide-progress var(--slide-ms, 6500ms) linear both;
+
+  @keyframes ken-burns-a {
+    from {
+      transform: scale(1.02) translate3d(-1%, 1%, 0);
+    }
+    to {
+      transform: scale(1.14) translate3d(1.5%, -1%, 0);
+    }
+  }
+
+  @keyframes ken-burns-b {
+    from {
+      transform: scale(1.14) translate3d(1.5%, 0, 0);
+    }
+    to {
+      transform: scale(1.02) translate3d(-1%, 1%, 0);
+    }
+  }
+
+  @keyframes slide-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
 
   /* Hero still: a slow push-in so the photo reads as a scene, not a wallpaper. */
   @keyframes slow-zoom {

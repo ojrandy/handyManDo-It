@@ -11,6 +11,7 @@ import {
   faqAnswer,
   faqSeeds,
   filmMedia,
+  heroSlides,
   homeData,
   type Localized,
   type MediaSeed,
@@ -267,6 +268,7 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
         service,
         client: seed.client,
         city: seed.city,
+        date: seed.date,
         featured: seed.featured,
         cover: cover as number,
         gallery,
@@ -284,7 +286,7 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
 
   for (const seed of teamSeeds) {
     await upsert('team', seed.name, { name: { equals: seed.name } }, async () => {
-      const shared = { name: seed.name, order: seed.order }
+      const shared = { name: seed.name, order: seed.order, photo: await media(seed.photo) }
       return { fr: { ...shared, role: seed.role.fr }, en: { ...shared, role: seed.role.en } }
     })
   }
@@ -396,12 +398,17 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
         video: (await media(filmMedia.video)) ?? undefined,
         poster: (await media(filmMedia.poster)) ?? undefined,
       }
+      const slides: number[] = []
+      for (const slide of heroSlides) {
+        const id = await media(slide.image)
+        if (id !== null) slides.push(id)
+      }
       // Home arrays are localized as a whole, so each language writes its own rows.
       for (const locale of ['fr', 'en'] as const) {
         await payload.updateGlobal({
           slug: 'home',
           locale,
-          data: { ...homeData(locale, film), _status: 'published' },
+          data: { ...homeData(locale, film, slides), _status: 'published' },
           depth: 0,
           context,
         })
