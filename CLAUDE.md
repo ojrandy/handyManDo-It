@@ -117,6 +117,8 @@ prompt.md                phase-by-phase prompt library
 - ESLint uses the native flat configs from `eslint-config-next` 16 (`eslint-config-next/core-web-vitals`, `/typescript`). The old `FlatCompat` wrapper crashes with a circular-JSON error.
 - Local `.env` `DATABASE_URL` must be the Docker DB. Dev mode schema-pushes to whatever it points at, so a Neon string there alters staging outside migrations. Neon strings live in Hostinger env vars only.
 - Run e2e beside another server with `E2E_PORT=3100 npm run test:e2e`; only one `next dev` per directory is allowed.
+- e2e specs run through tsx (`--import=tsx/esm`), which adds a `__name` helper to functions. A function passed to `page.addInitScript` that declares named functions or closures can throw `__name is not defined` in the page and silently do nothing; pass a string (`addInitScript({ content })`) instead.
+- `next build` type-checks the whole project, `scripts/` and `tests/` included: don't leave half-done TypeScript anywhere in the tree while a build runs.
 - `S3_BUCKET` empty ⇒ uploads go to local `/media` (gitignored). Fine for dev, never for staging/prod.
 - Scripts (`seed`, `migrate:wordpress`, `capture:screens`, `encode:hero`) write outside Next, so they can't purge cache tags. Locally, `next build` and `next dev` then keep serving the old CMS reads from `.next/cache/fetch-cache` (dev: `.next/dev/cache/fetch-cache`): delete that folder after running a script. CI builds from a clean checkout and is unaffected.
 - CMS media URLs are absolute to the configured server URL (`localhost:3000` locally). A local server on another port gets them blocked by the site CSP (`img-src 'self'`), so images look broken there.

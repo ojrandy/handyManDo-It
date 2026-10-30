@@ -82,15 +82,19 @@ test.describe('Hero', () => {
 // Hero slider of our crews (home.hero.slides, ADR-026). Needs the seeded CMS: 4 slides.
 // Headless Chromium reports a 3G connection, which is light-data mode (one still photo, no
 // controls, FR-HOME-02); these tests stand in for a 4G visitor.
+// A stable connection: Chrome's own estimate changes under load and fires 'change' events.
+// Passed as a string: the test loader (tsx/esbuild) adds a `__name` helper to functions, which
+// does not exist in the page, so a function here threw and the stub never applied.
 const fastNetwork = (page: Page) =>
-  page.addInitScript(() => {
-    // A stable connection: Chrome's own estimate changes under load and fires 'change' events.
-    const connection = Object.assign(new EventTarget(), {
-      effectiveType: '4g',
-      saveData: false,
-      type: 'wifi',
-    })
-    Object.defineProperty(Navigator.prototype, 'connection', { get: () => connection })
+  page.addInitScript({
+    content: `{
+      const connection = Object.assign(new EventTarget(), {
+        effectiveType: '4g',
+        saveData: false,
+        type: 'wifi',
+      })
+      Object.defineProperty(Navigator.prototype, 'connection', { get: () => connection })
+    }`,
   })
 
 test.describe('Hero slider', () => {
