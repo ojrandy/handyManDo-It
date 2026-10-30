@@ -34,6 +34,7 @@ Voice: confident, warm, plain. Short sentences. No jargon. Tagline "Right at Hom
 | `mist-200` | `#dfe8eb` | Borders, dividers on light |
 | `slate-500` | `#5b7480` | Muted text on light |
 | `ink` | `#183d49` | Default body text |
+| `danger` | `#b3261e` | Form errors only (6.5:1 on white) |
 
 **Contrast rules (WCAG 2.2 AA):**
 - Body text: `ink` on `mist-50`, `white` or `white/75` on `night-900`. Muted text ≥ 4.5:1.
@@ -91,7 +92,7 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 | Dialog / Lightbox | ✅ | Native modal `<dialog>` (focus contained, Esc closes), focus returned to trigger, backdrop click closes; `FilmLightbox` video `preload="none"`. Captions pending transcript |
 | Carousel | ✅ scroll-snap + `CarouselControls` (no embla needed so far) | Keyboard + swipe; visible controls |
 | WhatsAppFab | ✅ (#128C7E for 3:1 icon contrast) | Bottom-right, delayed, safe-area aware |
-| Form fields | ⬜ | Label always visible, error text linked with `aria-describedby`, `aria-live` summary |
+| Form fields | ✅ | `forms/SiteForm`: label always visible (required `*` hidden from screen readers, `aria-required` instead; “(optional)” otherwise), error text in `danger` linked with `aria-describedby`, `aria-live` summary with the count, focus on the first invalid field, success panel (`role=status`) takes focus. `forms/ContactForms`: radio pills pick the contact form (`?type=quote&service=` or `#quote` preselect) |
 | JsonLd | ✅ | `<script type="application/ld+json">` server component; escapes `<` |
 | Breadcrumbs | ✅ | `nav` with `aria-label`, ordered list, last crumb `aria-current="page"` (text, not a link); emits BreadcrumbList. Styled for the dark page hero |
 | FilterableGrid | ✅ | Filter groups (one labelled `role="group"` each) of toggle buttons (`aria-pressed`); a group with fewer than two options is hidden; result count in a polite live region; all items visible without JS. No motion. Grid or masonry (`listClassName`) |
@@ -100,7 +101,7 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 | ServiceCard | ✅ | Whole card is the link; photo (`CmsImage`) or the service icon on a dark tile; title, summary, price label |
 | Prose | ✅ | Payload Lexical `RichText` with the site type scale (light backgrounds) |
 | device/Phone, device/Laptop | Phone ✅ · Laptop ⬜ | CSS frame with `overlay` slot; `AppScreenImage` fills it with a captured `app-screens` image (page language, theme), `AppHomeScreen` (HTML recreation) is the fallback while none is captured |
-| sections/* | Header, Hero, TrustedBy, ServicesBento, Pillars, Numbers, HowItWorks, Testimonials, Audiences, Earn, FaqTeaser, DownloadBand, Footer ✅ · inner pages: PageHero (dark: breadcrumbs, H1, lead, actions, optional photo preloaded), CtaBand (book in app + quote), PricingExplainer, FeatureSplit (checklists beside a captured app screen), AppOfferPage (Shop/Food) ✅ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
+| sections/* | Header, Hero, TrustedBy, ServicesBento, Pillars, Numbers, HowItWorks, Testimonials, Audiences, Earn, FaqTeaser, DownloadBand, Footer ✅ · inner pages: PageHero (dark: breadcrumbs, H1, lead, actions, optional photo preloaded), CtaBand (book in app + quote), PricingExplainer, FeatureSplit (checklists beside a captured app screen), AppOfferPage (Shop/Food), CardGrid (heading + cards or numbered steps on a light band) ✅ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
 
 **Component rules**
 1. Server Component unless it needs interactivity; client logic in the smallest possible child.

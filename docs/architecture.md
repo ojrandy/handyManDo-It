@@ -83,7 +83,7 @@ The proxy matcher is `/((?!admin|api|download|_next|_vercel|.*\..*).*)`. Any new
 `/admin save → Payload → Neon → afterChange hook → revalidatePath('/fr/faq', '/en/faq', '/fr', '/en') → next request rebuilds`.
 
 **Visitor submits a quote form**
-`Client island (react-hook-form + zod) → POST /api/forms/quote (route handler) → zod validate + honeypot + rate limit → payload.create({ collection: 'submissions' }) → afterChange hook sends email → 200 → client fires quote_submit`.
+`SiteForm island mounts → GET /api/forms/token (HMAC-signed issue time) → visitor submits → same zod schema in the browser (src/lib/forms/schema.ts) → POST /api/forms/{type} (multipart) → per-IP rate limit (5 / 10 min, in memory) → honeypot (filled = fake success) → token ≥ 3 s and ≤ 6 h old → zod again → CV checks + private files upload (job) → payload.create({ collection: 'submissions' }) → afterChange hook emails the inbox (with the extra fields) and purges > 24 months → 200 → client queues quote_submit / pro_apply / job_apply` (2026-10-30, ADR-023).
 
 **Visitor taps "Get the app"**
 `/download?utm_… → route handler reads UA → Android: 302 Play (referrer=utm) · iOS: App Store if site.appStoreUrl else web app · desktop: QR page`.
@@ -98,6 +98,7 @@ src/
       services/  services/[slug]/  …one folder per routing.pathnames key
     (payload)/            generated
     api/forms/[type]/route.ts   form intake
+    api/forms/token/route.ts    time-to-submit token
     api/og/route.tsx            dynamic OG image (or opengraph-image.tsx per segment)
     download/route.ts           smart store redirect
     sitemap.ts  robots.ts  manifest.ts
