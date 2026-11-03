@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 
 import en from '../../src/messages/en.json'
+import fr from '../../src/messages/fr.json'
 
 // Phase 2: header (FR-GLB-01/04) and synced-story hero (FR-HOME-01/02).
 test.describe('Header', () => {
@@ -41,6 +42,33 @@ test.describe('Header', () => {
       expect(new Set(boxes.map(({ y }) => y)).size).toBe(3)
       expect(new Set(boxes.map(({ width }) => width)).size).toBe(1)
       expect(new Set(boxes.map(({ height }) => height)).size).toBe(1)
+    })
+  }
+
+  // French has the longest labels: this row used to wrap and clip its CTA at 1024 px.
+  for (const [locale, m] of [
+    ['fr', fr],
+    ['en', en],
+  ] as const) {
+    test(`header row fits without wrapping or clipping in ${locale}`, async ({ page }) => {
+      await page.goto(`/${locale}`)
+      const banner = page.getByRole('banner')
+      const row = banner.locator('> div').first()
+      const openMenu = page.getByRole('button', { name: m.nav.openMenu })
+      const navLink = banner.getByRole('link', { name: m.nav.becomeAPro })
+
+      for (const width of [768, 1024, 1279, 1280, 1440]) {
+        await page.setViewportSize({ width, height: 800 })
+        expect(await row.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true)
+        if (width < 1280) {
+          await expect(openMenu).toBeVisible()
+          await expect(navLink).toBeHidden()
+        } else {
+          await expect(openMenu).toBeHidden()
+          // One line: a wrapped label would grow past the links' 44 px minimum.
+          expect((await navLink.boundingBox())?.height).toBe(44)
+        }
+      }
     })
   }
 

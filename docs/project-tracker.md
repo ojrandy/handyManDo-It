@@ -214,7 +214,7 @@ Delivery order (owner approved the recommendations 2026-10-29): 1 `feat/inner-te
 
 | Date | Change | By |
 |---|---|---|
-| 2026-11-03 | Header services mega-menu redesigned (FR-GLB-01): 12 equal tiles, 4×3, intro above. 11 services stay (PLAN §6); "See all services" is the gold 12th tile, also 12th in the mobile list. CMS sub-links capped at 11 (`maxRows`, and `navigationFrom` trims longer saved lists); no schema change. New key `nav.allServicesHint` (FR to review, R-08). | Dev |
+| 2026-11-03 | Header services mega-menu redesigned (FR-GLB-01): 12 equal tiles, 4×3, intro above. 11 services stay (PLAN §6); "See all services" is the gold 12th tile, also 12th in the mobile list. CMS sub-links capped at 11 (`maxRows`, and `navigationFrom` trims longer saved lists); no schema change. New key `nav.allServicesHint` (FR to review, R-08). Fix: at 1024 px in FR the header row wrapped and clipped "Télécharger l'app"; the full nav now starts at `xl` (1280 px), with the hamburger menu below | Dev |
 | 2026-10-23 | Phase 0 scaffold: Next 16 + Payload 3, i18n, tokens, Users/Media/Site, CI, DEPLOY.md | Dev |
 | 2026-10-23 | Added CLAUDE.md, prompt.md and docs (requirements, architecture, data-model, design-system, quality-assurance, operations, project-tracker) | Dev |
 | 2026-10-23 | Initial migration; npm tooling alignment; flat ESLint config (eslint-config-next 16); roles hidden on first-user form; build + smoke test verified; GitHub remote added | Dev |

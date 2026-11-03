@@ -108,8 +108,9 @@ export function HeaderShell({ logo, actions, mobileFooter, items, labels }: Prop
         <div className="container-site flex h-18 items-center justify-between gap-4">
           {logo}
 
-          <nav aria-label={labels.main} className="hidden lg:block">
-            <ul className="flex items-center gap-1 text-sm font-medium text-white/85">
+          {/* From xl, not lg: the French labels and CTA don't fit one row at 1024 px. */}
+          <nav aria-label={labels.main} className="hidden xl:block">
+            <ul className="flex items-center gap-1 text-sm font-medium whitespace-nowrap text-white/85">
               {items.map((item) => {
                 const route = routeOf(item)
                 if (!item.children) {
@@ -160,13 +161,13 @@ export function HeaderShell({ logo, actions, mobileFooter, items, labels }: Prop
                       className="absolute inset-x-0 top-full pt-2"
                     >
                       <div className="container-site">
-                        <div className="rounded-panel border border-white/10 bg-night-900 p-6 shadow-float">
+                        <div className="rounded-panel border border-white/10 bg-night-900 p-6 whitespace-normal shadow-float">
                           <p className="mb-5 font-display text-2xl leading-tight font-semibold text-balance text-white">
                             {labels.menuIntro}
                           </p>
-                          {/* 11 services + the "see all" tile: 12 fills 3 or 4 columns exactly.
-                              Equal rows keep the tiles aligned whatever a blurb's length. */}
-                          <ul className="grid auto-rows-fr grid-cols-3 gap-2 xl:grid-cols-4">
+                          {/* 11 services + the "see all" tile fill the grid exactly. Equal rows keep
+                              the tiles aligned whatever a blurb's length. */}
+                          <ul className="grid auto-rows-fr grid-cols-4 gap-2">
                             {item.children.map((entry) => (
                               <li key={entry.key}>
                                 <NavAnchor
@@ -233,7 +234,7 @@ export function HeaderShell({ logo, actions, mobileFooter, items, labels }: Prop
               onClick={openMobile}
               aria-label={labels.openMenu}
               aria-haspopup="dialog"
-              className="grid size-11 place-items-center rounded-full text-white hover:bg-white/10 lg:hidden"
+              className="grid size-11 place-items-center rounded-full text-white hover:bg-white/10 xl:hidden"
             >
               <Menu aria-hidden className="size-6" />
             </button>
@@ -247,7 +248,7 @@ export function HeaderShell({ logo, actions, mobileFooter, items, labels }: Prop
         onClose={() => {
           document.documentElement.style.overflow = ''
         }}
-        className="m-0 h-dvh max-h-none w-full max-w-none bg-night-950 text-white backdrop:bg-transparent lg:hidden"
+        className="m-0 h-dvh max-h-none w-full max-w-none bg-night-950 text-white backdrop:bg-transparent xl:hidden"
       >
         <div className="grain flex min-h-full flex-col">
           <div className="container-site flex h-18 items-center justify-between">
