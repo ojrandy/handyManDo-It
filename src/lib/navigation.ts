@@ -6,6 +6,7 @@ import type { Locale, Pathname } from '@/i18n/routing'
 import type { Navigation } from '@/payload-types'
 
 import { getGlobal } from './payload'
+import { serviceKeys } from './service-keys'
 
 type Href = ComponentProps<typeof Link>['href']
 
@@ -71,12 +72,15 @@ export function navigationFrom(doc: Pick<Navigation, 'header' | 'footerColumns'>
     if (!link) return []
     const children = menuTaken
       ? []
-      : (item.children ?? []).flatMap<NavMenuEntry>((child, childIndex) => {
-          const entry = navLink(child.link, child.id ?? String(childIndex))
-          return entry
-            ? [{ ...entry, description: child.description ?? null, icon: child.icon ?? null }]
-            : []
-        })
+      : (item.children ?? [])
+          .flatMap<NavMenuEntry>((child, childIndex) => {
+            const entry = navLink(child.link, child.id ?? String(childIndex))
+            return entry
+              ? [{ ...entry, description: child.description ?? null, icon: child.icon ?? null }]
+              : []
+          })
+          // The panel's "see all" tile takes the 12th place. Lists saved before the cap may be longer.
+          .slice(0, serviceKeys.length)
     if (!children.length) return [link]
     menuTaken = true
     return [{ ...link, children }]

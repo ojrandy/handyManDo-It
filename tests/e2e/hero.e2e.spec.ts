@@ -19,6 +19,31 @@ test.describe('Header', () => {
     await expect(trigger).toBeFocused()
   })
 
+  for (const width of [1280, 1440]) {
+    test(`services mega-menu is a full 12-tile grid at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 })
+      await page.goto('/en')
+      const trigger = page.getByRole('button', { name: en.nav.services, exact: true })
+      await trigger.focus()
+      await page.keyboard.press('Enter')
+      const panelId = await trigger.getAttribute('aria-controls')
+      const tiles = page.locator(`[id="${panelId}"] a`)
+      await expect(tiles).toHaveCount(12)
+      await expect(tiles.last()).toContainText(en.nav.allServices)
+
+      const boxes = await tiles.evaluateAll((links) =>
+        links.map((link) => {
+          const { x, y, width, height } = link.getBoundingClientRect()
+          return { x, y, width, height }
+        }),
+      )
+      expect(new Set(boxes.map(({ x }) => x)).size).toBe(4)
+      expect(new Set(boxes.map(({ y }) => y)).size).toBe(3)
+      expect(new Set(boxes.map(({ width }) => width)).size).toBe(1)
+      expect(new Set(boxes.map(({ height }) => height)).size).toBe(1)
+    })
+  }
+
   test('mobile menu opens as a dialog and closes', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto('/en')

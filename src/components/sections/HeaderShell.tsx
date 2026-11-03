@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react'
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react'
 
 import { NavAnchor } from '@/components/ui/NavAnchor'
@@ -21,6 +21,7 @@ type Props = {
     main: string
     menuIntro: string
     menuAll: string
+    menuAllHint: string
     openMenu: string
     closeMenu: string
   }
@@ -159,26 +160,19 @@ export function HeaderShell({ logo, actions, mobileFooter, items, labels }: Prop
                       className="absolute inset-x-0 top-full pt-2"
                     >
                       <div className="container-site">
-                        <div className="grid gap-8 rounded-panel border border-white/10 bg-night-900 p-8 shadow-float lg:grid-cols-[16rem_1fr]">
-                          <div className="flex flex-col justify-between gap-6">
-                            <p className="font-display text-2xl leading-tight font-semibold text-white">
-                              {labels.menuIntro}
-                            </p>
-                            <NavAnchor
-                              to={item}
-                              onClick={() => closeMega()}
-                              className="text-sm font-semibold text-gold-300 underline-offset-4 hover:underline"
-                            >
-                              {labels.menuAll} →
-                            </NavAnchor>
-                          </div>
-                          <ul className="grid grid-cols-2 gap-1 xl:grid-cols-3">
+                        <div className="rounded-panel border border-white/10 bg-night-900 p-6 shadow-float">
+                          <p className="mb-5 font-display text-2xl leading-tight font-semibold text-balance text-white">
+                            {labels.menuIntro}
+                          </p>
+                          {/* 11 services + the "see all" tile: 12 fills 3 or 4 columns exactly.
+                              Equal rows keep the tiles aligned whatever a blurb's length. */}
+                          <ul className="grid auto-rows-fr grid-cols-3 gap-2 xl:grid-cols-4">
                             {item.children.map((entry) => (
                               <li key={entry.key}>
                                 <NavAnchor
                                   to={entry}
                                   onClick={() => closeMega()}
-                                  className="group flex gap-3 rounded-card p-3 transition-colors hover:bg-white/5"
+                                  className="group flex h-full gap-3 rounded-card border border-white/10 bg-white/[0.03] p-3 transition-colors hover:border-gold-500/50 hover:bg-white/[0.07]"
                                 >
                                   <span
                                     aria-hidden
@@ -199,6 +193,29 @@ export function HeaderShell({ logo, actions, mobileFooter, items, labels }: Prop
                                 </NavAnchor>
                               </li>
                             ))}
+                            <li>
+                              <NavAnchor
+                                to={item}
+                                onClick={() => closeMega()}
+                                className="group flex h-full gap-3 rounded-card border border-gold-500 bg-gold-500 p-3 text-night-900 transition-colors hover:border-gold-300 hover:bg-gold-300"
+                              >
+                                <span
+                                  aria-hidden
+                                  className="grid size-10 shrink-0 place-items-center rounded-xl bg-night-900 text-gold-300"
+                                >
+                                  <ArrowRight
+                                    className="size-5 transition-transform duration-200 group-hover:translate-x-0.5"
+                                    strokeWidth={1.75}
+                                  />
+                                </span>
+                                <span>
+                                  <span className="block font-semibold">{labels.menuAll}</span>
+                                  <span className="mt-0.5 block text-xs leading-snug text-night-900/80">
+                                    {labels.menuAllHint}
+                                  </span>
+                                </span>
+                              </NavAnchor>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -269,6 +286,15 @@ export function HeaderShell({ logo, actions, mobileFooter, items, labels }: Prop
                           </NavAnchor>
                         </li>
                       ))}
+                      <li>
+                        <NavAnchor
+                          to={item}
+                          className="flex min-h-11 items-center font-semibold text-gold-300"
+                          onClick={closeMobile}
+                        >
+                          {labels.menuAll} →
+                        </NavAnchor>
+                      </li>
                     </ul>
                   ) : null}
                 </li>

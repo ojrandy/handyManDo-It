@@ -1355,7 +1355,7 @@ export interface Navigation {
           url?: string | null;
         };
         /**
-         * Sub-links open a mega-menu. The header has one: only the first item with sub-links opens it.
+         * Sub-links open a mega-menu of 12 tiles: up to 11 sub-links, then "See all services". The header has one: only the first item with sub-links opens it.
          */
         children?:
           | {

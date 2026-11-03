@@ -93,6 +93,7 @@ export async function Header() {
         main: t('main'),
         menuIntro: t('servicesIntro'),
         menuAll: t('allServices'),
+        menuAllHint: t('allServicesHint'),
         openMenu: t('openMenu'),
         closeMenu: t('closeMenu'),
       }}

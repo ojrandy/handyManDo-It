@@ -90,6 +90,22 @@ describe('navigationFrom', () => {
     })
   })
 
+  it('caps the mega-menu at 11 sub-links, leaving the 12th tile to "see all"', () => {
+    const { header } = navigationFrom({
+      header: [
+        {
+          id: 'a',
+          link: page('Services', '/services'),
+          children: Array.from({ length: 14 }, (_, index) => ({
+            id: `a${index}`,
+            link: page('Avis', '/reviews'),
+          })),
+        },
+      ],
+    })
+    expect(header[0].children).toHaveLength(11)
+  })
+
   it('drops unlinkable footer links and columns left empty', () => {
     const { footer } = navigationFrom({
       footerColumns: [

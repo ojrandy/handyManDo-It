@@ -17,6 +17,7 @@
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "allServices": "Voir tous les services",
+    "allServicesHint": "Parcourez-les et trouvez le vôtre.",
     "home": "Accueil HandyMan Do IT",
     "servicesIntro": "Des pros vérifiés pour chaque besoin, du petit dépannage au grand chantier."
   },

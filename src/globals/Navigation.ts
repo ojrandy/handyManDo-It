@@ -2,7 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 import { anyone, isEditor } from '@/access'
 import { linkField } from '@/fields/link'
-import { serviceIcons } from '@/lib/service-keys'
+import { serviceIcons, serviceKeys } from '@/lib/service-keys'
 import { revalidateGlobal } from '@/hooks/revalidate'
 
 // Header and footer menus (FR-GLB-01/02). Contact details, socials and store links stay in the
@@ -35,11 +35,11 @@ export const Navigation: GlobalConfig = {
                   // A non-empty list turns the item into a mega-menu.
                   name: 'children',
                   type: 'array',
-                  maxRows: 16,
+                  maxRows: serviceKeys.length,
                   admin: {
                     initCollapsed: true,
                     description:
-                      'Sub-links open a mega-menu. The header has one: only the first item with sub-links opens it.',
+                      'Sub-links open a mega-menu of 12 tiles: up to 11 sub-links, then "See all services". The header has one: only the first item with sub-links opens it.',
                   },
                   fields: [
                     linkField(),
