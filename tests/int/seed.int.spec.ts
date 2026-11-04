@@ -43,6 +43,14 @@ describe('seed data', () => {
     }
   })
 
+  it('gives every service a photo file and alt text in both languages', () => {
+    for (const { key, image } of serviceSeeds) {
+      expect(image, key).not.toBeNull()
+      expect(existsSync(`public/${image?.file}`), key).toBe(true)
+      expect(image?.alt.fr && image?.alt.en, key).toBeTruthy()
+    }
+  })
+
   it('gives each service a filter group and the same inclusions count in both languages', () => {
     for (const seed of serviceSeeds) {
       expect(serviceCategories, seed.key).toContain(seed.category)

@@ -46,23 +46,36 @@ export const testimonials = [
   { key: 'mlounge', photo: '/images/reviews/mlounge.webp' },
 ] as const
 
-// Real project photos per service (alt text in messages under `servicesSection.photos`). The
-// originals are small (500–750 px); higher-resolution files are an owner request.
+// Photos of people doing the work, per service (alt text in messages under
+// `servicesSection.photos`). Cropped 3:2 with the subject centred, so the same file holds up on a
+// wide tile, a square phone tile and a service page. Placeholders until the owner uploads final
+// photos in the CMS (Q-20): packing and transport are Pexels stock, the rest come from the old site.
 export const servicePhotos: Partial<
   Record<ServiceKey, { src: string; width: number; height: number }>
 > = {
   interiorExteriorDesign: {
-    src: '/images/work/interiorExteriorDesign.webp',
-    width: 750,
-    height: 500,
+    src: '/images/work/at-work-interiorExteriorDesign.webp',
+    width: 1050,
+    height: 700,
   },
-  remodeling: { src: '/images/work/remodeling.webp', width: 750, height: 500 },
-  upholsteryFurniture: { src: '/images/work/upholsteryFurniture.webp', width: 500, height: 500 },
-  repairsInstallations: { src: '/images/work/repairsInstallations.webp', width: 500, height: 500 },
-  signage: { src: '/images/work/signage.webp', width: 750, height: 500 },
-  events: { src: '/images/work/events.webp', width: 750, height: 500 },
-  lighting: { src: '/images/work/lighting.webp', width: 750, height: 500 },
-  building: { src: '/images/work/building.webp', width: 500, height: 500 },
+  remodeling: { src: '/images/work/at-work-remodeling.webp', width: 1200, height: 800 },
+  upholsteryFurniture: {
+    src: '/images/work/at-work-upholsteryFurniture.webp',
+    width: 680,
+    height: 453,
+  },
+  repairsInstallations: {
+    src: '/images/work/at-work-repairsInstallations.webp',
+    width: 958,
+    height: 639,
+  },
+  signage: { src: '/images/work/at-work-signage.webp', width: 1200, height: 800 },
+  events: { src: '/images/work/at-work-events.webp', width: 720, height: 480 },
+  lighting: { src: '/images/work/at-work-lighting.webp', width: 1200, height: 800 },
+  building: { src: '/images/work/at-work-building.webp', width: 900, height: 600 },
+  moving: { src: '/images/work/at-work-moving.webp', width: 768, height: 512 },
+  packing: { src: '/images/work/at-work-packing.webp', width: 1200, height: 800 },
+  transport: { src: '/images/work/at-work-transport.webp', width: 1200, height: 800 },
 }
 
 // "From X FCFA" per service (owner question Q-5). Empty until real prices exist; tiles then show

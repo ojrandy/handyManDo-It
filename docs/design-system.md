@@ -113,7 +113,7 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 
 ## 7. Imagery and iconography
 
-- Photography: real Cameroonian/West African people and places; licensed stock (Pexels/Mixkit) until own footage. Alt text mandatory, localized.
+- Photography: real Cameroonian/West African people and places; licensed stock (Pexels/Mixkit) until own footage. Service tiles show people doing the work, our own crews first, licensed stock only where we have no such photo; no CG renders or empty showrooms. Crop 3:2 with the subject in the upper half, so the tile text does not cover it. Alt text mandatory, localized, and it only names our crew when the photo really is our crew.
 - App screens: from `appScreens` collection, matching locale and theme.
 - Icons: one consistent line icon set (e.g. Lucide), 1.5–2 px stroke, `aria-hidden` when decorative.
 - Logo: `public/brand/logo.jpg` until an SVG is traced; bolt/hex-nut motif as ornaments.

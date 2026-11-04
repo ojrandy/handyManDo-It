@@ -85,12 +85,15 @@ export async function ServicesBento() {
           </Link>
         </div>
 
-        <ul className="mt-12 grid auto-rows-[11rem] grid-cols-2 gap-3 sm:auto-rows-[13rem] sm:gap-4 lg:grid-cols-4">
+        <ul className="mt-12 grid auto-rows-[minmax(11rem,auto)] grid-cols-2 gap-3 sm:auto-rows-[13rem] sm:gap-4 lg:auto-rows-[14rem] lg:grid-cols-4">
           {tiles.map(({ id, slug, title, summary, Icon, large, photo, alt, price }) => (
-            <li key={id} className={large ? 'col-span-2 sm:row-span-2' : ''}>
+            <li
+              key={id}
+              className={`flex ${large ? 'col-span-2 min-h-60 sm:row-span-2 sm:min-h-0' : ''}`}
+            >
               <Link
                 href={{ pathname: '/services/[slug]', params: { slug } }}
-                className="group relative flex h-full flex-col justify-end overflow-hidden rounded-panel bg-night-900 p-4 text-white sm:p-6"
+                className="group relative flex w-full flex-col justify-between overflow-hidden rounded-panel bg-night-900 p-4 text-white sm:p-6"
               >
                 {photo.length ? (
                   <>
@@ -98,14 +101,18 @@ export async function ServicesBento() {
                       sources={photo}
                       alt={alt}
                       fill
+                      // The container caps at 80rem, so tiles stop growing at about 600 and 300 px.
                       sizes={
-                        large ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 1024px) 25vw, 50vw'
+                        large
+                          ? '(min-width: 1280px) 600px, (min-width: 1024px) 50vw, 100vw'
+                          : '(min-width: 1280px) 300px, (min-width: 1024px) 25vw, 50vw'
                       }
-                      className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105"
+                      className="object-cover transition-transform duration-700 ease-out-expo motion-safe:group-hover:scale-105"
                     />
+                    {/* Dark only behind the text, so the crew stays visible above it. */}
                     <span
                       aria-hidden
-                      className="absolute inset-0 bg-gradient-to-t from-night-950 via-night-950/65 to-night-950/10"
+                      className={`absolute inset-0 bg-gradient-to-t from-night-950 to-transparent ${large ? 'via-night-950/75 via-45% sm:via-night-950/65 sm:via-35%' : 'via-night-950/70 via-50% sm:via-night-950/55 sm:via-40%'}`}
                     />
                   </>
                 ) : (
@@ -114,19 +121,32 @@ export async function ServicesBento() {
                     className="absolute inset-0 bg-[radial-gradient(80%_90%_at_100%_0%,rgb(28_93_112/0.7),transparent_70%)]"
                   />
                 )}
-                <span className="relative grid size-9 place-items-center rounded-card bg-gold-500 text-night-900 sm:size-10">
-                  <Icon aria-hidden className="size-5" strokeWidth={1.75} />
+                <span className="relative flex items-start justify-between">
+                  <span className="grid size-9 place-items-center rounded-card bg-gold-500 text-night-900 shadow-sm sm:size-10">
+                    <Icon aria-hidden className="size-5" strokeWidth={1.75} />
+                  </span>
+                  <span
+                    aria-hidden
+                    className="grid size-8 place-items-center rounded-full bg-night-950/55 text-white transition-colors group-hover:bg-white group-hover:text-night-900 group-focus-visible:bg-white group-focus-visible:text-night-900 sm:size-9"
+                  >
+                    <ArrowUpRight className="size-4" />
+                  </span>
                 </span>
-                <span
-                  className={`relative mt-4 block font-display font-semibold ${large ? 'text-2xl sm:text-3xl' : 'text-base leading-snug sm:text-lg'}`}
-                >
-                  {title}
-                </span>
-                {large ? (
-                  <span className="relative mt-1 block max-w-sm text-white/80">{summary}</span>
-                ) : null}
-                <span className="relative mt-1.5 block text-xs font-medium text-gold-300 sm:mt-2 sm:text-sm">
-                  {priceLabel(price)}
+                <span className="relative block">
+                  <span
+                    className={`block font-display font-semibold ${large ? 'text-2xl sm:text-3xl' : 'text-base leading-snug sm:text-lg'}`}
+                  >
+                    {title}
+                  </span>
+                  {large ? (
+                    <span className="mt-1 block max-w-sm text-white/85">{summary}</span>
+                  ) : null}
+                  {/* A real price earns the accent; the fallback repeats on every tile, so it stays quiet. */}
+                  <span
+                    className={`mt-1 block text-xs sm:text-sm ${price ? 'font-semibold text-gold-300' : 'text-white/80'}`}
+                  >
+                    {priceLabel(price)}
+                  </span>
                 </span>
               </Link>
             </li>
@@ -164,8 +184,8 @@ export async function ServicesBento() {
           ))}
 
           <li>
-            <div className="flex h-full flex-col justify-between rounded-panel bg-teal-600 p-4 text-white sm:p-6">
-              <span className="font-display text-lg leading-snug font-semibold sm:text-xl">
+            <div className="flex h-full flex-col justify-between gap-3 rounded-panel bg-teal-600 p-4 text-white sm:p-6">
+              <span className="font-display text-base leading-snug font-semibold sm:text-xl">
                 {t('custom')}
               </span>
               <Link

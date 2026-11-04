@@ -401,14 +401,17 @@
     "custom": "Need something custom?",
     "quote": "Request a quote",
     "photos": {
-      "interiorExteriorDesign": "Living room wall unit designed and built by HandyMan Do IT",
-      "remodeling": "News studio set built for Dash Media",
-      "upholsteryFurniture": "Yellow leather armchair from our upholstery workshop",
-      "repairsInstallations": "Office corner with installed window blinds",
-      "signage": "Event banner for the Crystal Hair Challenge 2022",
-      "events": "Conference stage set up by HandyMan Do IT",
-      "lighting": "Studio lighting installed for Dash TV",
-      "building": "Wood wall cladding work"
+      "interiorExteriorDesign": "HandyMan Do IT crew fitting a TV wall unit on a studio set",
+      "remodeling": "HandyMan Do IT crew cutting timber with a saw on site",
+      "upholsteryFurniture": "Craftsman repairing a curved wooden chair frame",
+      "repairsInstallations": "HandyMan Do IT crew member painting around a blue metal gate",
+      "signage": "HandyMan Do IT crew fitting a large Soundz logo sign on a stage set",
+      "events": "HandyMan Do IT crew member setting up a product display at an outdoor event",
+      "lighting": "HandyMan Do IT crew checking a stage setup under the spotlights",
+      "building": "HandyMan Do IT crew cutting timber at a workbench on site",
+      "moving": "HandyMan Do IT crew member moving a white shelving unit",
+      "packing": "Worker packing household items into a cardboard box",
+      "transport": "Workers loading cardboard boxes into a delivery van"
     }
   },
   "testimonials": {

@@ -401,14 +401,17 @@
     "custom": "Besoin de quelque chose de sur mesure ?",
     "quote": "Demander un devis",
     "photos": {
-      "interiorExteriorDesign": "Meuble TV de salon conçu et réalisé par HandyMan Do IT",
-      "remodeling": "Plateau de studio TV réalisé pour Dash Media",
-      "upholsteryFurniture": "Fauteuil en cuir jaune de notre atelier de tapisserie",
-      "repairsInstallations": "Coin bureau avec stores installés",
-      "signage": "Bannière de l’événement Crystal Hair Challenge 2022",
-      "events": "Scène de conférence installée par HandyMan Do IT",
-      "lighting": "Éclairage de studio installé pour Dash TV",
-      "building": "Habillage mural en bois"
+      "interiorExteriorDesign": "L’équipe HandyMan Do IT installe un meuble TV mural sur un plateau de tournage",
+      "remodeling": "L’équipe HandyMan Do IT coupe du bois à la scie sur le chantier",
+      "upholsteryFurniture": "Un artisan répare la structure courbe d’une chaise en bois",
+      "repairsInstallations": "Un membre de l’équipe HandyMan Do IT peint autour d’un portail métallique bleu",
+      "signage": "L’équipe HandyMan Do IT pose une grande enseigne au logo Soundz sur un plateau",
+      "events": "Un membre de l’équipe HandyMan Do IT installe un présentoir lors d’un événement en plein air",
+      "lighting": "L’équipe HandyMan Do IT vérifie une installation de scène sous les projecteurs",
+      "building": "L’équipe HandyMan Do IT coupe du bois sur un établi de chantier",
+      "moving": "Un membre de l’équipe HandyMan Do IT déplace une étagère blanche",
+      "packing": "Un ouvrier range des objets de la maison dans un carton",
+      "transport": "Des ouvriers chargent des cartons dans une camionnette de livraison"
     }
   },
   "testimonials": {

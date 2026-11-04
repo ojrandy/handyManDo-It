@@ -80,10 +80,10 @@ export const serviceSeeds: ServiceSeed[] = services.map(({ key, slug }, index) =
   summary: both((m) => m.services[key].blurb),
   body: serviceContent[key]?.body ?? null,
   inclusions: serviceContent[key]?.inclusions ?? { fr: [], en: [] },
-  // Real project photos exist for 8 of the 11 services; the rest keep the designed tile.
+  // Media is matched on its file name, so a new photo needs a new name to replace the old one.
   image: hasPhoto(key)
     ? {
-        file: `images/work/${key}.webp`,
+        file: `images/work/at-work-${key}.webp`,
         alt: both((m) => m.servicesSection.photos[key]),
       }
     : null,

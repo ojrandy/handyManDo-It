@@ -59,6 +59,21 @@ test.describe('Home content sections', () => {
     await expect(bento.getByRole('img', { name: fr.servicesSection.photos.events })).toBeVisible()
   })
 
+  test('every service tile shows a real photo that loads', async ({ page }) => {
+    await page.goto('/en')
+    const tiles = page
+      .getByRole('region', { name: en.servicesSection.title })
+      .locator('a[href*="/services/"]:has(img)')
+    await expect(tiles).toHaveCount(Object.keys(en.servicesSection.photos).length)
+    for (const img of await tiles.locator('img').all()) {
+      await img.scrollIntoViewIfNeeded()
+      await expect(img).toHaveAttribute('alt', /\S/)
+      await expect
+        .poll(() => img.evaluate((el: HTMLImageElement) => el.naturalWidth))
+        .toBeGreaterThan(0)
+    }
+  })
+
   test('named partner logos have their names as alt text', async ({ page }) => {
     await page.goto('/en')
     await expect(page.getByRole('img', { name: 'KUKWA Constructions' })).toBeAttached()
