@@ -31,6 +31,12 @@ export const Media: CollectionConfig = {
   upload: {
     mimeTypes: ['image/*', 'video/mp4', 'video/webm', 'application/pdf'],
     focalPoint: true,
+    // Without this a repeat visit downloads every local file again. A day, not immutable: a
+    // re-upload can reuse a filename. R2 files skip this route.
+    modifyResponseHeaders: ({ headers }) => {
+      headers.set('Cache-Control', 'public, max-age=86400')
+      return headers
+    },
     imageSizes: [
       { name: 'thumb', width: 480, formatOptions: { format: 'webp', options: { quality: 78 } } },
       // A phone frame's screen at 2× (268 px): the hero's LCP image on desktop.

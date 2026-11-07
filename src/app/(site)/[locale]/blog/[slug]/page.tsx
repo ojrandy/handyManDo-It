@@ -136,7 +136,7 @@ export default async function PostPage({ params }: Props) {
           '@type': 'Article',
           headline: post.title,
           description: summary(post),
-          ...(image ? { image: [image] } : {}),
+          ...(image ? { image: [absoluteUrl(image)] } : {}),
           ...(post.publishedAt ? { datePublished: post.publishedAt } : {}),
           dateModified: post.updatedAt,
           inLanguage: englishOnly ? 'en' : locale,

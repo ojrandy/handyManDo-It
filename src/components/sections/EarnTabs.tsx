@@ -13,11 +13,13 @@ export type EarnTab = {
 type Props = {
   label: string
   tabs: EarnTab[]
+  // Shown at the foot of every panel (payment methods), rendered on the server.
+  footer?: React.ReactNode
 }
 
 // ARIA tabs pattern (FR-HOME-13): roving tabindex, arrow keys / Home / End move between tabs,
 // and panels are labelled by their tab.
-export function EarnTabs({ label, tabs }: Props) {
+export function EarnTabs({ label, tabs, footer }: Props) {
   const [selected, setSelected] = useState(0)
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
   const baseId = useId()
@@ -40,13 +42,15 @@ export function EarnTabs({ label, tabs }: Props) {
     focusTab(keys[event.key])
   }
 
+  // The column stretches to the height of the copy beside it, so the panel ends level with the
+  // "Start earning" button on desktop.
   return (
-    <div>
+    <div className="flex flex-col">
       <div
         role="tablist"
         aria-label={label}
         onKeyDown={onKeyDown}
-        className="inline-flex rounded-full bg-white/5 p-1 ring-1 ring-white/10"
+        className="inline-flex self-start rounded-full bg-white/5 p-1 ring-1 ring-white/10"
       >
         {tabs.map((tab, index) => (
           <button
@@ -76,7 +80,8 @@ export function EarnTabs({ label, tabs }: Props) {
           aria-labelledby={`${baseId}-tab-${tab.key}`}
           hidden={selected !== index}
           tabIndex={0}
-          className="mt-8 rounded-panel bg-white/5 p-8 ring-1 ring-white/10"
+          // `flex` only while shown, or it would override the `hidden` attribute.
+          className="mt-8 flex-1 flex-col rounded-panel bg-white/5 p-8 ring-1 ring-white/10 not-[[hidden]]:flex"
         >
           <div className="flex items-center gap-4">
             <span className="grid size-12 place-items-center rounded-card bg-gold-500 text-night-900">
@@ -92,6 +97,12 @@ export function EarnTabs({ label, tabs }: Props) {
               </li>
             ))}
           </ul>
+          {footer ? (
+            // pt-8 keeps the gap on phones, where the panel does not stretch.
+            <div className="mt-auto pt-8">
+              <div className="border-t border-white/10 pt-6">{footer}</div>
+            </div>
+          ) : null}
         </div>
       ))}
     </div>

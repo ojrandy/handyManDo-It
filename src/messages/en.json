@@ -106,7 +106,8 @@
       "reviews": "Reviews",
       "privacy": "Privacy",
       "terms": "Terms",
-      "disclaimer": "Disclaimer"
+      "disclaimer": "Disclaimer",
+      "allServices": "All services"
     },
     "contactTitle": "Contact",
     "call": "Call or WhatsApp",
@@ -116,9 +117,12 @@
       "office": "Office"
     },
     "follow": "Follow us",
-    "supportLabel": "Support:",
-    "officeHoursLabel": "Offices:",
-    "officeHours": "Mon–Thu 08:00–17:00 · Fri–Sat 09:00–16:00 · Sun closed"
+    "supportLabel": "Support",
+    "officeHoursLabel": "Offices",
+    "officeHours": "Mon–Thu 08:00–17:00 · Fri–Sat 09:00–16:00 · Sun closed",
+    "credit": "Designed and Developed by <company>Web Spectron LTD</company>",
+    "hoursTitle": "Hours",
+    "officesTitle": "Offices"
   },
   "notFound": {
     "metaTitle": "Page not found",
@@ -273,7 +277,7 @@
       "clients": "Happy clients",
       "projects": "Signature projects"
     },
-    "mapLabel": "Map of Cameroon with the towns we serve, including Douala, Buea and Yaoundé"
+    "photoAlt": "Two smiling HandyMan crew members in branded hard hats and high-visibility vests"
   },
   "howItWorks": {
     "eyebrow": "How it works",
@@ -331,6 +335,7 @@
     "title": "One app to find work and get paid.",
     "body": "Pros, sellers and kitchens use the same app. Choose “I offer services” when you sign up.",
     "tabsLabel": "Ways to earn",
+    "payoutLabel": "Paid in the app",
     "tabs": {
       "pros": {
         "label": "Pros",
@@ -338,7 +343,9 @@
         "points": [
           "Apply once and offer all your skills",
           "Set your own rates and service area",
-          "Get paid for every completed job"
+          "Get paid for every completed job",
+          "Get verified, then receive nearby requests",
+          "The client’s payment is held for you until the job is done"
         ]
       },
       "sellers": {
@@ -347,7 +354,9 @@
         "points": [
           "List new, refurbished or second-hand items",
           "Phones, home, tools, building, solar and groceries",
-          "Get paid safely through the app"
+          "Get paid safely through the app",
+          "Buyers pay with MTN MoMo or Orange Money",
+          "Follow your orders and sales in the app"
         ]
       },
       "kitchens": {
@@ -356,7 +365,9 @@
         "points": [
           "Manage your menu",
           "Receive and follow orders",
-          "Track your payouts"
+          "Track your payouts",
+          "Customers pay with MTN MoMo or Orange Money",
+          "Get verified, then go live in the app"
         ]
       }
     },
@@ -390,6 +401,11 @@
     "from": "From {price} FCFA",
     "clearPrice": "Clear price before you book",
     "alsoInApp": "Also in the app",
+    "groups": {
+      "home": "For the home",
+      "projects": "Projects and events",
+      "moving": "Moving and transport"
+    },
     "shop": {
       "name": "Shop",
       "blurb": "New, refurbished and second-hand goods."
@@ -494,31 +510,51 @@
     "chapters": {
       "browse": {
         "title": "What’s on your to-do list?",
-        "body": "Pick a category or describe the job in your own words, with photos."
+        "body": "Pick a category or describe the job in your own words, with photos.",
+        "step": "Describe the job",
+        "caption": "Repairs, upholstery, moving: 11 services in one app.",
+        "photoAlt": "A woman on an orange sofa describes a job on her phone"
       },
       "price": {
         "title": "Get a clear price",
-        "body": "You see the price before you book. No haggling, no surprise on the day."
+        "body": "You see the price before you book. No haggling, no surprise on the day.",
+        "step": "Clear price",
+        "caption": "The price comes first, the booking after.",
+        "photoAlt": "A man smiles and raises his fist as he reads the price on his phone"
       },
       "pay": {
         "title": "Pay safely",
-        "body": "Pay with MTN MoMo, Orange Money or your wallet. The money is held until the job is done."
+        "body": "Pay with MTN MoMo, Orange Money or your wallet. The money is held until the job is done.",
+        "step": "Payment held",
+        "caption": "Your money waits while the work gets done.",
+        "photoAlt": "A woman in a headwrap, seated in an armchair, pays on her phone"
       },
       "track": {
         "title": "Track live",
-        "body": "Follow your verified pro on the map and chat with them in the app."
+        "body": "Follow your verified pro on the map and chat with them in the app.",
+        "step": "Live tracking",
+        "caption": "Set off · Arrived · Started · Finished",
+        "photoAlt": "A verified pro in a high-visibility vest, hard hat in hand, talks on her phone"
       },
       "code": {
         "title": "Close with your code",
-        "body": "Happy with the work? Share your completion code. Only then is the pro paid."
+        "body": "Happy with the work? Share your completion code. Only then is the pro paid.",
+        "step": "Completion code",
+        "caption": "First the photos of the work, then your code.",
+        "photoAlt": "A smiling woman looks at her phone to share her completion code"
       },
       "rewards": {
         "title": "Earn rewards",
-        "body": "Every completed job earns points for your next booking."
+        "body": "Every completed job earns points for your next booking.",
+        "step": "Reward points",
+        "caption": "Every job well done counts.",
+        "photoAlt": "A smiling man in a navy suit talks on his phone"
       },
       "finale": {
         "title": "Book from any device.",
-        "body": "On the web and on Android, with the same account."
+        "body": "On the web and on Android, with the same account.",
+        "step": "Web + Android",
+        "caption": "Start on your laptop, finish on your phone."
       }
     },
     "screens": {
@@ -542,7 +578,14 @@
       "earned": "+50 points",
       "balance": "Balance",
       "points": "1,250 points",
-      "useNext": "Use them on your next booking"
+      "useNext": "Use them on your next booking",
+      "nav": {
+        "home": "Home",
+        "services": "Services",
+        "activity": "Activity",
+        "messages": "Messages",
+        "account": "Account"
+      }
     }
   },
   "demo": {
@@ -580,7 +623,9 @@
     "next": "Next screen",
     "theme": "Theme",
     "light": "Light",
-    "dark": "Dark"
+    "dark": "Dark",
+    "pause": "Pause the slideshow",
+    "play": "Play the slideshow"
   },
   "blog": {
     "eyebrow": "Blog",

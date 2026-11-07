@@ -106,7 +106,8 @@
       "reviews": "Avis",
       "privacy": "Confidentialité",
       "terms": "Conditions",
-      "disclaimer": "Avertissement"
+      "disclaimer": "Avertissement",
+      "allServices": "Tous les services"
     },
     "contactTitle": "Contact",
     "call": "Appel ou WhatsApp",
@@ -116,9 +117,12 @@
       "office": "Bureau"
     },
     "follow": "Suivez-nous",
-    "supportLabel": "Assistance :",
-    "officeHoursLabel": "Bureaux :",
-    "officeHours": "Lun–jeu de 8 h à 17 h · ven–sam de 9 h à 16 h · dim fermé"
+    "supportLabel": "Assistance",
+    "officeHoursLabel": "Bureaux",
+    "officeHours": "Lun–jeu de 8 h à 17 h · ven–sam de 9 h à 16 h · dim fermé",
+    "credit": "Conçu et développé par <company>Web Spectron LTD</company>",
+    "hoursTitle": "Horaires",
+    "officesTitle": "Nos bureaux"
   },
   "notFound": {
     "metaTitle": "Page introuvable",
@@ -273,7 +277,7 @@
       "clients": "Clients satisfaits",
       "projects": "Projets phares"
     },
-    "mapLabel": "Carte du Cameroun avec les villes desservies, dont Douala, Buea et Yaoundé"
+    "photoAlt": "Deux membres souriants de l’équipe HandyMan, en casque et gilet haute visibilité à nos couleurs"
   },
   "howItWorks": {
     "eyebrow": "Comment ça marche",
@@ -331,6 +335,7 @@
     "title": "Une seule app pour trouver du travail et être payé.",
     "body": "Pros, vendeurs et cuisines utilisent la même app. Choisissez « Je propose des services » à l’inscription.",
     "tabsLabel": "Façons de gagner",
+    "payoutLabel": "Payé dans l’app",
     "tabs": {
       "pros": {
         "label": "Pros",
@@ -338,7 +343,9 @@
         "points": [
           "Inscrivez-vous une fois et proposez toutes vos compétences",
           "Fixez vos tarifs et votre zone d’intervention",
-          "Soyez payé pour chaque mission terminée"
+          "Soyez payé pour chaque mission terminée",
+          "Faites-vous vérifier, puis recevez des demandes près de chez vous",
+          "Le paiement du client est sécurisé pour vous jusqu’à la fin de la mission"
         ]
       },
       "sellers": {
@@ -347,7 +354,9 @@
         "points": [
           "Proposez des articles neufs, reconditionnés ou d’occasion",
           "Téléphones, maison, outils, construction, solaire et épicerie",
-          "Soyez payé en toute sécurité via l’app"
+          "Soyez payé en toute sécurité via l’app",
+          "Les acheteurs paient par MTN MoMo ou Orange Money",
+          "Suivez vos commandes et vos ventes dans l’app"
         ]
       },
       "kitchens": {
@@ -356,7 +365,9 @@
         "points": [
           "Gérez votre menu",
           "Recevez et suivez les commandes",
-          "Suivez vos versements"
+          "Suivez vos versements",
+          "Les clients paient par MTN MoMo ou Orange Money",
+          "Faites-vous vérifier, puis passez en ligne dans l’app"
         ]
       }
     },
@@ -390,6 +401,11 @@
     "from": "À partir de {price} FCFA",
     "clearPrice": "Prix clair avant de réserver",
     "alsoInApp": "Aussi dans l’app",
+    "groups": {
+      "home": "Pour la maison",
+      "projects": "Projets et événements",
+      "moving": "Déménagement et transport"
+    },
     "shop": {
       "name": "Boutique",
       "blurb": "Articles neufs, reconditionnés et d’occasion."
@@ -404,12 +420,12 @@
       "interiorExteriorDesign": "L’équipe HandyMan Do IT installe un meuble TV mural sur un plateau de tournage",
       "remodeling": "L’équipe HandyMan Do IT coupe du bois à la scie sur le chantier",
       "upholsteryFurniture": "Un artisan répare la structure courbe d’une chaise en bois",
-      "repairsInstallations": "Un membre de l’équipe HandyMan Do IT peint autour d’un portail métallique bleu",
+      "repairsInstallations": "Une femme sur un canapé orange décrit un travail sur son téléphone",
       "signage": "L’équipe HandyMan Do IT pose une grande enseigne au logo Soundz sur un plateau",
       "events": "Un membre de l’équipe HandyMan Do IT installe un présentoir lors d’un événement en plein air",
       "lighting": "L’équipe HandyMan Do IT vérifie une installation de scène sous les projecteurs",
       "building": "L’équipe HandyMan Do IT coupe du bois sur un établi de chantier",
-      "moving": "Un membre de l’équipe HandyMan Do IT déplace une étagère blanche",
+      "moving": "Une pro vérifiée en gilet haute visibilité, casque à la main, parle au téléphone",
       "packing": "Un ouvrier range des objets de la maison dans un carton",
       "transport": "Des ouvriers chargent des cartons dans une camionnette de livraison"
     }
@@ -494,31 +510,51 @@
     "chapters": {
       "browse": {
         "title": "Qu’y a-t-il sur votre liste ?",
-        "body": "Choisissez une catégorie ou décrivez le travail avec vos mots, photos à l’appui."
+        "body": "Choisissez une catégorie ou décrivez le travail avec vos mots, photos à l’appui.",
+        "step": "Décrivez le travail",
+        "caption": "Réparations, tapisserie, déménagement : 11 services.",
+        "photoAlt": "Un membre de l’équipe HandyMan Do IT peint autour d’un portail métallique bleu"
       },
       "price": {
         "title": "Un prix clair",
-        "body": "Vous voyez le prix avant de réserver. Pas de marchandage, pas de surprise le jour J."
+        "body": "Vous voyez le prix avant de réserver. Pas de marchandage, pas de surprise le jour J.",
+        "step": "Prix clair",
+        "caption": "D’abord le prix, ensuite la réservation.",
+        "photoAlt": "Un homme sourit et lève le poing en lisant le prix sur son téléphone"
       },
       "pay": {
         "title": "Payez en sécurité",
-        "body": "Payez avec MTN MoMo, Orange Money ou votre portefeuille. L’argent reste sécurisé jusqu’à la fin du travail."
+        "body": "Payez avec MTN MoMo, Orange Money ou votre portefeuille. L’argent reste sécurisé jusqu’à la fin du travail.",
+        "step": "Paiement sécurisé",
+        "caption": "Votre argent attend pendant que le travail avance.",
+        "photoAlt": "Une femme coiffée d’un foulard, assise dans un fauteuil, paie sur son téléphone"
       },
       "track": {
         "title": "Suivez en direct",
-        "body": "Suivez votre pro vérifié sur la carte et échangez avec lui dans l’app."
+        "body": "Suivez votre pro vérifié sur la carte et échangez avec lui dans l’app.",
+        "step": "Suivi en direct",
+        "caption": "En route · Arrivé · Commencé · Terminé",
+        "photoAlt": "Un membre de l’équipe HandyMan Do IT déplace une étagère blanche"
       },
       "code": {
         "title": "Clôturez avec votre code",
-        "body": "Satisfait ? Partagez votre code de fin de travail. Le pro n’est payé qu’à ce moment-là."
+        "body": "Satisfait ? Partagez votre code de fin de travail. Le pro n’est payé qu’à ce moment-là.",
+        "step": "Code de fin de travail",
+        "caption": "D’abord les photos du travail, ensuite votre code.",
+        "photoAlt": "Une femme souriante regarde son téléphone pour partager son code de fin de travail"
       },
       "rewards": {
         "title": "Gagnez des points",
-        "body": "Chaque travail terminé vous rapporte des points pour votre prochaine réservation."
+        "body": "Chaque travail terminé vous rapporte des points pour votre prochaine réservation.",
+        "step": "Points de fidélité",
+        "caption": "Chaque travail bien fait compte.",
+        "photoAlt": "Un homme souriant en costume bleu marine parle au téléphone"
       },
       "finale": {
         "title": "Réservez depuis n’importe quel appareil.",
-        "body": "Sur le web et sur Android, avec le même compte."
+        "body": "Sur le web et sur Android, avec le même compte.",
+        "step": "Web + Android",
+        "caption": "Commencez sur l’ordinateur, finissez sur le téléphone."
       }
     },
     "screens": {
@@ -542,7 +578,14 @@
       "earned": "+50 points",
       "balance": "Solde",
       "points": "1 250 points",
-      "useNext": "À utiliser sur votre prochaine réservation"
+      "useNext": "À utiliser sur votre prochaine réservation",
+      "nav": {
+        "home": "Accueil",
+        "services": "Services",
+        "activity": "Activité",
+        "messages": "Messages",
+        "account": "Compte"
+      }
     }
   },
   "demo": {
@@ -580,7 +623,9 @@
     "next": "Écran suivant",
     "theme": "Thème",
     "light": "Clair",
-    "dark": "Sombre"
+    "dark": "Sombre",
+    "pause": "Mettre le défilement en pause",
+    "play": "Relancer le défilement"
   },
   "blog": {
     "eyebrow": "Blog",

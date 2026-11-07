@@ -75,7 +75,7 @@ export async function Pillars() {
           {valueCards.map(({ key, Icon, title, body }, index) => (
             <li
               key={key}
-              className="relative overflow-hidden rounded-panel bg-white p-8 shadow-sm ring-1 ring-mist-200"
+              className="relative overflow-hidden rounded-panel bg-white p-8 text-center shadow-sm ring-1 ring-mist-200 md:text-left"
             >
               <span
                 aria-hidden
@@ -83,7 +83,7 @@ export async function Pillars() {
               >
                 {index + 1}
               </span>
-              <span className="relative grid size-12 place-items-center rounded-card bg-teal-600 text-white">
+              <span className="relative mx-auto grid size-12 place-items-center rounded-card bg-teal-600 text-white md:mx-0">
                 <Icon aria-hidden className="size-6" strokeWidth={1.75} />
               </span>
               <h3 className="relative mt-6 text-2xl font-bold text-teal-700">{title}</h3>
@@ -92,14 +92,14 @@ export async function Pillars() {
           ))}
         </ul>
 
-        <div className="mt-16 rounded-panel bg-night-900 p-8 text-white md:p-12">
+        <div className="mt-16 rounded-panel bg-night-900 p-8 text-center text-white sm:text-left md:p-12">
           <h3 className="text-2xl font-bold sm:text-3xl">
             {pick(copy?.trustTitle, t('trustTitle'))}
           </h3>
           <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {trustItems.map(({ key, Icon, title, body }) => (
               <li key={key}>
-                <span className="grid size-11 place-items-center rounded-card bg-gold-500/15 text-gold-300">
+                <span className="mx-auto grid size-11 place-items-center rounded-card bg-gold-500/15 text-gold-300 sm:mx-0">
                   <Icon aria-hidden className="size-5" strokeWidth={1.75} />
                 </span>
                 <h4 className="mt-4 font-display text-lg font-semibold">{title}</h4>

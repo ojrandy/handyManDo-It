@@ -1,11 +1,12 @@
 'use client'
 
-import { ArrowLeft, ArrowRight, Moon, Sun } from 'lucide-react'
-import React, { useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight, Moon, Pause, Play, Sun } from 'lucide-react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { Phone } from '@/components/device/Phone'
 import { CmsImage } from '@/components/ui/CmsImage'
 import type { ImageSource } from '@/lib/media'
+import { useSlowData } from '@/lib/useLightData'
 
 type Theme = 'light' | 'dark'
 
@@ -23,6 +24,8 @@ type Props = {
     slide: string
     previous: string
     next: string
+    pause: string
+    play: string
     theme: string
     light: string
     dark: string
@@ -32,26 +35,66 @@ type Props = {
 // Slides further than this from the current one are hidden and load no image.
 const REACH = 2
 const DRAG_THRESHOLD = 40
+const AUTOPLAY_MS = 3500
 
 /**
- * 3D coverflow of the real app screens (FR-HOME-10): drag or swipe the stage, use the arrow
- * keys on it, or the buttons. The light/dark toggle swaps every screenshot. Never auto-advances.
- * Only the current slide is exposed to assistive tech; the caption below announces changes.
+ * 3D coverflow of the real app screens (FR-HOME-10): it slides on its own and loops, while it is on
+ * screen. Drag or swipe the stage, use the arrow keys on it, or the buttons. The light/dark toggle
+ * swaps every screenshot. Autoplay holds under the mouse and on keyboard focus, stops with the pause
+ * button (WCAG 2.2.2), and never starts under reduced motion or on Save-Data and slow connections,
+ * where each new slide would be a download nobody asked for.
+ * Only the current slide is exposed to assistive tech; the caption below announces manual changes.
  */
 export function Coverflow({ slides, labels }: Props) {
   const [active, setActive] = useState(0)
   const [theme, setTheme] = useState<Theme>('light')
+  const [paused, setPaused] = useState(false)
+  const [held, setHeld] = useState(false)
+  const [inView, setInView] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(true)
+  const slow = useSlowData()
+  const rootRef = useRef<HTMLDivElement>(null)
   const drag = useRef<{ x: number; moved: boolean } | null>(null)
-  const last = slides.length - 1
+  const count = slides.length
 
-  const go = (index: number) => setActive(Math.min(last, Math.max(0, index)))
+  const go = (index: number) => setActive(((index % count) + count) % count)
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReducedMotion(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0.4,
+    })
+    observer.observe(root)
+    return () => observer.disconnect()
+  }, [])
+
+  const canAutoplay = slow === false && !reducedMotion
+  const rotating = canAutoplay && inView && !paused && !held
+
+  // Restarts with `active`, so a manual move gets the full delay too.
+  useEffect(() => {
+    if (!rotating) return
+    const id = setTimeout(() => {
+      setActive((current) => (document.hidden ? current : (current + 1) % count))
+    }, AUTOPLAY_MS)
+    return () => clearTimeout(id)
+  }, [rotating, active, count])
 
   const onKeyDown = (event: React.KeyboardEvent) => {
     const keys: Record<string, number> = {
       ArrowLeft: active - 1,
       ArrowRight: active + 1,
       Home: 0,
-      End: last,
+      End: count - 1,
     }
     if (!(event.key in keys)) return
     event.preventDefault()
@@ -72,11 +115,27 @@ export function Coverflow({ slides, labels }: Props) {
   }
 
   const button =
-    'grid size-11 place-items-center rounded-full border border-white/25 text-white transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40'
+    'grid size-11 place-items-center rounded-full border border-white/25 text-white transition-colors hover:bg-white/10'
   const current = slides[active]
 
   return (
-    <div role="region" aria-roledescription="carousel" aria-label={labels.label}>
+    <div
+      ref={rootRef}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={labels.label}
+      onPointerEnter={(event) => {
+        if (event.pointerType === 'mouse') setHeld(true)
+      }}
+      onPointerLeave={(event) => {
+        if (event.pointerType === 'mouse') setHeld(false)
+      }}
+      // Keyboard focus only: a tapped button keeps focus, which would stop a phone's slideshow.
+      onFocus={(event) => {
+        if (event.target.matches(':focus-visible')) setHeld(true)
+      }}
+      onBlur={() => setHeld(false)}
+    >
       <div role="group" aria-label={labels.theme} className="flex justify-center gap-1">
         {(['light', 'dark'] as const).map((value) => {
           const Icon = value === 'light' ? Sun : Moon
@@ -102,10 +161,12 @@ export function Coverflow({ slides, labels }: Props) {
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
         onPointerCancel={() => (drag.current = null)}
-        className="relative mt-10 h-[35.75rem] cursor-grab touch-pan-y [perspective:1400px] select-none [zoom:0.72] active:cursor-grabbing sm:h-[39rem] sm:[zoom:0.85] lg:[zoom:1]"
+        className="relative mt-10 h-[34.375rem] cursor-grab touch-pan-y [perspective:1400px] select-none [zoom:0.72] active:cursor-grabbing sm:h-[37.5rem] sm:[zoom:0.85] lg:[zoom:1]"
       >
         {slides.map(({ key, images }, index) => {
-          const offset = index - active
+          // Shortest way round the loop, so the first and last screens are neighbours.
+          const raw = index - active
+          const offset = Math.abs(raw) > count / 2 ? raw - Math.sign(raw) * count : raw
           const distance = Math.abs(offset)
           const hidden = distance > REACH
           const image = images[theme]
@@ -116,7 +177,7 @@ export function Coverflow({ slides, labels }: Props) {
               aria-roledescription="slide"
               aria-label={labels.slide
                 .replace('{n}', String(index + 1))
-                .replace('{total}', String(slides.length))}
+                .replace('{total}', String(count))}
               aria-hidden={offset !== 0}
               onClick={() => {
                 if (!drag.current?.moved) go(index)
@@ -125,7 +186,7 @@ export function Coverflow({ slides, labels }: Props) {
                 transform: `translateX(-50%) translateX(${offset * 70}%) rotateY(${
                   Math.sign(offset) * -38
                 }deg) scale(${1 - distance * 0.14})`,
-                zIndex: slides.length - distance,
+                zIndex: count - distance,
                 opacity: hidden ? 0 : 1 - distance * 0.25,
                 visibility: hidden ? 'hidden' : undefined,
               }}
@@ -150,31 +211,46 @@ export function Coverflow({ slides, labels }: Props) {
       </div>
 
       <div className="mt-8 flex flex-col items-center gap-5">
-        <p aria-live="polite" className="min-h-7 text-center text-lg font-semibold text-white">
+        <p
+          aria-live={rotating ? 'off' : 'polite'}
+          className="min-h-7 text-center text-lg font-semibold text-white"
+        >
           {current?.caption}
         </p>
         <div className="flex items-center gap-4">
           <button
             type="button"
             onClick={() => go(active - 1)}
-            disabled={active === 0}
             aria-label={labels.previous}
             className={button}
           >
             <ArrowLeft aria-hidden className="size-5" />
           </button>
           <p aria-hidden className="w-16 text-center text-sm text-white/60 tabular-nums">
-            {active + 1} / {slides.length}
+            {active + 1} / {count}
           </p>
           <button
             type="button"
             onClick={() => go(active + 1)}
-            disabled={active === last}
             aria-label={labels.next}
             className={button}
           >
             <ArrowRight aria-hidden className="size-5" />
           </button>
+          {canAutoplay ? (
+            <button
+              type="button"
+              onClick={() => setPaused((value) => !value)}
+              aria-label={paused ? labels.play : labels.pause}
+              className={button}
+            >
+              {paused ? (
+                <Play aria-hidden className="size-5" />
+              ) : (
+                <Pause aria-hidden className="size-5" />
+              )}
+            </button>
+          ) : null}
         </div>
       </div>
     </div>

@@ -4,7 +4,8 @@ import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 import React, { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 import { Phone } from '@/components/device/Phone'
-import type { HeroVideo } from '@/lib/hero'
+import { PhoneSplash } from '@/components/device/PhoneSplash'
+import type { HeroVideo, HeroVideoSource } from '@/lib/hero'
 import { useLightData } from '@/lib/useLightData'
 
 export type StoryCue = {
@@ -22,6 +23,10 @@ type Props = {
   cues: StoryCue[]
   video: HeroVideo | null
   screen: React.ReactNode
+  // The intro that plays in the phone before `screen`, like the app's launch screen (ADR-028).
+  splash: { sources: HeroVideoSource[]; poster: string }
+  // Below the phone on small screens, under `children` on large ones.
+  trust: React.ReactNode
   // Background photos of our crews (home.hero.slides); empty keeps `backdrop`.
   slides?: HeroSlide[]
   // Still photo under the overlay (the video's poster) when there are no slides.
@@ -64,13 +69,16 @@ const usePageLoaded = () =>
  * Client island of the synced-story hero (FR-HOME-01/02). Notifications follow the footage's
  * own clock (requestVideoFrameCallback) when video plays, and a timer otherwise. Without video,
  * photos of our crews crossfade behind the copy with a slow push-in, like a classic hero slider.
- * Light-data and reduced-motion visitors get the first photo only, still. One pause button stops
- * everything that moves (WCAG 2.2.2).
+ * Light-data and reduced-motion visitors get the first photo only, still. The phone opens on the
+ * app's intro (PhoneSplash), then Home and the notifications. One pause button stops everything
+ * that moves (WCAG 2.2.2).
  */
 export function HeroStory({
   cues,
   video,
   screen,
+  splash,
+  trust,
   slides = [],
   backdrop = null,
   labels,
@@ -80,6 +88,9 @@ export function HeroStory({
   const playVideo = light === false && video !== null
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
+  // Notifications belong to the app's Home screen, so they wait for the intro to end.
+  const [appOpen, setAppOpen] = useState(false)
+  const openApp = useCallback(() => setAppOpen(true), [])
   const pageLoaded = usePageLoaded()
   const videoRef = useRef<HTMLVideoElement>(null)
   const timeRef = useRef(cues[0]?.time ?? 0)
@@ -117,13 +128,13 @@ export function HeroStory({
 
   // Timer mode.
   useEffect(() => {
-    if (light === null || playVideo || paused) return
+    if (light === null || playVideo || paused || !appOpen) return
     const id = setInterval(() => {
       timeRef.current = (timeRef.current + TICK_SECONDS) % loopLength
       setActive(indexAt(timeRef.current))
     }, TICK_SECONDS * 1000)
     return () => clearInterval(id)
-  }, [light, playVideo, paused, loopLength, indexAt])
+  }, [light, playVideo, paused, appOpen, loopLength, indexAt])
 
   // Video mode.
   useEffect(() => {
@@ -171,150 +182,134 @@ export function HeroStory({
   }, [autoplay, slide, goTo])
 
   const visible =
-    active < 0
+    !appOpen || active < 0
       ? []
       : cues.slice(Math.max(0, active - VISIBLE_NOTIFICATIONS + 1), active + 1).reverse()
-  const latest = visible[0]
   const hasPhoto = playVideo || useSlides || Boolean(backdrop)
 
   return (
     <>
       <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
-        {useSlides
-          ? slides.slice(0, slideCount).map(({ key, image }, index) => {
-              const current = index === slide
-              // Later photos mount after load; the first one is server-rendered and preloaded.
-              if (index > 0 && !pageLoaded) return null
-              const moving = current || index === previous
-              return (
-                <div
-                  key={key}
-                  className={`absolute inset-0 transition-opacity duration-[1200ms] ease-in-out ${
-                    current ? 'opacity-100' : 'opacity-0'
-                  }`}
-                >
+        {/* Phones: the hero is taller than the screen, so the photo covers the first screen only
+            and melts into the section's background behind the phone. */}
+        <div className="absolute inset-x-0 top-0 h-svh lg:h-full">
+          {useSlides
+            ? slides.slice(0, slideCount).map(({ key, image }, index) => {
+                const current = index === slide
+                // Later photos mount after load; the first one is server-rendered and preloaded.
+                if (index > 0 && !pageLoaded) return null
+                const moving = current || index === previous
+                return (
                   <div
-                    className={`absolute inset-0 ${
-                      moving
-                        ? index % 2
-                          ? 'motion-safe:animate-ken-burns-b'
-                          : 'motion-safe:animate-ken-burns-a'
-                        : ''
+                    key={key}
+                    className={`absolute inset-0 transition-opacity duration-[1200ms] ease-in-out ${
+                      current ? 'opacity-100' : 'opacity-0'
                     }`}
                   >
-                    {image}
+                    <div
+                      className={`absolute inset-0 ${
+                        moving
+                          ? index % 2
+                            ? 'motion-safe:animate-ken-burns-b'
+                            : 'motion-safe:animate-ken-burns-a'
+                          : ''
+                      }`}
+                    >
+                      {image}
+                    </div>
                   </div>
-                </div>
-              )
-            })
-          : pageLoaded
-            ? backdrop
-            : null}
-        {playVideo && video ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={video.poster}
-            className="absolute inset-0 size-full object-cover"
-          >
-            {video.sources.map(({ src, type, media }) => (
-              <source key={src} src={src} type={type} media={media} />
-            ))}
-          </video>
-        ) : null}
-        {hasPhoto ? (
-          <>
-            {/* Phones: the photo reads at the top, the copy sits on the dark lower half.
+                )
+              })
+            : pageLoaded
+              ? backdrop
+              : null}
+          {playVideo && video ? (
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster={video.poster}
+              className="absolute inset-0 size-full object-cover"
+            >
+              {video.sources.map(({ src, type, media }) => (
+                <source key={src} src={src} type={type} media={media} />
+              ))}
+            </video>
+          ) : null}
+          {hasPhoto ? (
+            <>
+              {/* Phones: dark enough behind the copy at the top, fading into the section below.
                 Desktops: dark behind the copy on the left, the photo opens up to the right. */}
-            <div className="absolute inset-0 bg-gradient-to-t from-night-950 from-25% via-night-950/80 via-65% to-night-950/10 lg:bg-gradient-to-r lg:from-night-950/95 lg:from-0% lg:via-night-900/65 lg:via-45% lg:to-night-900/15" />
-            <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-night-950/70 to-transparent" />
-          </>
-        ) : (
-          <>
-            <div className="absolute inset-0 bg-[radial-gradient(55%_50%_at_78%_35%,rgb(28_93_112/0.6),transparent_70%),radial-gradient(40%_40%_at_12%_90%,rgb(231_171_52/0.16),transparent_70%)]" />
-            <svg className="absolute inset-0 size-full text-white/[0.04] [mask-image:radial-gradient(70%_60%_at_70%_40%,black,transparent)]">
-              <defs>
-                <pattern id="hero-hex" width="56" height="48" patternUnits="userSpaceOnUse">
-                  <path d="M14 0h28l14 24-14 24H14L0 24z" fill="none" stroke="currentColor" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#hero-hex)" />
-            </svg>
-          </>
-        )}
+              <div className="absolute inset-0 bg-gradient-to-b from-night-950/85 from-0% via-night-950/70 via-55% to-night-900 lg:bg-gradient-to-r lg:from-night-950/95 lg:from-0% lg:via-night-900/65 lg:via-45% lg:to-night-900/15" />
+              <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-night-950/70 to-transparent" />
+            </>
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-[radial-gradient(55%_50%_at_78%_35%,rgb(28_93_112/0.6),transparent_70%),radial-gradient(40%_40%_at_12%_90%,rgb(231_171_52/0.16),transparent_70%)]" />
+              <svg className="absolute inset-0 size-full text-white/[0.04] [mask-image:radial-gradient(70%_60%_at_70%_40%,black,transparent)]">
+                <defs>
+                  <pattern id="hero-hex" width="56" height="48" patternUnits="userSpaceOnUse">
+                    <path d="M14 0h28l14 24-14 24H14L0 24z" fill="none" stroke="currentColor" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#hero-hex)" />
+              </svg>
+            </>
+          )}
+        </div>
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-night-900 to-transparent" />
       </div>
 
-      {/* Phones: the latest app notification floats over the photo, like on a lock screen. The
-          phone mock-up is desktop only, so the first screen keeps both the photo and the copy. */}
-      {latest ? (
-        <div
-          aria-hidden
-          className="absolute inset-x-4 top-24 z-10 sm:inset-x-auto sm:right-6 sm:w-80 lg:hidden"
-        >
-          <div
-            key={latest.key}
-            className="flex animate-notification-in items-start gap-3 rounded-2xl bg-white/95 p-3 text-ink shadow-float ring-1 ring-black/5 backdrop-blur"
-          >
-            <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-night-900 text-gold-300">
-              {latest.icon}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="flex items-baseline justify-between gap-2 text-[10px] text-slate-500">
-                <span className="font-semibold tracking-wide uppercase">{labels.app}</span>
-                {labels.now}
-              </span>
-              <span className="block text-sm leading-tight font-semibold">{latest.title}</span>
-              <span className="block text-xs leading-snug text-slate-500">{latest.body}</span>
-            </span>
-          </div>
-        </div>
-      ) : null}
-
-      <div className="container-site grid min-h-svh content-end gap-14 pt-56 pb-28 sm:pt-64 lg:grid-cols-[1.1fr_0.9fr] lg:content-center lg:items-center lg:gap-8 lg:pt-24 lg:pb-24">
+      {/* Phones: copy, phone, then the film and trust rows, so the first screen has the CTAs and
+          the phone. Desktops: both text blocks stay together in the left column, centred. */}
+      <div className="container-site grid min-h-svh content-start gap-y-10 pt-24 pb-24 sm:pt-28 lg:grid-cols-[1.1fr_0.9fr] lg:content-center lg:gap-x-8 lg:gap-y-6 lg:pt-24">
         {/* Phones: a soft shadow keeps the copy readable over bright parts of a photo. */}
-        <div className="[text-shadow:0_1px_14px_rgb(10_28_37/0.75)] lg:[text-shadow:none]">
+        <div className="[text-shadow:0_1px_14px_rgb(10_28_37/0.75)] lg:self-end lg:[text-shadow:none]">
           {children}
         </div>
 
-        <div aria-hidden className="relative hidden justify-end lg:flex">
-          <div className="absolute top-1/2 -right-6 size-80 -translate-y-1/2 rounded-full bg-teal-500/30 blur-3xl" />
-          <div className="[perspective:1600px]">
-            <div className="motion-safe:animate-float">
-              <div className="transition-transform duration-700 ease-out-expo [transform:rotateY(-14deg)_rotateX(5deg)]">
+        <div
+          aria-hidden
+          className="relative flex justify-center lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:items-center lg:justify-end"
+        >
+          <div className="absolute top-1/2 -right-6 hidden size-80 -translate-y-1/2 rounded-full bg-teal-500/30 blur-3xl lg:block" />
+          <div className="lg:[perspective:1600px]">
+            <div className="lg:motion-safe:animate-float">
+              <div className="transition-transform duration-700 ease-out-expo lg:[transform:rotateY(-8deg)_rotateX(3deg)]">
                 <Phone
+                  size="hero"
                   overlay={
                     <ol
-                      className={`-mx-2.5 space-y-2 px-2.5 pb-4 ${
+                      className={`-mx-[0.625em] space-y-[0.5em] px-[0.625em] pb-[1em] ${
                         visible.length
                           ? 'bg-gradient-to-b from-mist-50 from-85% to-transparent'
                           : ''
                       }`}
                     >
+                      {/* Sizes in em follow the phone (Phone, `--phone-em`). */}
                       {visible.map((cue, index) => (
                         <li
                           key={cue.key}
-                          className={`flex animate-notification-in items-start gap-2.5 rounded-2xl bg-white p-2.5 shadow-lg ring-1 ring-black/5 transition-transform duration-500 ${
+                          className={`flex animate-notification-in items-start gap-[0.625em] rounded-[1em] bg-white p-[0.625em] shadow-lg ring-1 ring-black/5 transition-transform duration-500 ${
                             index > 0 ? 'scale-[0.96]' : ''
                           }`}
                         >
-                          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-night-900 text-gold-300">
+                          <span className="grid size-[2em] shrink-0 place-items-center rounded-[0.5em] bg-night-900 text-gold-300">
                             {cue.icon}
                           </span>
                           <span className="min-w-0 flex-1">
-                            <span className="flex items-baseline justify-between gap-2 text-[9px] text-slate-500">
+                            <span className="flex items-baseline justify-between gap-[0.5em] text-[0.5625em] text-slate-500">
                               <span className="font-semibold tracking-wide uppercase">
                                 {labels.app}
                               </span>
                               {labels.now}
                             </span>
-                            <span className="block text-[11px] leading-tight font-semibold text-ink">
+                            <span className="block text-[0.6875em] leading-tight font-semibold text-ink">
                               {cue.title}
                             </span>
-                            <span className="block text-[10px] leading-snug text-slate-500">
+                            <span className="block text-[0.625em] leading-snug text-slate-500">
                               {cue.body}
                             </span>
                           </span>
@@ -324,10 +319,20 @@ export function HeroStory({
                   }
                 >
                   {screen}
+                  <PhoneSplash
+                    sources={splash.sources}
+                    poster={splash.poster}
+                    paused={paused}
+                    onDone={openApp}
+                  />
                 </Phone>
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="[text-shadow:0_1px_14px_rgb(10_28_37/0.75)] lg:col-start-1 lg:row-start-2 lg:self-start lg:[text-shadow:none]">
+          {trust}
         </div>
       </div>
 

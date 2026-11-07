@@ -42,6 +42,12 @@ export type HeroVideo = {
 // Until then the hero uses its designed background and timer-driven notifications.
 export const heroVideo: HeroVideo | null = null
 
+// The app's launch screen, cut vertically for the hero phone by `npm run encode:splash` (ADR-028).
+export const phoneSplash = {
+  sources: [{ src: '/video/brand-splash.mp4', type: 'video/mp4' }] satisfies HeroVideoSource[],
+  poster: '/video/brand-splash-poster.webp',
+}
+
 // The brand sting that opens the "Watch the film" lightbox (docs/PLAN.md §5.2).
 export const brandFilm = {
   src: '/video/brand-intro.mp4',

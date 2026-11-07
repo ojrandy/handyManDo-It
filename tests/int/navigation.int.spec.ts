@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
-import { navigationFrom, resolveLink } from '@/lib/navigation'
+import {
+  balanceFooter,
+  navigationFrom,
+  resolveLink,
+  type NavColumn,
+  type NavLink,
+} from '@/lib/navigation'
 import { siteSettingsFrom, telHref } from '@/lib/settings'
 import { site } from '@/lib/site'
 import type { Navigation, Service } from '@/payload-types'
@@ -46,6 +52,51 @@ describe('resolveLink', () => {
     expect(resolveLink(page('Vide', null))).toBeNull()
     expect(resolveLink({ label: 'Vide', type: 'external', url: '' })).toBeNull()
     expect(resolveLink(undefined)).toBeNull()
+  })
+})
+
+describe('balanceFooter', () => {
+  const link = (key: string, href: string): NavLink => ({
+    key,
+    label: key,
+    external: false,
+    href: href as Extract<NavLink, { external: false }>['href'],
+  })
+  const column = (key: string, ...links: NavLink[]): NavColumn => ({ key, title: key, links })
+  const about = ['/about', '/our-work', '/careers', '/blog', '/become-a-pro'].map((href) =>
+    link(href, href),
+  )
+  const help = ['/contact', '/faq', '/reviews', '/businesses', '/buildings'].map((href) =>
+    link(href, href),
+  )
+
+  it('gives every column as many rows as the shortest, overview kept, legal in the bottom bar', () => {
+    const { columns, bottom } = balanceFooter([
+      column(
+        'services',
+        ...['a', 'b', 'c', 'd', 'e', 'f'].map((key) => link(key, `/services/${key}`)),
+        link('all', '/services'),
+      ),
+      column('company', ...about),
+      column('support', ...help),
+      column('legal', link('privacy', '/legal/privacy'), link('terms', '/legal/terms')),
+    ])
+    expect(columns.map(({ links }) => links.length)).toEqual([5, 5, 5])
+    expect(columns[0].links.map(({ key }) => key)).toEqual(['a', 'b', 'c', 'd', 'all'])
+    expect(bottom.map(({ key }) => key)).toEqual(['privacy', 'terms'])
+  })
+
+  it('moves the extra links of a column without an overview to the bottom bar', () => {
+    const { columns, bottom } = balanceFooter([
+      column('company', ...about),
+      column('short', ...help.slice(0, 3)),
+    ])
+    expect(columns.map(({ links }) => links.length)).toEqual([3, 3])
+    expect(bottom.map(({ key }) => key)).toEqual(['/blog', '/become-a-pro'])
+  })
+
+  it('copes with no menu columns at all', () => {
+    expect(balanceFooter([])).toEqual({ columns: [], bottom: [] })
   })
 })
 

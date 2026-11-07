@@ -62,7 +62,7 @@ test.describe('Smart store link', () => {
     expect(response.headers()['cache-control']).toContain('no-store')
   })
 
-  test('iPhone goes to the web app while there is no App Store link', async ({ request }) => {
+  test('iPhone goes to the App Store (or the web app without a link)', async ({ request }) => {
     const response = await request.get('/download', {
       headers: { 'user-agent': iphone },
       maxRedirects: 0,

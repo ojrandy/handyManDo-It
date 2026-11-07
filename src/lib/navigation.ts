@@ -57,6 +57,34 @@ const navLink = (link: CmsLink, key: string): NavLink | null => {
   return target && link.label ? { ...target, key, label: link.label } : null
 }
 
+// The services overview link: stands out at the end of its column, and stands for what's left out.
+export const isOverview = (link: NavLink) => !link.external && link.href === '/services'
+
+const isLegal = (link: NavLink) =>
+  !link.external && typeof link.href === 'string' && link.href.startsWith('/legal/')
+
+// Evens out the footer's menu so every column has the same number of rows. The legal column goes to
+// the bottom bar, which is where visitors look for it, and the shortest remaining column sets the
+// row count. Longer columns give up their extra links: one ending on the overview keeps it, as it
+// reaches the rest, and the others hand them to the bottom bar.
+export function balanceFooter(columns: NavColumn[]): { columns: NavColumn[]; bottom: NavLink[] } {
+  const menu = columns.filter((column) => !column.links.every(isLegal))
+  const bottom = columns.filter((column) => column.links.every(isLegal)).flatMap((c) => c.links)
+  const rows = Math.min(...menu.map((column) => column.links.length))
+
+  const balanced = menu.map((column) => {
+    if (column.links.length <= rows) return column
+    const overview = column.links.find(isOverview)
+    if (overview) {
+      const others = column.links.filter((link) => link !== overview)
+      return { ...column, links: [...others.slice(0, rows - 1), overview] }
+    }
+    bottom.push(...column.links.slice(rows))
+    return { ...column, links: column.links.slice(0, rows) }
+  })
+  return { columns: balanced, bottom }
+}
+
 // Header and footer menus from the `navigation` global (T-1.17). Empty lists mean "not filled
 // yet": the header and footer then keep their built-in menus.
 export const getNavigation = cache(async (locale: Locale) =>

@@ -46,7 +46,7 @@ Every requirement has a stable ID. Code, tests, tracker items and PRs reference 
 | ID | P | Requirement | Acceptance criteria |
 |---|---|---|---|
 | FR-GLB-01 | M | Header with logo, nav (Services mega-menu, Businesses, Become a pro, Our work, About, Blog), language switch, "Get the app" pill | Transparent over hero, frosted dark after scroll; all links work in both locales; keyboard operable; mobile full-screen menu with store buttons |
-| FR-GLB-02 | M | Footer: logo, tagline, values, 4 link columns, contact, offices, socials, store badges, language switch, © | All contact data comes from the `site` global |
+| FR-GLB-02 | M | Footer: logo, tagline, values, link columns, contact, hours, offices, socials, store badges, language switch, legal links, ©, developer credit | All contact data comes from the `site` global; every link column has the same number of rows on every screen size, extra links go to the bottom bar |
 | FR-GLB-03 | M | Floating WhatsApp button on every public page | Appears after a delay; doesn't overlap CTAs on 390 px; fires `whatsapp_click` |
 | FR-GLB-04 | M | Smart "Get the app": Android → Play, iOS → App Store if set else web app + Add-to-Home hint, desktop → QR popover | Verified on Android, iPhone, desktop; UTM passed through (FR-ANA-03) |
 | FR-GLB-05 | M | Skip-to-content link | First focusable element; visible on focus |
@@ -66,16 +66,16 @@ Every requirement has a stable ID. Code, tests, tracker items and PRs reference 
 
 | ID | P | Requirement | Acceptance criteria |
 |---|---|---|---|
-| FR-HOME-01 | M | Synced-story hero: looping footage, H1, subhead, 2 CTAs, "Watch the film" lightbox, trust row, 3D phone with notifications on video timestamps from a CMS cue list | Cues fire within ±250 ms of timestamps; H1 is LCP and never waits for video |
-| FR-HOME-02 | M | Light-data mode: on Save-Data, slow connection, mobile data, or reduced motion → poster image + timer-driven notifications | Video file not requested in these modes (Network panel) |
+| FR-HOME-01 | M | Synced-story hero: looping footage, H1, subhead, 2 CTAs, "Watch the film" lightbox, trust row, 3D phone with notifications on video timestamps from a CMS cue list. The phone shows on every screen size and opens on the app's intro, then Home (ADR-028) | Cues fire within ±250 ms of timestamps; H1 is LCP and never waits for video; phone under the CTAs on the first screen at 360/390 px; notifications only after the intro; a video failure opens Home |
+| FR-HOME-02 | M | Light-data mode: on Save-Data, slow connection, mobile data, or reduced motion → poster image + timer-driven notifications. Exception: the phone's intro (≤ 400 KB) also plays on 4G mobile data (ADR-028) | Video file not requested in these modes (Network panel), except that intro on 4G; the intro is not requested on Save-Data, 3G or slower, or under reduced motion |
 | FR-HOME-03 | S | Partner logo marquee + "Featured on Spectron Magazine" | Pauses on hover; static under reduced motion |
-| FR-HOME-04 | M | Services bento grid (2 large + 9 small + Shop + Food) linking to service pages | Each tile: photo, icon, "From X FCFA" or fallback "Clear price before you book" |
+| FR-HOME-04 | M | Services bento grid (2 large + 9 small + Shop + Food) linking to service pages. On phones the same tiles are four scroll-driven panels, one group per screen (ADR-031) | Each tile: photo, icon, "From X FCFA" or fallback "Clear price before you book". Panels below 768 px on screens at least 544 px tall: the stage fits the screen, changes reverse on scrolling up, and keyboard focus brings a hidden panel up. Plain grid under reduced motion, without JS and on short screens; panels still change if GSAP fails to load; GSAP not in first-load JS and the panels' timeline not fetched on desktop; photos load only when their panel is next |
 | FR-HOME-05 | M | Value pillars (Punctual, Polite, Professional) + 4 trust features | Copy from CMS |
-| FR-HOME-06 | S | Animated counters + Cameroon map | Numbers from `site` global; counters static under reduced motion |
-| FR-HOME-07 | M | Pinned scroll story, 6 chapters, laptop + phone finale; horizontal swipe on mobile | No pinning < 768 px or under reduced motion; no animation library on first load (ADR-021, was: GSAP loaded only when in view) |
+| FR-HOME-06 | S | Animated counters + cut-out tradesperson photo | Numbers from `site` global; counters static under reduced motion |
+| FR-HOME-07 | M | Pinned GSAP scroll story, 6 chapters, laptop + phone finale; horizontal swipe on mobile. Text, a picture showing what the chapter says with a small caption, and the phone change together on one stage | Picture column and phone align top and bottom within 2 px at every pinned size; no pinning < 768 px, under reduced motion or without JS; GSAP not in first-load JS (ADR-030, was ADR-021); story still works if GSAP fails to load |
 | FR-HOME-08 | M | How it works (3 steps) | Line draws on scroll; static fallback |
 | FR-HOME-09 | S | Interactive mini-demo phone (category → pros → booking sheet) | Keyboard & screen-reader operable; fires `demo_interact {step}` |
-| FR-HOME-10 | S | 3D coverflow screens gallery with light/dark toggle, localized screenshots | Drag, swipe, arrow keys |
+| FR-HOME-10 | S | 3D coverflow screens gallery with light/dark toggle, localized screenshots, auto-sliding on a loop | Drag, swipe, arrow keys; autoplay only while on screen, holds on mouse hover and keyboard focus, has a pause button, off under reduced motion, Save-Data and slow connections |
 | FR-HOME-11 | M | Testimonials slider (4 real reviews) + aggregate rating (hidden until real numbers) | Data from `testimonials` + `site` |
 | FR-HOME-12 | M | Homes / Businesses / Buildings cards with CTAs | |
 | FR-HOME-13 | M | Earn with HandyMan tabs (Pros / Sellers / Kitchens) + step strip → `/become-a-pro` | Accessible tabs pattern |

@@ -109,9 +109,14 @@
   }
 }
 
-/* Scroll story (FR-HOME-07): the phone pins only on wide screens with motion allowed; elsewhere
-   the chapters are a horizontal swipe (NFR-A11Y-02). StoryObserver uses the same query. */
-@custom-variant pinned (@media (width >= 48rem) and (prefers-reduced-motion: no-preference));
+/* Scroll story (FR-HOME-07): the stage pins only on wide screens with motion allowed and scripts
+   on; elsewhere the chapters are a horizontal swipe (NFR-A11Y-02). StoryObserver uses the same
+   query. */
+@custom-variant pinned (@media (width >= 48rem) and (prefers-reduced-motion: no-preference) and (scripting: enabled));
+
+/* Service panels (FR-HOME-04, ADR-031): phones tall enough for a 2 x 2 panel, with motion allowed
+   and scripts on; elsewhere the plain grid. ServicePanels uses the same query. */
+@custom-variant panels (@media (width < 48rem) and (height >= 34rem) and (prefers-reduced-motion: no-preference) and (scripting: enabled));
 
 @layer base {
   html {
@@ -153,32 +158,8 @@
   }
 }
 
-/* Numbers map: towns light up one by one as the map scrolls into view (FR-HOME-06). Without
-   scroll-driven animation support, or under reduced motion, they are simply shown. */
-.town-light {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-@keyframes town-light {
-  from {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-}
-
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .town-map {
-      view-timeline-name: --town-map;
-    }
-
-    .town-light {
-      animation: town-light linear both;
-      animation-timeline: --town-map;
-      animation-range: entry calc(15% + var(--i) * 4%) entry calc(35% + var(--i) * 4%);
-    }
-
     /* How it works: the connecting line draws as the steps scroll into view (FR-HOME-08). */
     .how-steps {
       view-timeline-name: --how-steps;
@@ -212,6 +193,27 @@
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
+}
+
+/* The hero phone is 18em wide, so --phone-em sets its width and everything drawn in it. Phones and
+   tablets: 74 % of the screen, up to 288 px, then 320 px. Desktops: as tall as the screen allows
+   under the header, from 320 to 384 px wide (ADR-028). */
+@utility phone-hero {
+  --phone-em: min(74vw / 18, 1rem);
+
+  @media (width >= 48rem) {
+    --phone-em: calc(20rem / 18);
+  }
+
+  @media (width >= 64rem) {
+    --phone-em: clamp(20rem / 18, (100svh - 8rem) * 18 / 37.5 / 18, 24rem / 18);
+  }
+}
+
+/* Height shared by the scroll story picture column and phone: what the window leaves under the
+   header, capped so the phone leaves room for the text on narrow and very tall windows. */
+@utility story-height {
+  --story-h: min(73vw, clamp(24rem, 100svh - 7.5rem, 44rem));
 }
 
 @utility container-site {

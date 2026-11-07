@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
 import en from '../../src/messages/en.json'
 import fr from '../../src/messages/fr.json'
@@ -132,22 +132,83 @@ test.describe('Footer and WhatsApp', () => {
 
 // Batch 3: scroll story, mini-demo, screens gallery, latest posts (FR-HOME-07/09/10/16).
 test.describe('Home showcase sections', () => {
-  test('scroll story pins on desktop and follows the chapter in view', async ({ page }) => {
+  // Scrolls to where chapter `index` rests on the pinned stage and waits for the scrub to settle.
+  const goToChapter = async (page: Page, index: number) => {
+    await page.evaluate((chapter) => {
+      const wrapper = document.querySelector<HTMLElement>('[data-story-scroll]')!
+      const stage = document.querySelector<HTMLElement>('[data-story-stage]')!
+      const top = parseFloat(getComputedStyle(stage).top)
+      const range = wrapper.offsetHeight - stage.offsetHeight
+      const start = wrapper.getBoundingClientRect().top + window.scrollY - top
+      window.scrollTo({ top: start + (range * chapter) / 6, behavior: 'instant' })
+    }, index)
+    await page.waitForTimeout(1500)
+  }
+
+  test('scroll story changes text, picture and phone on a pinned stage', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 })
     await page.goto('/en')
     await expect(page.getByRole('heading', { level: 2, name: en.story.title })).toBeVisible()
     const chapters = page.getByRole('list', { name: en.story.label }).getByRole('listitem')
     await expect(chapters).toHaveCount(7)
 
+    await goToChapter(page, 2)
+    await expect(page.locator('#scroll-story')).toHaveAttribute('data-gsap', '')
     const pay = chapters.nth(2)
-    await pay.scrollIntoViewIfNeeded()
-    await page.evaluate(() => window.scrollBy(0, 1))
     await expect(pay).toHaveAttribute('data-current', '')
     await expect(page.locator('#scroll-story [data-for="2"]').first()).toHaveAttribute(
       'data-current',
       '',
     )
+    await expect(pay.getByRole('heading', { name: en.story.chapters.pay.title })).toBeVisible()
+    await expect(pay.getByRole('img', { name: en.story.chapters.pay.photoAlt })).toBeVisible()
+    await expect(pay.getByText(en.story.chapters.pay.caption)).toBeVisible()
+    // Chapters not showing are transparent, not hidden: screen readers still get all seven.
+    await expect(chapters.nth(1).locator('h3')).toHaveCSS('opacity', '0')
+    await expect(chapters.nth(3).locator('h3')).toHaveCSS('opacity', '0')
+
+    // Keyboard focus in a chapter that isn't showing brings it up.
+    await chapters.nth(6).getByRole('link').focus()
+    await expect(chapters.nth(6)).toHaveAttribute('data-current', '')
+    await expect(chapters.nth(6).locator('h3')).toHaveCSS('opacity', '1')
+    await expect(chapters.nth(6).getByRole('img')).toHaveCount(0)
   })
+
+  for (const [width, height] of [
+    [1440, 900],
+    [1280, 720],
+    [1024, 768],
+    [820, 1100],
+  ]) {
+    test(`scroll story phone lines up with the picture at ${width}x${height}`, async ({ page }) => {
+      await page.setViewportSize({ width, height })
+      await page.goto('/fr')
+      for (let index = 0; index < 7; index++) {
+        await goToChapter(page, index)
+        const box = await page.evaluate((chapter) => {
+          const root = document.querySelector('#scroll-story')!
+          const item = root.querySelectorAll('[data-story-chapter]')[chapter]
+          const phone = root.querySelector('[data-story-phone]')!.getBoundingClientRect()
+          const text = item.querySelector('[data-story-reveal]')!.getBoundingClientRect()
+          const picture = item.querySelector('figure')!.getBoundingClientRect()
+          return {
+            phoneTop: phone.top,
+            phoneBottom: phone.bottom,
+            textTop: text.top,
+            pictureBottom: picture.bottom,
+            pictureHeight: picture.height,
+            overflow: document.documentElement.scrollWidth - window.innerWidth,
+          }
+        }, index)
+        expect(Math.abs(box.phoneBottom - box.pictureBottom)).toBeLessThan(2)
+        expect(Math.abs(box.phoneTop - box.textTop)).toBeLessThan(2)
+        expect(box.pictureHeight).toBeGreaterThan(150)
+        expect(box.phoneTop).toBeGreaterThan(60)
+        expect(box.phoneBottom).toBeLessThanOrEqual(height)
+        expect(box.overflow).toBeLessThanOrEqual(0)
+      }
+    })
+  }
 
   test('scroll story is a horizontal swipe on phones, with no pinning', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 })
@@ -192,9 +253,11 @@ test.describe('Home showcase sections', () => {
     // Hidden until the app screens are captured (`npm run capture:screens`).
     test.skip((await gallery.count()) === 0, 'no captured app screens in this database')
     await gallery.scrollIntoViewIfNeeded()
-    const caption = gallery.locator('[aria-live="polite"]')
-    const first = await caption.textContent()
+    const caption = gallery.locator('[aria-live]')
+    // Keyboard focus holds the autoplay, so only the key press moves it from here.
+    await page.keyboard.press('Tab')
     await gallery.locator('[tabindex="0"]').focus()
+    const first = await caption.textContent()
     await page.keyboard.press('ArrowRight')
     await expect(caption).not.toHaveText(first ?? '')
     await gallery.getByRole('button', { name: en.gallery.dark }).click()

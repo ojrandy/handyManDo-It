@@ -2,6 +2,7 @@ import { ArrowRight, ChefHat, Store, Wrench } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { buttonClasses } from '@/components/ui/button'
+import { PaymentBadges } from '@/components/ui/PaymentBadges'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
@@ -52,7 +53,7 @@ export async function Earn() {
       aria-labelledby="earn-title"
       className="grain relative overflow-hidden bg-night-800 py-20 text-white md:py-28"
     >
-      <div className="container-site grid gap-12 lg:grid-cols-2 lg:items-start">
+      <div className="container-site grid gap-12 lg:grid-cols-2">
         <div>
           <SectionHeading
             id="earn-title"
@@ -89,6 +90,14 @@ export async function Earn() {
             ...tab,
             icon: <Icon aria-hidden className="size-6" strokeWidth={1.75} />,
           }))}
+          footer={
+            <>
+              <p className="text-sm font-semibold tracking-wide text-white/70 uppercase">
+                {t('payoutLabel')}
+              </p>
+              <PaymentBadges className="mt-3" />
+            </>
+          }
         />
       </div>
     </section>

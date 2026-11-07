@@ -45,3 +45,16 @@ function subscribe(onChange: () => void): () => void {
 export function useLightData(): boolean | null {
   return useSyncExternalStore(subscribe, isLight, () => null)
 }
+
+function isSlow(): boolean {
+  const c = connection()
+  return Boolean(c?.saveData) || ['slow-2g', '2g', '3g'].includes(c?.effectiveType ?? '')
+}
+
+/**
+ * Stricter test for the small phone intro (ADR-028): Save-Data or a slow connection only, so 4G
+ * phones on mobile data still play it. Null on the server and during hydration.
+ */
+export function useSlowData(): boolean | null {
+  return useSyncExternalStore(subscribe, isSlow, () => null)
+}

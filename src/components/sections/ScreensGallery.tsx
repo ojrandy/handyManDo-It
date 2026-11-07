@@ -67,6 +67,8 @@ export async function ScreensGallery() {
               slide: t.raw('slide') as string,
               previous: t('previous'),
               next: t('next'),
+              pause: t('pause'),
+              play: t('play'),
               theme: t('theme'),
               light: t('light'),
               dark: t('dark'),

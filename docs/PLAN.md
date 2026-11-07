@@ -34,7 +34,7 @@ This replaces the whole of handymandoit.com (static HTML site + WordPress blog +
 | Payments shown | MTN Mobile Money + Orange Money + HandyMan Wallet badges throughout |
 | Analytics | GA4 (Consent Mode v2) + Search Console + custom conversion events |
 | Google Play | https://play.google.com/store/apps/details?id=com.handymandoit.app |
-| App Store | **Not set yet.** The iOS badge stays hidden through a CMS switch. Until it's set, iPhone visitors go to the web app with an "Add to Home Screen" hint |
+| App Store | https://apps.apple.com/app/handyman-do-it/id6820783542 (received 2026-11-06). A value in the CMS overrides it; `/download` sends iPhones there |
 | Web app | https://app.handymandoit.com (WhatsApp fallback on every page) |
 | Website languages | EN + FR at launch. Pidgin is a possible later addition, since the app already supports it |
 
@@ -127,14 +127,14 @@ Routes are `/{locale}/…`, where locale is `fr` (default, x-default) or `en`. S
   - Subhead: one sentence (book vetted pros, pay with Mobile Money, follow the job live).
   - CTAs: **Book a service** (gold, links to the web app) and **Get the app** (store badges), plus a "Watch the film ▶" link that opens the full brand film in a lightbox.
   - Trust row: 4 client avatars, ★ rating, "79+ happy clients", MoMo + Orange Money badges.
-- **Right:** a 3D phone showing the real Home screen. Notifications slide in **on video timestamps** (from a cue file). They follow the app's real job lifecycle:
+- **Right (under the CTAs on phones):** a 3D phone that opens on the app's short intro, like the app launching, then shows the real Home screen (ADR-028). Notifications slide in **on video timestamps** (from a cue file). They follow the app's real job lifecycle:
   1. 0:02 "Clear price received: Upholstery · 25,000 FCFA"
   2. 0:06 "Paid with MTN MoMo · held safely 🔒"
   3. 0:10 "Your verified pro is on the way · live map"
   4. 0:14 "Job finished: photos added ✓"
   5. 0:18 "Code shared · payment released · +50 points"
-- **Video source:** licensed stock footage (Pexels/Mixkit, free commercial licence) of Cameroonian/West African craftspeople until your own footage is ready. Replacing it is a CMS upload plus a cue-file edit, with no code change. The app's existing `brand-intro.mp4` (720p logo sting) plays at the start of the "Watch the film" lightbox.
-- **Light-data mode:** on mobile data, with data-saver on, or with reduced motion, the video is replaced by a poster image and the notifications cycle on a timer instead. The H1 is the LCP element and never waits for video.
+- **Video source:** licensed stock footage (Pexels/Mixkit, free commercial licence) of Cameroonian/West African craftspeople until your own footage is ready. Replacing it is a CMS upload plus a cue-file edit, with no code change. The app's existing `brand-intro.mp4` (1024×576 logo sting) plays at the start of the "Watch the film" lightbox.
+- **Light-data mode:** on mobile data, with data-saver on, or with reduced motion, the video is replaced by a poster image and the notifications cycle on a timer instead. Owner exception (2026-11-03, ADR-028): the phone's small intro also plays on 4G mobile data. The H1 is the LCP element and never waits for video.
 - Scroll cue at the bottom.
 
 ### 5.3 Trusted by
@@ -155,12 +155,13 @@ Infinite marquee of the 8 partner logos (greyscale, colour on hover) plus a "Fea
   - **Completion code**
 
 ### 5.6 Numbers
-Animated counters on a dark band: **120+** towns & cities · **6+** years · **79+** happy clients · **38+** signature projects. All are editable in the CMS. A stylised Cameroon map lights up the served towns, starting with Douala, Buea and Yaoundé, then fanning out to the rest.
+Animated counters on a dark band: **120+** towns & cities · **6+** years · **79+** happy clients · **38+** signature projects. All are editable in the CMS. Beside them, a round cut-out photo of our own crew (owner decision 2026-11-05, replaces the stylised Cameroon map).
 
 ### 5.7 App showcase: pinned scroll story (centrepiece)
-- The phone stays pinned while 6 chapters scroll past on the left: **Browse** ("What's on your to-do list?") → **Get a clear price** → **Pay safely** (held until done) → **Track live** → **Close with your code** → **Earn rewards**.
-- The screen crossfades or slides to match each chapter, with a progress rail on the side.
-- The last chapter zooms out to show **laptop + phone** together: "Book from any device. Web, iOS, Android."
+- One pinned stage, driven by GSAP (owner decision 2026-11-05, ADR-030), walks through 6 chapters: **Browse** ("What's on your to-do list?") → **Get a clear price** → **Pay safely** (held until done) → **Track live** → **Close with your code** → **Earn rewards**.
+- Text, picture and phone screen change together as you scroll, with a progress rail between them. The picture and the phone line up top and bottom.
+- Each picture shows what its chapter says, with a small caption (owner request 2026-11-05).
+- The last chapter shows **laptop + phone** side by side: "Book from any device."
 - On mobile, it becomes a horizontal swipe with the same 6 chapters (no pinning).
 
 ### 5.8 How it works
@@ -175,7 +176,7 @@ A tappable phone: "Try it, no download needed." Visitors can tap a category, see
 ### 5.10 Screens gallery
 - 3D coverflow carousel of 8 real screens, with a light/dark toggle that swaps all screenshots.
 - Captions are in the current language, and the screenshots are captured in that language too.
-- Supports drag, swipe and keyboard.
+- Supports drag, swipe and keyboard. Slides on its own and loops while on screen, with a pause button (owner request, 2026-11-05).
 
 ### 5.11 Testimonials
 - Large quote slider with the 4 real reviews (N Emmanuel, Yaoundé · Richard S., Buea · Solpia Cameroon, Douala · M Lounge Exclusive, Bonaberi), each with a project photo, city and service tag.
@@ -208,9 +209,9 @@ Three newest posts from the CMS.
 
 ### 5.17 Footer
 - Logo, the "Right at Home" tagline and the three values.
-- Columns: Services · Company · Support · Legal.
-- Contact: +237 652 767 674 (call/WhatsApp, every day 07:00–21:00 WAT), handymanservicesdoit@gmail.com, Technical direction: Mile 16 Shopping Mall, Buea · Office: Mobile Njo Njo, Bonapriso, Douala.
-- Socials, store badges, language switch, © line.
+- Columns: Services · Company · Support, with the same number of rows each on every screen size (owner request, 2026-11-05). Links that don't fit go to the bottom bar.
+- Contact · Hours · Offices, two rows each: +237 652 767 674 (call/WhatsApp), handymanservicesdoit@gmail.com · support and office hours · Technical direction: Mile 16 Shopping Mall, Buea · Office: Mobile Njo Njo, Bonapriso, Douala.
+- Store badges beside the logo. Bottom bar: socials, language switch, © line, legal links, "Designed and Developed by Web Spectron LTD" (links to webspectron.com).
 - Floating **WhatsApp button** on every page, bottom-right, with a delay and away from the CTAs.
 
 ---
@@ -306,7 +307,7 @@ Service slugs: interior-exterior-design, upholstery-furniture, repairs-installat
 | Hero poster | < 120 KB (AVIF) |
 | Lighthouse (Perf / A11y / BP / SEO) | ≥ 95 / 100 / 100 / 100 |
 
-- **Loading:** heavy pieces (GSAP scroll story, coverflow, mini-demo) only load when they come into view. Video only loads on Wi-Fi/desktop, without data-saver.
+- **Loading:** heavy pieces (GSAP scroll story, coverflow, mini-demo) only load when they come into view. Video only loads on Wi-Fi/desktop, without data-saver; the phone's small intro (≤ 400 KB) also loads on 4G (ADR-028).
 - **Accessibility:** WCAG 2.2 AA, full keyboard navigation, visible focus, captions on the brand film, `prefers-reduced-motion` respected everywhere, contrast checked for gold on teal (gold is used for large text and buttons only).
 
 ---
@@ -393,7 +394,7 @@ handymandoit/
 
 | # | Item | Placeholder until then |
 |---|---|---|
-| 1 | App Store URL | iOS badge hidden; iPhones go to the web app |
+| 1 | ~~App Store URL~~ | ✅ Received 2026-11-06 |
 | 2 | Your real job footage | Licensed stock footage |
 | 3 | A demo account or logged-in screenshots | HTML-rebuilt screens |
 | 4 | Play Store rating and download count | Rating row hidden until we have real numbers |

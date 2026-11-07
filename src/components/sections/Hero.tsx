@@ -10,7 +10,7 @@ import { GetTheApp } from '@/components/ui/GetTheApp'
 import { iconFor } from '@/components/ui/icons'
 import { PaymentBadges } from '@/components/ui/PaymentBadges'
 import type { Locale } from '@/i18n/routing'
-import { brandFilm, heroCues } from '@/lib/hero'
+import { brandFilm, heroCues, phoneSplash } from '@/lib/hero'
 import {
   findScreen,
   getAppScreens,
@@ -94,7 +94,7 @@ export async function Hero() {
       return {
         key: cue.id ?? String(index),
         time: cue.time,
-        icon: <Icon className="size-4" strokeWidth={2} />,
+        icon: <Icon className="size-[1em]" strokeWidth={2} />,
         title: cue.title,
         body: cue.body ?? '',
       }
@@ -103,7 +103,7 @@ export async function Hero() {
       heroCues.map(({ key, time, icon: Icon }) => ({
         key,
         time,
-        icon: <Icon className="size-4" strokeWidth={2} />,
+        icon: <Icon className="size-[1em]" strokeWidth={2} />,
         title: t(`cues.${key}.title`),
         body: t(`cues.${key}.body`),
       })),
@@ -128,12 +128,59 @@ export async function Hero() {
       <HeroStory
         cues={cues}
         video={heroVideoFrom(copy?.video)}
+        splash={phoneSplash}
         screen={
           <AppScreenImage
             screen={findScreen(screens, 'home', 'light')}
             fallback={<AppHomeScreen />}
             eager
+            // 93 % of the hero phone's width, up to 24 rem from `lg`. Below it, the phone's
+            // 268 px screen keeps the 560 px file (see AppScreenImage).
+            sizes="(min-width: 1024px) 358px, (min-width: 640px) 268px, 186px"
           />
+        }
+        trust={
+          <>
+            <FilmLightbox
+              src={film.src}
+              poster={film.poster}
+              labels={{ open: t('watchFilm'), title: t('film.title'), close: t('film.close') }}
+            />
+            <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4 sm:mt-8">
+              <div className="flex items-center gap-3">
+                <div aria-hidden className="flex -space-x-1.5">
+                  {faces.length
+                    ? faces.map((sources) => (
+                        <CmsImage
+                          key={sources[0].url}
+                          sources={sources}
+                          alt=""
+                          width={36}
+                          height={36}
+                          className="size-9 rounded-full object-cover ring-2 ring-night-900"
+                        />
+                      ))
+                    : initials.map(({ initials, tone }) => (
+                        <span
+                          key={initials}
+                          className={`grid size-9 place-items-center rounded-full bg-gradient-to-br text-[11px] font-semibold text-night-900 ring-2 ring-night-900 ${tone}`}
+                        >
+                          {initials}
+                        </span>
+                      ))}
+                </div>
+                <p className="text-sm font-medium text-white/85">
+                  {t('trust.clients', { count: settings.stats.clients })}
+                </p>
+              </div>
+              <div className="hidden sm:block">
+                <PaymentBadges />
+              </div>
+            </div>
+            <p className="mt-8 hidden text-sm tracking-wide text-white/50 sm:block">
+              {pick(copy?.values, t('values'))}
+            </p>
+          </>
         }
         slides={slides}
         backdrop={backdrop}
@@ -180,53 +227,14 @@ export async function Hero() {
           {pick(copy?.subtitle, t('subtitle'))}
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center gap-3 sm:mt-10">
+        {/* Same width: stacked on phones, two equal columns (as wide as the longer label) above. */}
+        <div className="mt-8 grid gap-3 sm:mt-10 sm:inline-grid sm:grid-cols-2">
           <a href={settings.webAppUrl} className={buttonClasses({ size: 'lg' })}>
             {t('primaryCta')}
             <ArrowRight aria-hidden className="size-5" />
           </a>
           <GetTheApp label={t('secondaryCta')} variant="secondary" size="lg" />
-          <FilmLightbox
-            src={film.src}
-            poster={film.poster}
-            labels={{ open: t('watchFilm'), title: t('film.title'), close: t('film.close') }}
-          />
         </div>
-
-        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 sm:mt-12">
-          <div className="flex items-center gap-3">
-            <div aria-hidden className="flex -space-x-1.5">
-              {faces.length
-                ? faces.map((sources) => (
-                    <CmsImage
-                      key={sources[0].url}
-                      sources={sources}
-                      alt=""
-                      width={36}
-                      height={36}
-                      className="size-9 rounded-full object-cover ring-2 ring-night-900"
-                    />
-                  ))
-                : initials.map(({ initials, tone }) => (
-                    <span
-                      key={initials}
-                      className={`grid size-9 place-items-center rounded-full bg-gradient-to-br text-[11px] font-semibold text-night-900 ring-2 ring-night-900 ${tone}`}
-                    >
-                      {initials}
-                    </span>
-                  ))}
-            </div>
-            <p className="text-sm font-medium text-white/85">
-              {t('trust.clients', { count: settings.stats.clients })}
-            </p>
-          </div>
-          <div className="hidden sm:block">
-            <PaymentBadges />
-          </div>
-        </div>
-        <p className="mt-8 hidden text-sm tracking-wide text-white/50 sm:block">
-          {pick(copy?.values, t('values'))}
-        </p>
       </HeroStory>
 
       {/* The animated phone is decorative; this is the same story for screen readers. */}

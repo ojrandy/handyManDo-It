@@ -80,6 +80,9 @@ export const screens: readonly ScreenSpec[] = [
 // iPhone 12–15 logical size at 3× (the `app-screens` image description: 1170×2532).
 export const viewport = { width: 390, height: 844 }
 export const scale = 3
+// That iPhone's safe areas. The app lays out around them (`--hm-inset-*`, its fallback for
+// env(safe-area-inset-*)), so its bars clear the notch and the home indicator as on a real phone.
+export const safeArea = { top: 47, bottom: 34 }
 
 export const fileName = (key: ScreenKey, lang: Lang, theme: Theme) =>
   `app-${key}-${lang}-${theme}.webp`

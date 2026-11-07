@@ -58,25 +58,28 @@ export async function Testimonials() {
           <CarouselControls
             trackId={trackId}
             labels={{ previous: t('previous'), next: t('next') }}
+            className="hidden sm:flex"
           />
         </div>
 
+        {/* Phones: the track runs to the screen's edges, so the next card peeks in and the swipe is
+            obvious; position and buttons sit under the card, where the thumb is. */}
         <ul
           id={trackId}
           aria-label={t('label')}
           tabIndex={0}
-          className="mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="-mx-4 mt-8 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 py-1 [scrollbar-width:none] sm:mx-0 sm:mt-12 sm:scroll-px-0 sm:gap-5 sm:px-0 sm:pb-4 [&::-webkit-scrollbar]:hidden"
         >
           {reviews.map(({ key, quote, name, city, service, photo }) => (
             <li
               key={key}
-              className="flex w-[85%] shrink-0 snap-start flex-col rounded-panel bg-white p-8 shadow-sm ring-1 ring-mist-200 sm:w-[28rem] lg:w-[34rem]"
+              className="flex w-[86%] shrink-0 snap-start flex-col rounded-panel bg-white p-6 shadow-sm ring-1 ring-mist-200 sm:w-[28rem] sm:p-8 lg:w-[34rem]"
             >
-              <Quote aria-hidden className="size-8 text-gold-500" />
-              <blockquote className="mt-5 flex-1 text-lg leading-relaxed text-ink">
+              <Quote aria-hidden className="size-6 text-gold-500 sm:size-8" />
+              <blockquote className="mt-3 flex-1 text-base leading-relaxed text-ink sm:mt-5 sm:text-lg">
                 <p>{quote}</p>
               </blockquote>
-              <div className="mt-8 flex items-center gap-4">
+              <div className="mt-5 flex items-center gap-3 border-t border-mist-100 pt-5 sm:mt-8 sm:gap-4 sm:border-0 sm:pt-0">
                 {/* Decorative: the name sits right next to it. */}
                 {photo.length ? (
                   <CmsImage
@@ -84,10 +87,10 @@ export async function Testimonials() {
                     alt=""
                     width={56}
                     height={56}
-                    className="size-14 rounded-full object-cover ring-2 ring-mist-100"
+                    className="size-12 shrink-0 rounded-full object-cover ring-2 ring-mist-100 sm:size-14"
                   />
                 ) : null}
-                <div>
+                <div className="min-w-0">
                   <p className="font-semibold text-teal-700">{name}</p>
                   <p className="text-sm text-slate-500">
                     {service ? `${city} · ${service}` : city}
@@ -98,9 +101,16 @@ export async function Testimonials() {
           ))}
         </ul>
 
+        <CarouselControls
+          trackId={trackId}
+          labels={{ previous: t('previous'), next: t('next') }}
+          dots={reviews.length}
+          className="mt-5 sm:hidden"
+        />
+
         <Link
           href="/reviews"
-          className="mt-8 inline-flex items-center gap-1.5 font-semibold text-teal-600 underline-offset-4 hover:underline"
+          className="mt-6 flex items-center justify-center gap-1.5 font-semibold text-teal-600 underline-offset-4 hover:underline sm:mt-8 sm:inline-flex"
         >
           {t('seeAll')}
           <ArrowRight aria-hidden className="size-4" />

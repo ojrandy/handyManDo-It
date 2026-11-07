@@ -70,7 +70,7 @@ French strings run ~15–25 % longer than English: design every heading and butt
 |---|---|
 | Easing | `ease-out-expo` = `cubic-bezier(0.16, 1, 0.3, 1)` |
 | Durations | micro 150 ms · UI 250 ms · section reveals 600–800 ms |
-| Libraries | CSS first; `motion` for component transitions; scroll story uses CSS `sticky` + IntersectionObserver, no GSAP (ADR-021); `lenis` optional smooth scroll (off under reduced motion) |
+| Libraries | CSS first; `motion` for component transitions; scroll story and the phone service panels use CSS `sticky` + GSAP ScrollTrigger scrub, loaded near the view (ADR-030, ADR-031); `lenis` optional smooth scroll (off under reduced motion) |
 | Reduced motion | Global CSS already neutralises animations. Components must also **branch logic**: no pinning, no autoplay video, no marquee, counters show final numbers, carousels don't auto-advance |
 | Performance | Animate `transform`/`opacity` only. No layout-thrashing scroll handlers; use IntersectionObserver |
 
@@ -82,12 +82,13 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 |---|---|---|
 | LanguageSwitcher | ✅ | Pill group, `aria-pressed`, keeps equivalent page: follows the page's hreflang alternate when there is one (translated slugs, ADR-025), else the same route and params |
 | Button | ✅ | `buttonClasses({ variant, size })` helper (`ui/button.ts`) applied to `Link`, `<a>`, `<button>` and popover triggers; variants `primary` (gold pill), `secondary` (outline on dark), `ghost` (no horizontal padding, aligns with copy); sizes sm/md/lg, min height 44 px; never a `<div>`. Light-background variants come with the first light section |
-| StoreBadges | ✅ | Official Google Play badge per locale (`public/badges`, unaltered); App Store hidden while `appStoreUrl` is empty. `store_click` event in Phase 5 |
+| StoreBadges | ✅ | Official Google Play and App Store badges per locale (`public/badges`, unaltered; Apple SVG at 40 px high); App Store hidden while `appStoreUrl` is empty. `store_click` event in Phase 5 |
 | GetTheApp | ✅ | Server wrapper renders the QR SVG; client button: Android → Play, iOS → App Store or web app, desktop → native `popover` with QR. Plain Play link before hydration / without JS |
 | Badge / PaymentBadges | ✅ | Text pills with brand-colour dots (no third-party logos until licensed) |
 | Accordion | ✅ (native `<details>`, `FaqList`, used by `FaqTeaser` and service pages) | Native `<details>` or ARIA disclosure; fires `faq_open` |
 | Tabs | ✅ (`EarnTabs`) | ARIA tabs pattern with arrow-key nav |
 | Marquee | ✅ (CSS, `TrustedBy`) | Pause on hover/focus; static under reduced motion |
+| Service panels | ✅ (`ServicesBento` + `ServicePanels`, ADR-031) | Phones only: scroll changes one 2 × 2 group at a time, reversing on the way back; progress bar is decorative (`aria-hidden`). Focus on a tile in a hidden panel brings it up. Reduced motion, no JS, screens under 544 px tall and 768 px or wider: plain grid. CSS crossfade if GSAP fails to load. No analytics event of its own |
 | Counter | ✅ | Animates on view; final value in DOM for SR/no-JS |
 | Dialog / Lightbox | ✅ | Native modal `<dialog>` (focus contained, Esc closes), focus returned to trigger, backdrop click closes; `FilmLightbox` video `preload="none"`. Captions pending transcript |
 | Carousel | ✅ scroll-snap + `CarouselControls` (no embla needed so far) | Keyboard + swipe; visible controls |
@@ -102,7 +103,8 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 | BeforeAfter | ✅ | Native range input over two photos (arrows/Home/End, labelled); focus ring on the figure; no animation |
 | ServiceCard | ✅ | Whole card is the link; photo (`CmsImage`) or the service icon on a dark tile; title, summary, price label |
 | Prose | ✅ | Payload Lexical `RichText` with the site type scale (light backgrounds) |
-| device/Phone, device/Laptop | Phone ✅ · Laptop ⬜ | CSS frame with `overlay` slot; `AppScreenImage` fills it with a captured `app-screens` image (page language, theme), `AppHomeScreen` (HTML recreation) is the fallback while none is captured |
+| device/Phone, device/Laptop | Phone ✅ · Laptop ⬜ | CSS frame with `overlay` slot, drawn in em; `size="hero"` follows the viewport (`phone-hero`, 320–384 px wide on desktop). `AppScreenImage` fills it with a captured `app-screens` image (page language, theme), `AppHomeScreen` (HTML recreation) is the fallback while none is captured |
+| device/PhoneSplash | ✅ | The app's intro in the hero phone (ADR-028). Decorative, inside the aria-hidden phone; stops with the hero's pause button. Reduced motion: hidden, straight to Home. Save-Data/3G: poster for 1.5 s, no video. No analytics event |
 | sections/* | Header, Hero, TrustedBy, ServicesBento, Pillars, Numbers, HowItWorks, Testimonials, Audiences, Earn, FaqTeaser, DownloadBand, Footer ✅ · inner pages: PageHero (dark: breadcrumbs, H1, lead, actions, optional photo preloaded), CtaBand (book in app + quote), PricingExplainer, FeatureSplit (checklists beside a captured app screen), AppOfferPage (Shop/Food), CardGrid (heading + cards or numbered steps on a light band) ✅ | Hero, TrustedBy, ServicesBento, Pillars, Numbers, ScrollStory, HowItWorks, MiniDemo, ScreensGallery, Testimonials, Audiences, EarnTabs, FaqTeaser, DownloadBand, LatestPosts, Header, Footer |
 
 **Component rules**
@@ -113,7 +115,7 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 
 ## 7. Imagery and iconography
 
-- Photography: real Cameroonian/West African people and places; licensed stock (Pexels/Mixkit) until own footage. Service tiles show people doing the work, our own crews first, licensed stock only where we have no such photo; no CG renders or empty showrooms. Crop 3:2 with the subject in the upper half, so the tile text does not cover it. Alt text mandatory, localized, and it only names our crew when the photo really is our crew.
+- Photography: real Cameroonian/West African people and places; licensed stock (Pexels/Mixkit) until own footage. Service tiles show people doing the work, our own crews first, licensed stock only where we have no such photo; no CG renders or empty showrooms. Crop 3:2 with the subject in the upper half, so the tile text does not cover it. Alt text mandatory, localized, and it only names our crew when the photo really is our crew. Cut-outs (Numbers band): our own crew in branded workwear, transparent WebP, background removed, clipped to a teal disc with a thin gold ring.
 - App screens: from `appScreens` collection, matching locale and theme.
 - Icons: one consistent line icon set (e.g. Lucide), 1.5–2 px stroke, `aria-hidden` when decorative.
 - Logo: `public/brand/logo.jpg` until an SVG is traced; bolt/hex-nut motif as ornaments.

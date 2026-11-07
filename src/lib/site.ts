@@ -5,7 +5,7 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://handymandoit.com',
   webAppUrl: 'https://app.handymandoit.com',
   playStoreUrl: 'https://play.google.com/store/apps/details?id=com.handymandoit.app',
-  appStoreUrl: '',
+  appStoreUrl: 'https://apps.apple.com/app/handyman-do-it/id6820783542',
   phone: '+237652767674',
   phoneDisplay: '+237 652 767 674',
   whatsappUrl: 'https://wa.me/237652767674',
@@ -22,4 +22,6 @@ export const site = {
     { key: 'technical', address: 'Mile 16 Shopping Mall', city: 'Buea' },
     { key: 'office', address: 'Mobile Njo Njo, Bonapriso', city: 'Douala' },
   ],
+  // Footer credit. The sentence around the name lives in messages (footer.credit).
+  developerUrl: 'https://webspectron.com/',
 } as const

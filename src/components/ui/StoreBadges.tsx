@@ -4,7 +4,8 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import type { Locale } from '@/i18n/routing'
 import { getSiteSettings } from '@/lib/settings'
 
-import { buttonClasses } from './button'
+// Apple's localized badges have different widths at the same 40 px height.
+const appStoreBadgeWidth: Record<Locale, number> = { en: 120, fr: 127 }
 
 type Props = {
   className?: string
@@ -13,8 +14,9 @@ type Props = {
   appStoreUrl?: string
 }
 
-// Official Google Play badge (used unaltered, per Google's badge guidelines). The App Store
-// link only renders once a URL exists (FR-GLB-06); swap in Apple's official badge then (Q-3).
+// Official Google Play and App Store badges, per locale and unaltered (both brands' badge
+// guidelines; Apple's from toolbox.marketingtools.apple.com). The App Store badge only renders
+// while a URL exists (FR-GLB-06).
 export async function StoreBadges({ className = '', ...links }: Props) {
   const [t, locale] = await Promise.all([getTranslations('stores'), getLocale() as Promise<Locale>])
   const settings = await getSiteSettings(locale)
@@ -35,8 +37,15 @@ export async function StoreBadges({ className = '', ...links }: Props) {
       </li>
       {appStoreUrl ? (
         <li>
-          <a href={appStoreUrl} className={buttonClasses({ variant: 'secondary', size: 'sm' })}>
-            {t('appStore')}
+          {/* SVG served as-is: next/image doesn't optimize SVG, and Apple forbids altering it. */}
+          <a href={appStoreUrl} className="block rounded-lg">
+            <Image
+              src={`/badges/app-store-${locale}.svg`}
+              alt={t('appStore')}
+              width={appStoreBadgeWidth[locale]}
+              height={40}
+              unoptimized
+            />
           </a>
         </li>
       ) : null}

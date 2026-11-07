@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
 
 import { bentoOrder, faqText, findScreen, heroVideoFrom, pick, pickList } from '@/lib/home'
-import { imageSources } from '@/lib/media'
+import { imageSources, mediaUrl } from '@/lib/media'
 import { paragraph } from '@/lib/richText'
+import { groupBySlug } from '@/lib/serviceGroups'
+import { services } from '@/lib/services'
 import type { AppScreen, Media, Service } from '@/payload-types'
 
 // Pure helpers behind the home sections' Payload reads (T-1.15). No database needed.
@@ -49,6 +51,20 @@ describe('imageSources', () => {
       { url: '/card.webp', width: 960 },
       { url: '/api/media/file/photo.webp', width: 2000 },
     ])
+  })
+
+  it('keeps our own files same-origin, whatever port wrote them, and leaves R2 files alone', () => {
+    const local = 'http://localhost:3200/api/media/file/photo.webp'
+    const sized = 'http://localhost:3200/api/media/file/photo-480x240.webp'
+    const r2 = 'https://media.handymandoit.com/photo.webp'
+    expect(
+      imageSources(media({ url: local, sizes: { thumb: { url: sized, width: 480 } } })),
+    ).toEqual([
+      { url: '/api/media/file/photo-480x240.webp', width: 480 },
+      { url: '/api/media/file/photo.webp', width: 2000 },
+    ])
+    expect(mediaUrl(media({ url: local }))).toBe('/api/media/file/photo.webp')
+    expect(mediaUrl(media({ url: r2 }))).toBe(r2)
   })
 
   it('is empty for an unpopulated or missing upload', () => {
@@ -108,6 +124,33 @@ describe('findScreen', () => {
     ]
     expect(findScreen(screens, 'home', 'dark')?.id).toBe(2)
     expect(findScreen(screens, 'shop', 'dark')).toBeUndefined()
+  })
+})
+
+describe('groupBySlug', () => {
+  const tile = (slug: string) => ({ slug })
+
+  it('places every built-in service in a group that fits one screen, in both locales', () => {
+    for (const locale of ['fr', 'en'] as const) {
+      const groups = groupBySlug(
+        services.map(({ slug }) => tile(slug[locale])),
+        locale,
+      )
+      expect(groups.map(({ key }) => key)).toEqual(['home', 'projects', 'moving'])
+      expect(groups.flatMap((group) => group.tiles)).toHaveLength(services.length)
+      for (const group of groups) expect(group.tiles.length).toBeLessThanOrEqual(4)
+    }
+  })
+
+  it('keeps the given order within a group', () => {
+    const [home] = groupBySlug([tile('remodeling'), tile('interior-exterior-design')], 'en')
+    expect(home?.tiles.map(({ slug }) => slug)).toEqual(['remodeling', 'interior-exterior-design'])
+  })
+
+  it('puts an unknown service in the last group and leaves out empty groups', () => {
+    const groups = groupBySlug([tile('signage'), tile('brand-new-service')], 'en')
+    expect(groups.map(({ key }) => key)).toEqual(['projects', 'moving'])
+    expect(groups[1]?.tiles).toEqual([tile('brand-new-service')])
   })
 })
 

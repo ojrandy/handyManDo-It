@@ -78,6 +78,29 @@ export const servicePhotos: Partial<
   transport: { src: '/images/work/at-work-transport.webp', width: 1200, height: 800 },
 }
 
+export const storyChapters = [
+  'browse',
+  'price',
+  'pay',
+  'track',
+  'code',
+  'rewards',
+  'finale',
+] as const
+export type StoryChapter = (typeof storyChapters)[number]
+
+// A picture of what each scroll story chapter says (alt and caption in messages under
+// `story.chapters`); the finale shows a laptop instead. Pexels stock until the owner has such
+// photos of real customers (Q-20; photo ids in the tracker).
+export const storyPhotos: Record<Exclude<StoryChapter, 'finale'>, string> = {
+  browse: '/images/story/browse.webp',
+  price: '/images/story/price.webp',
+  pay: '/images/story/pay.webp',
+  track: '/images/story/on-the-way.webp',
+  code: '/images/story/code.webp',
+  rewards: '/images/story/rewarded.webp',
+}
+
 // "From X FCFA" per service (owner question Q-5). Empty until real prices exist; tiles then show
 // "Clear price before you book".
 export const servicePrices: Partial<Record<ServiceKey, number>> = {}

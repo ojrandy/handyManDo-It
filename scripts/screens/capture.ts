@@ -5,7 +5,16 @@ import path from 'node:path'
 import { chromium, type BrowserContext, type Page } from '@playwright/test'
 import sharp from 'sharp'
 
-import { appUrl, fileName, type Lang, scale, type ScreenSpec, type Theme, viewport } from './data'
+import {
+  appUrl,
+  fileName,
+  type Lang,
+  safeArea,
+  scale,
+  type ScreenSpec,
+  type Theme,
+  viewport,
+} from './data'
 
 export type CaptureOptions = {
   outDir: string
@@ -101,6 +110,35 @@ async function open(page: Page, spec: ScreenSpec, lang: Lang, theme: Theme) {
   await settle(page)
 }
 
+// Reserves the safe areas before the app renders. An adopted sheet, because hydration rewrites the
+// <html> style attribute and head children; a string, not a function: see CLAUDE.md §8.
+const safeAreaScript = `{
+  const sheet = new CSSStyleSheet();
+  sheet.replaceSync(':root { --hm-inset-top: ${safeArea.top}px; --hm-inset-bottom: ${safeArea.bottom}px; }');
+  document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+}`
+
+const signalBars = [4, 6, 8, 10]
+  .map((h, i) => `<rect x="${i * 4.5}" y="${11 - h}" width="3" height="${h}" rx="0.8"/>`)
+  .join('')
+
+// The clock, signal and battery in the status bar, and the home indicator: what a screenshot taken
+// on the phone would show. Drawn in the page so they use the app's font and follow its theme.
+const deviceChromeScript = `(() => {
+  const ink = document.documentElement.dataset.theme === 'dark' ? '#ffffff' : '#0f1f26';
+  const root = document.createElement('div');
+  root.dataset.deviceChrome = '';
+  root.style.cssText = 'position:fixed;inset:0;z-index:2147483647;pointer-events:none;color:' + ink;
+  root.innerHTML =
+    '<span style="position:absolute;top:15px;left:32px;font:600 16px/20px system-ui,sans-serif">9:41</span>' +
+    '<svg style="position:absolute;top:19px;right:26px" width="60" height="12" viewBox="0 0 60 12" fill="currentColor">${signalBars}' +
+    '<path d="M27 3.6a7.6 7.6 0 0 1 10 0l-1.2 1.4a5.8 5.8 0 0 0-7.6 0zM29.3 6.3a4.2 4.2 0 0 1 5.4 0l-1.2 1.4a2.4 2.4 0 0 0-3 0zM32 8.3l1.3 1.5L32 11l-1.3-1.2z"/>' +
+    '<rect x="41.5" y="1.5" width="15" height="9" rx="2.5" fill="none" stroke="currentColor" opacity=".45"/>' +
+    '<rect x="43" y="3" width="12" height="6" rx="1.2"/><rect x="57.5" y="4.5" width="1.5" height="3" rx=".7" opacity=".5"/></svg>' +
+    '<span style="position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:currentColor"></span>';
+  document.body.append(root);
+})()`
+
 export type Captured = { spec: ScreenSpec; lang: Lang; theme: Theme; file: string }
 
 export async function captureScreens(
@@ -125,13 +163,17 @@ export async function captureScreens(
         reducedMotion: 'reduce',
       })
       await cacheStaticFiles(context, cacheDir)
+      await context.addInitScript({ content: safeAreaScript })
       const page = await context.newPage()
       for (const theme of themes) {
         for (const spec of specs) {
           const label = `${spec.key} ${lang} ${theme}`
           try {
             await open(page, spec, lang, theme)
+            await page.evaluate(deviceChromeScript)
             const png = await page.screenshot({ animations: 'disabled' })
+            // Screens that differ by hash only share a document, and the next one has its own theme.
+            await page.evaluate(() => document.querySelector('[data-device-chrome]')?.remove())
             const file = path.join(outDir, fileName(spec.key, lang, theme))
             await sharp(png).webp({ quality: 90 }).toFile(file)
             captured.push({ spec, lang, theme, file })

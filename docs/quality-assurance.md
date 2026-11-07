@@ -128,6 +128,7 @@ Bug report template: *Title · Env/URL · Locale · Device/browser/viewport · S
 - Int tests use their own database, `DATABASE_URL`'s name + `_test` (`handymandoit_test`), or `TEST_DATABASE_URL` if set (`tests/int/testDatabase.ts`). The global setup creates it on the same server when missing and Payload's dev schema push builds the tables, so tests never overwrite seeded dev content. Drop it (`docker compose exec postgres psql -U postgres -c "drop database handymandoit_test"`) to start from empty.
 - Seeds (`scripts/seed.ts`) are idempotent and the canonical demo content.
 - Never use real customer data in tests.
+- Playwright's own Chromium has no H.264, so the hero intro falls through to Home there and its playback tests skip. Run them with real Chrome: `E2E_CHANNEL=chrome npm run test:e2e`.
 
 ## 9. Manual test matrix (phase gates)
 

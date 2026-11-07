@@ -11,16 +11,17 @@ type Props = {
   // Above the fold. In the hero on wide screens the screenshot is the largest image, so it is the
   // LCP element there: preloaded from the head, at high priority.
   eager?: boolean
+  sizes?: string
 }
 
 // The screen inside a Phone frame is 268 px wide from `sm` up (244 px below). Phones get the
 // 560 px file at 3× too (2.3× density, indistinguishable on UI text) instead of the 960 px one:
 // under the hero copy there, it should cost ~40 KB, not ~95 KB.
-const sizes = '(min-width: 640px) 268px, 186px'
+const defaultSizes = '(min-width: 640px) 268px, 186px'
 
 // A captured app screenshot filling a Phone frame. Decorative: the frames that hold it are
 // aria-hidden, and the surrounding copy says what the app does.
-export function AppScreenImage({ screen, fallback, eager = false }: Props) {
+export function AppScreenImage({ screen, fallback, eager = false, sizes = defaultSizes }: Props) {
   const sources = imageSources(screen?.image)
   if (!sources.length) return <>{fallback}</>
   return (

@@ -121,7 +121,8 @@ prompt.md                phase-by-phase prompt library
 - `next build` type-checks the whole project, `scripts/` and `tests/` included: don't leave half-done TypeScript anywhere in the tree while a build runs.
 - `S3_BUCKET` empty ⇒ uploads go to local `/media` (gitignored). Fine for dev, never for staging/prod.
 - Scripts (`seed`, `migrate:wordpress`, `capture:screens`, `encode:hero`) write outside Next, so they can't purge cache tags. Locally, `next build` and `next dev` then keep serving the old CMS reads from `.next/cache/fetch-cache` (dev: `.next/dev/cache/fetch-cache`): delete that folder after running a script. CI builds from a clean checkout and is unaffected.
-- CMS media URLs are absolute to the configured server URL (`localhost:3000` locally). A local server on another port gets them blocked by the site CSP (`img-src 'self'`), so images look broken there.
+- Payload stores media URLs as absolute to the configured server URL (`localhost:3000` locally), and the fetch cache keeps them after the port changes. Read them through `imageSources`/`mediaUrl` (`src/lib/media.ts`), which make our own files same-origin; a raw `media.url` on another port is a dead link, blocked by the site CSP (`img-src 'self'`).
+- `next dev` is far slower than production at serving images (2026-11-03, 24 files in parallel: median about 74 ms to 7.5 s against about 10 ms under `next start`, once warm). Judge loading speed on `npm run build && npm start`, not in dev.
 - `MEDIA_PUBLIC_URL` drives both `next/image` remotePatterns and R2 file URLs — set it in every non-local environment.
 - The Users hook makes the **first** created user an admin. Create the real admin on a fresh DB before exposing `/admin`.
 - `.npmrc` uses `legacy-peer-deps=true`; keep using `npm ci` in CI/Hostinger.

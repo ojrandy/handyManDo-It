@@ -99,7 +99,8 @@ test.describe('Hero', () => {
     // The animated list lives in the aria-hidden phone; the sr-only list is static.
     // Scoped to the hero: the scroll story further down has its own decorative phone list.
     const phone = page.locator('section[aria-labelledby="hero-title"] div[aria-hidden="true"] ol')
-    await expect(phone).toContainText(en.hero.cues.paid.title, { timeout: 10_000 })
+    // Notifications wait for the phone's intro, then the second one comes 4 s after the first.
+    await expect(phone).toContainText(en.hero.cues.paid.title, { timeout: 20_000 })
 
     await page.getByRole('button', { name: en.hero.story.pause }).click()
     const frozen = await phone.textContent()
@@ -178,18 +179,6 @@ test.describe('Hero slider', () => {
     await expect(bullet(page, 2)).toHaveAttribute('aria-current', 'true')
   })
 
-  test('phones get the photo and a floating notification, not the phone mock-up', async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width: 390, height: 844 })
-    await page.goto('/en', { waitUntil: 'load' })
-    const hero = page.locator('section[aria-labelledby="hero-title"]')
-    await expect(hero.locator('ol.space-y-2')).toBeHidden()
-    await expect(hero.locator('.animate-notification-in').first()).toBeVisible({ timeout: 10_000 })
-    await expect(hero.getByRole('link', { name: en.hero.primaryCta })).toBeInViewport()
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
-  })
-
   test('reduced motion shows one still photo and no slider controls', async ({ browser }) => {
     const context = await browser.newContext({ reducedMotion: 'reduce' })
     const page = await context.newPage()
@@ -200,6 +189,180 @@ test.describe('Hero slider', () => {
     await expect(
       page.locator('section[aria-labelledby="hero-title"] img[src*="crew-"]'),
     ).toHaveCount(1)
+    await context.close()
+  })
+})
+
+// The hero phone: size, place on small screens, and the app's intro before Home (ADR-028).
+test.describe('Hero phone', () => {
+  const hero = (page: Page) => page.locator('section[aria-labelledby="hero-title"]')
+  const splash = (page: Page) => page.locator('[data-phone-splash]')
+  const notifications = (page: Page) => hero(page).locator('.animate-notification-in')
+  // offsetWidth: the frame's own width, without the tilt of its parents.
+  const phoneWidth = (page: Page) =>
+    page.locator('.phone-hero').evaluate((element) => (element as HTMLElement).offsetWidth)
+
+  const connection = (page: Page, values: string) =>
+    page.addInitScript({
+      content: `{
+        const connection = Object.assign(new EventTarget(), ${values})
+        Object.defineProperty(Navigator.prototype, 'connection', { get: () => connection })
+      }`,
+    })
+
+  const videoRequests = (page: Page) => {
+    const urls: string[] = []
+    page.on('request', (request) => {
+      if (request.url().includes('brand-splash.mp4')) urls.push(request.url())
+    })
+    return urls
+  }
+
+  // Playwright's own Chromium has no H.264 and goes straight to Home, which the failure tests
+  // below cover. Real playback needs Chrome: E2E_CHANNEL=chrome npm run test:e2e.
+  const skipWithoutH264 = async (page: Page) => {
+    const type = await page.evaluate(`document.createElement('video').canPlayType('video/mp4')`)
+    test.skip(!type, 'this browser has no H.264; run with E2E_CHANNEL=chrome')
+  }
+
+  for (const [width, height, expected] of [
+    [1280, 800, 323],
+    [1440, 900, 371],
+    [1920, 1080, 384],
+  ] as const) {
+    test(`is about ${expected} px wide at ${width}×${height}`, async ({ page }) => {
+      await page.setViewportSize({ width, height })
+      await page.goto('/en')
+      expect(Math.abs((await phoneWidth(page)) - expected)).toBeLessThanOrEqual(1)
+    })
+  }
+
+  for (const [locale, m] of [
+    ['fr', fr],
+    ['en', en],
+  ] as const) {
+    for (const width of [360, 390]) {
+      test(`is on the first screen under the CTAs at ${width} px in ${locale}`, async ({
+        page,
+      }) => {
+        await page.setViewportSize({ width, height: 844 })
+        await page.goto(`/${locale}`, { waitUntil: 'load' })
+        const phone = page.locator('.phone-hero')
+        const cta = hero(page).getByRole('link', { name: m.hero.primaryCta })
+        await expect(cta).toBeInViewport()
+        await expect(phone).toBeInViewport()
+        expect((await phone.boundingBox())!.y).toBeGreaterThan((await cta.boundingBox())!.y)
+        // Longer French copy can leave too little of it in view for the intro to start: it waits
+        // for the visitor to scroll, so it is never missed.
+        await phone.scrollIntoViewIfNeeded()
+        // The only notifications on phones are the ones inside the phone.
+        await expect(notifications(page).first()).toBeVisible({ timeout: 15_000 })
+        expect(
+          await notifications(page)
+            .first()
+            .evaluate((element) => Boolean(element.closest('.phone-hero'))),
+        ).toBe(true)
+        expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+          width,
+        )
+      })
+    }
+  }
+
+  test('plays the intro, then opens Home and the notifications', async ({ page }) => {
+    await skipWithoutH264(page)
+    await fastNetwork(page)
+    const requested = videoRequests(page)
+    await page.goto('/en', { waitUntil: 'load' })
+    const video = splash(page).locator('video')
+    await expect(video).toHaveJSProperty('paused', false)
+    await expect(video).toHaveJSProperty('muted', true)
+    expect(requested.length).toBeGreaterThan(0)
+    // While it plays, the app has not opened yet. Read in one go: on a slow machine the clip can
+    // end between two separate checks.
+    const state = (await page.evaluate(`({
+      playing: document.querySelector('[data-phone-splash]').dataset.phoneSplash === 'on',
+      count: document.querySelectorAll('.phone-hero .animate-notification-in').length,
+    })`)) as { playing: boolean; count: number }
+    if (state.playing) expect(state.count).toBe(0)
+    // A 4 s clip: no lingering on its last frame. A clip whose `ended` never fired failed here.
+    await expect(splash(page)).toHaveAttribute('data-phone-splash', 'done', { timeout: 6_500 })
+    await expect(notifications(page).first()).toBeVisible()
+  })
+
+  test('plays once per visit', async ({ page }) => {
+    await fastNetwork(page)
+    await page.goto('/en', { waitUntil: 'load' })
+    await expect(splash(page)).toHaveAttribute('data-phone-splash', 'done', { timeout: 15_000 })
+    const requested = videoRequests(page)
+    await page.reload({ waitUntil: 'load' })
+    await expect(splash(page)).toHaveAttribute('data-phone-splash', 'done')
+    await expect(notifications(page).first()).toBeVisible()
+    expect(requested).toEqual([])
+  })
+
+  test('a video that cannot load opens Home instead', async ({ page }) => {
+    await fastNetwork(page)
+    await page.route('**/brand-splash.mp4', (route) => route.abort())
+    await page.goto('/en', { waitUntil: 'load' })
+    await expect(splash(page)).toHaveAttribute('data-phone-splash', 'done', { timeout: 6_000 })
+    await expect(notifications(page).first()).toBeVisible()
+  })
+
+  test('a video that never starts opens Home instead', async ({ page }) => {
+    await fastNetwork(page)
+    // Never answered: a stalled connection.
+    await page.route('**/brand-splash.mp4', () => {})
+    await page.goto('/en', { waitUntil: 'commit' })
+    await expect(splash(page)).toHaveAttribute('data-phone-splash', 'done', { timeout: 10_000 })
+  })
+
+  test('a slow connection gets the poster and downloads no video', async ({ page }) => {
+    const requested = videoRequests(page)
+    await connection(page, `{ effectiveType: '3g', saveData: false }`)
+    await page.goto('/en', { waitUntil: 'load' })
+    await expect(splash(page)).toHaveAttribute('data-phone-splash', 'done', { timeout: 6_000 })
+    await expect(splash(page).locator('video')).toHaveCount(0)
+    expect(requested).toEqual([])
+  })
+
+  test('4G on mobile data still plays the intro', async ({ page }) => {
+    await connection(page, `{ effectiveType: '4g', saveData: false, type: 'cellular' }`)
+    const requested = videoRequests(page)
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/en', { waitUntil: 'load' })
+    await expect(splash(page).locator('video')).toBeAttached()
+    await expect.poll(() => requested.length).toBeGreaterThan(0)
+  })
+
+  test('pause holds the intro', async ({ page }) => {
+    await skipWithoutH264(page)
+    await fastNetwork(page)
+    // Held back until paused: on a slow machine the 4 s clip could end before the click.
+    let release = () => {}
+    const paused = new Promise<void>((resolve) => (release = resolve))
+    await page.route('**/brand-splash.mp4', async (route) => {
+      await paused
+      await route.continue()
+    })
+    await page.goto('/en', { waitUntil: 'commit' })
+    await page.getByRole('button', { name: en.hero.story.pause }).click()
+    release()
+    await page.waitForTimeout(7_000)
+    await expect(splash(page)).toHaveAttribute('data-phone-splash', 'on')
+    await expect(notifications(page)).toHaveCount(0)
+    await page.getByRole('button', { name: en.hero.story.play }).click()
+    await expect(splash(page)).toHaveAttribute('data-phone-splash', 'done', { timeout: 15_000 })
+  })
+
+  test('reduced motion goes straight to Home with no video', async ({ browser }) => {
+    const context = await browser.newContext({ reducedMotion: 'reduce' })
+    const page = await context.newPage()
+    const requested = videoRequests(page)
+    await page.goto('/en', { waitUntil: 'load' })
+    await expect(splash(page)).toBeHidden()
+    await expect(notifications(page).first()).toBeVisible()
+    expect(requested).toEqual([])
     await context.close()
   })
 })

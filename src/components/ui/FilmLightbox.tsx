@@ -32,7 +32,7 @@ export function FilmLightbox({ src, poster, labels }: Props) {
         ref={triggerRef}
         type="button"
         onClick={open}
-        className={buttonClasses({ variant: 'ghost', size: 'lg', className: 'sm:ml-2' })}
+        className={buttonClasses({ variant: 'ghost', size: 'lg' })}
       >
         <span className="grid size-10 place-items-center rounded-full border border-white/25">
           <Play aria-hidden className="size-4 translate-x-px fill-current" />
