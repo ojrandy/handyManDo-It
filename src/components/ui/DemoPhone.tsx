@@ -1,14 +1,29 @@
 'use client'
 
-import { ArrowLeft, ArrowUpRight, BadgeCheck, CircleCheck, RotateCcw, Star } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  BadgeCheck,
+  CalendarCheck,
+  CircleCheck,
+  House,
+  RotateCcw,
+  Star,
+  User,
+  Wallet,
+} from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { Phone } from '@/components/device/Phone'
+import { StatusBar } from '@/components/device/StatusBar'
 import { track } from '@/lib/analytics'
 import { services, type ServiceKey } from '@/lib/services'
 
 export type DemoLabels = {
   label: string
+  // Status bar clock and tab bar names.
+  time: string
+  tabs: { home: string; bookings: string; wallet: string; profile: string }
   question: string
   prosTitle: string
   back: string
@@ -46,6 +61,12 @@ const pros = [
 const slots = ['today', 'tomorrow', 'weekend'] as const
 const payments = ['MTN MoMo', 'Orange Money'] as const
 const tiles = services.slice(0, 9)
+const tabBar = [
+  { key: 'home', icon: House },
+  { key: 'bookings', icon: CalendarCheck },
+  { key: 'wallet', icon: Wallet },
+  { key: 'profile', icon: User },
+] as const
 
 const option =
   'rounded-full px-3 py-1.5 text-[11px] font-medium ring-1 transition-colors aria-pressed:bg-teal-600 aria-pressed:text-white aria-pressed:ring-teal-600'
@@ -116,7 +137,8 @@ export function DemoPhone({ labels, serviceNames, locale, appUrl }: DemoProps) {
                 <span className="grid size-7 place-items-center rounded-lg bg-mist-100 text-teal-600">
                   <Icon aria-hidden className="size-3.5" strokeWidth={2} />
                 </span>
-                <span className="text-center text-[10px] leading-tight font-medium">
+                {/* Long French names (Déménagement) must wrap inside the tile, not overflow. */}
+                <span className="w-full text-center text-[10px] leading-tight font-medium break-words hyphens-auto">
                   {serviceNames[key]}
                 </span>
               </button>
@@ -251,9 +273,28 @@ export function DemoPhone({ labels, serviceNames, locale, appUrl }: DemoProps) {
   return (
     <Phone>
       <div role="group" aria-label={labels.label} className="flex h-full flex-col text-ink">
-        <div aria-hidden className="h-10 shrink-0" />
-        <div key={step} className="flex flex-1 flex-col overflow-y-auto px-4 pt-2 pb-5">
+        <StatusBar time={labels.time} />
+        <div key={step} className="flex flex-1 flex-col overflow-y-auto px-4 pt-3 pb-3">
           {screen}
+        </div>
+        {/* The app's tab bar, decorative here: the demo only walks the booking flow. */}
+        <div aria-hidden className="shrink-0 border-t border-mist-200 bg-white px-2 pt-2 pb-1.5">
+          <div className="grid grid-cols-4">
+            {tabBar.map(({ key, icon: Icon }, index) => (
+              <span
+                key={key}
+                className={`flex min-w-0 flex-col items-center gap-0.5 text-[9px] font-medium ${
+                  index ? 'text-slate-500' : 'text-teal-600'
+                }`}
+              >
+                <Icon className="size-4" strokeWidth={index ? 1.75 : 2.25} />
+                <span className="w-full truncate text-center tracking-tight">
+                  {labels.tabs[key]}
+                </span>
+              </span>
+            ))}
+          </div>
+          <div className="mx-auto mt-2 h-1 w-24 rounded-full bg-ink/80" />
         </div>
       </div>
     </Phone>

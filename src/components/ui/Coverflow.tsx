@@ -1,39 +1,13 @@
 'use client'
 
-import { ArrowLeft, ArrowRight, Moon, Pause, Play, Sun } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Phone } from '@/components/device/Phone'
-import { CmsImage } from '@/components/ui/CmsImage'
-import type { ImageSource } from '@/lib/media'
 import { useSlowData } from '@/lib/useLightData'
 
-type Theme = 'light' | 'dark'
+import { CoverflowView, type CoverflowProps, type Theme } from './CoverflowView'
 
-export type GallerySlide = {
-  key: string
-  caption: string
-  images: Record<Theme, { sources: ImageSource[]; alt: string }>
-}
+export type { CoverflowProps, GallerySlide } from './CoverflowView'
 
-type Props = {
-  slides: GallerySlide[]
-  labels: {
-    label: string
-    // Contains "{n}" and "{total}", filled in here: the client has no message formatter.
-    slide: string
-    previous: string
-    next: string
-    pause: string
-    play: string
-    theme: string
-    light: string
-    dark: string
-  }
-}
-
-// Slides further than this from the current one are hidden and load no image.
-const REACH = 2
 const DRAG_THRESHOLD = 40
 const AUTOPLAY_MS = 3500
 
@@ -44,8 +18,9 @@ const AUTOPLAY_MS = 3500
  * button (WCAG 2.2.2), and never starts under reduced motion or on Save-Data and slow connections,
  * where each new slide would be a download nobody asked for.
  * Only the current slide is exposed to assistive tech; the caption below announces manual changes.
+ * The markup is CoverflowView; this code loads near the view (NearView, NFR-PERF-02).
  */
-export function Coverflow({ slides, labels }: Props) {
+export function Coverflow({ slides, labels }: CoverflowProps) {
   const [active, setActive] = useState(0)
   const [theme, setTheme] = useState<Theme>('light')
   const [paused, setPaused] = useState(false)
@@ -101,158 +76,54 @@ export function Coverflow({ slides, labels }: Props) {
     go(keys[event.key])
   }
 
-  const onPointerDown = (event: React.PointerEvent) => {
-    drag.current = { x: event.clientX, moved: false }
-  }
-  const onPointerUp = (event: React.PointerEvent) => {
-    const start = drag.current
-    if (!start) return
-    const dx = event.clientX - start.x
-    if (Math.abs(dx) > DRAG_THRESHOLD) {
-      start.moved = true
-      go(active + (dx < 0 ? 1 : -1))
-    }
-  }
-
-  const button =
-    'grid size-11 place-items-center rounded-full border border-white/25 text-white transition-colors hover:bg-white/10'
-  const current = slides[active]
-
   return (
-    <div
-      ref={rootRef}
-      role="region"
-      aria-roledescription="carousel"
-      aria-label={labels.label}
-      onPointerEnter={(event) => {
-        if (event.pointerType === 'mouse') setHeld(true)
+    <CoverflowView
+      slides={slides}
+      labels={labels}
+      active={active}
+      theme={theme}
+      canAutoplay={canAutoplay}
+      rotating={rotating}
+      paused={paused}
+      rootRef={rootRef}
+      rootHandlers={{
+        onPointerEnter: (event) => {
+          if (event.pointerType === 'mouse') setHeld(true)
+        },
+        onPointerLeave: (event) => {
+          if (event.pointerType === 'mouse') setHeld(false)
+        },
+        // Keyboard focus only: a tapped button keeps focus, which would stop a phone's slideshow.
+        onFocus: (event) => {
+          if (event.target.matches(':focus-visible')) setHeld(true)
+        },
+        onBlur: () => setHeld(false),
       }}
-      onPointerLeave={(event) => {
-        if (event.pointerType === 'mouse') setHeld(false)
+      stageHandlers={{
+        onKeyDown,
+        onPointerDown: (event) => {
+          drag.current = { x: event.clientX, moved: false }
+        },
+        onPointerUp: (event) => {
+          const start = drag.current
+          if (!start) return
+          const dx = event.clientX - start.x
+          if (Math.abs(dx) > DRAG_THRESHOLD) {
+            start.moved = true
+            go(active + (dx < 0 ? 1 : -1))
+          }
+        },
+        onPointerCancel: () => {
+          drag.current = null
+        },
       }}
-      // Keyboard focus only: a tapped button keeps focus, which would stop a phone's slideshow.
-      onFocus={(event) => {
-        if (event.target.matches(':focus-visible')) setHeld(true)
+      // A slide click right after a drag is the drag's own release, not a choice.
+      onSelect={(index) => {
+        if (!drag.current?.moved) go(index)
       }}
-      onBlur={() => setHeld(false)}
-    >
-      <div role="group" aria-label={labels.theme} className="flex justify-center gap-1">
-        {(['light', 'dark'] as const).map((value) => {
-          const Icon = value === 'light' ? Sun : Moon
-          return (
-            <button
-              key={value}
-              type="button"
-              aria-pressed={theme === value}
-              onClick={() => setTheme(value)}
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white/75 ring-1 ring-white/20 transition-colors hover:text-white aria-pressed:bg-gold-500 aria-pressed:text-night-950 aria-pressed:ring-gold-500"
-            >
-              <Icon aria-hidden className="size-4" />
-              {labels[value]}
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Focusable so the arrow keys work on it; the slides themselves are images. */}
-      <div
-        tabIndex={0}
-        onKeyDown={onKeyDown}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onPointerCancel={() => (drag.current = null)}
-        className="relative mt-10 h-[34.375rem] cursor-grab touch-pan-y [perspective:1400px] select-none [zoom:0.72] active:cursor-grabbing sm:h-[37.5rem] sm:[zoom:0.85] lg:[zoom:1]"
-      >
-        {slides.map(({ key, images }, index) => {
-          // Shortest way round the loop, so the first and last screens are neighbours.
-          const raw = index - active
-          const offset = Math.abs(raw) > count / 2 ? raw - Math.sign(raw) * count : raw
-          const distance = Math.abs(offset)
-          const hidden = distance > REACH
-          const image = images[theme]
-          return (
-            <div
-              key={key}
-              role="group"
-              aria-roledescription="slide"
-              aria-label={labels.slide
-                .replace('{n}', String(index + 1))
-                .replace('{total}', String(count))}
-              aria-hidden={offset !== 0}
-              onClick={() => {
-                if (!drag.current?.moved) go(index)
-              }}
-              style={{
-                transform: `translateX(-50%) translateX(${offset * 70}%) rotateY(${
-                  Math.sign(offset) * -38
-                }deg) scale(${1 - distance * 0.14})`,
-                zIndex: count - distance,
-                opacity: hidden ? 0 : 1 - distance * 0.25,
-                visibility: hidden ? 'hidden' : undefined,
-              }}
-              className="absolute top-0 left-1/2 transition-[transform,opacity] duration-500 ease-out-expo"
-            >
-              <Phone>
-                {hidden ? null : (
-                  <CmsImage
-                    sources={image.sources}
-                    alt={offset === 0 ? image.alt : ''}
-                    fill
-                    sizes="(min-width: 640px) 268px, 244px"
-                    loading="lazy"
-                    draggable={false}
-                    className="object-cover object-top"
-                  />
-                )}
-              </Phone>
-            </div>
-          )
-        })}
-      </div>
-
-      <div className="mt-8 flex flex-col items-center gap-5">
-        <p
-          aria-live={rotating ? 'off' : 'polite'}
-          className="min-h-7 text-center text-lg font-semibold text-white"
-        >
-          {current?.caption}
-        </p>
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            onClick={() => go(active - 1)}
-            aria-label={labels.previous}
-            className={button}
-          >
-            <ArrowLeft aria-hidden className="size-5" />
-          </button>
-          <p aria-hidden className="w-16 text-center text-sm text-white/60 tabular-nums">
-            {active + 1} / {count}
-          </p>
-          <button
-            type="button"
-            onClick={() => go(active + 1)}
-            aria-label={labels.next}
-            className={button}
-          >
-            <ArrowRight aria-hidden className="size-5" />
-          </button>
-          {canAutoplay ? (
-            <button
-              type="button"
-              onClick={() => setPaused((value) => !value)}
-              aria-label={paused ? labels.play : labels.pause}
-              className={button}
-            >
-              {paused ? (
-                <Play aria-hidden className="size-5" />
-              ) : (
-                <Pause aria-hidden className="size-5" />
-              )}
-            </button>
-          ) : null}
-        </div>
-      </div>
-    </div>
+      onGo={go}
+      onTheme={setTheme}
+      onTogglePause={() => setPaused((value) => !value)}
+    />
   )
 }

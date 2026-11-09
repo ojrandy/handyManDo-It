@@ -1,6 +1,11 @@
 import { getLocale, getTranslations } from 'next-intl/server'
 
-import { Coverflow, type GallerySlide } from '@/components/ui/Coverflow'
+import {
+  CoverflowView,
+  type CoverflowProps,
+  type GallerySlide,
+} from '@/components/ui/CoverflowView'
+import { NearView } from '@/components/ui/NearView'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import type { Locale } from '@/i18n/routing'
 import { findScreen, getAppScreens } from '@/lib/home'
@@ -40,6 +45,17 @@ export async function ScreensGallery() {
     return [{ key, caption: light?.caption ?? dark?.caption ?? images.light.alt, images }]
   })
   if (slides.length < MIN_SLIDES) return null
+  const labels: CoverflowProps['labels'] = {
+    label: t('label'),
+    slide: t.raw('slide') as string,
+    previous: t('previous'),
+    next: t('next'),
+    pause: t('pause'),
+    play: t('play'),
+    theme: t('theme'),
+    light: t('light'),
+    dark: t('dark'),
+  }
 
   return (
     <section
@@ -59,22 +75,18 @@ export async function ScreensGallery() {
           title={t('title')}
           intro={t('intro')}
         />
-        <div className="mt-10">
-          <Coverflow
+        {/* The coverflow's code loads near the view; until then, its first state from here. */}
+        <NearView island="coverflow" props={{ slides, labels }} className="mt-10">
+          <CoverflowView
             slides={slides}
-            labels={{
-              label: t('label'),
-              slide: t.raw('slide') as string,
-              previous: t('previous'),
-              next: t('next'),
-              pause: t('pause'),
-              play: t('play'),
-              theme: t('theme'),
-              light: t('light'),
-              dark: t('dark'),
-            }}
+            labels={labels}
+            active={0}
+            theme="light"
+            canAutoplay={false}
+            rotating={false}
+            paused={false}
           />
-        </div>
+        </NearView>
       </div>
     </section>
   )

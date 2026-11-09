@@ -299,12 +299,15 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
       fail('partners', seed.name, new Error('logo unavailable'))
       continue
     }
-    await upsert('partners', seed.name, { logo: { equals: logo } }, async () => {
+    // Matched on the name: a logo re-uploaded as a new media document would otherwise add the
+    // partner a second time.
+    await upsert('partners', seed.name, { name: { equals: seed.name } }, async () => {
       const data = {
         name: seed.name,
         logo: await required(seed.logo),
         order: seed.order,
         url: seed.url,
+        sisterProduct: seed.sisterProduct,
       }
       return { fr: data, en: data }
     })

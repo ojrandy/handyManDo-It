@@ -26,9 +26,9 @@ export const legalContent: Record<LegalKey, Localized<LegalBlock[]>> = {
       {
         p: 'This policy explains what personal data the HandyMan Do IT website (handymandoit.com) collects, why, and what you can ask us. Bookings, payments and accounts happen in the HandyMan Do IT app, not on this website.',
       },
-      { h: 'Who is responsible' },
+      { h: 'Who Is Responsible' },
       { p: contact.en },
-      { h: 'What we collect' },
+      { h: 'What We Collect' },
       {
         p: 'Only what you send us through a form on this website (contact, quote, partnership, pro application or job application):',
       },
@@ -43,7 +43,7 @@ export const legalContent: Record<LegalKey, Localized<LegalBlock[]>> = {
       {
         p: 'To limit spam, the website keeps your IP address in its memory for a few minutes when you send a form. It is not stored with your message.',
       },
-      { h: 'Why we use it' },
+      { h: 'Why We Use It' },
       {
         ul: [
           'to answer your question and prepare quotes',
@@ -54,11 +54,11 @@ export const legalContent: Record<LegalKey, Localized<LegalBlock[]>> = {
       {
         p: 'We use your data because you ask us to (you tick the consent box on each form) and because we need it to answer you. We do not sell it and we do not use it for advertising.',
       },
-      { h: 'Where it is kept and who can see it' },
+      { h: 'Where It Is Kept and Who Can See It' },
       {
         p: 'Form entries are stored in our content management system, in a Postgres database run by Neon (Amazon Web Services, United States), and attachments such as CVs are kept privately with our hosting providers. The website runs on Hostinger behind Cloudflare. A copy of each entry is emailed to our team inbox. Only HandyMan Do IT staff with an account can read entries and CVs.',
       },
-      { h: 'How long we keep it' },
+      { h: 'How Long We Keep It' },
       {
         p: 'Entries and their attachments are deleted automatically 24 months after they are sent. You can ask us to delete them sooner.',
       },
@@ -66,7 +66,7 @@ export const legalContent: Record<LegalKey, Localized<LegalBlock[]>> = {
       {
         p: 'The website sets one cookie to remember the language you chose. If we measure audiences (for example with Google Analytics), it only starts after you accept it in the cookie banner, and you can change your choice at any time.',
       },
-      { h: 'Your rights' },
+      { h: 'Your Rights' },
       {
         p: 'You can ask to see, correct or delete the data we hold about you, or withdraw your consent, by writing to handymanservicesdoit@gmail.com. We answer within 30 days.',
       },
@@ -134,13 +134,13 @@ export const legalContent: Record<LegalKey, Localized<LegalBlock[]>> = {
       {
         p: 'These terms apply to your use of the HandyMan Do IT website (handymandoit.com). By using the website you accept them.',
       },
-      { h: 'Who we are' },
+      { h: 'Who We Are' },
       { p: contact.en },
-      { h: 'What the website is for' },
+      { h: 'What the Website Is For' },
       {
         p: 'The website presents HandyMan Do IT, our services and the HandyMan Do IT app, and lets you contact us. Bookings, prices and payments are made in the app, where the price of a job is shown before you book. The conditions shown in the app apply to them.',
       },
-      { h: 'Information on the website' },
+      { h: 'Information on the Website' },
       {
         p: 'We do our best to keep the information accurate and up to date, but it is general information. Please read our disclaimer.',
       },
@@ -148,11 +148,11 @@ export const legalContent: Record<LegalKey, Localized<LegalBlock[]>> = {
       {
         p: 'When you send a form, give accurate information and only send what is needed. Do not use the forms to send advertising, abusive content or files that are not yours to share. We may ignore or delete such messages.',
       },
-      { h: 'Intellectual property' },
+      { h: 'Intellectual Property' },
       {
         p: 'The HandyMan Do IT name and logo, the texts, photos and videos on the website belong to HandyMan Do IT or to their owners, such as our partners and clients. Do not copy or reuse them without our written permission.',
       },
-      { h: 'Links to other websites' },
+      { h: 'Links to Other Websites' },
       {
         p: 'The website links to other websites, such as app stores, our partners and social networks. We are not responsible for their content or their privacy practices.',
       },
@@ -160,7 +160,7 @@ export const legalContent: Record<LegalKey, Localized<LegalBlock[]>> = {
       {
         p: 'We are not liable for losses caused by the use of this website or by a temporary unavailability of it, as far as the law allows.',
       },
-      { h: 'Changes and applicable law' },
+      { h: 'Changes and Applicable Law' },
       {
         p: 'We may change these terms; the date at the top shows the last update. These terms are governed by the law of Cameroon.',
       },

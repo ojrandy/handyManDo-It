@@ -8,7 +8,7 @@ export const Partners: CollectionConfig = {
   slug: 'partners',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'logo', 'url', 'order'],
+    defaultColumns: ['name', 'logo', 'url', 'sisterProduct', 'order'],
     group: 'Marketing',
   },
   defaultSort: 'order',
@@ -31,8 +31,34 @@ export const Partners: CollectionConfig = {
     {
       name: 'url',
       type: 'text',
-      validate: (value: string | null | undefined) =>
-        !value || /^https?:\/\/\S+$/.test(value) || 'Use a full link starting with https://',
+      validate: (
+        value: string | null | undefined,
+        { siblingData }: { siblingData: Partial<{ sisterProduct: boolean | null }> },
+      ) => {
+        if (!value) {
+          // A footer logo is a link to the product; without one it would lead nowhere.
+          return siblingData.sisterProduct ? 'A sister product needs its website link' : true
+        }
+        return /^https?:\/\/\S+$/.test(value) || 'Use a full link starting with https://'
+      },
+    },
+    {
+      // Footer "Sister Products" row (FR-GLB-02, owner 2026-11-07). Ticked partners show there
+      // as logo links, in partner order.
+      name: 'sisterProduct',
+      type: 'checkbox',
+      defaultValue: false,
+      label: {
+        en: 'Show in footer (Sister Products)',
+        fr: 'Afficher dans le pied de page (Produits frères)',
+      },
+      admin: {
+        position: 'sidebar',
+        description: {
+          en: 'The logo links to the website above, opening in a new tab.',
+          fr: 'Le logo renvoie vers le site ci-dessus, dans un nouvel onglet.',
+        },
+      },
     },
     orderField,
   ],

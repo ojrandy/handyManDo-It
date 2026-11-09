@@ -9,34 +9,25 @@ import { StoreBadges } from '@/components/ui/StoreBadges'
 import type { Locale } from '@/i18n/routing'
 import { findScreen, getAppScreens, getHome, pick } from '@/lib/home'
 import { getSiteSettings } from '@/lib/settings'
-import { qrSvg } from '@/lib/qr'
-import { absoluteUrl } from '@/lib/seo'
 
-// Download band (docs/PLAN.md §5.15, FR-HOME-15). Says "iOS & Android" only once an App Store
+// Download band (docs/PLAN.md §5.15, FR-HOME-15). No QR code here (owner, 2026-11-07): desktop
+// visitors still get one from the "Get the app" popover and /get-the-app. Says "iOS & Android" only once an App Store
 // URL exists (Q-3); until then "Android and the web", which is what is actually available.
 export async function DownloadBand() {
   const locale = (await getLocale()) as Locale
-  const [t, getTheApp, home, settings, screens] = await Promise.all([
+  const [t, home, settings, screens] = await Promise.all([
     getTranslations('download'),
-    getTranslations('getTheApp'),
     getHome(locale),
     getSiteSettings(locale),
     getAppScreens(locale),
   ])
   const copy = home.download
-  // Opens /download on the phone that scans it, which picks the store (T-4.10).
-  const qr = await qrSvg(absoluteUrl('/download'))
-  const qrAlt = getTheApp('qrAlt')
 
   return (
     <section
       aria-labelledby="download-title"
       className="grain relative overflow-hidden bg-night-900 py-20 text-white md:py-28"
     >
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-[radial-gradient(50%_60%_at_30%_100%,rgb(231_171_52/0.22),transparent_70%)]"
-      />
       <div className="container-site grid items-center gap-14 lg:grid-cols-2">
         <div>
           <SectionHeading
@@ -50,36 +41,19 @@ export async function DownloadBand() {
                 : pick(copy?.bodyAndroid, t('bodyAndroid'))
             }
           />
-          <div className="mt-10 flex flex-wrap items-center gap-8">
-            <div>
-              <StoreBadges
-                playStoreUrl={settings.playStoreUrl}
-                appStoreUrl={settings.appStoreUrl}
-              />
-              <a
-                href={settings.webAppUrl}
-                className="mt-5 inline-flex items-center gap-1.5 font-semibold text-gold-300 underline-offset-4 hover:underline"
-              >
-                {t('webApp')}
-                <ArrowUpRight aria-hidden className="size-4" />
-              </a>
-            </div>
-            {/* QR only makes sense on a computer; phones use the badge directly. */}
-            <figure className="hidden items-center gap-4 lg:flex">
-              <div
-                role="img"
-                aria-label={qrAlt}
-                className="w-28 rounded-card bg-white p-2 [&>svg]:h-auto [&>svg]:w-full"
-                // Trusted markup: generated on the server by the qrcode library from a fixed URL.
-                dangerouslySetInnerHTML={{ __html: qr }}
-              />
-              <figcaption className="max-w-[8rem] text-sm text-white/70">{t('qrHint')}</figcaption>
-            </figure>
+          <div className="mt-10">
+            <StoreBadges playStoreUrl={settings.playStoreUrl} appStoreUrl={settings.appStoreUrl} />
+            <a
+              href={settings.webAppUrl}
+              className="mt-5 inline-flex items-center gap-1.5 font-semibold text-gold-300 underline-offset-4 hover:underline"
+            >
+              {t('webApp')}
+              <ArrowUpRight aria-hidden className="size-4" />
+            </a>
           </div>
         </div>
 
-        <div aria-hidden className="relative flex justify-center gap-4 sm:gap-6">
-          <div className="absolute top-1/2 left-1/2 size-96 -translate-1/2 rounded-full bg-gold-500/15 blur-3xl" />
+        <div aria-hidden className="flex justify-center gap-4 sm:gap-6">
           {/* zoom scales the whole device, so the screen's pixel-sized text stays in proportion. */}
           <div className="translate-y-8 [zoom:0.6] sm:[zoom:0.78]">
             <Phone>

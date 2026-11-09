@@ -156,20 +156,22 @@ export type PartnerSeed = {
   name: string
   order: number
   url: string | null
+  sisterProduct: boolean
   logo: MediaSeed
 }
 
-// Websites named on the old site's affiliations page.
+// Websites named on the old site's affiliations page, plus the footer's sister products.
 const partnerUrls: Record<string, string> = {
-  'Spectron Limited LLC': 'https://spectronlimitedllc.com/',
-  'Web Spectron': 'https://webspectron.com/',
   'KUKWA Constructions': 'https://kukwaconstructions.com/',
+  ...Object.fromEntries(site.groupCompanies.map(({ name, url }) => [name, url])),
 }
+const sisterProducts = new Set<string>(site.groupCompanies.map(({ name }) => name))
 
 export const partnerSeeds: PartnerSeed[] = partners.map(({ name, logo }, index) => ({
   name,
   order: (index + 1) * 10,
   url: partnerUrls[name] ?? null,
+  sisterProduct: sisterProducts.has(name),
   // The partner's name is the logo's alt text in both languages.
   logo: { file: logo.replace(/^\//, ''), alt: { fr: name, en: name } },
 }))

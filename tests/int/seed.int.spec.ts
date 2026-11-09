@@ -148,6 +148,14 @@ describe('seed run', () => {
     expect(second.faqs.skipped).toBe(faqSeeds.length)
   }, 120_000)
 
+  it('creates nothing on an --update run either', async () => {
+    const updated = await runSeed(payload, { globals: false, update: true, log: () => {} })
+    for (const [step, counts] of Object.entries(updated)) {
+      expect(counts.failed, step).toBe(0)
+      expect(counts.created, step).toBe(0)
+    }
+  }, 300_000)
+
   it('writes both languages', async () => {
     const where = { key: { equals: 'moving' } }
     const [fr, en] = await Promise.all(

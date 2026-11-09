@@ -26,6 +26,13 @@ import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
+import { Icon as Icon_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
+import { Logo as Logo_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
+import { NavBrand as NavBrand_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
+import { AdminFonts as AdminFonts_1a7dbd9a670a2dd0dc56d863acf43b09 } from '../../../components/admin/AdminFonts'
+import { WelcomeWidget as WelcomeWidget_5e8ce4be674357ba43a7aadf44341217 } from '../../../components/admin/widgets'
+import { InboxWidget as InboxWidget_5e8ce4be674357ba43a7aadf44341217 } from '../../../components/admin/widgets'
+import { ContentWidget as ContentWidget_5e8ce4be674357ba43a7aadf44341217 } from '../../../components/admin/widgets'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
@@ -59,6 +66,13 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
+  "/components/admin/Brand#Icon": Icon_81fda60f3e3709e861f40982a767707d,
+  "/components/admin/Brand#Logo": Logo_81fda60f3e3709e861f40982a767707d,
+  "/components/admin/Brand#NavBrand": NavBrand_81fda60f3e3709e861f40982a767707d,
+  "/components/admin/AdminFonts#AdminFonts": AdminFonts_1a7dbd9a670a2dd0dc56d863acf43b09,
+  "/components/admin/widgets#WelcomeWidget": WelcomeWidget_5e8ce4be674357ba43a7aadf44341217,
+  "/components/admin/widgets#InboxWidget": InboxWidget_5e8ce4be674357ba43a7aadf44341217,
+  "/components/admin/widgets#ContentWidget": ContentWidget_5e8ce4be674357ba43a7aadf44341217,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }

@@ -20,6 +20,13 @@ export async function MiniDemo() {
 
   const labels: DemoLabels = {
     label: t('label'),
+    time: phone('time'),
+    tabs: {
+      home: phone('tabs.home'),
+      bookings: phone('tabs.bookings'),
+      wallet: phone('tabs.wallet'),
+      profile: phone('tabs.profile'),
+    },
     question: phone('question'),
     prosTitle: t('prosTitle'),
     back: t('back'),
@@ -54,11 +61,7 @@ export async function MiniDemo() {
           title={t('title')}
           intro={t('intro')}
         />
-        <div className="relative flex justify-center">
-          <div
-            aria-hidden
-            className="absolute top-1/2 left-1/2 size-80 -translate-1/2 rounded-full bg-teal-400/15 blur-3xl"
-          />
+        <div className="flex justify-center">
           <DemoLoader
             loading={t('loading')}
             labels={labels}

@@ -1,0 +1,635 @@
+// HandyMan Do IT brand theme for the Payload admin (ADR-032).
+// Payload draws everything from its --theme-* variables, so the theme is mostly a remap of those
+// onto the site's tokens (design-system §2), plus the custom dashboard widgets (hm-*).
+// Unlayered on purpose: Payload's own styles sit in @layer payload-default and lose to these.
+
+:root {
+  --hm-night-950: #0a1c25;
+  --hm-night-900: #0f2530;
+  --hm-night-800: #132f3a;
+  --hm-teal-700: #163a47;
+  --hm-teal-600: #174f60;
+  --hm-teal-500: #1c5d70;
+  --hm-teal-400: #4791a5;
+  --hm-gold-500: #e7ab34;
+  --hm-gold-300: #efbd56;
+  --hm-mist-50: #f7f9fa;
+  --hm-mist-100: #edf4f8;
+  --hm-mist-200: #dfe8eb;
+  --hm-slate-500: #5b7480;
+  --hm-ink: #183d49;
+  --hm-font-display: var(--font-body);
+
+  // Neutrals tinted towards the brand teal instead of Payload's pure greys.
+  --theme-elevation-0: #ffffff;
+  --theme-elevation-50: #f7f9fa;
+  --theme-elevation-100: #edf4f8;
+  --theme-elevation-150: #dfe8eb;
+  --theme-elevation-200: #cddbe0;
+  --theme-elevation-250: #b9cbd2;
+  --theme-elevation-300: #a3bac3;
+  --theme-elevation-350: #8ea8b2;
+  --theme-elevation-400: #7a96a1;
+  --theme-elevation-450: #688591;
+  --theme-elevation-500: #5b7480;
+  --theme-elevation-550: #4e6773;
+  --theme-elevation-600: #425b67;
+  --theme-elevation-650: #374f5b;
+  --theme-elevation-700: #2c4551;
+  --theme-elevation-750: #213b47;
+  --theme-elevation-800: #183d49;
+  --theme-elevation-850: #132f3a;
+  --theme-elevation-900: #0f2530;
+  --theme-elevation-950: #0a1c25;
+  --theme-elevation-1000: #06131a;
+
+  // "Success" is Payload's accent (focus rings, toggles, published pills): brand teal.
+  --theme-success-50: #eaf4f7;
+  --theme-success-100: #d6eaf0;
+  --theme-success-150: #b9dae4;
+  --theme-success-200: #9bc9d6;
+  --theme-success-250: #7fb7c8;
+  --theme-success-300: #64a6b9;
+  --theme-success-350: #4791a5;
+  --theme-success-400: #3a8497;
+  --theme-success-450: #2d7488;
+  --theme-success-500: #1c5d70;
+  --theme-success-550: #1a5668;
+  --theme-success-600: #174f60;
+  --theme-success-650: #164656;
+  --theme-success-700: #163a47;
+  --theme-success-750: #153440;
+  --theme-success-800: #132f3a;
+  --theme-success-850: #112a34;
+  --theme-success-900: #0f2530;
+  --theme-success-950: #0a1c25;
+
+  --theme-text: var(--hm-ink);
+  --style-radius-s: 6px;
+  --style-radius-m: 10px;
+  --style-radius-l: 16px;
+  --accessibility-outline: 2px solid var(--hm-teal-400);
+
+  --hm-card-shadow: 0 1px 2px rgb(10 28 37 / 0.05), 0 8px 24px -12px rgb(10 28 37 / 0.18);
+  --hm-surface: #ffffff;
+}
+
+html[data-theme='dark'] {
+  --theme-elevation-0: #0a1c25;
+  --theme-elevation-50: #0f2530;
+  --theme-elevation-100: #132f3a;
+  --theme-elevation-150: #1a3946;
+  --theme-elevation-200: #224451;
+  --theme-elevation-250: #2d505c;
+  --theme-elevation-300: #3a5d69;
+  --theme-elevation-350: #4a6b77;
+  --theme-elevation-400: #5d7c87;
+  --theme-elevation-450: #6f8c96;
+  --theme-elevation-500: #829ca6;
+  --theme-elevation-550: #94abb3;
+  --theme-elevation-600: #a7bac1;
+  --theme-elevation-650: #b9c9cf;
+  --theme-elevation-700: #cad7dc;
+  --theme-elevation-750: #dae4e8;
+  --theme-elevation-800: #e8eff2;
+  --theme-elevation-850: #f1f6f8;
+  --theme-elevation-900: #f7f9fa;
+  --theme-elevation-950: #fbfcfd;
+  --theme-elevation-1000: #ffffff;
+
+  --theme-success-500: #4791a5;
+  --theme-success-400: #64a6b9;
+  --theme-success-600: #3a8497;
+
+  --theme-text: var(--theme-elevation-800);
+  --hm-card-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px -14px rgb(0 0 0 / 0.6);
+  --hm-surface: #0f2530;
+}
+
+// ---------------------------------------------------------------- type
+
+h1,
+h2,
+h3,
+h4,
+.collections__label,
+.doc-header__title,
+.list-header__title,
+.hm-logo__name {
+  font-family: var(--hm-font-display);
+  letter-spacing: -0.02em;
+}
+
+// ---------------------------------------------------------------- sidebar
+// Night navy in both themes, like the site footer. The elevation scale is flipped inside the nav
+// so Payload's own link, group and logout styles turn light on dark without further overrides.
+
+.nav {
+  --theme-elevation-0: #0f2530;
+  --theme-elevation-50: #132f3a;
+  --theme-elevation-100: #1a3946;
+  --theme-elevation-150: #224451;
+  --theme-elevation-400: #9fb6bf;
+  --theme-elevation-500: #b5c7ce;
+  --theme-elevation-800: #f1f6f8;
+  --theme-text: #e8eff2;
+  --theme-bg: var(--hm-night-900);
+  background: linear-gradient(180deg, var(--hm-night-900) 0%, var(--hm-night-950) 100%);
+  border-inline-end: 1px solid rgb(255 255 255 / 0.06);
+  color: var(--theme-text);
+}
+
+.nav__link {
+  border-radius: var(--style-radius-s);
+  padding-block: 6px;
+  padding-inline: 10px 30px;
+  margin-inline-start: -10px;
+  color: rgb(232 239 242 / 0.82);
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgb(255 255 255 / 0.06);
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  &.active {
+    background: rgb(231 171 52 / 0.12);
+    color: var(--hm-gold-300);
+  }
+}
+
+.nav__link-indicator {
+  background: var(--hm-gold-500);
+  inset-inline-start: -10px;
+}
+
+.nav-group__toggle {
+  color: rgb(181 199 206 / 0.75);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hm-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: calc(var(--base) * 1.25);
+  padding-bottom: calc(var(--base) * 1);
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.hm-nav-brand__mark {
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgb(231 171 52 / 0.35);
+}
+
+.hm-nav-brand__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hm-nav-brand__name {
+  font-family: var(--hm-font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.hm-nav-brand__link {
+  font-size: 12px;
+  color: var(--hm-gold-300);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+// ---------------------------------------------------------------- buttons
+// Gold is the brand call to action; gold buttons carry night text (design-system §2).
+
+.btn--style-primary {
+  --color: var(--hm-night-900);
+  --bg-color: var(--hm-gold-500);
+  --hover-bg: var(--hm-gold-300);
+  --hover-color: var(--hm-night-900);
+  font-weight: 600;
+}
+
+.btn--style-secondary {
+  --hover-color: var(--theme-elevation-900);
+}
+
+// ---------------------------------------------------------------- surfaces
+
+.card {
+  background: var(--hm-surface);
+  box-shadow: var(--hm-card-shadow);
+  border-color: var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+
+  &:hover {
+    border-color: var(--hm-teal-400);
+  }
+}
+
+.app-header__bg {
+  backdrop-filter: saturate(1.2) blur(8px);
+}
+
+// ---------------------------------------------------------------- login / create first user
+
+.template-minimal {
+  background:
+    radial-gradient(60rem 30rem at 85% -10%, rgb(231 171 52 / 0.18), transparent 60%),
+    radial-gradient(50rem 30rem at -10% 110%, rgb(71 145 165 / 0.25), transparent 60%),
+    linear-gradient(160deg, var(--hm-night-900), var(--hm-night-950));
+}
+
+.template-minimal__wrap {
+  background: var(--hm-surface);
+  border-radius: var(--style-radius-l);
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.55);
+  padding: calc(var(--base) * 2);
+  border-top: 4px solid var(--hm-gold-500);
+}
+
+.hm-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hm-logo__mark {
+  border-radius: 16px;
+}
+
+.hm-logo__name {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--theme-elevation-900);
+}
+
+.hm-logo__tag {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+
+.hm-icon {
+  border-radius: 6px;
+  display: block;
+}
+
+// ---------------------------------------------------------------- dashboard widgets
+
+.hm-eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--hm-gold-300);
+}
+
+.hm-welcome {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--base) * 2);
+  height: 100%;
+  padding: calc(var(--base) * 1.75) calc(var(--base) * 2);
+  border-radius: var(--style-radius-l);
+  color: #ffffff;
+  background:
+    radial-gradient(40rem 20rem at 100% 0%, rgb(231 171 52 / 0.22), transparent 60%),
+    linear-gradient(135deg, var(--hm-teal-600) 0%, var(--hm-night-900) 70%);
+  box-shadow: 0 24px 60px -28px rgb(10 28 37 / 0.7);
+}
+
+.hm-welcome__date {
+  color: rgb(255 255 255 / 0.75);
+  letter-spacing: 0.08em;
+}
+
+.hm-welcome__title {
+  margin: 0;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.1;
+  color: #ffffff;
+}
+
+.hm-welcome__intro {
+  margin: 10px 0 0;
+  max-width: 46ch;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.hm-welcome__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: calc(var(--base) * 1.1);
+}
+
+.hm-welcome__mark {
+  flex-shrink: 0;
+  border-radius: 24px;
+  transform: rotate(4deg);
+  box-shadow:
+    0 0 0 1px rgb(231 171 52 / 0.35),
+    0 20px 50px -12px rgb(0 0 0 / 0.6);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.hm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
+
+  &:focus-visible {
+    outline: 2px solid var(--hm-gold-300);
+    outline-offset: 2px;
+  }
+}
+
+.hm-btn--gold {
+  background: var(--hm-gold-500);
+  color: var(--hm-night-900);
+
+  &:hover {
+    background: var(--hm-gold-300);
+  }
+}
+
+.hm-btn--ghost {
+  border: 1px solid rgb(255 255 255 / 0.28);
+  color: #ffffff;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.08);
+    border-color: rgb(255 255 255 / 0.5);
+  }
+}
+
+.hm-panel {
+  height: 100%;
+  padding: calc(var(--base) * 1.1) calc(var(--base) * 1.25);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-l);
+  background: var(--hm-surface);
+  box-shadow: var(--hm-card-shadow);
+}
+
+.hm-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-bottom: calc(var(--base) * 0.75);
+}
+
+.hm-panel__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0;
+  font-size: 18px;
+}
+
+.hm-panel__more {
+  white-space: nowrap;
+}
+
+.hm-panel__more {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--theme-success-500);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+.hm-panel__empty {
+  margin: 0;
+  padding: calc(var(--base) * 1) 0;
+  color: var(--theme-elevation-500);
+}
+
+.hm-badge {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--hm-gold-500);
+  color: var(--hm-night-900);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+// Payload's collection cards under the widgets: group names as eyebrows, compact cards.
+.collections__group + .collections__group {
+  margin-top: calc(var(--base) * 1.25);
+}
+
+.collections__label {
+  margin-bottom: 10px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--theme-elevation-500);
+}
+
+.collections__card-list .card {
+  min-height: 0;
+  padding: 14px 16px;
+  align-items: center;
+}
+
+.collections__card-list .card__title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.hm-inbox {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li + li {
+    border-top: 1px solid var(--theme-elevation-100);
+  }
+}
+
+.hm-inbox__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px;
+  margin-inline: -8px;
+  border-radius: var(--style-radius-s);
+  color: inherit;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--theme-elevation-50);
+  }
+}
+
+.hm-inbox__main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.hm-inbox__name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hm-inbox__type,
+.hm-inbox__meta time {
+  font-size: 12px;
+  color: var(--theme-elevation-500);
+}
+
+.hm-inbox__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.hm-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--theme-elevation-300);
+}
+
+.hm-dot--new {
+  background: var(--hm-gold-500);
+  box-shadow: 0 0 0 3px rgb(231 171 52 / 0.25);
+}
+
+.hm-dot--in-progress {
+  background: var(--hm-teal-400);
+}
+
+.hm-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--theme-elevation-100);
+  color: var(--theme-elevation-700);
+}
+
+.hm-status--new {
+  background: rgb(231 171 52 / 0.18);
+  color: #7a5308;
+}
+
+html[data-theme='dark'] .hm-status--new {
+  color: var(--hm-gold-300);
+}
+
+.hm-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hm-stat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 14px 16px;
+  border-radius: var(--style-radius-m);
+  border: 1px solid var(--theme-elevation-100);
+  background: var(--theme-elevation-50);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--hm-teal-400);
+  }
+}
+
+.hm-stat__value {
+  font-family: var(--hm-font-display);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--theme-elevation-900);
+}
+
+.hm-stat__label {
+  margin-top: 2px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.hm-stat__detail {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--theme-elevation-500);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__link,
+  .hm-btn,
+  .hm-stat {
+    transition: none;
+  }
+}

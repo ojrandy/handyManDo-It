@@ -72,22 +72,16 @@ export async function Pillars() {
         />
 
         <ul className="mt-12 grid gap-5 md:grid-cols-3">
-          {valueCards.map(({ key, Icon, title, body }, index) => (
+          {valueCards.map(({ key, Icon, title, body }) => (
             <li
               key={key}
-              className="relative overflow-hidden rounded-panel bg-white p-8 text-center shadow-sm ring-1 ring-mist-200 md:text-left"
+              className="rounded-panel bg-white p-8 text-center shadow-sm ring-1 ring-mist-200 md:text-left"
             >
-              <span
-                aria-hidden
-                className="absolute -top-6 -right-2 font-display text-[8rem] leading-none font-extrabold text-mist-100"
-              >
-                {index + 1}
-              </span>
-              <span className="relative mx-auto grid size-12 place-items-center rounded-card bg-teal-600 text-white md:mx-0">
+              <span className="mx-auto grid size-12 place-items-center rounded-card bg-teal-600 text-white md:mx-0">
                 <Icon aria-hidden className="size-6" strokeWidth={1.75} />
               </span>
-              <h3 className="relative mt-6 text-2xl font-bold text-teal-700">{title}</h3>
-              <p className="relative mt-3 leading-relaxed text-slate-500">{body}</p>
+              <h3 className="mt-6 text-2xl font-bold text-teal-700">{title}</h3>
+              <p className="mt-3 leading-relaxed text-slate-500">{body}</p>
             </li>
           ))}
         </ul>

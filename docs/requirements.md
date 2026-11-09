@@ -46,7 +46,7 @@ Every requirement has a stable ID. Code, tests, tracker items and PRs reference 
 | ID | P | Requirement | Acceptance criteria |
 |---|---|---|---|
 | FR-GLB-01 | M | Header with logo, nav (Services mega-menu, Businesses, Become a pro, Our work, About, Blog), language switch, "Get the app" pill | Transparent over hero, frosted dark after scroll; all links work in both locales; keyboard operable; mobile full-screen menu with store buttons |
-| FR-GLB-02 | M | Footer: logo, tagline, values, link columns, contact, hours, offices, socials, store badges, language switch, legal links, ©, developer credit | All contact data comes from the `site` global; every link column has the same number of rows on every screen size, extra links go to the bottom bar |
+| FR-GLB-02 | M | Footer: logo, tagline, values, link columns, contact, hours, offices, socials, store badges, language switch, legal links, sister products (logo links), ©, developer credit | All contact data comes from the `site` global; every link column has the same number of rows on every screen size, extra links go to the bottom bar |
 | FR-GLB-03 | M | Floating WhatsApp button on every public page | Appears after a delay; doesn't overlap CTAs on 390 px; fires `whatsapp_click` |
 | FR-GLB-04 | M | Smart "Get the app": Android → Play, iOS → App Store if set else web app + Add-to-Home hint, desktop → QR popover | Verified on Android, iPhone, desktop; UTM passed through (FR-ANA-03) |
 | FR-GLB-05 | M | Skip-to-content link | First focusable element; visible on focus |
@@ -80,7 +80,7 @@ Every requirement has a stable ID. Code, tests, tracker items and PRs reference 
 | FR-HOME-12 | M | Homes / Businesses / Buildings cards with CTAs | |
 | FR-HOME-13 | M | Earn with HandyMan tabs (Pros / Sellers / Kitchens) + step strip → `/become-a-pro` | Accessible tabs pattern |
 | FR-HOME-14 | M | FAQ accordion (8 `showOnHome` FAQs) with FAQPage JSON-LD | Fires `faq_open` |
-| FR-HOME-15 | M | Download band: badges, QR on desktop, web-app link | |
+| FR-HOME-15 | M | Download band: badges, web-app link | No QR code in the band (owner, 2026-11-07) |
 | FR-HOME-16 | S | Latest 3 blog posts | |
 
 ### 4.4 Inner pages (PLAN.md §6)
@@ -125,6 +125,7 @@ Every requirement has a stable ID. Code, tests, tracker items and PRs reference 
 | FR-CMS-05 | S | Live preview | Preview shows draft in chosen locale |
 | FR-CMS-06 | M | Media alt text required + localized | Save blocked without alt |
 | FR-CMS-07 | M | Seed script fills the CMS with the old site's content in FR and EN | `npm run seed` twice: 2nd run creates nothing; refuses a non-local DB without `--force`; never overwrites editor changes without `--update` |
+| FR-CMS-08 | S | Admin carries the brand: site colours and fonts, logo on login and sidebar, a dashboard that summarises the inbox and content, collection and group names in FR and EN | Login, dashboard, lists and edit screens use the brand tokens in light and dark; dashboard shows new form entries and content counts within the user's access; works at 390 px (owner request 2026-11-07) |
 
 ### 4.7 SEO and migration
 

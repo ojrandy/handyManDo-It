@@ -67,20 +67,20 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    submissions: Submission;
+    files: File;
     media: Media;
     services: Service;
     projects: Project;
-    testimonials: Testimonial;
     faqs: Faq;
     posts: Post;
     categories: Category;
-    team: Team;
+    testimonials: Testimonial;
     partners: Partner;
     'app-screens': AppScreen;
+    team: Team;
     jobs: Job;
-    submissions: Submission;
-    files: File;
+    users: User;
     redirects: Redirect;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -95,20 +95,20 @@ export interface Config {
     };
   };
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
+    files: FilesSelect<false> | FilesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
-    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    team: TeamSelect<false> | TeamSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     'app-screens': AppScreensSelect<false> | AppScreensSelect<true>;
+    team: TeamSelect<false> | TeamSelect<true>;
     jobs: JobsSelect<false> | JobsSelect<true>;
-    submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
-    files: FilesSelect<false> | FilesSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -120,21 +120,24 @@ export interface Config {
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'en') | ('fr' | 'en')[];
   globals: {
+    home: Home;
     site: Site;
     navigation: Navigation;
-    home: Home;
     seo: Seo;
     legal: Legal;
   };
   globalsSelect: {
+    home: HomeSelect<false> | HomeSelect<true>;
     site: SiteSelect<false> | SiteSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
-    home: HomeSelect<false> | HomeSelect<true>;
     seo: SeoSelect<false> | SeoSelect<true>;
     legal: LegalSelect<false> | LegalSelect<true>;
   };
   locale: 'fr' | 'en';
   widgets: {
+    welcome: WelcomeWidget;
+    inbox: InboxWidget;
+    content: ContentWidget;
     collections: CollectionsWidget;
   };
   user: User;
@@ -162,32 +165,97 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Form entries. Deleted automatically after 24 months.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "submissions".
  */
-export interface User {
+export interface Submission {
   id: number;
-  name?: string | null;
-  roles: ('admin' | 'editor')[];
+  status: 'new' | 'in-progress' | 'done' | 'spam';
+  type: 'contact' | 'quote-home' | 'quote-business' | 'partnership' | 'pro' | 'job';
+  name: string;
+  email?: string | null;
+  phone?: string | null;
+  city?: string | null;
+  message?: string | null;
+  job?: (number | null) | Job;
+  attachment?: (number | null) | File;
+  locale: 'fr' | 'en';
+  details?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  utm?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs".
+ */
+export interface Job {
+  id: number;
+  title: string;
+  /**
+   * URL segment. Filled from the title when empty; changing it changes the URL.
+   */
+  slug: string;
+  location: string;
+  type: 'full-time' | 'part-time' | 'contract';
+  /**
+   * Closed roles stay visible but take no applications.
+   */
+  open?: boolean | null;
+  closesAt?: string | null;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files".
+ */
+export interface File {
+  id: number;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -195,6 +263,7 @@ export interface User {
  */
 export interface Media {
   id: number;
+  sourceHash?: string | null;
   alt: string;
   caption?: string | null;
   updatedAt: string;
@@ -553,20 +622,31 @@ export interface Category {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "team".
+ * via the `definition` "users".
  */
-export interface Team {
+export interface User {
   id: number;
-  name: string;
-  role: string;
-  photo?: (number | null) | Media;
-  bio?: string | null;
-  /**
-   * Lower numbers come first.
-   */
-  order?: number | null;
+  name?: string | null;
+  roles: ('admin' | 'editor')[];
   updatedAt: string;
   createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -580,6 +660,10 @@ export interface Partner {
    */
   logo: number | Media;
   url?: string | null;
+  /**
+   * The logo links to the website above, opening in a new tab.
+   */
+  sisterProduct?: boolean | null;
   /**
    * Lower numbers come first.
    */
@@ -618,96 +702,20 @@ export interface AppScreen {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "jobs".
+ * via the `definition` "team".
  */
-export interface Job {
+export interface Team {
   id: number;
-  title: string;
-  /**
-   * URL segment. Filled from the title when empty; changing it changes the URL.
-   */
-  slug: string;
-  location: string;
-  type: 'full-time' | 'part-time' | 'contract';
-  /**
-   * Closed roles stay visible but take no applications.
-   */
-  open?: boolean | null;
-  closesAt?: string | null;
-  description: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Form entries. Deleted automatically after 24 months.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "submissions".
- */
-export interface Submission {
-  id: number;
-  status: 'new' | 'in-progress' | 'done' | 'spam';
-  type: 'contact' | 'quote-home' | 'quote-business' | 'partnership' | 'pro' | 'job';
   name: string;
-  email?: string | null;
-  phone?: string | null;
-  city?: string | null;
-  message?: string | null;
-  job?: (number | null) | Job;
-  attachment?: (number | null) | File;
-  locale: 'fr' | 'en';
-  details?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
-  utm?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
+  role: string;
+  photo?: (number | null) | Media;
+  bio?: string | null;
+  /**
+   * Lower numbers come first.
+   */
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "files".
- */
-export interface File {
-  id: number;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -769,8 +777,12 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'submissions';
+        value: number | Submission;
+      } | null)
+    | ({
+        relationTo: 'files';
+        value: number | File;
       } | null)
     | ({
         relationTo: 'media';
@@ -785,10 +797,6 @@ export interface PayloadLockedDocument {
         value: number | Project;
       } | null)
     | ({
-        relationTo: 'testimonials';
-        value: number | Testimonial;
-      } | null)
-    | ({
         relationTo: 'faqs';
         value: number | Faq;
       } | null)
@@ -801,8 +809,8 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
-        relationTo: 'team';
-        value: number | Team;
+        relationTo: 'testimonials';
+        value: number | Testimonial;
       } | null)
     | ({
         relationTo: 'partners';
@@ -813,16 +821,16 @@ export interface PayloadLockedDocument {
         value: number | AppScreen;
       } | null)
     | ({
+        relationTo: 'team';
+        value: number | Team;
+      } | null)
+    | ({
         relationTo: 'jobs';
         value: number | Job;
       } | null)
     | ({
-        relationTo: 'submissions';
-        value: number | Submission;
-      } | null)
-    | ({
-        relationTo: 'files';
-        value: number | File;
+        relationTo: 'users';
+        value: number | User;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -872,34 +880,47 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "submissions_select".
  */
-export interface UsersSelect<T extends boolean = true> {
+export interface SubmissionsSelect<T extends boolean = true> {
+  status?: T;
+  type?: T;
   name?: T;
-  roles?: T;
+  email?: T;
+  phone?: T;
+  city?: T;
+  message?: T;
+  job?: T;
+  attachment?: T;
+  locale?: T;
+  details?: T;
+  utm?: T;
   updatedAt?: T;
   createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  resetPasswordRequestedAt?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files_select".
+ */
+export interface FilesSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  sourceHash?: T;
   alt?: T;
   caption?: T;
   updatedAt?: T;
@@ -1046,23 +1067,6 @@ export interface ProjectsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials_select".
- */
-export interface TestimonialsSelect<T extends boolean = true> {
-  name?: T;
-  city?: T;
-  quote?: T;
-  service?: T;
-  rating?: T;
-  featured?: T;
-  order?: T;
-  photo?: T;
-  projectPhoto?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs_select".
  */
 export interface FaqsSelect<T extends boolean = true> {
@@ -1112,14 +1116,18 @@ export interface CategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "team_select".
+ * via the `definition` "testimonials_select".
  */
-export interface TeamSelect<T extends boolean = true> {
+export interface TestimonialsSelect<T extends boolean = true> {
   name?: T;
-  role?: T;
-  photo?: T;
-  bio?: T;
+  city?: T;
+  quote?: T;
+  service?: T;
+  rating?: T;
+  featured?: T;
   order?: T;
+  photo?: T;
+  projectPhoto?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1131,6 +1139,7 @@ export interface PartnersSelect<T extends boolean = true> {
   name?: T;
   logo?: T;
   url?: T;
+  sisterProduct?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1145,6 +1154,19 @@ export interface AppScreensSelect<T extends boolean = true> {
   theme?: T;
   image?: T;
   caption?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team_select".
+ */
+export interface TeamSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  photo?: T;
+  bio?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1165,40 +1187,28 @@ export interface JobsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "submissions_select".
+ * via the `definition` "users_select".
  */
-export interface SubmissionsSelect<T extends boolean = true> {
-  status?: T;
-  type?: T;
+export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  roles?: T;
+  updatedAt?: T;
+  createdAt?: T;
   email?: T;
-  phone?: T;
-  city?: T;
-  message?: T;
-  job?: T;
-  attachment?: T;
-  locale?: T;
-  details?: T;
-  utm?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "files_select".
- */
-export interface FilesSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  resetPasswordRequestedAt?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1256,6 +1266,207 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    titleStart?: string | null;
+    titleHighlight?: string | null;
+    subtitle?: string | null;
+    values?: string | null;
+    /**
+     * Empty MP4 ⇒ designed background, timer-driven cues. Files come from `npm run encode:hero`.
+     */
+    video?: {
+      mp4?: (number | null) | Media;
+      webm?: (number | null) | Media;
+      mp4Large?: (number | null) | Media;
+      webmLarge?: (number | null) | Media;
+      mp4Small?: (number | null) | Media;
+      webmSmall?: (number | null) | Media;
+      /**
+       * AVIF under 120 KB (NFR-PERF-02).
+       */
+      poster?: (number | null) | Media;
+    };
+    /**
+     * Photos of our people at work, 2–6, landscape or square, 1200 px wide or more. The first one loads first (LCP).
+     */
+    slides?:
+      | {
+          image: number | Media;
+          caption?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * "Watch the film" lightbox.
+     */
+    film?: {
+      video?: (number | null) | Media;
+      poster?: (number | null) | Media;
+      captions?: (number | null) | Media;
+    };
+    cues?:
+      | {
+          /**
+           * Seconds into the video.
+           */
+          time: number;
+          icon?:
+            | (
+                | 'badge-check'
+                | 'shield-check'
+                | 'navigation'
+                | 'circle-check'
+                | 'key-round'
+                | 'clock'
+                | 'handshake'
+                | 'sparkles'
+                | 'wallet'
+                | 'smartphone'
+              )
+            | null;
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  pillars?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    values?:
+      | {
+          icon?:
+            | (
+                | 'badge-check'
+                | 'shield-check'
+                | 'navigation'
+                | 'circle-check'
+                | 'key-round'
+                | 'clock'
+                | 'handshake'
+                | 'sparkles'
+                | 'wallet'
+                | 'smartphone'
+              )
+            | null;
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    trustTitle?: string | null;
+    trust?:
+      | {
+          icon?:
+            | (
+                | 'badge-check'
+                | 'shield-check'
+                | 'navigation'
+                | 'circle-check'
+                | 'key-round'
+                | 'clock'
+                | 'handshake'
+                | 'sparkles'
+                | 'wallet'
+                | 'smartphone'
+              )
+            | null;
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  numbers?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    body?: string | null;
+  };
+  howItWorks?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    steps?:
+      | {
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  audiences?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          audience: 'homes' | 'businesses' | 'buildings';
+          title: string;
+          points?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  earn?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    body?: string | null;
+    tabs?:
+      | {
+          label: string;
+          title: string;
+          points?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    steps?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  services?: {
+    eyebrow?: string | null;
+    title?: string | null;
+  };
+  testimonials?: {
+    eyebrow?: string | null;
+    title?: string | null;
+  };
+  faq?: {
+    eyebrow?: string | null;
+    title?: string | null;
+  };
+  download?: {
+    eyebrow?: string | null;
+    title?: string | null;
+    bodyAndroid?: string | null;
+    bodyAll?: string | null;
+  };
+  blog?: {
+    eyebrow?: string | null;
+    title?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1489,207 +1700,6 @@ export interface Navigation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home".
- */
-export interface Home {
-  id: number;
-  hero?: {
-    eyebrow?: string | null;
-    titleStart?: string | null;
-    titleHighlight?: string | null;
-    subtitle?: string | null;
-    values?: string | null;
-    /**
-     * Empty MP4 ⇒ designed background, timer-driven cues. Files come from `npm run encode:hero`.
-     */
-    video?: {
-      mp4?: (number | null) | Media;
-      webm?: (number | null) | Media;
-      mp4Large?: (number | null) | Media;
-      webmLarge?: (number | null) | Media;
-      mp4Small?: (number | null) | Media;
-      webmSmall?: (number | null) | Media;
-      /**
-       * AVIF under 120 KB (NFR-PERF-02).
-       */
-      poster?: (number | null) | Media;
-    };
-    /**
-     * Photos of our people at work, 2–6, landscape or square, 1200 px wide or more. The first one loads first (LCP).
-     */
-    slides?:
-      | {
-          image: number | Media;
-          caption?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    /**
-     * "Watch the film" lightbox.
-     */
-    film?: {
-      video?: (number | null) | Media;
-      poster?: (number | null) | Media;
-      captions?: (number | null) | Media;
-    };
-    cues?:
-      | {
-          /**
-           * Seconds into the video.
-           */
-          time: number;
-          icon?:
-            | (
-                | 'badge-check'
-                | 'shield-check'
-                | 'navigation'
-                | 'circle-check'
-                | 'key-round'
-                | 'clock'
-                | 'handshake'
-                | 'sparkles'
-                | 'wallet'
-                | 'smartphone'
-              )
-            | null;
-          title: string;
-          body?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  pillars?: {
-    eyebrow?: string | null;
-    title?: string | null;
-    values?:
-      | {
-          icon?:
-            | (
-                | 'badge-check'
-                | 'shield-check'
-                | 'navigation'
-                | 'circle-check'
-                | 'key-round'
-                | 'clock'
-                | 'handshake'
-                | 'sparkles'
-                | 'wallet'
-                | 'smartphone'
-              )
-            | null;
-          title: string;
-          body?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    trustTitle?: string | null;
-    trust?:
-      | {
-          icon?:
-            | (
-                | 'badge-check'
-                | 'shield-check'
-                | 'navigation'
-                | 'circle-check'
-                | 'key-round'
-                | 'clock'
-                | 'handshake'
-                | 'sparkles'
-                | 'wallet'
-                | 'smartphone'
-              )
-            | null;
-          title: string;
-          body?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  numbers?: {
-    eyebrow?: string | null;
-    title?: string | null;
-    body?: string | null;
-  };
-  howItWorks?: {
-    eyebrow?: string | null;
-    title?: string | null;
-    steps?:
-      | {
-          title: string;
-          body?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  audiences?: {
-    eyebrow?: string | null;
-    title?: string | null;
-    items?:
-      | {
-          audience: 'homes' | 'businesses' | 'buildings';
-          title: string;
-          points?:
-            | {
-                text: string;
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  earn?: {
-    eyebrow?: string | null;
-    title?: string | null;
-    body?: string | null;
-    tabs?:
-      | {
-          label: string;
-          title: string;
-          points?:
-            | {
-                text: string;
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[]
-      | null;
-    steps?:
-      | {
-          text: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  services?: {
-    eyebrow?: string | null;
-    title?: string | null;
-  };
-  testimonials?: {
-    eyebrow?: string | null;
-    title?: string | null;
-  };
-  faq?: {
-    eyebrow?: string | null;
-    title?: string | null;
-  };
-  download?: {
-    eyebrow?: string | null;
-    title?: string | null;
-    bodyAndroid?: string | null;
-    bodyAll?: string | null;
-  };
-  blog?: {
-    eyebrow?: string | null;
-    title?: string | null;
-  };
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "seo".
  */
 export interface Seo {
@@ -1795,101 +1805,6 @@ export interface Legal {
   };
   updatedAt?: string | null;
   createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site_select".
- */
-export interface SiteSelect<T extends boolean = true> {
-  phone?: T;
-  whatsappUrl?: T;
-  email?: T;
-  hours?: T;
-  officeHours?: T;
-  offices?:
-    | T
-    | {
-        label?: T;
-        address?: T;
-        city?: T;
-        mapUrl?: T;
-        id?: T;
-      };
-  webAppUrl?: T;
-  playStoreUrl?: T;
-  appStoreUrl?: T;
-  rating?: T;
-  reviewCount?: T;
-  towns?: T;
-  years?: T;
-  clients?: T;
-  projects?: T;
-  facebook?: T;
-  instagram?: T;
-  x?: T;
-  youtube?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "navigation_select".
- */
-export interface NavigationSelect<T extends boolean = true> {
-  header?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              label?: T;
-              type?: T;
-              page?: T;
-              doc?: T;
-              url?: T;
-            };
-        children?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    label?: T;
-                    type?: T;
-                    page?: T;
-                    doc?: T;
-                    url?: T;
-                  };
-              description?: T;
-              icon?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  footerColumns?:
-    | T
-    | {
-        title?: T;
-        links?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    label?: T;
-                    type?: T;
-                    page?: T;
-                    doc?: T;
-                    url?: T;
-                  };
-              id?: T;
-            };
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2066,6 +1981,101 @@ export interface HomeSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site_select".
+ */
+export interface SiteSelect<T extends boolean = true> {
+  phone?: T;
+  whatsappUrl?: T;
+  email?: T;
+  hours?: T;
+  officeHours?: T;
+  offices?:
+    | T
+    | {
+        label?: T;
+        address?: T;
+        city?: T;
+        mapUrl?: T;
+        id?: T;
+      };
+  webAppUrl?: T;
+  playStoreUrl?: T;
+  appStoreUrl?: T;
+  rating?: T;
+  reviewCount?: T;
+  towns?: T;
+  years?: T;
+  clients?: T;
+  projects?: T;
+  facebook?: T;
+  instagram?: T;
+  x?: T;
+  youtube?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              label?: T;
+              type?: T;
+              page?: T;
+              doc?: T;
+              url?: T;
+            };
+        children?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    label?: T;
+                    type?: T;
+                    page?: T;
+                    doc?: T;
+                    url?: T;
+                  };
+              description?: T;
+              icon?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  footerColumns?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    label?: T;
+                    type?: T;
+                    page?: T;
+                    doc?: T;
+                    url?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "seo_select".
  */
 export interface SeoSelect<T extends boolean = true> {
@@ -2114,6 +2124,36 @@ export interface LegalSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "welcome_widget".
+ */
+export interface WelcomeWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inbox_widget".
+ */
+export interface InboxWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'small' | 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content_widget".
+ */
+export interface ContentWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'small' | 'medium' | 'large' | 'x-large' | 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

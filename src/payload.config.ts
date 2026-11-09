@@ -12,6 +12,7 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 import { isEditor } from './access'
+import { adminLabels } from './components/admin/labels'
 import { AppScreens } from './collections/AppScreens'
 import { Categories } from './collections/Categories'
 import { Faqs } from './collections/Faqs'
@@ -59,6 +60,46 @@ export default buildConfig({
     },
     meta: {
       titleSuffix: ' · HandyMan Do IT',
+      icons: [{ rel: 'icon', type: 'image/png', url: '/icons/favicon-32.png' }],
+    },
+    // Brand theme (ADR-032): colours and type in app/(payload)/custom.scss, these supply the logo,
+    // fonts and dashboard.
+    components: {
+      providers: ['/components/admin/AdminFonts#AdminFonts'],
+      graphics: {
+        Logo: '/components/admin/Brand#Logo',
+        Icon: '/components/admin/Brand#Icon',
+      },
+      beforeNavLinks: ['/components/admin/Brand#NavBrand'],
+    },
+    dashboard: {
+      widgets: [
+        {
+          slug: 'welcome',
+          Component: '/components/admin/widgets#WelcomeWidget',
+          label: { en: 'Welcome', fr: 'Accueil' },
+          minWidth: 'large',
+        },
+        {
+          slug: 'inbox',
+          Component: '/components/admin/widgets#InboxWidget',
+          label: { en: 'Inbox', fr: 'Boîte de réception' },
+          minWidth: 'small',
+        },
+        {
+          slug: 'content',
+          Component: '/components/admin/widgets#ContentWidget',
+          label: { en: 'Site content', fr: 'Contenu du site' },
+          minWidth: 'small',
+        },
+      ],
+      defaultLayout: [
+        { widgetSlug: 'welcome', width: 'full' },
+        { widgetSlug: 'inbox', width: 'medium' },
+        { widgetSlug: 'content', width: 'medium' },
+        // Payload's own collection cards, kept below the summary.
+        { widgetSlug: 'collections', width: 'full' },
+      ],
     },
   },
   i18n: {
@@ -160,5 +201,7 @@ export default buildConfig({
       bucket: process.env.S3_PRIVATE_BUCKET || '',
       config: r2Config,
     }),
+    // Last: FR/EN names and group order for everything above, plugin collections included.
+    adminLabels,
   ],
 })

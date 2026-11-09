@@ -1,7 +1,30 @@
-import type { CollectionConfig } from 'payload'
+import { createHash } from 'node:crypto'
+import { readFile } from 'node:fs/promises'
+
+import type { CollectionBeforeOperationHook, CollectionConfig } from 'payload'
 
 import { isEditor } from '@/access'
 import { revalidateCollection } from '@/hooks/revalidate'
+
+// Fingerprint of the file as it was uploaded. Imports find a file they already uploaded by its
+// content: the stored name is not reliable (Payload renames a clashing upload by bumping its
+// trailing number, so photo-1.webp can be stored as photo-7.webp), and neither are the stored
+// bytes (Payload re-encodes images). So this runs before the operation, while `req.file` still
+// holds the original bytes; by `beforeChange` they are already re-encoded.
+const stampSourceHash: CollectionBeforeOperationHook = async ({ args, operation, req }) => {
+  const file = req.file
+  if (!file || (operation !== 'create' && operation !== 'update')) return args
+  const bytes = file.data?.length
+    ? file.data
+    : file.tempFilePath
+      ? await readFile(file.tempFilePath)
+      : null
+  if (!bytes) return args
+  const sourceHash = createHash('sha256').update(bytes).digest('hex')
+  return { ...args, data: { ...args.data, sourceHash } }
+}
+
+const revalidate = revalidateCollection('media')
 
 // Sizes are generated once at upload so the Hostinger server never resizes
 // images per request (docs/PLAN.md §2).
@@ -14,8 +37,15 @@ export const Media: CollectionConfig = {
     delete: isEditor,
   },
   // Pages embed media (alt, sizes) through depth-1 reads, which are tagged 'media' too.
-  hooks: revalidateCollection('media'),
+  hooks: { ...revalidate, beforeOperation: [stampSourceHash] },
   fields: [
+    {
+      // SHA-256 of the original upload, set by stampSourceHash; scripts/seed/media.ts matches on it.
+      name: 'sourceHash',
+      type: 'text',
+      index: true,
+      admin: { hidden: true },
+    },
     {
       name: 'alt',
       type: 'text',

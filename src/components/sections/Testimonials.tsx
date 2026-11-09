@@ -1,8 +1,9 @@
 import { ArrowRight, Quote } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
 
-import { CarouselControls } from '@/components/ui/CarouselControls'
+import { CarouselControlsView } from '@/components/ui/CarouselControlsView'
 import { CmsImage } from '@/components/ui/CmsImage'
+import { NearView } from '@/components/ui/NearView'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
@@ -20,6 +21,7 @@ export async function Testimonials() {
     getHomeTestimonials(locale),
   ])
   const trackId = 'testimonials-track'
+  const controls = { trackId, labels: { previous: t('previous'), next: t('next') } }
 
   const reviews = pickList(
     docs,
@@ -55,11 +57,10 @@ export async function Testimonials() {
             eyebrow={pick(home.testimonials?.eyebrow, t('eyebrow'))}
             title={pick(home.testimonials?.title, t('title'))}
           />
-          <CarouselControls
-            trackId={trackId}
-            labels={{ previous: t('previous'), next: t('next') }}
-            className="hidden sm:flex"
-          />
+          {/* Button code loads near the view (NearView); a hidden wrapper never loads it. */}
+          <NearView island="carouselControls" props={controls} className="hidden sm:block">
+            <CarouselControlsView {...controls} current={0} atStart atEnd={false} />
+          </NearView>
         </div>
 
         {/* Phones: the track runs to the screen's edges, so the next card peeks in and the swipe is
@@ -101,12 +102,19 @@ export async function Testimonials() {
           ))}
         </ul>
 
-        <CarouselControls
-          trackId={trackId}
-          labels={{ previous: t('previous'), next: t('next') }}
-          dots={reviews.length}
+        <NearView
+          island="carouselControls"
+          props={{ ...controls, dots: reviews.length }}
           className="mt-5 sm:hidden"
-        />
+        >
+          <CarouselControlsView
+            {...controls}
+            dots={reviews.length}
+            current={0}
+            atStart
+            atEnd={false}
+          />
+        </NearView>
 
         <Link
           href="/reviews"

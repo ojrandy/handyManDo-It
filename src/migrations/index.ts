@@ -16,6 +16,8 @@ import * as migration_20261030_083110_project_city_optional from './20261030_083
 import * as migration_20261030_110258_hero_slides from './20261030_110258_hero_slides'
 import * as migration_20261030_142004_add_legal_global from './20261030_142004_add_legal_global'
 import * as migration_20261030_173750_site_office_hours from './20261030_173750_site_office_hours'
+import * as migration_20261107_193035_media_source_hash from './20261107_193035_media_source_hash'
+import * as migration_20261107_220238_partners_sister_product from './20261107_220238_partners_sister_product'
 
 export const migrations = [
   {
@@ -107,5 +109,15 @@ export const migrations = [
     up: migration_20261030_173750_site_office_hours.up,
     down: migration_20261030_173750_site_office_hours.down,
     name: '20261030_173750_site_office_hours',
+  },
+  {
+    up: migration_20261107_193035_media_source_hash.up,
+    down: migration_20261107_193035_media_source_hash.down,
+    name: '20261107_193035_media_source_hash',
+  },
+  {
+    up: migration_20261107_220238_partners_sister_product.up,
+    down: migration_20261107_220238_partners_sister_product.down,
+    name: '20261107_220238_partners_sister_product',
   },
 ]

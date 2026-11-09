@@ -5,8 +5,9 @@ import type { Locale } from '@/i18n/routing'
 import type { AppScreen, Faq, Home, Service } from '@/payload-types'
 
 import type { HeroVideo } from './hero'
-import { mediaUrl } from './media'
+import { type ImageSource, imageSources, mediaUrl } from './media'
 import { findDocs, getGlobal } from './payload'
+import { site } from './site'
 
 // Home page content from Payload (T-1.15). Each read is tagged in src/lib/payload.ts, so a
 // publish refreshes the page; cache() makes the sections share one read per render.
@@ -35,6 +36,30 @@ export const getHomeServices = cache((locale: Locale) =>
 export const getPartners = cache((locale: Locale) =>
   findDocs('partners', locale, { sort: 'order' }),
 )
+
+export type SisterProduct = { key: string; name: string; url: string; sources: ImageSource[] }
+
+// Footer "Sister Products" (FR-GLB-02): partners ticked in the CMS. Filters the same cached read
+// as the home marquee, so the home page doesn't query twice. The built-in list covers only an
+// empty collection (fresh database): with partners saved, unticking every one hides the row.
+export const getSisterProducts = cache(async (locale: Locale): Promise<SisterProduct[]> => {
+  const partners = await getPartners(locale)
+  if (!partners.length) {
+    return site.groupCompanies.map(({ key, name, url, logo }) => ({
+      key,
+      name,
+      url,
+      sources: [{ url: logo, width: 300 }],
+    }))
+  }
+  return partners.flatMap((partner) => {
+    const sources = imageSources(partner.logo)
+    // The url check also covers products ticked before the link became required.
+    return partner.sisterProduct && partner.url && sources.length
+      ? [{ key: String(partner.id), name: partner.name, url: partner.url, sources }]
+      : []
+  })
+})
 
 export const getHomeTestimonials = cache((locale: Locale) =>
   findDocs('testimonials', locale, { where: { featured: { equals: true } }, sort: 'order' }),

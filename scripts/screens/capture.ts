@@ -148,7 +148,9 @@ export async function captureScreens(
   { outDir, cacheDir, log = console.log }: CaptureOptions,
 ): Promise<{ captured: Captured[]; failed: string[] }> {
   mkdirSync(outDir, { recursive: true })
-  const browser = await chromium.launch()
+  // CAPTURE_BROWSER_CHANNEL=chrome (or msedge) uses an installed browser when Playwright's own
+  // download is unavailable, e.g. a slow or blocked network.
+  const browser = await chromium.launch({ channel: process.env.CAPTURE_BROWSER_CHANNEL || undefined })
   const captured: Captured[] = []
   const failed: string[] = []
   try {

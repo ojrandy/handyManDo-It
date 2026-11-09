@@ -16,9 +16,8 @@ type Props = {
   className?: string
 }
 
-// Server wrapper: resolves labels, store links (`site` global) and the QR, then hands them to the
-// client button.
-// The QR opens /download on the phone that scans it, which picks the store (T-4.10).
+// Server wrapper: resolves labels, the web app link (`site` global) and the QR for the button.
+// The QR and the touch-screen link both open /download, which picks the store (T-4.10).
 export async function GetTheApp({ label, variant, size, className }: Props) {
   const [t, nav, settings] = await Promise.all([
     getTranslations('getTheApp'),
@@ -30,8 +29,6 @@ export async function GetTheApp({ label, variant, size, className }: Props) {
   return (
     <GetTheAppButton
       label={label ?? nav('getTheApp')}
-      playStoreUrl={settings.playStoreUrl}
-      appStoreUrl={settings.appStoreUrl}
       webAppUrl={settings.webAppUrl}
       qrSvg={qr}
       labels={{

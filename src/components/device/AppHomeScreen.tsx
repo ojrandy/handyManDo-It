@@ -3,6 +3,8 @@ import { getTranslations } from 'next-intl/server'
 
 import { services } from '@/lib/services'
 
+import { StatusBar } from './StatusBar'
+
 type Theme = 'light' | 'dark'
 
 // Light and dark palettes of the app (the app ships both themes).
@@ -15,7 +17,6 @@ const palette: Record<Theme, Record<string, string>> = {
     iconTile: 'bg-mist-100 text-teal-600',
     bar: 'border-mist-200 bg-white',
     active: 'text-teal-600',
-    battery: 'border-ink/70',
   },
   dark: {
     screen: 'bg-night-950 text-white',
@@ -25,7 +26,6 @@ const palette: Record<Theme, Record<string, string>> = {
     iconTile: 'bg-teal-600/40 text-gold-300',
     bar: 'border-white/10 bg-night-900',
     active: 'text-gold-300',
-    battery: 'border-white/70',
   },
 }
 
@@ -44,10 +44,7 @@ export async function AppHomeScreen({ theme = 'light' }: { theme?: Theme }) {
 
   return (
     <div className={`flex h-full flex-col ${c.screen}`}>
-      <div className="flex h-10 items-end justify-between px-6 pb-1 text-[11px] font-semibold">
-        <span>{t('time')}</span>
-        <span className={`h-2 w-3.5 rounded-[2px] border ${c.battery}`} />
-      </div>
+      <StatusBar time={t('time')} />
 
       <div className="flex-1 space-y-4 px-4 pt-3">
         <div>
@@ -93,12 +90,13 @@ export async function AppHomeScreen({ theme = 'light' }: { theme?: Theme }) {
         {tabs.map(({ key, icon: Icon, active }) => (
           <div
             key={key}
-            className={`flex flex-col items-center gap-0.5 text-[9px] font-medium ${
+            className={`flex min-w-0 flex-col items-center gap-0.5 text-[9px] font-medium ${
               active ? c.active : c.muted
             }`}
           >
             <Icon className="size-4" strokeWidth={active ? 2.25 : 1.75} />
-            {t(`tabs.${key}`)}
+            {/* "Réservations" and "Portefeuille" side by side: each label keeps to its column. */}
+            <span className="w-full truncate text-center tracking-tight">{t(`tabs.${key}`)}</span>
           </div>
         ))}
       </div>

@@ -200,8 +200,8 @@ A mini step strip mirrors the app's real sign-up screen ("I offer services" → 
 Accordion of the 8 most important questions from the CMS (payments, cities covered, quotes, cancellations, guarantee, safety and vetting, pros, business accounts). Uses FAQPage structured data. Links to the full `/faq`.
 
 ### 5.15 Download band
-- Dark section with a gold glow.
-- Two phones (light and dark screens), App Store + Google Play badges, a QR code on desktop and an "Open web app" link.
+- Dark section, flat (no glow or blurred blobs; owner decision 2026-11-07: no decorative grids, glows or watermark numbers).
+- Two phones (light and dark screens), App Store + Google Play badges and an "Open web app" link. No QR code (owner, 2026-11-07); desktop visitors get one from the **Get the app** popover and `/get-the-app`.
 - Text: "Get HandyMan Do IT. Free on iOS & Android."
 
 ### 5.16 Latest from the blog
@@ -211,7 +211,8 @@ Three newest posts from the CMS.
 - Logo, the "Right at Home" tagline and the three values.
 - Columns: Services · Company · Support, with the same number of rows each on every screen size (owner request, 2026-11-05). Links that don't fit go to the bottom bar.
 - Contact · Hours · Offices, two rows each: +237 652 767 674 (call/WhatsApp), handymanservicesdoit@gmail.com · support and office hours · Technical direction: Mile 16 Shopping Mall, Buea · Office: Mobile Njo Njo, Bonapriso, Douala.
-- Store badges beside the logo. Bottom bar: socials, language switch, © line, legal links, "Designed and Developed by Web Spectron LTD" (links to webspectron.com).
+- Store badges beside the logo. Bottom bar: socials, language switch, © line, legal links, "Designed and Developed by Web Spectron" (links to webspectron.com; no "LTD", owner 2026-11-07).
+- "Sister Products" row above the © line (owner, 2026-11-07): logos only (no visible names) of Spectron Limited LLC, Spectron Magazine, Web Spectron and Kenta Beauty Clinic, each linking to its website in a new tab. Editors choose them in the CMS: **Marketing → Partners**, "Show in footer (Sister Products)" box, in partner order.
 - Floating **WhatsApp button** on every page, bottom-right, with a delay and away from the CTAs.
 
 ---

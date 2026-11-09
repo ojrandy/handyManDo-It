@@ -67,7 +67,7 @@ export const projectContent: ProjectContent[] = [
   {
     slug: { en: 'cupboards-wardrobes-tv-stands', fr: 'placards-armoires-meubles-tv' },
     title: {
-      en: 'Cupboards, wardrobes, dining and TV stands',
+      en: 'Cupboards, Wardrobes, Dining and TV Stands',
       fr: 'Placards, armoires, salles à manger et meubles TV',
     },
     service: 'upholsteryFurniture',
@@ -106,7 +106,7 @@ export const projectContent: ProjectContent[] = [
   {
     slug: { en: 'corporate-women-in-leadership', fr: 'corporate-women-in-leadership' },
     title: {
-      en: 'Corporate Women in Leadership event · Fabz Magazine',
+      en: 'Corporate Women in Leadership Event · Fabz Magazine',
       fr: 'Événement Corporate Women in Leadership · Fabz Magazine',
     },
     service: 'events',
@@ -147,7 +147,7 @@ export const projectContent: ProjectContent[] = [
   },
   {
     slug: { en: 'dash-media-news-studio', fr: 'studio-dash-media' },
-    title: { en: 'Dash Media news studio', fr: 'Studio d’information Dash Media' },
+    title: { en: 'Dash Media News Studio', fr: 'Studio d’information Dash Media' },
     service: 'remodeling',
     client: 'Dash Media',
     city: 'Buea',
@@ -178,7 +178,7 @@ export const projectContent: ProjectContent[] = [
   },
   {
     slug: { en: 'kitchen-cabinets-imported-doors', fr: 'cuisines-portes-importees' },
-    title: { en: 'Kitchen cabinets and imported doors', fr: 'Cuisines et portes importées' },
+    title: { en: 'Kitchen Cabinets and Imported Doors', fr: 'Cuisines et portes importées' },
     service: 'remodeling',
     client: null,
     city: 'Limbe',
@@ -231,7 +231,7 @@ export const projectContent: ProjectContent[] = [
   {
     slug: { en: 'upholstered-beds', fr: 'lits-tapisses' },
     cover: 2,
-    title: { en: 'Upholstered beds', fr: 'Lits tapissés' },
+    title: { en: 'Upholstered Beds', fr: 'Lits tapissés' },
     service: 'upholsteryFurniture',
     client: null,
     city: 'Yaoundé',
@@ -252,7 +252,7 @@ export const projectContent: ProjectContent[] = [
   },
   {
     slug: { en: 'upholstered-chairs-sofas', fr: 'fauteuils-canapes-tapisses' },
-    title: { en: 'Upholstered chairs and sofas', fr: 'Fauteuils et canapés tapissés' },
+    title: { en: 'Upholstered Chairs and Sofas', fr: 'Fauteuils et canapés tapissés' },
     service: 'upholsteryFurniture',
     client: null,
     city: 'Buea',
@@ -273,7 +273,7 @@ export const projectContent: ProjectContent[] = [
   },
   {
     slug: { en: 'welfare-aid-future-donation', fr: 'don-welfare-aid-future' },
-    title: { en: 'Welfare Aid Future (W.A.F) donation', fr: 'Don Welfare Aid Future (W.A.F)' },
+    title: { en: 'Welfare Aid Future (W.A.F) Donation', fr: 'Don Welfare Aid Future (W.A.F)' },
     service: 'events',
     client: 'Welfare Aid Future · Web Spectron',
     city: 'Douala',
