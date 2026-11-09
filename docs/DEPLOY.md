@@ -82,7 +82,7 @@ Moving DNS doesn't change where anything points, as long as every record is copi
 
 1. Dashboard → **Account home → Add a domain** → `handymandoit.com` → **Free** plan.
 2. Cloudflare imports the existing DNS records. **Before continuing**, compare them with the current DNS zone at your registrar or Hostinger hPanel, record by record:
-   - `@` and `www`: the current (old) site; keep them as they are until launch
+   - `@` and `www`: the current (old) site; keep them as they are until launch. The blog is archived in the repo (`data/wordpress`), so importing it doesn't need the old site; still take a full backup of the old host (files, WordPress database, WooCommerce orders) before switching
    - `app`: the web app. Use **DNS only (grey cloud)** if the app's host issues its own SSL certificate
    - `MX`, `TXT` (SPF/DKIM/verification), `CNAME`s for any mail or verification: copy exactly
 3. Cloudflare shows two nameservers. At the domain registrar, replace the current nameservers with these two. Propagation usually takes under an hour, at most 24 h.

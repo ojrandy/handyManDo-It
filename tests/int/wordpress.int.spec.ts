@@ -1,4 +1,4 @@
-import { copyFileSync, mkdtempSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 
@@ -9,7 +9,13 @@ import config from '@/payload.config'
 
 import { htmlText, imageRefs, prepareHtml } from '../../scripts/wordpress/html'
 import { altText, runImport } from '../../scripts/wordpress/run'
-import type { WordPressSource, WpMedia, WpPost } from '../../scripts/wordpress/source'
+import {
+  archiveSource,
+  saveArchive,
+  type WordPressSource,
+  type WpMedia,
+  type WpPost,
+} from '../../scripts/wordpress/source'
 
 const gallery = `
 <p>Intro with <a href="https://example.com">a link</a>.</p>
@@ -174,6 +180,42 @@ describe('WordPress import', () => {
     })
     expect(frWithFallback.title).toBe('Upholstery & you')
   }, 120_000)
+
+  it('saves an archive that answers the import without the network', async () => {
+    const out = mkdtempSync(path.join(tmpdir(), 'wp-archive-'))
+    const counts = await saveArchive(source, out, () => {})
+    expect(counts).toEqual({ posts: 2, categories: 2, media: 1, files: 1 })
+    const archived = archiveSource(out)
+    expect(await archived.posts()).toEqual(await source.posts())
+    expect((await archived.media([7, 99])).map(({ id }) => id)).toEqual([7])
+    expect(existsSync(await archived.download('https://wp.test/i.jpg'))).toBe(true)
+    await expect(archived.download('https://wp.test/other.jpg')).rejects.toThrow(
+      'not in the archive',
+    )
+  })
+
+  it('has every image of the committed blog archive (data/wordpress)', async () => {
+    const archived = archiveSource()
+    const posts = await archived.posts()
+    expect(posts.filter(({ status }) => status === 'publish')).toHaveLength(20)
+    const ids = posts.flatMap((p) => [
+      p.featured_media,
+      ...imageRefs(p.content.rendered).map((r) => r.wpId),
+    ])
+    const media = new Map(
+      (await archived.media(ids.filter((id): id is number => Boolean(id)))).map((m) => [m.id, m]),
+    )
+    for (const p of posts) {
+      const featured = media.get(p.featured_media)
+      const urls = [
+        ...(featured ? [featured.source_url] : []),
+        ...imageRefs(p.content.rendered).map(
+          (ref) => (ref.wpId ? media.get(ref.wpId)?.source_url : undefined) ?? ref.src,
+        ),
+      ]
+      for (const url of urls) expect(existsSync(await archived.download(url))).toBe(true)
+    }
+  })
 
   it('leaves a post out when one of its images fails, so the next run retries it', async () => {
     const link = `${legacyUrl}broken-image`

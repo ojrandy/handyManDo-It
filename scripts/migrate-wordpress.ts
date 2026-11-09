@@ -5,9 +5,14 @@
 //   npm run migrate:wordpress -- --force      allow a non-local DATABASE_URL (staging); think twice
 //
 // Safe to re-run: posts match on their old URL (`legacyUrl`), categories on their slug and media
-// on the file name, so a second run creates nothing. Downloads are cached in .cache/wordpress.
-// Set WORDPRESS_API to read another copy of the blog.
+// on their content, so a second run creates nothing.
+//
+// Reads the archive in data/wordpress (`npm run archive:wordpress`), because the old blog goes
+// away at launch. Set WORDPRESS_API to read a live blog instead (downloads cached in
+// .cache/wordpress).
 import 'dotenv/config'
+
+import path from 'node:path'
 
 import { getPayload } from 'payload'
 
@@ -16,7 +21,7 @@ import config from '../src/payload.config'
 import { assertSeedTarget } from './seed/guard'
 import { formatSummary, totals } from './seed/run'
 import { runImport } from './wordpress/run'
-import { defaultApi, wordPressSource } from './wordpress/source'
+import { archiveDir, archiveSource, hasArchive, wordPressSource } from './wordpress/source'
 
 const args = new Set(process.argv.slice(2))
 const known = ['--force', '--update']
@@ -29,12 +34,20 @@ async function main(): Promise<number> {
   }
 
   const target = assertSeedTarget(process.env.DATABASE_URL, args.has('--force'))
-  const api = process.env.WORDPRESS_API || defaultApi
+  const api = process.env.WORDPRESS_API
+  if (!api && !hasArchive()) {
+    console.error(
+      `No archive in ${archiveDir}. Run npm run archive:wordpress, or set WORDPRESS_API.`,
+    )
+    return 2
+  }
+  const from = api || path.relative(process.cwd(), archiveDir)
   const mode = args.has('--update') ? 'update existing' : 'create missing only'
-  console.log(`Importing ${api} into ${target.host}/${target.database} (${mode})…`)
+  console.log(`Importing ${from} into ${target.host}/${target.database} (${mode})…`)
 
   const payload = await getPayload({ config })
-  const summary = await runImport(payload, wordPressSource(api), { update: args.has('--update') })
+  const source = api ? wordPressSource(api) : archiveSource()
+  const summary = await runImport(payload, source, { update: args.has('--update') })
 
   console.log(`\n${formatSummary(summary)}\n`)
   const { failed } = totals(summary)

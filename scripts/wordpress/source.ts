@@ -1,10 +1,24 @@
-import { existsSync, mkdirSync, renameSync, writeFileSync } from 'node:fs'
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  writeFileSync,
+} from 'node:fs'
 import path from 'node:path'
 
 import sharp from 'sharp'
 
-// The old blog's REST API (docs/PLAN.md §13: 20 posts).
+import { imageRefs } from './html'
+
+// The old blog's REST API (docs/PLAN.md §13: 20 posts). It goes away when handymandoit.com moves
+// to the new site, so the import reads the archive below by default.
 export const defaultApi = 'https://handymandoit.com/blog/wp-json/wp/v2'
+
+// A copy of the blog committed to the repo (`npm run archive:wordpress`): the API replies the
+// import uses, and every image it uploads.
+export const archiveDir = path.resolve('data/wordpress')
 
 type Rendered = { rendered: string }
 
@@ -116,4 +130,90 @@ export function wordPressSource(api = defaultApi, cacheDir = path.resolve('.cach
       return file
     },
   } satisfies WordPressSource
+}
+
+type Archive = {
+  posts: WpPost[]
+  categories: WpCategory[]
+  media: WpMedia[]
+  // Image URL → file name in `files/`.
+  files: Record<string, string>
+}
+
+const archiveParts = ['posts', 'categories', 'media', 'files'] as const
+
+const readJson = <T>(file: string): T => JSON.parse(readFileSync(file, 'utf8')) as T
+
+export const hasArchive = (dir = archiveDir) => existsSync(path.join(dir, 'posts.json'))
+
+// The import's view of the archive: no network, same data as the live blog when it was saved.
+export function archiveSource(dir = archiveDir): WordPressSource {
+  const [posts, categories, media, files] = archiveParts.map((part) =>
+    readJson(path.join(dir, `${part}.json`)),
+  ) as [Archive['posts'], Archive['categories'], Archive['media'], Archive['files']]
+  return {
+    posts: async () => posts,
+    categories: async () => categories,
+    media: async (ids) => media.filter(({ id }) => ids.includes(id)),
+    async download(url) {
+      const name = files[url]
+      if (!name) throw new Error(`${url} is not in the archive (${dir})`)
+      return path.join(dir, 'files', name)
+    },
+  }
+}
+
+// Saves everything the import reads from `source` into `dir`. Image URLs are the ones the import
+// asks for (run.ts: the attachment's source_url, else the <img> src), so the archive answers them.
+export async function saveArchive(
+  source: WordPressSource,
+  dir = archiveDir,
+  log: (line: string) => void = console.log,
+): Promise<{ posts: number; categories: number; media: number; files: number }> {
+  const posts = await source.posts()
+  const categories = await source.categories()
+
+  const ids = new Set<number>()
+  for (const post of posts) {
+    if (post.featured_media) ids.add(post.featured_media)
+    for (const { wpId } of imageRefs(post.content.rendered)) if (wpId) ids.add(wpId)
+  }
+  const media = (await source.media([...ids])).sort((a, b) => a.id - b.id)
+  const byId = new Map(media.map((m) => [m.id, m]))
+
+  const urls = new Set<string>()
+  for (const post of posts) {
+    const featured = byId.get(post.featured_media)
+    if (featured) urls.add(featured.source_url)
+    for (const ref of imageRefs(post.content.rendered)) {
+      const url = (ref.wpId ? byId.get(ref.wpId)?.source_url : undefined) ?? ref.src
+      if (url) urls.add(url)
+    }
+  }
+
+  const filesDir = path.join(dir, 'files')
+  mkdirSync(filesDir, { recursive: true })
+  const files: Record<string, string> = {}
+  const used = new Set<string>()
+  for (const [index, url] of [...urls].entries()) {
+    log(`  ${index + 1}/${urls.size} ${url}`)
+    const local = await source.download(url)
+    // Two uploads folders can hold the same file name; the second gets a numbered prefix.
+    let name = path.basename(local)
+    for (let n = 2; used.has(name.toLowerCase()); n++) name = `${n}-${path.basename(local)}`
+    used.add(name.toLowerCase())
+    copyFileSync(local, path.join(filesDir, name))
+    files[url] = name
+  }
+
+  const archive: Archive = { posts, categories, media, files }
+  for (const part of archiveParts) {
+    writeFileSync(path.join(dir, `${part}.json`), `${JSON.stringify(archive[part], null, 2)}\n`)
+  }
+  return {
+    posts: posts.length,
+    categories: categories.length,
+    media: media.length,
+    files: urls.size,
+  }
 }
