@@ -37,7 +37,7 @@ docker compose up -d        # local Postgres on :5432
 npm run dev                 # http://localhost:3000 (→ /fr or /en), CMS at /admin
 npm run typecheck           # tsc --noEmit
 npm run lint                # eslint
-npm run build               # production build (heap capped at 3 GB for Hostinger)
+npm run build               # production build (heap capped at 3 GB; runs migrations first on a non-local DB)
 npm run test:int            # vitest  (tests/int/**/*.int.spec.ts, own handymandoit_test DB)
 npm run test:e2e            # playwright (tests/e2e, needs DB + dev server)
 E2E_BASE_URL=https://… npm run test:smoke   # public smoke suite against a deployed site

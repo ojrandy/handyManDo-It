@@ -43,7 +43,7 @@ Rules: `.env` is gitignored; `.env.example` lists every variable with a comment 
 |---|---|
 | Node | 24.x |
 | Install | `npm ci` |
-| Build | `npm run migrate && npm run build` (heap capped at 3072 MB). Pre-rendering reads Payload (T-1.15), so migrations run first; proposed 2026-10-28, owner to confirm (Q-17) |
+| Build | `npm run build` (heap capped at 3072 MB). Pre-rendering reads Payload (T-1.15), so `scripts/build.mjs` runs `payload migrate` first on any non-local `DATABASE_URL` (2026-11-09: Hostinger's build field only offers fixed commands) |
 | Start | `npm run start:prod` → `payload migrate` then `next start` |
 
 If the build OOMs on Hostinger, build in GitHub Actions and deploy the artefact (DEPLOY.md §4). **Ask before changing the deploy flow.**

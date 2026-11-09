@@ -51,8 +51,8 @@ If `payload migrate` ever fails on start with a pooler error (e.g. prepared stat
 3. Settings:
    - Node version: **24.x**
    - Install: `npm ci`
-   - Build: `npm run migrate && npm run build`. The home page reads Payload while it is pre-rendered (T-1.15), so the schema must be current **before** the build; on a fresh database the build would otherwise fail on missing tables. Migrations are additive by rule (data-model.md §6), so the running app keeps working if the build then fails.
-   - Start: `npm run start:prod` (runs pending DB migrations, a no-op after the build step, then starts)
+   - Build: `npm run build`, package manager `npm`, output directory `.next` (Hostinger's build field only offers fixed commands). The home page reads Payload while it is pre-rendered (T-1.15), so the schema must be current **before** the build; on a fresh database the build would otherwise fail on missing tables. `scripts/build.mjs` therefore runs `payload migrate` first whenever `DATABASE_URL` is not a local database, and stops if a migration did not apply. Migrations are additive by rule (data-model.md §6), so the running app keeps working if the build then fails.
+   - Start: Hostinger's default (`npm start`); the build already applied migrations. Where a start command can be set, `npm run start:prod` also works.
 4. Environment variables (hPanel → app → **Environment variables**). They must exist **before the first build**: `NEXT_PUBLIC_SITE_URL` and `MEDIA_PUBLIC_URL` are baked in at build time, and so are the HSTS/CSP headers.
 
    | Variable | Staging value |
