@@ -56,9 +56,19 @@ if (host) {
   console.log('✓ database schema is current')
 }
 
-// Heap capped at 3 GB for Hostinger's Business plan (DEPLOY.md §4).
+// Hostinger (remote database) builds lean: its ~3 GB box is shared, and a full-speed build was
+// killed mid-compile (2026-11-10). One page worker, fewer Turbopack threads, a smaller Node heap so
+// V8 collects before the box runs out (next.config.ts `leanBuild`). Local and CI builds keep 3 GB.
+const lean = host
+  ? {
+      LEAN_BUILD: '1',
+      TOKIO_WORKER_THREADS: '2',
+      NODE_OPTIONS: '--no-deprecation --max-old-space-size=1536',
+    }
+  : { NODE_OPTIONS: '--no-deprecation --max-old-space-size=3072' }
+if (host) console.log('Lean build: 1 worker, 2 compiler threads, 1.5 GB heap, no type check')
 const build = spawnSync(process.execPath, [nextBin, 'build'], {
   stdio: 'inherit',
-  env: { ...process.env, NODE_OPTIONS: '--no-deprecation --max-old-space-size=3072' },
+  env: { ...process.env, NEXT_TELEMETRY_DISABLED: '1', ...lean },
 })
 process.exit(build.status ?? 1)

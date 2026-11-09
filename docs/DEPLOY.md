@@ -109,4 +109,4 @@ Push to `main`. CI type-checks, lints and builds, then Hostinger pulls, builds a
 
 ## 4. If the build runs out of memory on Hostinger
 
-The Business plan has 3 GB RAM, and `npm run build` caps the Node heap at 3 GB. If Hostinger's build still fails, build in GitHub Actions instead and deploy the result. Ask before changing this; it changes the deploy flow.
+The Business plan has about 3 GB RAM, shared. A full-speed build peaks at ~3.1 GB over 24 processes (8-core dev machine), and the first Hostinger build (2026-11-10) was killed 16 min into the compile with no error. So on a non-local database `npm run build` builds **lean** (`scripts/build.mjs` sets `LEAN_BUILD=1`, read in `next.config.ts`): one page worker, 2 Turbopack threads (`TOKIO_WORKER_THREADS`), a 1.5 GB Node heap and no type check (CI type-checks every push). Measured locally: peak ~2.1 GB over 15 processes, 56 s. If Hostinger's build still fails, build in GitHub Actions instead and deploy the result. Ask before changing this; it changes the deploy flow.

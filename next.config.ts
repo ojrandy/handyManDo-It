@@ -56,9 +56,17 @@ const securityHeaders = [
   ...(isHttps ? [{ key: 'Strict-Transport-Security', value: 'max-age=31536000' }] : []),
 ]
 
+// Set by scripts/build.mjs when building for Hostinger (non-local database). Its build box has
+// about 3 GB RAM shared with everything else; a full-speed build peaks at ~3.1 GB over 24
+// processes and was killed after 16 min. One worker instead of one per core.
+const leanBuild = process.env.LEAN_BUILD === '1'
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // CI type-checks every push to main (`npm run typecheck`), so the lean build skips repeating it.
+  typescript: { ignoreBuildErrors: leanBuild },
   experimental: {
+    ...(leanBuild ? { cpus: 1, staticGenerationMaxConcurrency: 4 } : {}),
     // The site stylesheet (~18 KB gzip) goes in the HTML head instead of a render-blocking request:
     // one round trip less before first paint on 4G (NFR-PERF-01). Pages are cached at the edge,
     // so the repeat cost of not sharing one CSS file is small.
