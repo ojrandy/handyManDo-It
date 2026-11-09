@@ -107,7 +107,8 @@
       "privacy": "Confidentialité",
       "terms": "Conditions",
       "disclaimer": "Avertissement",
-      "allServices": "Tous les services"
+      "allServices": "Tous les services",
+      "cookies": "Paramètres des cookies"
     },
     "contactTitle": "Contact",
     "call": "Appel ou WhatsApp",
@@ -120,9 +121,13 @@
     "supportLabel": "Assistance",
     "officeHoursLabel": "Bureaux",
     "officeHours": "Lun–jeu de 8 h à 17 h · ven–sam de 9 h à 16 h · dim fermé",
-    "credit": "Conçu et développé par <company>Web Spectron LTD</company>",
+    "credit": "Conçu et développé par <company>Web Spectron</company>",
     "hoursTitle": "Horaires",
-    "officesTitle": "Nos bureaux"
+    "officesTitle": "Nos bureaux",
+    "group": {
+      "title": "Produits frères",
+      "visit": "Site de {name} (nouvel onglet)"
+    }
   },
   "notFound": {
     "metaTitle": "Page introuvable",
@@ -385,8 +390,7 @@
     "title": "Téléchargez HandyMan Do IT.",
     "bodyAndroid": "Gratuit sur Android et sur le web.",
     "bodyAll": "Gratuit sur iOS et Android.",
-    "webApp": "Ouvrir l’app web",
-    "qrHint": "Scannez avec votre téléphone"
+    "webApp": "Ouvrir l’app web"
   },
   "whatsapp": {
     "label": "Discutez avec nous sur WhatsApp"
@@ -688,7 +692,8 @@
       "work": "Réalisations récentes",
       "reviews": "Ce que disent nos clients",
       "faq": "Questions sur : {service}",
-      "other": "Autres services"
+      "other": "Autres services",
+      "metaDescription": "{summary} Pros vérifiés à Douala, Buea et Yaoundé : prix clair d’abord, paiement Mobile Money sécurisé."
     }
   },
   "workPage": {
@@ -1272,5 +1277,19 @@
     "webBody": "L’appli web fonctionne dans n’importe quel navigateur, sur téléphone et ordinateur.",
     "webCta": "Ouvrir l’appli web",
     "iphone": "Sur iPhone : ouvrez l’appli web dans Safari, touchez Partager, puis « Sur l’écran d’accueil »."
+  },
+  "consent": {
+    "label": "Consentement aux cookies",
+    "title": "Votre vie privée",
+    "body": "Avec votre accord seulement, un cookie de mesure d’audience nous montre quelles pages aident à réserver. Aucune publicité.",
+    "accept": "Accepter",
+    "reject": "Refuser",
+    "customise": "Personnaliser",
+    "save": "Enregistrer mes choix",
+    "necessary": "Nécessaires",
+    "necessaryBody": "Langue et votre choix de consentement. Toujours actifs.",
+    "analytics": "Mesure d’audience",
+    "analyticsBody": "Google Analytics 4 : pages vues et boutons utilisés, sans publicité.",
+    "privacy": "Politique de confidentialité"
   }
 }

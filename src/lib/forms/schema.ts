@@ -1,5 +1,9 @@
 import { z } from 'zod'
 
+// No compiled fast path: Zod would first test `new Function()`, which the site's CSP blocks
+// (no 'unsafe-eval'), and the browser reports that as a violation on every form page.
+z.config({ jitless: true })
+
 // Form definitions shared by the browser and the intake route (FR-FORM-01, ADR-023): the same
 // schema validates on both sides. Errors are codes; the form shows `forms.errors.<code>`.
 

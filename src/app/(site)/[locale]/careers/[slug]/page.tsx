@@ -10,6 +10,7 @@ import { Prose } from '@/components/ui/Prose'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { docPaths, getJob, getJobs } from '@/lib/catalog'
+import { followEditorRedirect } from '@/lib/redirects'
 import { absoluteUrl, pageMetadata } from '@/lib/seo'
 import { site } from '@/lib/site'
 
@@ -46,7 +47,13 @@ export default async function JobPage({ params }: Props) {
   setRequestLocale(locale)
 
   const job = await getJob(locale, slug)
-  if (!job) notFound()
+  if (!job) {
+    await followEditorRedirect(
+      locale,
+      getPathname({ locale, href: { pathname: '/careers/[slug]', params: { slug } } }),
+    )
+    notFound()
+  }
 
   const [t, format] = await Promise.all([getTranslations('careersPage'), getFormatter()])
   const facts = [

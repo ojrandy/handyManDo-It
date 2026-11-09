@@ -5,10 +5,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { PageHero } from '@/components/sections/PageHero'
 import { buttonClasses } from '@/components/ui/button'
 import { StoreBadges } from '@/components/ui/StoreBadges'
+import { JsonLd } from '@/components/ui/JsonLd'
 import type { Locale } from '@/i18n/routing'
 import { qrSvg } from '@/lib/qr'
 import { absoluteUrl, pageMetadata, pathsFor } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/settings'
+import { getStructuredData, graph } from '@/lib/structuredData'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -28,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function GetTheAppPage({ params }: Props) {
   const locale = (await params).locale as Locale
   setRequestLocale(locale)
+  const data = await getStructuredData(locale)
   const [t, settings] = await Promise.all([getTranslations('appPage'), getSiteSettings(locale)])
   const qr = await qrSvg(absoluteUrl('/download'))
 
@@ -71,6 +74,7 @@ export default async function GetTheAppPage({ params }: Props) {
           </div>
         </div>
       </section>
+      <JsonLd data={graph(data.app)} />
     </main>
   )
 }

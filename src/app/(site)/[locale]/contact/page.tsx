@@ -4,10 +4,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { ContactForms } from '@/components/forms/ContactForms'
 import { PageHero } from '@/components/sections/PageHero'
+import { JsonLd } from '@/components/ui/JsonLd'
 import type { Locale } from '@/i18n/routing'
 import { getServices } from '@/lib/catalog'
 import { pageMetadata, pathsFor } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/settings'
+import { getStructuredData, graph } from '@/lib/structuredData'
 import type { site } from '@/lib/site'
 
 type Props = { params: Promise<{ locale: string }> }
@@ -30,6 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ContactPage({ params }: Props) {
   const locale = (await params).locale as Locale
   setRequestLocale(locale)
+  const data = await getStructuredData(locale)
   const [t, footer, settings, services] = await Promise.all([
     getTranslations('contactPage'),
     getTranslations('footer'),
@@ -160,6 +163,7 @@ export default async function ContactPage({ params }: Props) {
           </aside>
         </div>
       </section>
+      <JsonLd data={graph(...data.offices)} />
     </main>
   )
 }

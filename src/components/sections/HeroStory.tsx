@@ -102,12 +102,17 @@ export function HeroStory({
   const slideCount = light === false ? slides.length : Math.min(slides.length, 1)
   const [slide, setSlide] = useState(0)
   const [previous, setPrevious] = useState<number | null>(null)
+  // How many photos are mounted. Each one mounts one step ahead of the slider, halfway through the
+  // current slide, so none downloads while the page paints (LCP, NFR-PERF-01) and the next one
+  // is ready before its turn.
+  const [mounted, setMounted] = useState(1)
 
   const goTo = useCallback(
     (index: number) => {
       if (slideCount < 2) return
       const next = ((index % slideCount) + slideCount) % slideCount
       if (next === slide) return
+      setMounted((count) => Math.max(count, next + 1))
       setPrevious(slide)
       setSlide(next)
     },
@@ -172,6 +177,12 @@ export function HeroStory({
     query.addEventListener('change', update)
     return () => query.removeEventListener('change', update)
   }, [])
+  useEffect(() => {
+    if (!pageLoaded || mounted >= slideCount || mounted > slide + 1) return
+    const id = setTimeout(() => setMounted((count) => Math.max(count, slide + 2)), SLIDE_MS / 2)
+    return () => clearTimeout(id)
+  }, [pageLoaded, mounted, slide, slideCount])
+
   const autoplay = useSlides && pageLoaded && slideCount > 1 && !paused && !reducedMotion
   useEffect(() => {
     if (!autoplay) return
@@ -191,13 +202,14 @@ export function HeroStory({
     <>
       <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
         {/* Phones: the hero is taller than the screen, so the photo covers the first screen only
-            and melts into the section's background behind the phone. */}
-        <div className="absolute inset-x-0 top-0 h-svh lg:h-full">
+            and melts into the section's background behind the phone. Clipped, or the Ken Burns
+            zoom pushes the photo past its overlay and shows as a strip behind the CTAs. */}
+        <div className="absolute inset-x-0 top-0 h-svh overflow-hidden lg:h-full">
           {useSlides
             ? slides.slice(0, slideCount).map(({ key, image }, index) => {
                 const current = index === slide
-                // Later photos mount after load; the first one is server-rendered and preloaded.
-                if (index > 0 && !pageLoaded) return null
+                // The first photo is server-rendered and preloaded; later ones mount just ahead.
+                if (index >= mounted) return null
                 const moving = current || index === previous
                 return (
                   <div
@@ -246,17 +258,7 @@ export function HeroStory({
               <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-night-950/70 to-transparent" />
             </>
           ) : (
-            <>
-              <div className="absolute inset-0 bg-[radial-gradient(55%_50%_at_78%_35%,rgb(28_93_112/0.6),transparent_70%),radial-gradient(40%_40%_at_12%_90%,rgb(231_171_52/0.16),transparent_70%)]" />
-              <svg className="absolute inset-0 size-full text-white/[0.04] [mask-image:radial-gradient(70%_60%_at_70%_40%,black,transparent)]">
-                <defs>
-                  <pattern id="hero-hex" width="56" height="48" patternUnits="userSpaceOnUse">
-                    <path d="M14 0h28l14 24-14 24H14L0 24z" fill="none" stroke="currentColor" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#hero-hex)" />
-              </svg>
-            </>
+            <div className="absolute inset-0 bg-gradient-to-br from-night-900 via-night-900 to-teal-700/50" />
           )}
         </div>
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-night-900 to-transparent" />
@@ -274,26 +276,37 @@ export function HeroStory({
           aria-hidden
           className="relative flex justify-center lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:items-center lg:justify-end"
         >
-          <div className="absolute top-1/2 -right-6 hidden size-80 -translate-y-1/2 rounded-full bg-teal-500/30 blur-3xl lg:block" />
           <div className="lg:[perspective:1600px]">
             <div className="lg:motion-safe:animate-float">
               <div className="transition-transform duration-700 ease-out-expo lg:[transform:rotateY(-8deg)_rotateX(3deg)]">
                 <Phone
                   size="hero"
                   overlay={
-                    <ol
-                      className={`-mx-[0.625em] space-y-[0.5em] px-[0.625em] pb-[1em] ${
-                        visible.length
-                          ? 'bg-gradient-to-b from-mist-50 from-85% to-transparent'
-                          : ''
-                      }`}
-                    >
-                      {/* Sizes in em follow the phone (Phone, `--phone-em`). */}
+                    <ol className="relative">
+                      {/* A soft scrim under the stack, so no half-covered app text peeks out
+                          below the banners. */}
+                      {visible.length ? (
+                        <li
+                          aria-hidden
+                          className="absolute -inset-x-[0.5em] top-0 -bottom-[2em] bg-gradient-to-b from-mist-50 from-60% to-transparent"
+                        />
+                      ) : null}
+                      {/* An iOS notification stack: the newest banner in front, the earlier ones
+                          tucked behind it, each a little narrower and lower. Sizes in em follow
+                          the phone (Phone, `--phone-em`). */}
                       {visible.map((cue, index) => (
                         <li
                           key={cue.key}
-                          className={`flex animate-notification-in items-start gap-[0.625em] rounded-[1em] bg-white p-[0.625em] shadow-lg ring-1 ring-black/5 transition-transform duration-500 ${
-                            index > 0 ? 'scale-[0.96]' : ''
+                          style={{
+                            zIndex: VISIBLE_NOTIFICATIONS - index,
+                            transform: index
+                              ? `translateY(${index * 0.5}em) scale(${1 - index * 0.05})`
+                              : undefined,
+                          }}
+                          className={`flex origin-bottom items-start gap-[0.625em] rounded-[1.125em] p-[0.625em] ring-1 ring-black/5 transition-[transform,opacity] duration-500 ease-out-expo ${
+                            index
+                              ? 'absolute inset-x-0 top-0 bg-white/80 shadow-md backdrop-blur-md [&>*]:opacity-0'
+                              : 'relative animate-notification-in bg-white/95 shadow-[0_0.5em_1.5em_rgb(10_28_37/0.2)] backdrop-blur-md'
                           }`}
                         >
                           <span className="grid size-[2em] shrink-0 place-items-center rounded-[0.5em] bg-night-900 text-gold-300">

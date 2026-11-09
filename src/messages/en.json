@@ -28,22 +28,22 @@
   },
   "hero": {
     "eyebrow": "Douala · Buea · Yaoundé",
-    "titleStart": "Help for your home,",
-    "titleHighlight": "right at home.",
+    "titleStart": "Help for Your Home,",
+    "titleHighlight": "Right at Home.",
     "subtitle": "Book verified professionals, get a clear price before anything starts, pay safely with Mobile Money and follow the job live.",
     "primaryCta": "Book a service",
     "secondaryCta": "Get the app",
     "values": "Punctual · Polite · Professional",
     "watchFilm": "Watch the film",
     "film": {
-      "title": "HandyMan Do IT on film",
+      "title": "HandyMan Do IT on Film",
       "close": "Close video"
     },
     "trust": {
       "clients": "{count}+ happy clients"
     },
     "story": {
-      "label": "How a job works with HandyMan",
+      "label": "How a Job Works with HandyMan",
       "pause": "Pause animation",
       "play": "Play animation"
     },
@@ -107,7 +107,8 @@
       "privacy": "Privacy",
       "terms": "Terms",
       "disclaimer": "Disclaimer",
-      "allServices": "All services"
+      "allServices": "All services",
+      "cookies": "Cookie settings"
     },
     "contactTitle": "Contact",
     "call": "Call or WhatsApp",
@@ -120,21 +121,25 @@
     "supportLabel": "Support",
     "officeHoursLabel": "Offices",
     "officeHours": "Mon–Thu 08:00–17:00 · Fri–Sat 09:00–16:00 · Sun closed",
-    "credit": "Designed and Developed by <company>Web Spectron LTD</company>",
+    "credit": "Designed and Developed by <company>Web Spectron</company>",
     "hoursTitle": "Hours",
-    "officesTitle": "Offices"
+    "officesTitle": "Offices",
+    "group": {
+      "title": "Sister Products",
+      "visit": "{name} website (opens in a new tab)"
+    }
   },
   "notFound": {
     "metaTitle": "Page not found",
     "eyebrow": "Error 404",
-    "title": "We can’t find that page.",
+    "title": "We Can’t Find That Page.",
     "body": "The link may be old or the page may have moved. Go back home or message us on WhatsApp.",
     "home": "Back to home",
     "whatsapp": "Message us on WhatsApp"
   },
   "error": {
     "eyebrow": "Error",
-    "title": "Something went wrong.",
+    "title": "Something Went Wrong.",
     "body": "It’s not you. Try again in a moment; if it keeps happening, message us on WhatsApp.",
     "retry": "Try again",
     "home": "Back to home",
@@ -142,17 +147,17 @@
   },
   "services": {
     "interiorExteriorDesign": {
-      "name": "Interior & exterior design",
+      "name": "Interior & Exterior Design",
       "short": "Design",
       "blurb": "Spaces designed around you."
     },
     "upholsteryFurniture": {
-      "name": "Upholstery & furniture",
+      "name": "Upholstery & Furniture",
       "short": "Upholstery",
       "blurb": "Sofas, chairs and made-to-measure pieces."
     },
     "repairsInstallations": {
-      "name": "Repairs & installations",
+      "name": "Repairs & Installations",
       "short": "Repairs",
       "blurb": "Plumbing, electrics, appliances."
     },
@@ -198,7 +203,7 @@
     }
   },
   "getTheApp": {
-    "qrTitle": "Scan to get the app",
+    "qrTitle": "Scan to Get the App",
     "qrBody": "Point your phone’s camera at the code.",
     "qrAlt": "QR code to download the HandyMan Do IT app",
     "orUseWeb": "Or use the web app",
@@ -232,7 +237,7 @@
   },
   "pillars": {
     "eyebrow": "Why HandyMan",
-    "title": "Three promises on every job.",
+    "title": "Three Promises on Every Job.",
     "values": {
       "punctual": {
         "title": "Punctual",
@@ -247,29 +252,29 @@
         "body": "Six years of projects across Cameroon, with photos of the work on every job."
       }
     },
-    "trustTitle": "Peace of mind, built in",
+    "trustTitle": "Peace of Mind, Built In",
     "trust": {
       "verified": {
-        "title": "Verified pros",
+        "title": "Verified Pros",
         "body": "Identity, documents and skills are checked before a pro can take a job."
       },
       "held": {
-        "title": "Money held until done",
+        "title": "Money Held Until Done",
         "body": "Pay with Mobile Money or your wallet. The money is only released when the job is finished."
       },
       "tracking": {
-        "title": "Live tracking + photo proof",
+        "title": "Live Tracking + Photo Proof",
         "body": "Follow your pro on the map and see each stage with photos of the work."
       },
       "code": {
-        "title": "Completion code",
+        "title": "Completion Code",
         "body": "The job only closes when you share your private code."
       }
     }
   },
   "numbers": {
     "eyebrow": "HandyMan in numbers",
-    "title": "Trusted across Cameroon.",
+    "title": "Trusted Across Cameroon.",
     "body": "From Douala, Buea and Yaoundé to more than 120 towns and cities.",
     "stats": {
       "towns": "Towns & cities",
@@ -281,18 +286,18 @@
   },
   "howItWorks": {
     "eyebrow": "How it works",
-    "title": "Book in three steps.",
+    "title": "Book in Three Steps.",
     "steps": {
       "choose": {
         "title": "Choose",
         "body": "Pick a service or describe your task, add photos and get a clear price."
       },
       "book": {
-        "title": "Book & pay",
+        "title": "Book & Pay",
         "body": "Pay securely with MTN MoMo, Orange Money or your HandyMan wallet. The money is held until the job is done."
       },
       "relax": {
-        "title": "Relax & track",
+        "title": "Relax & Track",
         "body": "Follow your pro live, chat, rate the job and earn points."
       }
     },
@@ -300,7 +305,7 @@
   },
   "audiences": {
     "eyebrow": "Made for you",
-    "title": "For homes, businesses and buildings.",
+    "title": "For Homes, Businesses and Buildings.",
     "homes": {
       "title": "Homes",
       "points": [
@@ -321,7 +326,7 @@
       "cta": "Request a business quote"
     },
     "buildings": {
-      "title": "Buildings & estates",
+      "title": "Buildings & Estates",
       "points": [
         "Residents join with a code",
         "Post notices and raise charges",
@@ -332,14 +337,14 @@
   },
   "earn": {
     "eyebrow": "Earn with HandyMan",
-    "title": "One app to find work and get paid.",
+    "title": "One App to Find Work and Get Paid.",
     "body": "Pros, sellers and kitchens use the same app. Choose “I offer services” when you sign up.",
     "tabsLabel": "Ways to earn",
     "payoutLabel": "Paid in the app",
     "tabs": {
       "pros": {
         "label": "Pros",
-        "title": "Offer your skills",
+        "title": "Offer Your Skills",
         "points": [
           "Apply once and offer all your skills",
           "Set your own rates and service area",
@@ -350,7 +355,7 @@
       },
       "sellers": {
         "label": "Sellers",
-        "title": "Sell in the HandyMan shop",
+        "title": "Sell in the HandyMan Shop",
         "points": [
           "List new, refurbished or second-hand items",
           "Phones, home, tools, building, solar and groceries",
@@ -361,7 +366,7 @@
       },
       "kitchens": {
         "label": "Kitchens",
-        "title": "Bring your kitchen online",
+        "title": "Bring Your Kitchen Online",
         "points": [
           "Manage your menu",
           "Receive and follow orders",
@@ -371,13 +376,8 @@
         ]
       }
     },
-    "stepsLabel": "How sign-up works",
-    "steps": [
-      "“I offer services”",
-      "Your profile",
-      "Verification",
-      "Receive requests"
-    ],
+    "stepsLabel": "How Sign-Up Works",
+    "steps": ["“I Offer Services”", "Your Profile", "Verification", "Receive Requests"],
     "cta": "Start earning"
   },
   "download": {
@@ -385,26 +385,25 @@
     "title": "Get HandyMan Do IT.",
     "bodyAndroid": "Free on Android and on the web.",
     "bodyAll": "Free on iOS & Android.",
-    "webApp": "Open the web app",
-    "qrHint": "Scan with your phone"
+    "webApp": "Open the web app"
   },
   "whatsapp": {
     "label": "Chat with us on WhatsApp"
   },
   "trustedBy": {
-    "label": "Trusted by businesses across Cameroon",
+    "label": "Trusted by Businesses Across Cameroon",
     "featured": "Featured on Spectron Magazine"
   },
   "servicesSection": {
     "eyebrow": "Services",
-    "title": "Everything your home or business needs.",
+    "title": "Everything Your Home or Business Needs.",
     "from": "From {price} FCFA",
     "clearPrice": "Clear price before you book",
-    "alsoInApp": "Also in the app",
+    "alsoInApp": "Also in the App",
     "groups": {
-      "home": "For the home",
-      "projects": "Projects and events",
-      "moving": "Moving and transport"
+      "home": "For the Home",
+      "projects": "Projects and Events",
+      "moving": "Moving and Transport"
     },
     "shop": {
       "name": "Shop",
@@ -432,7 +431,7 @@
   },
   "testimonials": {
     "eyebrow": "Reviews",
-    "title": "What our clients say.",
+    "title": "What Our Clients Say.",
     "label": "Client reviews",
     "previous": "Previous review",
     "next": "Next review",
@@ -466,7 +465,7 @@
   },
   "faq": {
     "eyebrow": "FAQ",
-    "title": "Questions, answered.",
+    "title": "Questions, Answered.",
     "seeAll": "See all questions",
     "items": {
       "payment": {
@@ -505,53 +504,53 @@
   },
   "story": {
     "eyebrow": "The app, step by step",
-    "title": "From your to-do list to a job well done.",
+    "title": "From Your To-Do List to a Job Well Done.",
     "label": "Chapters",
     "chapters": {
       "browse": {
-        "title": "What’s on your to-do list?",
+        "title": "What’s on Your To-Do List?",
         "body": "Pick a category or describe the job in your own words, with photos.",
         "step": "Describe the job",
         "caption": "Repairs, upholstery, moving: 11 services in one app.",
         "photoAlt": "A woman on an orange sofa describes a job on her phone"
       },
       "price": {
-        "title": "Get a clear price",
+        "title": "Get a Clear Price",
         "body": "You see the price before you book. No haggling, no surprise on the day.",
         "step": "Clear price",
         "caption": "The price comes first, the booking after.",
         "photoAlt": "A man smiles and raises his fist as he reads the price on his phone"
       },
       "pay": {
-        "title": "Pay safely",
+        "title": "Pay Safely",
         "body": "Pay with MTN MoMo, Orange Money or your wallet. The money is held until the job is done.",
         "step": "Payment held",
         "caption": "Your money waits while the work gets done.",
         "photoAlt": "A woman in a headwrap, seated in an armchair, pays on her phone"
       },
       "track": {
-        "title": "Track live",
+        "title": "Track Live",
         "body": "Follow your verified pro on the map and chat with them in the app.",
         "step": "Live tracking",
         "caption": "Set off · Arrived · Started · Finished",
         "photoAlt": "A verified pro in a high-visibility vest, hard hat in hand, talks on her phone"
       },
       "code": {
-        "title": "Close with your code",
+        "title": "Close with Your Code",
         "body": "Happy with the work? Share your completion code. Only then is the pro paid.",
         "step": "Completion code",
         "caption": "First the photos of the work, then your code.",
         "photoAlt": "A smiling woman looks at her phone to share her completion code"
       },
       "rewards": {
-        "title": "Earn rewards",
+        "title": "Earn Rewards",
         "body": "Every completed job earns points for your next booking.",
         "step": "Reward points",
         "caption": "Every job well done counts.",
         "photoAlt": "A smiling man in a navy suit talks on his phone"
       },
       "finale": {
-        "title": "Book from any device.",
+        "title": "Book from Any Device.",
         "body": "On the web and on Android, with the same account.",
         "step": "Web + Android",
         "caption": "Start on your laptop, finish on your phone."
@@ -590,7 +589,7 @@
   },
   "demo": {
     "eyebrow": "Try it",
-    "title": "Try it, no download needed.",
+    "title": "Try It, No Download Needed.",
     "intro": "Tap a category, pick a pro and open the booking sheet. Sample data: nothing is booked.",
     "label": "Interactive app demo",
     "loading": "Loading the demo…",
@@ -615,7 +614,7 @@
   },
   "gallery": {
     "eyebrow": "Screens",
-    "title": "See the real app.",
+    "title": "See the Real App.",
     "intro": "Captured from the app, in your language.",
     "label": "App screens",
     "slide": "{n} of {total}",
@@ -629,7 +628,7 @@
   },
   "blog": {
     "eyebrow": "Blog",
-    "title": "Latest from the blog.",
+    "title": "Latest from the Blog.",
     "seeAll": "All articles"
   },
   "breadcrumbs": {
@@ -637,7 +636,7 @@
     "home": "Home"
   },
   "ctaBand": {
-    "title": "Ready when you are.",
+    "title": "Ready When You Are.",
     "body": "Book a verified pro in the app, or tell us about a bigger job and get a quote.",
     "book": "Book in the app",
     "quote": "Get a quote"
@@ -646,7 +645,7 @@
     "metaTitle": "Services",
     "metaDescription": "Design, repairs, remodeling, moving, signage, events and more: book verified pros in Cameroon with a clear price first and Mobile Money payment held until the job is done.",
     "eyebrow": "Services",
-    "title": "Every service, one app.",
+    "title": "Every Service, One App.",
     "lead": "Verified pros for your home and business across Cameroon. See the price before you book, pay with Mobile Money and follow the job live.",
     "filter": {
       "label": "Filter services",
@@ -661,34 +660,35 @@
     },
     "pricing": {
       "eyebrow": "Pricing",
-      "title": "How pricing works",
+      "title": "How Pricing Works",
       "points": {
         "clear": {
-          "title": "A clear price first",
+          "title": "A Clear Price First",
           "body": "You see the price in the app before you book. Nothing starts until you agree."
         },
         "held": {
-          "title": "Money held until done",
+          "title": "Money Held Until Done",
           "body": "Pay with MTN MoMo, Orange Money or your HandyMan wallet. The money is only released when the job is finished."
         },
         "code": {
-          "title": "Close with your code",
+          "title": "Close with Your Code",
           "body": "The job only closes when you share your private completion code."
         },
         "quote": {
-          "title": "Bigger jobs, a detailed quote",
+          "title": "Bigger Jobs, a Detailed Quote",
           "body": "Remodeling, events or a whole office? Tell us about it and we send you a quote."
         }
       }
     },
     "detail": {
       "actions": "Book this service",
-      "included": "What’s included",
-      "process": "How it works",
-      "work": "Recent work",
-      "reviews": "What clients say",
+      "included": "What’s Included",
+      "process": "How It Works",
+      "work": "Recent Work",
+      "reviews": "What Clients Say",
       "faq": "Questions about {service}",
-      "other": "Other services"
+      "other": "Other Services",
+      "metaDescription": "{summary} Verified pros in Douala, Buea and Yaoundé, a clear price first and secure Mobile Money payment."
     }
   },
   "workPage": {
@@ -705,7 +705,7 @@
     "cities": "City",
     "empty": "Projects are on their way. In the meantime, see our services.",
     "detail": {
-      "facts": "Project details",
+      "facts": "Project Details",
       "service": "Service",
       "client": "Client",
       "city": "City",
@@ -715,8 +715,8 @@
       "before": "Before",
       "after": "After",
       "compare": "Compare before and after",
-      "more": "More projects",
-      "ctaTitle": "Planning something similar?",
+      "more": "More Projects",
+      "ctaTitle": "Planning Something Similar?",
       "ctaBody": "Book a verified pro in the app, or tell us about your project and get a quote."
     }
   },
@@ -724,7 +724,7 @@
     "metaTitle": "Reviews",
     "metaDescription": "What homes and businesses say about HandyMan Do IT: reviews from Douala, Buea, Yaoundé and beyond.",
     "eyebrow": "Reviews",
-    "title": "What our clients say.",
+    "title": "What Our Clients Say.",
     "lead": "Reviews from the homes and businesses we have worked with.",
     "rating": "{rating} out of 5 from {count, plural, one {# review} other {# reviews}}",
     "service": "Service: {service}"
@@ -733,31 +733,31 @@
     "metaTitle": "About us",
     "metaDescription": "HandyMan Do IT: a Cameroonian design, craft and events company with {years}+ years of projects, now an app to book verified pros.",
     "eyebrow": "About us",
-    "title": "Craft first. Now in an app.",
+    "title": "Craft First. Now in an App.",
     "lead": "HandyMan Do IT is a Cameroonian company for interiors, furniture, signage and events. After {years}+ years of projects, we built the app so every job gets the same care.",
     "story": {
-      "title": "Our story",
+      "title": "Our Story",
       "body": [
         "We started as a design and craft company: interior and exterior design, upholstery and furniture, repairs, signage and event set-up. We work with families, SMEs and organisations, from the media to private businesses.",
         "The HandyMan Do IT app brings that standard to every booking: verified pros, a clear price before anything starts, payment held until the job is done, and live tracking. It serves more than {towns} towns and cities across Cameroon."
       ]
     },
     "mission": {
-      "title": "Our mission",
+      "title": "Our Mission",
       "body": "Under the umbrella of Spectron Limited LLC, our mission is to contribute to the modern design and development of Cameroon, with distinctive design services and modern ways of working that improve customer service in a digital world."
     },
     "values": {
-      "title": "What we stand for"
+      "title": "What We Stand For"
     },
     "numbers": {
-      "title": "In numbers"
+      "title": "In Numbers"
     },
     "team": {
-      "title": "Our team",
+      "title": "Our Team",
       "intro": "Our success is built on the expertise and dedication of our team."
     },
     "partners": {
-      "title": "Partners and affiliations",
+      "title": "Partners and Affiliations",
       "parentLabel": "Our parent company",
       "parentName": "Spectron Limited LLC",
       "parentBody": "Spectron Limited LLC works in investment management, business consulting and crowdfunding. HandyMan Do IT operates under its umbrella.",
@@ -767,11 +767,11 @@
         "kukwa": "KUKWA Constructions: building and construction",
         "augma": "AUGMA Realty: property management and real estate"
       },
-      "logosLabel": "Companies we work with",
+      "logosLabel": "Companies We Work With",
       "visit": "{name} website (opens in a new tab)"
     },
     "csr": {
-      "title": "Corporate social responsibility",
+      "title": "Corporate Social Responsibility",
       "intro": "We aim to run our business ethically, responsibly and sustainably, and to contribute to the communities we serve.",
       "areas": {
         "environment": {
@@ -814,21 +814,21 @@
     "metaTitle": "FAQ",
     "metaDescription": "Answers about payments, quotes, coverage, safety and working as a pro with HandyMan Do IT.",
     "eyebrow": "FAQ",
-    "title": "Questions and answers.",
+    "title": "Questions and Answers.",
     "lead": "Everything about booking, paying and working with HandyMan Do IT.",
     "categories": {
       "payments": "Payments",
-      "coverage": "Where we work",
-      "quotes": "Prices and quotes",
+      "coverage": "Where We Work",
+      "quotes": "Prices and Quotes",
       "cancellations": "Cancellations",
       "guarantee": "Guarantee",
-      "safety": "Safety and trust",
-      "pros": "For pros",
-      "business": "For businesses"
+      "safety": "Safety and Trust",
+      "pros": "For Pros",
+      "business": "For Businesses"
     },
     "nav": "Topics",
     "more": {
-      "title": "Still have a question?",
+      "title": "Still Have a Question?",
       "body": "Write to us on WhatsApp or send us a message. Support is available every day.",
       "whatsapp": "Chat on WhatsApp",
       "contact": "Contact us"
@@ -837,11 +837,11 @@
   "buildingsPage": {
     "metaTitle": "For buildings and estates",
     "metaDescription": "Residences, estates and property managers run their building in the HandyMan Do IT app: notices, charges and issue reports.",
-    "eyebrow": "Buildings & estates",
-    "title": "Run your building on HandyMan.",
+    "eyebrow": "Buildings & Estates",
+    "title": "Run Your Building on HandyMan.",
     "lead": "Residences, estates and property managers manage their building in the app: notices, charges and issue reports in one place.",
     "managers": {
-      "title": "For managers",
+      "title": "For Managers",
       "points": [
         "Post notices to every resident",
         "Raise charges and follow payments",
@@ -850,7 +850,7 @@
       ]
     },
     "residents": {
-      "title": "For residents",
+      "title": "For Residents",
       "points": [
         "Join your building with a code",
         "See notices and charges in the app",
@@ -859,23 +859,23 @@
       ]
     },
     "steps": {
-      "title": "How to start",
+      "title": "How to Start",
       "items": [
         {
-          "title": "Add your building",
+          "title": "Add Your Building",
           "body": "Create your residence or estate in the app."
         },
         {
-          "title": "Invite residents",
+          "title": "Invite Residents",
           "body": "Residents join with your building’s code."
         },
         {
-          "title": "Manage in one place",
+          "title": "Manage in One Place",
           "body": "Notices, charges and issue reports, all in the app."
         }
       ]
     },
-    "ctaTitle": "Bring your building online.",
+    "ctaTitle": "Bring Your Building Online.",
     "ctaBody": "Get the app, or talk to us about your residence or estate.",
     "contact": "Talk to us"
   },
@@ -883,10 +883,10 @@
     "metaTitle": "Shop",
     "metaDescription": "New, refurbished and second-hand goods in the HandyMan Do IT app: phones, home, tools, building, solar and groceries.",
     "eyebrow": "Shop",
-    "title": "Shop in the same app.",
+    "title": "Shop in the Same App.",
     "lead": "New, refurbished and second-hand goods from local sellers, next to the pros who can install them.",
     "features": {
-      "title": "What you find",
+      "title": "What You Find",
       "points": [
         "Phones and electronics",
         "Home and furniture",
@@ -897,7 +897,7 @@
       ]
     },
     "sell": {
-      "title": "Sell in the HandyMan shop",
+      "title": "Sell in the HandyMan Shop",
       "body": "List new, refurbished or second-hand items and get paid safely through the app.",
       "cta": "Start selling"
     }
@@ -906,10 +906,10 @@
     "metaTitle": "Food",
     "metaDescription": "Order from local kitchens in the HandyMan Do IT app and follow your order.",
     "eyebrow": "Food",
-    "title": "Order from local kitchens.",
+    "title": "Order from Local Kitchens.",
     "lead": "Meals from kitchens near you, in the same app you use to book a pro.",
     "features": {
-      "title": "How it works",
+      "title": "How It Works",
       "points": [
         "Browse the menus of local kitchens",
         "Order in the app",
@@ -918,7 +918,7 @@
       ]
     },
     "sell": {
-      "title": "Run a kitchen?",
+      "title": "Run a Kitchen?",
       "body": "Bring your kitchen online: manage your menu, receive orders and track your payouts.",
       "cta": "Join as a kitchen"
     }
@@ -970,7 +970,7 @@
     },
     "sending": "Sending…",
     "success": {
-      "title": "Thank you, we have it.",
+      "title": "Thank You, We Have It.",
       "body": "Our team will get back to you soon, by phone or email.",
       "pro": "Our team will call you about the next steps. Meanwhile, you can get the app and choose “I offer services”.",
       "job": "We will read your application and contact you if your profile matches a role."
@@ -997,7 +997,7 @@
     "metaTitle": "Contact us",
     "metaDescription": "Call, WhatsApp or write to HandyMan Do IT: questions, quotes and partnerships. Offices in Buea and Douala, every day from 07:00 to 21:00.",
     "eyebrow": "Contact",
-    "title": "Talk to us.",
+    "title": "Talk to Us.",
     "lead": "A question, a bigger job to price, or a partnership idea: send us a message, or reach us on WhatsApp every day.",
     "chooser": {
       "legend": "What can we help with?",
@@ -1006,13 +1006,13 @@
       "partnership": "A partnership"
     },
     "channels": {
-      "title": "Other ways to reach us",
+      "title": "Other Ways to Reach Us",
       "whatsapp": "WhatsApp",
       "whatsappBody": "The quickest way to reach us.",
       "call": "Call us",
       "email": "Email",
-      "hours": "Opening hours",
-      "offices": "Our offices",
+      "hours": "Opening Hours",
+      "offices": "Our Offices",
       "openMap": "Open in Maps",
       "support": "Phone and WhatsApp support",
       "visits": "Office visits"
@@ -1022,37 +1022,37 @@
     "metaTitle": "For businesses and organisations",
     "metaDescription": "Signage, events, office remodels and furniture for organisations in Cameroon: one contact, a clear quote and verified crews.",
     "eyebrow": "Businesses",
-    "title": "Projects done right, for your organisation.",
+    "title": "Projects Done Right, for Your Organisation.",
     "lead": "Signage, events, office remodels and furniture: one contact from quote to handover, verified crews and payment held until the work is done.",
     "quoteCta": "Request a business quote",
     "features": {
-      "title": "Built for organisations",
+      "title": "Built for Organisations",
       "items": [
         {
-          "title": "“My organisation” accounts",
+          "title": "“My Organisation” Accounts",
           "body": "Your team books and follows jobs from one organisation account in the app."
         },
         {
-          "title": "Signage, events and offices",
+          "title": "Signage, Events and Offices",
           "body": "Signboards, stands and stages, office remodels and made-to-measure furniture."
         },
         {
-          "title": "A dedicated contact",
+          "title": "A Dedicated Contact",
           "body": "One person follows your project from the first visit to the handover."
         },
         {
-          "title": "Clear price, protected payment",
+          "title": "Clear Price, Protected Payment",
           "body": "A clear quote before work starts; payment is held until the job is done."
         }
       ]
     },
     "work": {
-      "title": "Recent work for organisations",
+      "title": "Recent Work for Organisations",
       "body": "Events, studios and community projects we built with our clients.",
       "all": "See all our work"
     },
     "quote": {
-      "title": "Request a business quote",
+      "title": "Request a Business Quote",
       "body": "Tell us about the project. We reply with questions or a visit, then a clear quote."
     }
   },
@@ -1060,32 +1060,32 @@
     "metaTitle": "Become a pro: earn with HandyMan Do IT",
     "metaDescription": "Pros, sellers and kitchens earn with the HandyMan Do IT app: requests near you, your own rates, payment held safely until the job is done.",
     "eyebrow": "Become a pro",
-    "title": "Earn with your skills.",
+    "title": "Earn with Your Skills.",
     "lead": "Pros, sellers and kitchens use the same app as customers. Choose “I offer services” when you sign up, or leave your details and we will call you.",
     "applyCta": "Apply here",
     "benefits": {
-      "title": "Why pros join HandyMan",
+      "title": "Why Pros Join HandyMan",
       "items": [
         {
-          "title": "Requests near you",
+          "title": "Requests Near You",
           "body": "Receive jobs in your service area, in 120+ towns and cities."
         },
         {
-          "title": "Your rates, your area",
+          "title": "Your Rates, Your Area",
           "body": "Set your skills, your rates and where you work."
         },
         {
-          "title": "Payment you can count on",
+          "title": "Payment You Can Count On",
           "body": "The customer pays before the job. The money is held and released to you when the work is done."
         },
         {
-          "title": "More than repairs",
+          "title": "More Than Repairs",
           "body": "Sell new, refurbished or second-hand items in the shop, or bring your kitchen online."
         }
       ]
     },
     "requirements": {
-      "title": "What you need",
+      "title": "What You Need",
       "body": "Every pro is checked by our team before customers can see them.",
       "items": [
         "A valid identity document",
@@ -1095,14 +1095,14 @@
       ]
     },
     "steps": {
-      "title": "Four steps to your first job",
+      "title": "Four Steps to Your First Job",
       "items": [
         {
-          "title": "“I offer services”",
+          "title": "“I Offer Services”",
           "body": "Download the app and choose “I offer services” at sign-up."
         },
         {
-          "title": "Your profile",
+          "title": "Your Profile",
           "body": "Add your skills, rates, service area and photos of your work."
         },
         {
@@ -1110,13 +1110,13 @@
           "body": "Our team checks your identity, documents and skills."
         },
         {
-          "title": "Receive requests",
+          "title": "Receive Requests",
           "body": "Accept jobs near you and get paid when they are done."
         }
       ]
     },
     "payouts": {
-      "title": "How you get paid",
+      "title": "How You Get Paid",
       "items": [
         "The customer sees a clear price and pays up front, with Mobile Money or the HandyMan wallet.",
         "The money is held safely while you work. Each stage is shown in the app, with photos.",
@@ -1124,11 +1124,11 @@
       ]
     },
     "form": {
-      "title": "Apply here",
+      "title": "Apply Here",
       "body": "Leave your details and our team will call you to finish your sign-up."
     },
     "app": {
-      "title": "Prefer the app?",
+      "title": "Prefer the App?",
       "body": "Sign up directly: choose “I offer services” and follow the steps."
     }
   },
@@ -1136,21 +1136,21 @@
     "metaTitle": "Careers",
     "metaDescription": "Join the HandyMan Do IT team in Cameroon: technicians, designers, project managers, customer service and apprentices.",
     "eyebrow": "Careers",
-    "title": "Join the HandyMan Do IT team.",
+    "title": "Join the HandyMan Do IT Team.",
     "lead": "We create great experiences for our clients through quality craftsmanship and service. If you want a rewarding career where you keep learning, join us.",
     "why": {
-      "title": "Why work with us",
+      "title": "Why Work with Us",
       "items": [
         {
-          "title": "Commitment to excellence",
+          "title": "Commitment to Excellence",
           "body": "We hold ourselves to high standards, take pride in our results and keep improving."
         },
         {
-          "title": "Diverse opportunities",
+          "title": "Diverse Opportunities",
           "body": "Repairs, installations, remodeling, upholstery, furniture and more: roles for many skills."
         },
         {
-          "title": "Professional growth",
+          "title": "Professional Growth",
           "body": "Ongoing training, mentoring and room to build a long-term career."
         },
         {
@@ -1158,38 +1158,38 @@
           "body": "Open communication, shared ideas and respect, so everyone feels valued and supported."
         },
         {
-          "title": "Work that matters",
+          "title": "Work That Matters",
           "body": "Every project makes homes and businesses in our community better."
         }
       ]
     },
     "areas": {
-      "title": "Where you could fit",
+      "title": "Where You Could Fit",
       "items": [
         {
-          "title": "Skilled technicians",
+          "title": "Skilled Technicians",
           "body": "Electrical, plumbing, carpentry and general handyman work, with an eye for detail."
         },
         {
-          "title": "Designers and remodelers",
+          "title": "Designers and Remodelers",
           "body": "Bring your creative vision to projects that transform spaces."
         },
         {
-          "title": "Project managers",
+          "title": "Project Managers",
           "body": "Lead projects from start to finish: on time, on budget, to a high standard."
         },
         {
-          "title": "Customer service",
+          "title": "Customer Service",
           "body": "Help our clients find their way through our services and keep them satisfied."
         },
         {
-          "title": "Apprentices and trainees",
+          "title": "Apprentices and Trainees",
           "body": "Start with hands-on experience and mentoring from experienced pros."
         }
       ]
     },
     "roles": {
-      "title": "Open roles",
+      "title": "Open Roles",
       "empty": "No open roles right now. Send us an open application below: we read every one.",
       "view": "View the role",
       "closes": "Apply by {date}",
@@ -1201,7 +1201,7 @@
       }
     },
     "apply": {
-      "title": "Open application",
+      "title": "Open Application",
       "body": "Send your CV and tell us what you would like to do."
     },
     "detail": {
@@ -1209,7 +1209,7 @@
       "location": "Location",
       "type": "Type",
       "closesAt": "Apply by",
-      "applyTitle": "Apply for this role",
+      "applyTitle": "Apply for This Role",
       "closed": "This role is closed and no longer takes applications. See the other open roles, or send an open application."
     }
   },
@@ -1217,7 +1217,7 @@
     "metaTitle": "Blog: tips and news",
     "metaDescription": "Home tips, project stories and HandyMan Do IT news from Cameroon: design, repairs, upholstery, events and more.",
     "eyebrow": "Blog",
-    "title": "Tips, projects and news.",
+    "title": "Tips, Projects and News.",
     "lead": "Ideas for your home and business, stories from our projects, and news from HandyMan Do IT.",
     "search": "Search articles",
     "searchPlaceholder": "Search by title or topic",
@@ -1233,21 +1233,21 @@
       "back": "All articles",
       "published": "Published on {date}",
       "englishOnly": "This article is only available in English.",
-      "related": "Keep reading",
+      "related": "Keep Reading",
       "share": "Questions about your own project?",
       "shareBody": "Book a verified pro in the app, or ask us for a quote."
     }
   },
   "legalPage": {
     "privacy": {
-      "metaTitle": "Privacy policy",
+      "metaTitle": "Privacy Policy",
       "metaDescription": "What personal data the HandyMan Do IT website collects through its forms, why, how long we keep it and your rights.",
-      "title": "Privacy policy"
+      "title": "Privacy Policy"
     },
     "terms": {
-      "metaTitle": "Terms of use",
+      "metaTitle": "Terms of Use",
       "metaDescription": "The terms that apply to your use of the HandyMan Do IT website.",
-      "title": "Terms of use"
+      "title": "Terms of Use"
     },
     "disclaimer": {
       "metaTitle": "Disclaimer",
@@ -1256,21 +1256,35 @@
     },
     "eyebrow": "Legal",
     "updated": "Last updated: {date}",
-    "others": "Other legal pages",
+    "others": "Other Legal Pages",
     "questions": "Questions? Write to <link>{email}</link>."
   },
   "appPage": {
     "metaTitle": "Get the HandyMan Do IT app",
     "metaDescription": "Download HandyMan Do IT on Android, or use the web app on any phone or computer. Scan the QR code to open it on your phone.",
     "eyebrow": "Get the app",
-    "title": "HandyMan Do IT, on your phone.",
+    "title": "HandyMan Do IT, on Your Phone.",
     "lead": "Book verified pros, see a clear price first and pay safely with Mobile Money. Scan the code with your phone’s camera, or pick your store.",
-    "qrTitle": "Scan to download",
+    "qrTitle": "Scan to Download",
     "qrBody": "Point your phone’s camera at the code.",
     "qrAlt": "QR code to download the HandyMan Do IT app",
-    "webTitle": "No download needed",
+    "webTitle": "No Download Needed",
     "webBody": "The web app works in any browser, on phones and computers.",
     "webCta": "Open the web app",
     "iphone": "On iPhone: open the web app in Safari, tap Share, then “Add to Home Screen”."
+  },
+  "consent": {
+    "label": "Cookie consent",
+    "title": "Your privacy",
+    "body": "We use one analytics cookie, only if you agree, to see which pages help people book. No advertising.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "customise": "Customise",
+    "save": "Save choices",
+    "necessary": "Necessary",
+    "necessaryBody": "Language and your consent choice. Always on.",
+    "analytics": "Analytics",
+    "analyticsBody": "Google Analytics 4: pages visited and buttons used, without ads.",
+    "privacy": "Privacy policy"
   }
 }

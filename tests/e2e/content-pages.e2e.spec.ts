@@ -83,8 +83,9 @@ test.describe('Content pages', () => {
     await expect(page.getByText('Chief Operations')).toBeVisible()
     await expect(page.locator('#partners')).toBeVisible()
     await expect(page.locator('#csr')).toBeVisible()
+    // Scoped to the partners section: the footer's sister products link there too (FR-GLB-02).
     await expect(
-      page.getByRole('link', {
+      page.locator('#partners').getByRole('link', {
         name: en.aboutPage.partners.visit.replace('{name}', 'Web Spectron'),
       }),
     ).toHaveAttribute('href', 'https://webspectron.com/')

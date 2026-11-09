@@ -29,13 +29,14 @@ type Props = {
 
 type Status = 'idle' | 'sending' | 'sent'
 
-const events: Record<FormType, [string, Record<string, string>]> = {
-  contact: ['quote_submit', { type: 'contact' }],
-  'quote-home': ['quote_submit', { type: 'home' }],
-  'quote-business': ['quote_submit', { type: 'business' }],
-  partnership: ['quote_submit', { type: 'partnership' }],
-  pro: ['pro_apply', {}],
-  job: ['job_apply', {}],
+// One conversion event per form (FR-ANA-02).
+const trackSubmit: Record<FormType, () => void> = {
+  contact: () => track('quote_submit', { type: 'contact' }),
+  'quote-home': () => track('quote_submit', { type: 'home' }),
+  'quote-business': () => track('quote_submit', { type: 'business' }),
+  partnership: () => track('quote_submit', { type: 'partnership' }),
+  pro: () => track('pro_apply', {}),
+  job: () => track('job_apply', {}),
 }
 
 const autoComplete: Record<string, string> = {
@@ -130,7 +131,7 @@ export function SiteForm({ type, job, services = [], defaultService, className =
       }
       if (response.ok && body.ok) {
         setStatus('sent')
-        track(...events[type])
+        trackSubmit[type]()
         return
       }
       setStatus('idle')

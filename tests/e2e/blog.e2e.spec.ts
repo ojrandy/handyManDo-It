@@ -51,9 +51,25 @@ test.describe('Blog', () => {
     const article = (await jsonLd(page)).find((data) => data['@type'] === 'Article')
     expect(article).toMatchObject({ headline: expect.stringContaining('Upholstery Mastery') })
     expect(article.datePublished).toBeTruthy()
-    await expect(page.locator('link[rel="alternate"][hreflang="fr"]')).toHaveAttribute(
+    // Not written in French yet: the French copy is not offered as an alternate (FR-SEO-01).
+    await expect(page.locator('link[rel="alternate"][hreflang="fr"]')).toHaveCount(0)
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       'href',
-      new RegExp(`/fr/blog/${upholsteryGuide}$`),
+      new RegExp(`/en/blog/${upholsteryGuide}$`),
+    )
+  })
+
+  test('the French copy of an English-only article points search engines to the English one', async ({
+    page,
+  }) => {
+    await page.goto(`/fr/blog/${upholsteryGuide}`)
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      new RegExp(`/en/blog/${upholsteryGuide}$`),
+    )
+    await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute(
+      'href',
+      new RegExp(`/en/blog/${upholsteryGuide}$`),
     )
   })
 

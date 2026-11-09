@@ -86,7 +86,7 @@ test.describe('Header', () => {
   test('"Get the app" opens the QR popover on desktop', async ({ page }) => {
     await page.goto('/en')
     await page.getByRole('banner').getByRole('button', { name: en.nav.getTheApp }).click()
-    // Scoped to the popover: the download band shows the same QR further down the page.
+    // Scoped to the popover: /get-the-app shows the same QR on its own page.
     await expect(
       page.locator('[popover]').getByRole('img', { name: en.getTheApp.qrAlt }),
     ).toBeVisible()
@@ -130,6 +130,25 @@ test.describe('Hero', () => {
     await expect(page.locator('video[autoplay]')).toHaveCount(0)
     expect(media).toEqual([])
     await context.close()
+  })
+
+  test('the film opens in a dialog on demand, Esc closes it and focus returns', async ({
+    page,
+  }) => {
+    await page.goto('/en')
+    // The dialog's code is fetched on the first click (home JS budget).
+    await expect(page.locator(`dialog[aria-label="${en.hero.film.title}"]`)).toHaveCount(0)
+    const trigger = page.getByRole('button', { name: en.hero.watchFilm })
+    await trigger.click()
+    const dialog = page.getByRole('dialog', { name: en.hero.film.title })
+    await expect(dialog).toBeVisible()
+    await expect(dialog.getByRole('button', { name: en.hero.film.close })).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(dialog).toBeHidden()
+    await expect(trigger).toBeFocused()
+    // Opens again from the same button.
+    await trigger.click()
+    await expect(dialog).toBeVisible()
   })
 })
 

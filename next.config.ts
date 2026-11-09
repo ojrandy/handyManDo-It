@@ -4,6 +4,8 @@ import createNextIntlPlugin from 'next-intl/plugin'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import { legacyRedirects } from './src/lib/legacyRedirects'
+
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
@@ -14,16 +16,26 @@ const isDev = process.env.NODE_ENV === 'development'
 // HSTS and upgrade-insecure-requests only make sense (and only work) behind HTTPS.
 const isHttps = (process.env.NEXT_PUBLIC_SITE_URL || '').startsWith('https://')
 
+// GA4 (FR-ANA-01) is only allowed when configured; it loads after consent (ADR-036).
+const ga = process.env.NEXT_PUBLIC_GA_ID
+  ? {
+      script: ' https://www.googletagmanager.com',
+      connect:
+        ' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com',
+      img: ' https://*.google-analytics.com https://*.googletagmanager.com',
+    }
+  : { script: '', connect: '', img: '' }
+
 // Pages are pre-rendered, so nonces are not an option; 'unsafe-inline' covers the
-// inline scripts Next.js emits. Extend script-src/connect-src when GA4 lands (Phase 5).
+// inline scripts Next.js emits.
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}${ga.script}`,
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob:${mediaHost ? ` ${mediaHost.origin}` : ''}`,
+  `img-src 'self' data: blob:${mediaHost ? ` ${mediaHost.origin}` : ''}${ga.img}`,
   `media-src 'self'${mediaHost ? ` ${mediaHost.origin}` : ''}`,
   "font-src 'self'",
-  `connect-src 'self'${isDev ? ' ws:' : ''}`,
+  `connect-src 'self'${isDev ? ' ws:' : ''}${ga.connect}`,
   "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -46,6 +58,26 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: {
+    // The site stylesheet (~18 KB gzip) goes in the HTML head instead of a render-blocking request:
+    // one round trip less before first paint on 4G (NFR-PERF-01). Pages are cached at the edge,
+    // so the repeat cost of not sharing one CSS file is small.
+    inlineCss: true,
+  },
+  // Old WordPress URLs end in "/". Next's own trailing-slash redirect would run before ours and add
+  // a hop, so it is off and done last in redirects() instead (single-hop 301s, FR-SEO-05).
+  skipTrailingSlashRedirect: true,
+  async redirects() {
+    return [
+      ...legacyRedirects,
+      // What Next does by default (308, same exclusions), after the legacy map.
+      {
+        source: '/:path((?!\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+)/',
+        destination: '/:path',
+        permanent: true,
+      },
+    ]
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     // The Media imageSizes widths, so each srcset width names a file that really has it (the
@@ -76,6 +108,11 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },
+      // FR-SEO-02: the CMS and API never show in search (uploaded images excepted).
+      {
+        source: '/:path(admin|admin/.*|api/(?!media/).*)',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
       // The Payload admin relies on inline/eval code, so the CSP covers the public site only.
       {
         source: '/:path((?!admin|api).*)',

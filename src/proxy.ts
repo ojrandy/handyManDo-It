@@ -5,6 +5,7 @@ import { routing } from './i18n/routing'
 export default createMiddleware(routing)
 
 export const config = {
-  // Everything except the CMS, API routes, the store redirect, Next internals and files with an extension.
-  matcher: ['/((?!admin|api|download|_next|_vercel|.*\\..*).*)'],
+  // Everything except the CMS, API routes, the store redirect, Next internals, share images (their
+  // URL uses the route's folder name, not the translated path) and files with an extension.
+  matcher: ['/((?!admin|api|download|_next|_vercel|.*opengraph-image|.*\\..*).*)'],
 }

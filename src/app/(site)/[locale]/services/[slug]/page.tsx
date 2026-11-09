@@ -15,9 +15,11 @@ import { ServiceCard } from '@/components/ui/ServiceCard'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { docPaths, formatPrice, getService, getServices } from '@/lib/catalog'
+import { followEditorRedirect } from '@/lib/redirects'
 import { asMedia, imageSources } from '@/lib/media'
 import { absoluteUrl, pageMetadata } from '@/lib/seo'
 import { site } from '@/lib/site'
+import { organizationRef } from '@/lib/structuredData'
 import type { Faq, Project, Service, Testimonial } from '@/payload-types'
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
@@ -33,10 +35,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!service) return {}
   const paths = await docPaths('services', service.id)
   if (!paths) return { title: service.meta?.title || service.title }
+  // The one-line summary is too short to describe the page in search results (FR-SEO-01), so it
+  // is followed by the booking promise unless an editor wrote a meta description.
+  const t = await getTranslations({ locale, namespace: 'servicesPage.detail' })
   return pageMetadata({
     locale: locale as Locale,
     title: service.meta?.title || service.title,
-    description: service.meta?.description || service.summary,
+    description:
+      service.meta?.description || t('metaDescription', { summary: service.summary.trim() }),
     paths,
   })
 }
@@ -54,7 +60,13 @@ export default async function ServicePage({ params }: Props) {
   setRequestLocale(locale)
 
   const service = await getService(locale, slug)
-  if (!service) notFound()
+  if (!service) {
+    await followEditorRedirect(
+      locale,
+      getPathname({ locale, href: { pathname: '/services/[slug]', params: { slug } } }),
+    )
+    notFound()
+  }
 
   const [t, cta, nav, section, steps, all] = await Promise.all([
     getTranslations('servicesPage'),
@@ -307,7 +319,7 @@ function serviceJsonLd(service: Service, locale: Locale) {
       }),
     ),
     areaServed: { '@type': 'Country', name: 'Cameroon' },
-    provider: { '@type': 'Organization', name: site.name, url: site.url },
+    provider: { '@type': 'Organization', ...organizationRef, name: site.name, url: site.url },
     ...(service.fromPrice
       ? {
           offers: {

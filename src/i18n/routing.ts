@@ -9,6 +9,9 @@ export const routing = defineRouting({
   locales,
   defaultLocale: 'fr',
   localePrefix: 'always',
+  // Pages declare their own hreflang (src/lib/seo.ts). The middleware's Link header knows neither
+  // translated slugs nor our x-default, so it would contradict them on slug pages.
+  alternateLinks: false,
   pathnames: {
     '/': '/',
     '/services': '/services',

@@ -32,6 +32,7 @@ export function WhatsAppFab({ href, label }: Props) {
         className="pointer-events-none absolute top-0 h-dvh w-px"
       />
       <a
+        data-placement="fab"
         href={href}
         aria-label={label}
         tabIndex={visible ? 0 : -1}

@@ -18,7 +18,8 @@
   --color-mist-50: #f7f9fa;
   --color-mist-100: #edf4f8;
   --color-mist-200: #dfe8eb;
-  --color-slate-500: #5b7480;
+  /* Darkened from #5b7480 (2026-11-09): body text on mist-100/200 now passes WCAG AA 4.5:1. */
+  --color-slate-500: #516a76;
   --color-ink: #183d49;
   /* Form errors only (6.5:1 on white). */
   --color-danger: #b3261e;
@@ -117,6 +118,10 @@
 /* Service panels (FR-HOME-04, ADR-031): phones tall enough for a 2 x 2 panel, with motion allowed
    and scripts on; elsewhere the plain grid. ServicePanels uses the same query. */
 @custom-variant panels (@media (width < 48rem) and (height >= 34rem) and (prefers-reduced-motion: no-preference) and (scripting: enabled));
+
+/* "Get the app" (FR-GLB-04): a mouse and hover mean a computer, which gets the QR popover; touch
+   screens get the /download link, which picks the store on the server. CSS, so no JS ships. */
+@custom-variant pointer-fine (@media (hover: hover) and (pointer: fine));
 
 @layer base {
   html {

@@ -22,6 +22,41 @@ export const site = {
     { key: 'technical', address: 'Mile 16 Shopping Mall', city: 'Buea' },
     { key: 'office', address: 'Mobile Njo Njo, Bonapriso', city: 'Douala' },
   ],
+  // Office visiting hours (Q-19) for the LocalBusiness structured data; the text shown on the
+  // page lives in messages or the `site` global.
+  openingHours: [
+    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'], opens: '08:00', closes: '17:00' },
+    { days: ['Friday', 'Saturday'], opens: '09:00', closes: '16:00' },
+  ],
   // Footer credit. The sentence around the name lives in messages (footer.credit).
   developerUrl: 'https://webspectron.com/',
+  // Footer "Sister Products" before any partner exists in the CMS (fresh database). After that,
+  // editors choose them with the partner's "Show in footer" box. Names are proper nouns, so they
+  // stay out of messages; logos are the square 300 px files the partner marquee already ships.
+  groupCompanies: [
+    {
+      key: 'spectron-limited',
+      name: 'Spectron Limited LLC',
+      url: 'https://spectronlimitedllc.com/',
+      logo: '/images/partners/spectron-limited.webp',
+    },
+    {
+      key: 'spectron-magazine',
+      name: 'Spectron Magazine',
+      url: 'https://spectronmagazine.com/',
+      logo: '/images/partners/spectron-magazine.webp',
+    },
+    {
+      key: 'web-spectron',
+      name: 'Web Spectron',
+      url: 'https://webspectron.com/',
+      logo: '/images/partners/web-spectron.webp',
+    },
+    {
+      key: 'kenta-beauty-clinic',
+      name: 'Kenta Beauty Clinic',
+      url: 'https://kentabeautyclinic.com/',
+      logo: '/images/partners/kenta-beauty-clinic.webp',
+    },
+  ],
 } as const

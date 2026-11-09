@@ -32,7 +32,7 @@ Voice: confident, warm, plain. Short sentences. No jargon. Tagline "Right at Hom
 | `mist-50` | `#f7f9fa` | Page background (app `--background`) |
 | `mist-100` | `#edf4f8` | Cards, alternate sections |
 | `mist-200` | `#dfe8eb` | Borders, dividers on light |
-| `slate-500` | `#5b7480` | Muted text on light |
+| `slate-500` | `#516a76` | Muted text on light (darkened from `#5b7480` 2026-11-09: AA 4.5:1 on `mist-50/100/200`) |
 | `ink` | `#183d49` | Default body text |
 | `danger` | `#b3261e` | Form errors only (6.5:1 on white) |
 
@@ -54,6 +54,8 @@ Subsets: `latin`, `latin-ext` (French accents). `display: swap`. Headings get `l
 Scale (mobile → desktop): H1 `text-5xl → text-7xl`, leading 1.05 · H2 `text-3xl → text-5xl` · H3 `text-xl → text-2xl` · body `text-base`/`text-lg`, leading relaxed · eyebrow `text-sm uppercase tracking-[0.2em] text-gold-300`.
 
 French strings run ~15–25 % longer than English: design every heading and button to survive the French version at 360 px.
+
+**Heading case (owner, 2026-11-07).** English headings (h1–h4, section and page titles, dialog titles, project and service names) use title case: capitalize every word except articles (a, an, the), short conjunctions (and, but, or, nor, for, so, yet) and short prepositions (as, at, by, for, from, in, into, of, off, on, per, to, up, via, with), which stay lowercase unless first or last. Brand casing stays as is (HandyMan Do IT, TV, W.A.F). Example: "For Homes, Businesses and Buildings." French headings keep French sentence case ("Pour les particuliers, les entreprises et les immeubles."). It lives in the copy, not in CSS (`text-transform` can't keep the small words lowercase), so editors follow it in `en.json` and the CMS. Buttons, eyebrows, body text, page `<title>`s and the app-UI mock-ups (notifications, in-phone demo) stay in sentence case.
 
 ## 4. Space, layout, shape
 
@@ -112,6 +114,15 @@ Status: ✅ built · ⬜ planned. Location `src/components/ui` unless noted.
 2. All text via props from CMS or `useTranslations`/`getTranslations` — no literals.
 3. Accept `className` for composition; merge, don't replace.
 4. Every interactive component documented with: keyboard behaviour, ARIA, reduced-motion behaviour, analytics event.
+
+### Admin (Payload) theme
+
+The CMS at `/admin` uses the same tokens (ADR-032), defined as `--hm-*` in `src/app/(payload)/custom.scss` because the site's Tailwind tokens don't load there.
+- Neutrals: Payload's `--theme-elevation-*` scale runs white → `mist` → `slate-500` → `ink` → `night` (reversed in dark mode). Accent (`--theme-success-*`) is the teal ramp.
+- Primary buttons: `gold-500`, `night-900` text, `gold-300` hover. Gold text only on dark surfaces (eyebrows, badges on night).
+- Sidebar: `night-900` → `night-950` gradient in both themes, gold active indicator.
+- Type: Poppins body, Sora headings, as on the site. Radius 6/10/16 px.
+- Dashboard widgets (`src/components/admin/widgets.tsx`) and their `hm-*` classes live in the same file. Text comes from `src/components/admin/copy.ts` (FR/EN).
 
 ## 7. Imagery and iconography
 

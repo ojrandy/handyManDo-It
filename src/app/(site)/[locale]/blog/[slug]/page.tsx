@@ -11,9 +11,11 @@ import { Prose } from '@/components/ui/Prose'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { getPost, getPosts, getTranslatedPostIds, relatedPosts } from '@/lib/blog'
+import { followEditorRedirect } from '@/lib/redirects'
 import { asMedia, imageSources, mediaUrl } from '@/lib/media'
 import { absoluteUrl, pageMetadata, pathsFor } from '@/lib/seo'
 import { site } from '@/lib/site'
+import { organizationRef } from '@/lib/structuredData'
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
@@ -31,12 +33,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
   const post = await getPost(locale as Locale, slug)
   if (!post) return {}
+  // One slug for both languages (posts share it). An article not yet written in French shows
+  // the English text on its French URL (ADR-019): that copy points search engines at the English
+  // page instead of competing with it.
+  const paths = pathsFor({ pathname: '/blog/[slug]', params: { slug } })
+  const inFrench = (await getTranslatedPostIds('fr')).has(post.id)
   return pageMetadata({
     locale: locale as Locale,
     title: post.meta?.title || post.title,
     description: post.meta?.description || summary(post),
-    // One slug for both languages (posts share it).
-    paths: pathsFor({ pathname: '/blog/[slug]', params: { slug } }),
+    paths: inFrench ? paths : { en: paths.en },
+    canonicalLocale: inFrench ? (locale as Locale) : 'en',
+    type: 'article',
   })
 }
 
@@ -48,7 +56,13 @@ export default async function PostPage({ params }: Props) {
   setRequestLocale(locale)
 
   const post = await getPost(locale, slug)
-  if (!post) notFound()
+  if (!post) {
+    await followEditorRedirect(
+      locale,
+      getPathname({ locale, href: { pathname: '/blog/[slug]', params: { slug } } }),
+    )
+    notFound()
+  }
 
   const [t, format, all, translated] = await Promise.all([
     getTranslations('blogPage'),
@@ -141,9 +155,10 @@ export default async function PostPage({ params }: Props) {
           dateModified: post.updatedAt,
           inLanguage: englishOnly ? 'en' : locale,
           // Authors' user records are private, so articles credit the company.
-          author: { '@type': 'Organization', name: site.name, url: site.url },
+          author: { '@type': 'Organization', ...organizationRef, name: site.name, url: site.url },
           publisher: {
             '@type': 'Organization',
+            ...organizationRef,
             name: site.name,
             logo: { '@type': 'ImageObject', url: absoluteUrl('/icons/icon-512.png') },
           },

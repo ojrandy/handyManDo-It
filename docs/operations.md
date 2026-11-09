@@ -29,7 +29,7 @@ Version 1.0 · 2026-10-23 · Complements [DEPLOY.md](DEPLOY.md) (first-time setu
 | `MEDIA_PUBLIC_URL` | ✅ with bucket | server + `next.config` | Public media origin; also feeds `images.remotePatterns` (build-time) |
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | ✅ (prod) | server | Empty host ⇒ emails logged to console |
 | `EMAIL_FROM` | ✅ | server | Sender address; must be authorised by SPF/DKIM of the SMTP provider |
-| `NEXT_PUBLIC_GA_ID` | ⬜ planned | public | GA4 measurement ID |
+| `NEXT_PUBLIC_GA_ID` | ✅ | public, build-time | GA4 measurement ID (`G-…`). Empty: no GA, no consent banner, no "Cookie settings" link; events stay in the in-page queue. Set → CSP allows Google's GA domains and the banner shows (ADR-036). Rebuild after changing |
 | `NEXT_TELEMETRY_DISABLED` | optional | build | `1` in CI |
 | `E2E_PORT` | optional | tests | Playwright web-server port (default 3000) |
 | `E2E_BASE_URL` | optional | tests | Run e2e/smoke against a deployed URL (no local server), e.g. the staging gate |

@@ -13,6 +13,7 @@ import { Prose } from '@/components/ui/Prose'
 import { getPathname, Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { docPaths, getProject, getProjects } from '@/lib/catalog'
+import { followEditorRedirect } from '@/lib/redirects'
 import { asMedia, imageSources } from '@/lib/media'
 import { absoluteUrl, pageMetadata } from '@/lib/seo'
 import { site } from '@/lib/site'
@@ -45,7 +46,13 @@ export default async function ProjectPage({ params }: Props) {
   setRequestLocale(locale)
 
   const project = await getProject(locale, slug)
-  if (!project) notFound()
+  if (!project) {
+    await followEditorRedirect(
+      locale,
+      getPathname({ locale, href: { pathname: '/our-work/[slug]', params: { slug } } }),
+    )
+    notFound()
+  }
 
   const [t, format, all] = await Promise.all([
     getTranslations('workPage'),

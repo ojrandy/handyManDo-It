@@ -1,9 +1,10 @@
 'use client'
 
-import { Play, X } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { Play } from 'lucide-react'
+import { useRef, useState, type ComponentType } from 'react'
 
 import { buttonClasses } from './button'
+import type { FilmDialogProps } from './FilmDialog'
 
 type Props = {
   src: string
@@ -11,20 +12,18 @@ type Props = {
   labels: { open: string; title: string; close: string }
 }
 
-// Brand film in a native modal <dialog>: focus is contained, Esc closes, and the video is
-// only requested when the visitor asks for it (preload="none"). So is the poster: a 100 KB image
-// next to the hero would compete with its LCP image for bandwidth.
+// "Watch the film" (FR-HOME-01). Only the button ships with the page; the dialog
+// (./FilmDialog.tsx) is fetched on the first click and opened as soon as it arrives.
 export function FilmLightbox({ src, poster, labels }: Props) {
-  const dialogRef = useRef<HTMLDialogElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
-  const [opened, setOpened] = useState(false)
+  const [Dialog, setDialog] = useState<ComponentType<FilmDialogProps> | null>(null)
+  const [openSignal, setOpenSignal] = useState(0)
 
-  const open = () => {
-    setOpened(true)
-    dialogRef.current?.showModal()
-    videoRef.current?.play().catch(() => {})
-  }
+  const open = () =>
+    import('./FilmDialog').then(({ FilmDialog }) => {
+      setDialog(() => FilmDialog)
+      setOpenSignal((count) => count + 1)
+    })
 
   return (
     <>
@@ -32,6 +31,7 @@ export function FilmLightbox({ src, poster, labels }: Props) {
         ref={triggerRef}
         type="button"
         onClick={open}
+        aria-haspopup="dialog"
         className={buttonClasses({ variant: 'ghost', size: 'lg' })}
       >
         <span className="grid size-10 place-items-center rounded-full border border-white/25">
@@ -39,40 +39,15 @@ export function FilmLightbox({ src, poster, labels }: Props) {
         </span>
         {labels.open}
       </button>
-      <dialog
-        ref={dialogRef}
-        aria-label={labels.title}
-        onClose={() => {
-          videoRef.current?.pause()
-          triggerRef.current?.focus()
-        }}
-        onClick={(event) => {
-          // A click on the backdrop lands on the dialog element itself.
-          if (event.target === event.currentTarget) dialogRef.current?.close()
-        }}
-        className="m-auto w-[min(64rem,calc(100vw-2rem))] max-w-none overflow-visible bg-transparent p-0 backdrop:bg-night-950/85 backdrop:backdrop-blur-sm"
-      >
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => dialogRef.current?.close()}
-            aria-label={labels.close}
-            className="absolute -top-14 right-0 grid size-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"
-          >
-            <X aria-hidden className="size-5" />
-          </button>
-          <video
-            ref={videoRef}
-            controls
-            playsInline
-            preload="none"
-            poster={opened ? poster : undefined}
-            className="aspect-video w-full rounded-panel bg-black shadow-float"
-          >
-            <source src={src} type="video/mp4" />
-          </video>
-        </div>
-      </dialog>
+      {Dialog ? (
+        <Dialog
+          src={src}
+          poster={poster}
+          labels={labels}
+          openSignal={openSignal}
+          onClosed={() => triggerRef.current?.focus()}
+        />
+      ) : null}
     </>
   )
 }

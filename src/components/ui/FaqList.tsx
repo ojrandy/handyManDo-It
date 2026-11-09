@@ -48,7 +48,7 @@ export function FaqList({
     <>
       <div className="divide-y divide-mist-200 rounded-panel bg-white px-6 shadow-sm ring-1 ring-mist-200 sm:px-8">
         {items.map(({ key, question, answer }) => (
-          <details key={key} className="group py-1">
+          <details key={key} data-track-faq className="group py-1">
             <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-display text-lg font-semibold text-teal-700 [&::-webkit-details-marker]:hidden">
               {question}
               <Plus

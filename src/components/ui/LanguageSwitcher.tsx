@@ -48,11 +48,14 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
           type="button"
           lang={locale}
           aria-pressed={current === locale}
-          aria-label={t(locale)}
+          data-track="lang_switch"
+          data-track-to={locale}
           onClick={() => select(locale)}
           className="rounded-full px-3 py-1.5 uppercase transition-colors aria-pressed:bg-white aria-pressed:text-night-900 text-white/75 hover:text-white"
         >
+          {/* The visible code stays in the accessible name (WCAG 2.5.3), then the language. */}
           {locale}
+          <span className="sr-only"> – {t(locale)}</span>
         </button>
       ))}
     </div>

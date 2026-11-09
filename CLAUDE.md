@@ -120,6 +120,7 @@ prompt.md                phase-by-phase prompt library
 - e2e specs run through tsx (`--import=tsx/esm`), which adds a `__name` helper to functions. A function passed to `page.addInitScript` that declares named functions or closures can throw `__name is not defined` in the page and silently do nothing; pass a string (`addInitScript({ content })`) instead.
 - `next build` type-checks the whole project, `scripts/` and `tests/` included: don't leave half-done TypeScript anywhere in the tree while a build runs.
 - `S3_BUCKET` empty ⇒ uploads go to local `/media` (gitignored). Fine for dev, never for staging/prod.
+- Never find an existing media document by file name. Payload renames a clashing upload by bumping its trailing number (`photo-1.webp` → `photo-7.webp`) and re-encodes images, so names and stored bytes both lie. Use `findMedia` (`scripts/seed/media.ts`), which matches on `media.sourceHash`.
 - Scripts (`seed`, `migrate:wordpress`, `capture:screens`, `encode:hero`) write outside Next, so they can't purge cache tags. Locally, `next build` and `next dev` then keep serving the old CMS reads from `.next/cache/fetch-cache` (dev: `.next/dev/cache/fetch-cache`): delete that folder after running a script. CI builds from a clean checkout and is unaffected.
 - Payload stores media URLs as absolute to the configured server URL (`localhost:3000` locally), and the fetch cache keeps them after the port changes. Read them through `imageSources`/`mediaUrl` (`src/lib/media.ts`), which make our own files same-origin; a raw `media.url` on another port is a dead link, blocked by the site CSP (`img-src 'self'`).
 - `next dev` is far slower than production at serving images (2026-11-03, 24 files in parallel: median about 74 ms to 7.5 s against about 10 ms under `next start`, once warm). Judge loading speed on `npm run build && npm start`, not in dev.
@@ -127,6 +128,9 @@ prompt.md                phase-by-phase prompt library
 - The Users hook makes the **first** created user an admin. Create the real admin on a fresh DB before exposing `/admin`.
 - `.npmrc` uses `legacy-peer-deps=true`; keep using `npm ci` in CI/Hostinger.
 - Windows dev machine: use forward slashes in scripts; quote paths with parentheses like `src/app/(site)`.
+- `next/font` options for a family must match everywhere it is loaded (site layout and `src/components/admin/AdminFonts.tsx`): the same font file declared with different `subsets`/preload fails the build with "next/font/google queries have exactly one entry". Builds also fetch Google Fonts; a network blip fails them with "Failed to fetch … from Google Fonts" (retry).
+- A running `next dev` keeps its cache in `.next/dev`. To clean before a production build, delete the rest of `.next`, not the whole folder.
+- Don't judge Lighthouse performance on localhost (quality-assurance.md, "Lighthouse locally"); A11y/BP/SEO are fine to check there. Build with `NEXT_PUBLIC_SITE_URL` = the measured URL, or the canonical audit fails.
 
 ## 9. Documentation index
 

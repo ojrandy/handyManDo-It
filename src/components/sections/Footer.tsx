@@ -3,11 +3,13 @@ import Image from 'next/image'
 import { getLocale, getTranslations } from 'next-intl/server'
 import type React from 'react'
 
+import { CmsImage } from '@/components/ui/CmsImage'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 import { NavAnchor } from '@/components/ui/NavAnchor'
 import { StoreBadges } from '@/components/ui/StoreBadges'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
+import { getSisterProducts } from '@/lib/home'
 import {
   balanceFooter,
   getNavigation,
@@ -48,7 +50,11 @@ export async function Footer() {
     getTranslations('hero'),
     getLocale() as Promise<Locale>,
   ])
-  const [{ footer }, settings] = await Promise.all([getNavigation(locale), getSiteSettings(locale)])
+  const [{ footer }, settings, sisterProducts] = await Promise.all([
+    getNavigation(locale),
+    getSiteSettings(locale),
+    getSisterProducts(locale),
+  ])
   const year = new Date().getFullYear()
 
   const page = (label: string, href: Route): NavLink => ({
@@ -262,6 +268,41 @@ export async function Footer() {
           <LanguageSwitcher />
         </div>
 
+        {sisterProducts.length > 0 && (
+          <section
+            aria-labelledby="footer-group-title"
+            className="mt-8 border-t border-white/10 pt-8 lg:flex lg:items-center lg:gap-10"
+          >
+            <h2 id="footer-group-title" className={`${titleClass} shrink-0`}>
+              {t('group.title')}
+            </h2>
+            <ul className="mt-4 flex flex-wrap gap-4 sm:gap-5 lg:mt-0">
+              {sisterProducts.map(({ key, name, url, sources }) => (
+                <li key={key}>
+                  {/* Logo only (owner, 2026-11-07): the aria-label names the link, the title
+                      shows the name on hover. */}
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener"
+                    aria-label={t('group.visit', { name })}
+                    title={name}
+                    className="block rounded-xl"
+                  >
+                    <CmsImage
+                      sources={sources}
+                      alt=""
+                      width={56}
+                      height={56}
+                      className="size-14 rounded-xl object-cover ring-1 ring-white/15 transition hover:ring-white/50 motion-safe:hover:-translate-y-0.5"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         <div className="mt-8 grid gap-4 border-t border-white/10 pt-8 text-sm text-white/60 lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-8">
           <p>
             © {year} {site.name}. {t('rights')}
@@ -276,6 +317,18 @@ export async function Footer() {
                     </NavAnchor>
                   </li>
                 ))}
+                {/* Reopens the consent banner (FR-ANA-01); only when analytics are configured. */}
+                {process.env.NEXT_PUBLIC_GA_ID ? (
+                  <li>
+                    <button
+                      type="button"
+                      data-consent-open
+                      className="transition-colors hover:text-white"
+                    >
+                      {t('links.cookies')}
+                    </button>
+                  </li>
+                ) : null}
               </ul>
             </nav>
           ) : (

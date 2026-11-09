@@ -160,7 +160,7 @@ export default async function AboutPage({ params }: Props) {
                     <h3 className="mt-5 font-display text-xl font-semibold text-teal-700">
                       {name}
                     </h3>
-                    <p className="mt-1 text-sm font-semibold text-gold-500">{role}</p>
+                    <p className="mt-1 text-sm font-semibold text-teal-600">{role}</p>
                     {bio ? <p className="mt-3 leading-relaxed text-slate-500">{bio}</p> : null}
                   </li>
                 )

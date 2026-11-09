@@ -6,12 +6,16 @@ import type {
   PayloadRequest,
 } from 'payload'
 
+import { bumpContentVersion } from '@/lib/contentVersion'
+
 // Pages read CMS data through `src/lib/payload.ts`, which tags each read with the collection or
 // global slug. Purging that tag re-renders every page that used it, in both locales, whatever
 // the slug was, so hooks never need to work out URLs (architecture.md §4, ADR-004).
 const purge = (tags: readonly string[], req: PayloadRequest) => {
   // Seeds and imports write hundreds of docs; they purge once at the end instead.
   if (req.context.disableRevalidate) return
+  // Tells open pages to re-fetch (AfterLoad); harmless where nothing polls (CLI, tests).
+  bumpContentVersion()
   for (const tag of tags) {
     try {
       // `expire: 0`: the next visitor gets the edit, not one more stale render.

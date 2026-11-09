@@ -119,6 +119,36 @@ test.describe('Footer and WhatsApp', () => {
     )
   })
 
+  test('footer links the sister companies and credits Web Spectron', async ({ page }) => {
+    for (const [locale, m] of [
+      ['fr', fr],
+      ['en', en],
+    ] as const) {
+      await page.goto(`/${locale}`)
+      const footer = page.getByRole('contentinfo')
+      const group = footer.getByRole('region', { name: m.footer.group.title })
+      for (const [name, url] of [
+        ['Spectron Limited LLC', 'https://spectronlimitedllc.com/'],
+        ['Spectron Magazine', 'https://spectronmagazine.com/'],
+        ['Web Spectron', 'https://webspectron.com/'],
+        ['Kenta Beauty Clinic', 'https://kentabeautyclinic.com/'],
+      ]) {
+        const link = group.getByRole('link', { name: m.footer.group.visit.replace('{name}', name) })
+        await expect(link).toHaveAttribute('href', url)
+        await expect(link).toHaveAttribute('target', '_blank')
+      }
+      await expect(footer).not.toContainText('Web Spectron LTD')
+    }
+  })
+
+  test('download band has no QR code', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/en')
+    const band = page.getByRole('region', { name: en.download.title })
+    await expect(band).toBeVisible()
+    await expect(band.getByRole('img', { name: en.getTheApp.qrAlt })).toHaveCount(0)
+  })
+
   test('WhatsApp button appears after scrolling past the hero', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto('/en')
@@ -241,8 +271,11 @@ test.describe('Home showcase sections', () => {
     await expect(page.getByRole('heading', { name: en.demo.doneTitle })).toBeFocused()
     await expect(demo.getByRole('link', { name: en.demo.cta })).toBeVisible()
 
+    // No consent choice yet, so the events wait in the queue (FR-ANA-01).
     const steps = await page.evaluate(() =>
-      (window.dataLayer ?? []).filter((e) => e.event === 'demo_interact').map((e) => e.step),
+      (window.hmEvents ?? [])
+        .filter(([event]) => event === 'demo_interact')
+        .map(([, params]) => params.step),
     )
     expect(steps).toEqual(['pros', 'booking', 'done'])
   })

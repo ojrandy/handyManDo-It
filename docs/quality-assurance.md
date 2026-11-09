@@ -35,12 +35,12 @@ Current state: `tests/int/api.int.spec.ts` and `tests/e2e/admin.e2e.spec.ts` are
 | QA-AUTO-02 | Int tests in CI (Postgres service already present) | FR-CMS-* ✅ |
 | QA-AUTO-03 | E2E smoke in CI: `/` redirects, `/fr` & `/en` 200, switcher, 404 | FR-I18N-* ✅ |
 | QA-AUTO-04 | Message parity test: `fr.json` and `en.json` have identical key trees, no empty values | FR-I18N-03 ✅ |
-| QA-AUTO-05 | Redirect table test: each legacy URL → 301 → expected target | FR-SEO-05 |
+| QA-AUTO-05 | Redirect table test: each legacy URL → 301 → expected target ✅ `tests/e2e/redirects.e2e.spec.ts` (table in `src/lib/legacyRedirects.ts`) | FR-SEO-05 |
 | QA-AUTO-06 | axe scan of each template in both locales | NFR-A11Y-01 |
 | QA-AUTO-07 | Lighthouse CI with budgets | NFR-PERF-* |
 | QA-AUTO-08 | Access-control tests: anonymous can't write; editor can't manage users/site | NFR-SEC-02, FR-CMS-02 |
 | QA-AUTO-09 | Form handler tests: validation, honeypot, rate limit, stored + emailed | FR-FORM-* |
-| QA-AUTO-10 | Metadata test: canonical, hreflang trio, title/description present per template | FR-SEO-01 |
+| QA-AUTO-10 | Metadata test: canonical, hreflang trio, title/description present per template ✅ `tests/e2e/seo.e2e.spec.ts` walks every sitemap URL (status, canonical, hreflang = sitemap alternates, title 10–70, description 50–160, unique titles, one H1, JSON-LD parses, OG tags, share images) | FR-SEO-01 |
 | QA-AUTO-11 | `npm audit --omit=dev --audit-level=high` | NFR-SEC-04 |
 | QA-AUTO-12 | Migration check: `payload migrate:status` clean against fresh DB | NFR-MAINT-02 ✅ (CI runs `npm run migrate` on an empty DB, then `npm run migrate:check -- --drift`; locally `npm run migrate:check`) |
 
@@ -140,3 +140,7 @@ Bug report template: *Title · Env/URL · Locale · Device/browser/viewport · S
 | Desktop | Chrome, Firefox, Safari | 1280×800, 1920×1080 | Wi-Fi |
 
 Each in **FR and EN**, with and without reduced motion on at least one device.
+
+### Lighthouse locally (2026-11-09)
+
+Score performance on a deployed HTTPS URL (PageSpeed Insights or Lighthouse CI), not on localhost. Chrome 157 adds an internal `307` hop to every loopback navigation (seen for `/robots.txt` too, and over a local HTTPS proxy), which the simulated throttling bills as ~620 ms on every metric; and on a local server every request finishes before the first paint, so the simulation charges all of them to LCP. Accessibility, Best Practices and SEO are reliable locally. Build with `NEXT_PUBLIC_SITE_URL` set to the URL being measured, or the canonical audit fails. Lighthouse's `benchmarkIndex` (in the JSON) shows how fast the machine was: compare runs only at a similar index.
