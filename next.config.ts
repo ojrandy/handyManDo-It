@@ -118,6 +118,18 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },
+      // Files in public/ were served without Cache-Control, so a returning visitor re-checked every
+      // image (live site, 2026-11-10). They are not content-hashed: a week, and a replaced photo
+      // gets a new file name (as the seed photos already do).
+      {
+        source: '/:dir(images|video|badges|brand|icons)/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=604800, stale-while-revalidate=86400',
+          },
+        ],
+      },
       // FR-SEO-02: the CMS and API never show in search (uploaded images excepted).
       {
         source: '/:path(admin|admin/.*|api/(?!media/).*)',
