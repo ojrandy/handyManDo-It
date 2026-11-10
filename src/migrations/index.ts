@@ -18,6 +18,7 @@ import * as migration_20261030_142004_add_legal_global from './20261030_142004_a
 import * as migration_20261030_173750_site_office_hours from './20261030_173750_site_office_hours'
 import * as migration_20261107_193035_media_source_hash from './20261107_193035_media_source_hash'
 import * as migration_20261107_220238_partners_sister_product from './20261107_220238_partners_sister_product'
+import * as migration_20261110_120000_footer_group from './20261110_120000_footer_group'
 
 export const migrations = [
   {
@@ -119,5 +120,10 @@ export const migrations = [
     up: migration_20261107_220238_partners_sister_product.up,
     down: migration_20261107_220238_partners_sister_product.down,
     name: '20261107_220238_partners_sister_product',
+  },
+  {
+    up: migration_20261110_120000_footer_group.up,
+    down: migration_20261110_120000_footer_group.down,
+    name: '20261110_120000_footer_group',
   },
 ]

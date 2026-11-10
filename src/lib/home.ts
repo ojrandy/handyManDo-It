@@ -45,7 +45,7 @@ export type SisterProduct = { key: string; name: string; url: string; sources: I
 export const getSisterProducts = cache(async (locale: Locale): Promise<SisterProduct[]> => {
   const partners = await getPartners(locale)
   if (!partners.length) {
-    return site.groupCompanies.map(({ key, name, url, logo }) => ({
+    return site.sisterProducts.map(({ key, name, url, logo }) => ({
       key,
       name,
       url,
@@ -54,8 +54,12 @@ export const getSisterProducts = cache(async (locale: Locale): Promise<SisterPro
   }
   return partners.flatMap((partner) => {
     const sources = imageSources(partner.logo)
-    // The url check also covers products ticked before the link became required.
-    return partner.sisterProduct && partner.url && sources.length
+    // The url check also covers products ticked before the link became required. The parent
+    // company has its own place in the row, so a tick on it doesn't show it twice.
+    return partner.sisterProduct &&
+      partner.url &&
+      partner.name !== site.parentCompany.name &&
+      sources.length
       ? [{ key: String(partner.id), name: partner.name, url: partner.url, sources }]
       : []
   })

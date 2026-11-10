@@ -30,16 +30,18 @@ export const site = {
   ],
   // Footer credit. The sentence around the name lives in messages (footer.credit).
   developerUrl: 'https://webspectron.com/',
-  // Footer "Sister Products" before any partner exists in the CMS (fresh database). After that,
-  // editors choose them with the partner's "Show in footer" box. Names are proper nouns, so they
-  // stay out of messages; logos are the square 300 px files the partner marquee already ships.
-  groupCompanies: [
-    {
-      key: 'spectron-limited',
-      name: 'Spectron Limited LLC',
-      url: 'https://spectronlimitedllc.com/',
-      logo: '/images/partners/spectron-limited.webp',
-    },
+  // Footer group row (owner, 2026-11-10): the parent company stands on its own, the sister
+  // products scroll beside it. The parent is a legal fact, not editor content, so it lives here.
+  // Names are proper nouns, so they stay out of messages; logos are the square 300 px files the
+  // partner marquee already ships.
+  parentCompany: {
+    name: 'Spectron Limited LLC',
+    url: 'https://spectronlimitedllc.com/',
+    logo: '/images/partners/spectron-limited.webp',
+  },
+  // Sister products before any partner exists in the CMS (fresh database). After that, editors
+  // choose them with the partner's "Show in footer" box.
+  sisterProducts: [
     {
       key: 'spectron-magazine',
       name: 'Spectron Magazine',
@@ -57,6 +59,18 @@ export const site = {
       name: 'Kenta Beauty Clinic',
       url: 'https://kentabeautyclinic.com/',
       logo: '/images/partners/kenta-beauty-clinic.webp',
+    },
+    {
+      key: 'africa-dmc-group',
+      name: 'Africa DMC Group',
+      url: 'https://africadmcgroup.com/',
+      logo: '/images/partners/africa-dmc-group.webp',
+    },
+    {
+      key: 'luxecam-tours',
+      name: 'Luxecam Tours Ltd',
+      url: 'https://luxecamtours.com/',
+      logo: '/images/partners/luxecam-tours.webp',
     },
   ],
 } as const
