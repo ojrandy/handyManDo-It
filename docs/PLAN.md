@@ -212,7 +212,7 @@ Three newest posts from the CMS.
 - Columns: Services · Company · Support, with the same number of rows each on every screen size (owner request, 2026-11-05). Links that don't fit go to the bottom bar.
 - Contact · Hours · Offices, two rows each: +237 652 767 674 (call/WhatsApp), handymanservicesdoit@gmail.com · support and office hours · Technical direction: Mile 16 Shopping Mall, Buea · Office: Mobile Njo Njo, Bonapriso, Douala.
 - Store badges beside the logo. Bottom bar: socials, language switch, © line, legal links, "Designed and Developed by Web Spectron" (links to webspectron.com; no "LTD", owner 2026-11-07).
-- "Sister Products" row above the © line (owner, 2026-11-07): logos only (no visible names) of Spectron Limited LLC, Spectron Magazine, Web Spectron and Kenta Beauty Clinic, each linking to its website in a new tab. Editors choose them in the CMS: **Marketing → Partners**, "Show in footer (Sister Products)" box, in partner order.
+- Group row above the © line (owner, 2026-11-07, revised 2026-11-10): **Parent Company** Spectron Limited LLC on its own, then **Sister Products** as a scrolling logo marquee: Spectron Magazine, Web Spectron, Kenta Beauty Clinic, Africa DMC Group, Luxecam Tours. Logos only (no visible names), each linking to its website in a new tab. Editors choose them in the CMS: **Marketing → Partners**, "Show in footer (Sister Products)" box, in partner order.
 - Floating **WhatsApp button** on every page, bottom-right, with a delay and away from the CTAs.
 
 ---

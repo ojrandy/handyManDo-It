@@ -10,6 +10,7 @@ import { StoreBadges } from '@/components/ui/StoreBadges'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { getSisterProducts } from '@/lib/home'
+import type { ImageSource } from '@/lib/media'
 import {
   balanceFooter,
   getNavigation,
@@ -33,6 +34,45 @@ const menuGrids: Record<number, string> = {
   2: 'grid-cols-2',
   3: 'grid-cols-[repeat(3,auto)] justify-between sm:grid-cols-3 sm:justify-normal',
   4: 'grid-cols-2 sm:grid-cols-4',
+}
+
+// Sets per marquee half: 5 logos × 76 px ≈ 380 px, so three cover the widest track (≈ 900 px).
+const marqueeRepeats = 3
+
+// Logo only (owner, 2026-11-07): the aria-label names the link, the title shows the name on
+// hover. Marquee copies are hidden from assistive tech and the tab order.
+function GroupLogo({
+  name,
+  url,
+  sources,
+  label,
+  hidden = false,
+}: {
+  name: string
+  url: string
+  sources: ImageSource[]
+  label: string
+  hidden?: boolean
+}) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener"
+      aria-label={hidden ? undefined : label}
+      title={name}
+      tabIndex={hidden ? -1 : undefined}
+      className="block rounded-xl"
+    >
+      <CmsImage
+        sources={sources}
+        alt=""
+        width={56}
+        height={56}
+        className="size-14 rounded-xl object-cover ring-1 ring-white/15 transition hover:ring-white/50"
+      />
+    </a>
+  )
 }
 
 type Route = Extract<NavLink, { external: false }>['href'] & string
@@ -268,40 +308,68 @@ export async function Footer() {
           <LanguageSwitcher />
         </div>
 
-        {sisterProducts.length > 0 && (
-          <section
-            aria-labelledby="footer-group-title"
-            className="mt-8 border-t border-white/10 pt-8 lg:flex lg:items-center lg:gap-10"
-          >
-            <h2 id="footer-group-title" className={`${titleClass} shrink-0`}>
-              {t('group.title')}
+        <div className="mt-8 grid gap-8 border-t border-white/10 pt-8 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-center lg:gap-10">
+          <section aria-labelledby="footer-parent-title" className="flex items-center gap-4">
+            <h2 id="footer-parent-title" className={titleClass}>
+              {t('group.parent')}
             </h2>
-            <ul className="mt-4 flex flex-wrap gap-4 sm:gap-5 lg:mt-0">
-              {sisterProducts.map(({ key, name, url, sources }) => (
-                <li key={key}>
-                  {/* Logo only (owner, 2026-11-07): the aria-label names the link, the title
-                      shows the name on hover. */}
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noopener"
-                    aria-label={t('group.visit', { name })}
-                    title={name}
-                    className="block rounded-xl"
-                  >
-                    <CmsImage
-                      sources={sources}
-                      alt=""
-                      width={56}
-                      height={56}
-                      className="size-14 rounded-xl object-cover ring-1 ring-white/15 transition hover:ring-white/50 motion-safe:hover:-translate-y-0.5"
-                    />
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <GroupLogo
+              name={site.parentCompany.name}
+              url={site.parentCompany.url}
+              sources={[{ url: site.parentCompany.logo, width: 300 }]}
+              label={t('group.visit', { name: site.parentCompany.name })}
+            />
           </section>
-        )}
+
+          {sisterProducts.length > 0 && (
+            <section
+              aria-labelledby="footer-group-title"
+              className="min-w-0 lg:flex lg:items-center lg:gap-8 lg:border-l lg:border-white/10 lg:pl-10"
+            >
+              <h2 id="footer-group-title" className={`${titleClass} shrink-0`}>
+                {t('group.title')}
+              </h2>
+              {/* Logo marquee (owner, 2026-11-10), CSS only like the home partner row. Each half
+                  repeats the set so it is wider than the track and the loop has no gap; only the
+                  first set is in the accessibility tree and the tab order. Pauses on hover and
+                  focus; under reduced motion it is one static, wrapped row. */}
+              <div className="group mt-4 overflow-hidden py-1 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] lg:mt-0 lg:flex-1 motion-reduce:[mask-image:none]">
+                <div className="flex w-max motion-safe:animate-marquee group-focus-within:[animation-play-state:paused] group-hover:[animation-play-state:paused] motion-reduce:w-full">
+                  {[0, 1].map((half) => (
+                    <ul
+                      key={half}
+                      aria-hidden={half === 1 || undefined}
+                      className={`flex shrink-0 motion-reduce:flex-wrap motion-reduce:gap-y-4 ${
+                        half === 1 ? 'motion-reduce:hidden' : ''
+                      }`}
+                    >
+                      {Array.from({ length: marqueeRepeats }, (_, round) =>
+                        sisterProducts.map(({ key, name, url, sources }) => {
+                          const copy = half > 0 || round > 0
+                          return (
+                            <li
+                              key={`${key}-${round}`}
+                              aria-hidden={(half === 0 && copy) || undefined}
+                              className={`shrink-0 pr-5 ${copy ? 'motion-reduce:hidden' : ''}`}
+                            >
+                              <GroupLogo
+                                name={name}
+                                url={url}
+                                sources={sources}
+                                label={t('group.visit', { name })}
+                                hidden={copy}
+                              />
+                            </li>
+                          )
+                        }),
+                      )}
+                    </ul>
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+        </div>
 
         <div className="mt-8 grid gap-4 border-t border-white/10 pt-8 text-sm text-white/60 lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-8">
           <p>

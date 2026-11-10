@@ -126,14 +126,26 @@ test.describe('Footer and WhatsApp', () => {
     ] as const) {
       await page.goto(`/${locale}`)
       const footer = page.getByRole('contentinfo')
+      const visit = (name: string) => m.footer.group.visit.replace('{name}', name)
+
+      // The parent company stands on its own, not among the sister products (owner, 2026-11-10).
+      const parent = footer.getByRole('region', { name: m.footer.group.parent })
+      await expect(
+        parent.getByRole('link', { name: visit('Spectron Limited LLC') }),
+      ).toHaveAttribute('href', 'https://spectronlimitedllc.com/')
+
+      // Marquee copies are hidden, so each product is one link for assistive tech.
       const group = footer.getByRole('region', { name: m.footer.group.title })
+      await expect(group.getByRole('link', { name: visit('Spectron Limited LLC') })).toHaveCount(0)
       for (const [name, url] of [
-        ['Spectron Limited LLC', 'https://spectronlimitedllc.com/'],
         ['Spectron Magazine', 'https://spectronmagazine.com/'],
         ['Web Spectron', 'https://webspectron.com/'],
         ['Kenta Beauty Clinic', 'https://kentabeautyclinic.com/'],
+        ['Africa DMC Group', 'https://africadmcgroup.com/'],
+        ['Luxecam Tours Ltd', 'https://luxecamtours.com/'],
       ]) {
-        const link = group.getByRole('link', { name: m.footer.group.visit.replace('{name}', name) })
+        const link = group.getByRole('link', { name: visit(name) })
+        await expect(link).toHaveCount(1)
         await expect(link).toHaveAttribute('href', url)
         await expect(link).toHaveAttribute('target', '_blank')
       }

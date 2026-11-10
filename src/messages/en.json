@@ -125,6 +125,7 @@
     "hoursTitle": "Hours",
     "officesTitle": "Offices",
     "group": {
+      "parent": "Parent Company",
       "title": "Sister Products",
       "visit": "{name} website (opens in a new tab)"
     }

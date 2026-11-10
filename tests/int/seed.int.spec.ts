@@ -71,7 +71,7 @@ describe('seed data', () => {
   it('has the counts the plan asks for', () => {
     expect(testimonialSeeds).toHaveLength(4)
     expect(teamSeeds).toHaveLength(3)
-    expect(partnerSeeds).toHaveLength(8)
+    expect(partnerSeeds).toHaveLength(9)
     expect(faqSeeds.filter(({ showOnHome }) => showOnHome).length).toBeGreaterThanOrEqual(8)
   })
 

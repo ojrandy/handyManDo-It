@@ -163,9 +163,10 @@ export type PartnerSeed = {
 // Websites named on the old site's affiliations page, plus the footer's sister products.
 const partnerUrls: Record<string, string> = {
   'KUKWA Constructions': 'https://kukwaconstructions.com/',
-  ...Object.fromEntries(site.groupCompanies.map(({ name, url }) => [name, url])),
+  [site.parentCompany.name]: site.parentCompany.url,
+  ...Object.fromEntries(site.sisterProducts.map(({ name, url }) => [name, url])),
 }
-const sisterProducts = new Set<string>(site.groupCompanies.map(({ name }) => name))
+const sisterProducts = new Set<string>(site.sisterProducts.map(({ name }) => name))
 
 export const partnerSeeds: PartnerSeed[] = partners.map(({ name, logo }, index) => ({
   name,

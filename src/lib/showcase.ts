@@ -36,6 +36,12 @@ export const partners: readonly Partner[] = [
     name: 'Spectron Magazine',
     logo: '/images/partners/spectron-magazine.webp',
   },
+  // Sister product (owner, 2026-11-10); logo mark from africadmcgroup.com on a white tile.
+  {
+    key: 'africa-dmc-group',
+    name: 'Africa DMC Group',
+    logo: '/images/partners/africa-dmc-group.webp',
+  },
 ]
 
 // Quote text, name, city and service tag live in messages under `testimonials.items.<key>`.

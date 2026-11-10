@@ -125,6 +125,7 @@
     "hoursTitle": "Horaires",
     "officesTitle": "Nos bureaux",
     "group": {
+      "parent": "Société mère",
       "title": "Produits frères",
       "visit": "Site de {name} (nouvel onglet)"
     }
