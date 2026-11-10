@@ -92,6 +92,13 @@ const storedNames = (doc: Media) =>
     (name): name is string => Boolean(name),
   )
 
+// The storage plugin adds `prefix` only when R2 is configured, and the generated types are built
+// without it, so the field is not on `Media`.
+const isComplete = (doc: Media, keys: Set<string>) => {
+  const prefix = (doc as Media & { prefix?: string | null }).prefix || defaultPrefix
+  return storedNames(doc).every((name) => keys.has(`${prefix}/${name}`))
+}
+
 async function main(): Promise<number> {
   if (unknown.length) {
     console.error(`Unknown option(s): ${unknown.join(' ')}. Allowed: ${known.join(' ')}`)
@@ -114,9 +121,7 @@ async function main(): Promise<number> {
     depth: 0,
     sort: 'id',
   })
-  const broken = docs.filter((doc) =>
-    storedNames(doc).some((name) => !keys.has(`${doc.prefix || defaultPrefix}/${name}`)),
-  )
+  const broken = docs.filter((doc) => !isComplete(doc, keys))
   console.log(`${docs.length} media documents, ${keys.size} files in the bucket.`)
   console.log(`${broken.length} document(s) with missing files.`)
   if (!broken.length) return 0
@@ -167,9 +172,7 @@ async function main(): Promise<number> {
     pagination: false,
     depth: 0,
   })
-  const stillMissing = fresh.docs.filter((doc) =>
-    storedNames(doc).some((name) => !after.has(`${doc.prefix || defaultPrefix}/${name}`)),
-  )
+  const stillMissing = fresh.docs.filter((doc) => !isComplete(doc, after))
   console.log(`\nRe-uploaded ${repaired}, failed ${failed}, still missing ${stillMissing.length}.`)
   for (const doc of stillMissing) console.error(`  ✗ ${doc.id} ${doc.filename} still incomplete`)
   return failed || stillMissing.length ? 1 : 0
