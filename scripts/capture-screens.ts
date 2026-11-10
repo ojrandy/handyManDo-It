@@ -35,6 +35,9 @@ const has = (flag: string) => args.includes(flag)
 
 const outDir = path.resolve('.cache/screens')
 const cacheDir = path.resolve('.cache/app-assets')
+// Captures committed to the repo, so --upload-only also works where .cache doesn't exist (the
+// Hostinger content load in scripts/build.mjs). Copy new captures here after a capture run.
+const archiveDir = path.resolve('data/screens')
 
 async function main(): Promise<number> {
   if (unknown.length) {
@@ -54,13 +57,15 @@ async function main(): Promise<number> {
   let captured: Captured[]
   let failed: string[] = []
   if (has('--upload-only')) {
+    const from = existsSync(outDir) ? outDir : archiveDir
+    console.log(`Uploading captures from ${path.relative(process.cwd(), from)}`)
     captured = specs.flatMap((spec) =>
       langs.flatMap((lang) =>
         themes.map((theme) => ({
           spec,
           lang,
           theme,
-          file: path.join(outDir, fileName(spec.key, lang, theme)),
+          file: path.join(from, fileName(spec.key, lang, theme)),
         })),
       ),
     )

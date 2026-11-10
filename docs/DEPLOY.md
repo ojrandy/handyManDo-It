@@ -77,6 +77,15 @@ If `payload migrate` ever fails on start with a pooler error (e.g. prepared stat
 5. In `/admin`: log in, open **Site settings**, save once (checks DB writes), log out.
 6. Gate passed → mark T-0.17 ✅ and Phase 0 ✅ in the tracker with the date and the staging URL.
 
+### Fill a fresh production CMS (one time, on Hostinger)
+The seed, the blog import and the app screens upload run during a Hostinger build, so the keys stay on Hostinger and the uploads use its network (owner decision 2026-11-10).
+1. R2 variables (`S3_*`, `MEDIA_PUBLIC_URL`) are set on Hostinger. Without `S3_BUCKET` the build refuses to load content, because the uploads would land on the build box's disk.
+2. Add `LOAD_CONTENT=all` (or a list: `seed,screens,blog`) and redeploy. Sources are all in the repo: `public/` (seed), `data/screens` (32 captures; copy new ones there after `npm run capture:screens -- --capture-only`), `data/wordpress` (blog).
+3. The log shows `[content] seed: done …` per step and a summary line. Each step only creates what is missing, so if the deploy is cut off, redeploy and it carries on.
+4. When the summary says every step is done, **delete `LOAD_CONTENT`** (it would otherwise re-check everything on every deploy).
+
+Rehearsed locally on an empty database (2026-11-10): seed 132 records, screens 32, blog 20 posts + 146 images, 0 failed, 2.8 min; then the lean build, 239 pages, 5.2 min in all.
+
 ### Domain (Cloudflare DNS + CDN)
 Moving DNS doesn't change where anything points, as long as every record is copied. **`app.handymandoit.com` is the live app and must keep working.**
 
