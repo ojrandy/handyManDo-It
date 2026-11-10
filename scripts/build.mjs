@@ -96,12 +96,14 @@ const run = (bin, args, env) =>
 
 // One-time content load (owner, 2026-11-10): the production CMS is filled on Hostinger, whose
 // network is fast and which already holds the keys. LOAD_CONTENT=all, or a list of seed, screens,
-// blog. Each step only creates what is missing, so a deploy cut off by Hostinger's time limit is
-// finished by the next one. Remove the variable once a deploy reports every step done.
+// blog, repair. Each step only creates what is missing, so a deploy cut off by Hostinger's time
+// limit is finished by the next one. Remove the variable once a deploy reports every step done.
 const contentSteps = {
   seed: ['scripts/seed.ts', '--force'],
   screens: ['scripts/capture-screens.ts', '--upload-only', '--force'],
   blog: ['scripts/migrate-wordpress.ts', '--force'],
+  // Re-uploads media files missing from R2 (incident 2026-11-10, scripts/repair-media.ts).
+  repair: ['scripts/repair-media.ts', '--apply', '--force'],
 }
 const requested = (process.env.LOAD_CONTENT || '')
   .split(',')
@@ -118,7 +120,7 @@ if (requested.length && !host) {
   const results = []
   for (const step of [...new Set(requested)]) {
     if (!contentSteps[step]) {
-      console.error(`✗ LOAD_CONTENT: unknown step "${step}" (seed, screens, blog or all)`)
+      console.error(`✗ LOAD_CONTENT: unknown step "${step}" (seed, screens, blog, repair or all)`)
       continue
     }
     console.log(`\n[content] ${step}: starting at ${minutes()}`)

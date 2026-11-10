@@ -7,7 +7,8 @@ import type { Captured } from './capture'
 import { altText } from './data'
 
 // Writes skip the revalidation hooks (src/hooks/revalidate.ts), like the seed.
-const context = { disableRevalidate: true }
+// A new object per call, as in scripts/seed/run.ts: a shared one loses every upload after the first.
+const context = () => ({ disableRevalidate: true })
 
 const errorMessage = (error: unknown) => (error instanceof Error ? error.message : String(error))
 
@@ -57,7 +58,7 @@ export async function uploadScreens(
             locale: 'fr',
             data: { alt: alt.fr },
             filePath: file,
-            context,
+            context: context(),
           })
         ).id
       } else {
@@ -68,7 +69,7 @@ export async function uploadScreens(
           locale: 'fr',
           data: { alt: alt.fr },
           filePath: file,
-          context,
+          context: context(),
         })
       }
       await payload.update({
@@ -76,7 +77,7 @@ export async function uploadScreens(
         id: image,
         locale: 'en',
         data: { alt: alt.en },
-        context,
+        context: context(),
       })
 
       const data = { key: spec.key, lang, theme, image, caption: spec.caption.fr }
@@ -87,16 +88,23 @@ export async function uploadScreens(
               id: screen.id,
               locale: 'fr',
               data,
-              context,
+              context: context(),
             })
           ).id
-        : (await payload.create({ collection: 'app-screens', locale: 'fr', data, context })).id
+        : (
+            await payload.create({
+              collection: 'app-screens',
+              locale: 'fr',
+              data,
+              context: context(),
+            })
+          ).id
       await payload.update({
         collection: 'app-screens',
         id,
         locale: 'en',
         data: { caption: spec.caption.en },
-        context,
+        context: context(),
       })
       counts[screen ? 'updated' : 'created']++
     } catch (error) {
