@@ -56,3 +56,35 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  # The build as Hostinger runs it (DEPLOY.md §4): two deploys died silently ~16 min into the
+  # compile on its ~3 GB shared box. This job gives the build the same kind of box (3 GB, no swap,
+  # 2 CPUs) and a fresh database on a non-local host, so `npm run build` takes the Hostinger path:
+  # migrations, then the lean webpack build. Over 12 min fails here instead of on the live deploy.
+  hostinger-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container:
+      image: node:24-bookworm
+      options: --memory 3g --memory-swap 3g --cpus 2
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: handymandoit
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      # Service name as host: not localhost, so scripts/build.mjs treats it like Neon.
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/handymandoit
+      PAYLOAD_SECRET: ci-only-secret-not-used-in-production
+      NEXT_PUBLIC_SITE_URL: https://handymandoit.com
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run build
+        timeout-minutes: 12
