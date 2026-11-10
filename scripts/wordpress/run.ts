@@ -19,7 +19,8 @@ export type ImportOptions = {
 }
 
 // Imports write many documents; revalidation hooks skip them (src/hooks/revalidate.ts).
-const context = { disableRevalidate: true }
+// A new object per call, as in scripts/seed/run.ts: a shared one loses every upload after the first.
+const context = () => ({ disableRevalidate: true })
 
 // The blog's categories in French; WordPress only had English names. "Uncategorized" is dropped.
 const frenchCategoryNames: Record<string, string> = {
@@ -81,15 +82,21 @@ export async function runImport(
         const fr = { title: frenchCategoryNames[category.slug] ?? name, slug: category.slug }
         id =
           id === undefined
-            ? (await payload.create({ collection: 'categories', locale: 'fr', data: fr, context }))
-                .id
+            ? (
+                await payload.create({
+                  collection: 'categories',
+                  locale: 'fr',
+                  data: fr,
+                  context: context(),
+                })
+              ).id
             : (
                 await payload.update({
                   collection: 'categories',
                   id,
                   locale: 'fr',
                   data: fr,
-                  context,
+                  context: context(),
                 })
               ).id
         await payload.update({
@@ -97,7 +104,7 @@ export async function runImport(
           id,
           locale: 'en',
           data: { title: name },
-          context,
+          context: context(),
         })
         summary.categories[existing.docs[0] ? 'updated' : 'created']++
       }
@@ -120,7 +127,13 @@ export async function runImport(
       if (id !== null && !update) {
         summary.media.skipped++
       } else if (id !== null) {
-        await payload.update({ collection: 'media', id, locale: 'en', data: { alt }, context })
+        await payload.update({
+          collection: 'media',
+          id,
+          locale: 'en',
+          data: { alt },
+          context: context(),
+        })
         summary.media.updated++
       } else {
         id = (
@@ -129,7 +142,7 @@ export async function runImport(
             locale: 'en',
             data: { alt },
             filePath,
-            context,
+            context: context(),
           })
         ).id
         summary.media.created++
@@ -184,9 +197,15 @@ export async function runImport(
       _status: 'published' as const,
     }
     if (existingId === undefined) {
-      await payload.create({ collection: 'posts', locale: 'en', data, context })
+      await payload.create({ collection: 'posts', locale: 'en', data, context: context() })
     } else {
-      await payload.update({ collection: 'posts', id: existingId, locale: 'en', data, context })
+      await payload.update({
+        collection: 'posts',
+        id: existingId,
+        locale: 'en',
+        data,
+        context: context(),
+      })
     }
   }
 

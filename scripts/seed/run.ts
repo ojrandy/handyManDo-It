@@ -56,7 +56,10 @@ export type SeedOptions = {
 }
 
 // Seeds write many documents; revalidation hooks skip them (src/hooks/revalidate.ts).
-const context = { disableRevalidate: true }
+// A new object per call: Payload uses the passed context as req.context, and the R2 storage
+// plugin keeps per-upload state on it. One object shared by a whole run made every upload after
+// the first silently skip R2 (2026-11-10: 258 of 262 production images missing).
+const context = () => ({ disableRevalidate: true })
 
 type Outcome = 'created' | 'updated' | 'skipped'
 
@@ -118,14 +121,14 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
           id,
           locale: 'fr',
           data: { alt: seed.alt.fr },
-          context,
+          context: context(),
         })
         await payload.update({
           collection: 'media',
           id,
           locale: 'en',
           data: { alt: seed.alt.en },
-          context,
+          context: context(),
         })
         record('media', 'updated')
       } else {
@@ -134,14 +137,14 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
           locale: 'fr',
           data: { alt: seed.alt.fr },
           filePath,
-          context,
+          context: context(),
         })
         await payload.update({
           collection: 'media',
           id: doc.id,
           locale: 'en',
           data: { alt: seed.alt.en },
-          context,
+          context: context(),
         })
         id = doc.id
         record('media', 'created')
@@ -184,7 +187,7 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
         locale: 'fr' | 'en'
         data: RequiredDataFromCollectionSlug<S>
         depth: number
-        context: typeof context
+        context: ReturnType<typeof context>
       }) => Promise<{ id: number | string }>
       const id = found
         ? (
@@ -194,11 +197,26 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
               locale: 'fr',
               data: data.fr,
               depth: 0,
-              context,
+              context: context(),
             })
           ).id
-        : (await payload.create({ collection, locale: 'fr', data: data.fr, depth: 0, context })).id
-      await updateById({ collection, id, locale: 'en', data: data.en, depth: 0, context })
+        : (
+            await payload.create({
+              collection,
+              locale: 'fr',
+              data: data.fr,
+              depth: 0,
+              context: context(),
+            })
+          ).id
+      await updateById({
+        collection,
+        id,
+        locale: 'en',
+        data: data.en,
+        depth: 0,
+        context: context(),
+      })
       record(collection, found ? 'updated' : 'created')
       return id as number
     } catch (error) {
@@ -357,14 +375,14 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
         locale: 'fr',
         data: siteData('fr'),
         depth: 0,
-        context,
+        context: context(),
       })
       await payload.updateGlobal({
         slug: 'site',
         locale: 'en',
         data: withRowIds(siteData('en'), fr),
         depth: 0,
-        context,
+        context: context(),
       })
     },
   )
@@ -383,14 +401,14 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
         locale: 'fr',
         data: navigationData('fr', ids),
         depth: 0,
-        context,
+        context: context(),
       })
       await payload.updateGlobal({
         slug: 'navigation',
         locale: 'en',
         data: withRowIds(navigationData('en', ids), fr),
         depth: 0,
-        context,
+        context: context(),
       })
     },
   )
@@ -415,7 +433,7 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
           locale,
           data: { ...homeData(locale, film, slides), _status: 'published' },
           depth: 0,
-          context,
+          context: context(),
         })
       }
     },
@@ -431,7 +449,7 @@ export async function runSeed(payload: Payload, options: SeedOptions = {}): Prom
           locale,
           data: legalData(locale),
           depth: 0,
-          context,
+          context: context(),
         })
       }
     },
