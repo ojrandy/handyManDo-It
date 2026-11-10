@@ -45,6 +45,14 @@ if (host) {
   // Host only: the URL carries the password.
   console.log(`Applying pending migrations on ${host}…`)
   const output = payload(['migrate'])
+  // A schema push left a 'dev' row (batch -1), and migrate waits on a y/N prompt nobody answers.
+  if (/run Payload in dev mode/.test(output)) {
+    fail(
+      'The database was schema-pushed (a "dev" row in payload_migrations), so migrate refuses ' +
+        'to run. If the push matched the current schema, remove the marker and redeploy: ' +
+        'DELETE FROM payload_migrations WHERE batch = -1;',
+    )
+  }
   const status = payload(['migrate:status'])
   const pending = readdirSync(path.resolve('src/migrations'))
     .filter((file) => /^\d{8}_\d{6}_.+\.ts$/.test(file))

@@ -38,6 +38,20 @@ import { revalidateCollection } from './hooks/revalidate'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Schema push is for local databases only. Outside production mode Payload pushes the schema to
+// whatever DATABASE_URL names and writes a 'dev' row in payload_migrations, after which
+// `payload migrate` stops at a y/N prompt: the Hostinger content load (scripts run through tsx)
+// did that to Neon and blocked the next deploy (2026-11-10). Remote databases change through
+// migrations only.
+const localDatabase = (() => {
+  try {
+    const { hostname } = new URL(process.env.DATABASE_URL || '')
+    return ['localhost', '127.0.0.1', '::1', '[::1]'].includes(hostname)
+  } catch {
+    return false
+  }
+})()
+
 // Media goes to Cloudflare R2 when configured; local disk otherwise (dev only).
 const useR2 = Boolean(process.env.S3_BUCKET)
 
@@ -141,6 +155,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
     migrationDir: path.resolve(dirname, 'migrations'),
+    push: localDatabase,
   }),
   email: process.env.SMTP_HOST
     ? nodemailerAdapter({
