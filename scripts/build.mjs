@@ -7,8 +7,9 @@
 // is judged from `migrate:status`, as in check-migrations.mjs.
 import 'dotenv/config'
 
-import { spawnSync } from 'node:child_process'
-import { readdirSync } from 'node:fs'
+import { spawn, spawnSync } from 'node:child_process'
+import { readdirSync, readFileSync } from 'node:fs'
+import os from 'node:os'
 import path from 'node:path'
 
 const localHosts = ['localhost', '127.0.0.1', '::1', '[::1]']
@@ -56,19 +57,55 @@ if (host) {
   console.log('✓ database schema is current')
 }
 
-// Hostinger (remote database) builds lean: its ~3 GB box is shared, and a full-speed build was
-// killed mid-compile (2026-11-10). One page worker, fewer Turbopack threads, a smaller Node heap so
-// V8 collects before the box runs out (next.config.ts `leanBuild`). Local and CI builds keep 3 GB.
-const lean = host
-  ? {
-      LEAN_BUILD: '1',
-      TOKIO_WORKER_THREADS: '2',
-      NODE_OPTIONS: '--no-deprecation --max-old-space-size=1536',
-    }
+// Hostinger (remote database) builds lean (DEPLOY.md §4): two Turbopack builds there stopped at
+// the same point (~16 min, no output), at full speed and with a third less memory, which looks
+// like its build time limit with the compile stalled. So it builds with webpack (plain Node, heap
+// capped), one page worker and no type check (next.config.ts `leanBuild`); BUILD_BUNDLER=turbopack
+// switches back without a commit. Local and CI builds are unchanged.
+const bundler = process.env.BUILD_BUNDLER || (host ? 'webpack' : 'turbopack')
+const env = host
+  ? { LEAN_BUILD: '1', NODE_OPTIONS: '--no-deprecation --max-old-space-size=2048' }
   : { NODE_OPTIONS: '--no-deprecation --max-old-space-size=3072' }
-if (host) console.log('Lean build: 1 worker, 2 compiler threads, 1.5 GB heap, no type check')
-const build = spawnSync(process.execPath, [nextBin, 'build'], {
+if (host) console.log(`Lean build: ${bundler}, 1 worker, 2 GB heap, no type check`)
+
+// Hostinger's log shows nothing between "Creating an optimized production build" and its own
+// failure message, so the build reports the box's state itself.
+const mb = (bytes) => `${Math.round(bytes / 2 ** 20)} MB`
+const cgroup = (file) => {
+  try {
+    const value = readFileSync(`/sys/fs/cgroup/${file}`, 'utf8').trim()
+    return /^\d+$/.test(value) ? mb(Number(value)) : value
+  } catch {
+    return null
+  }
+}
+const started = Date.now()
+const minutes = () => `${((Date.now() - started) / 60_000).toFixed(1)} min`
+const status = () => {
+  const limit = cgroup('memory.max')
+  const used = cgroup('memory.current')
+  const box = limit ? `, cgroup ${used} of ${limit}` : ''
+  const load = os
+    .loadavg()
+    .map((n) => n.toFixed(1))
+    .join(' ')
+  return `${mb(os.totalmem() - os.freemem())} used of ${mb(os.totalmem())}${box}, load ${load}`
+}
+if (host) console.log(`[build] ${os.cpus().length} CPUs, ${status()}`)
+
+const args = ['build', ...(bundler === 'webpack' ? ['--webpack'] : [])]
+const child = spawn(process.execPath, [nextBin, ...args], {
   stdio: 'inherit',
-  env: { ...process.env, NEXT_TELEMETRY_DISABLED: '1', ...lean },
+  env: { ...process.env, NEXT_TELEMETRY_DISABLED: '1', ...env },
 })
-process.exit(build.status ?? 1)
+const heartbeat = host
+  ? setInterval(() => console.log(`[build] ${minutes()}: ${status()}`), 30_000)
+  : null
+child.on('exit', (code, signal) => {
+  if (heartbeat) clearInterval(heartbeat)
+  if (code !== 0) {
+    console.error(`[build] next build stopped after ${minutes()}: code ${code}, signal ${signal}`)
+    if (host) console.error(`[build] ${status()}`)
+  }
+  process.exit(code ?? 1)
+})
