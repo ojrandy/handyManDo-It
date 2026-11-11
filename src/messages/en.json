@@ -408,13 +408,16 @@
     },
     "shop": {
       "name": "Shop",
-      "blurb": "New, refurbished and second-hand goods."
+      "blurb": "New, refurbished and second-hand goods.",
+      "photoAlt": "A smiling vendor behind her market stall of baskets and boxed goods"
     },
     "food": {
       "name": "Food",
-      "blurb": "Order from local kitchens."
+      "blurb": "Order from local kitchens.",
+      "photoAlt": "A plate of jollof rice with fried plantains"
     },
     "custom": "Need something custom?",
+    "customPhotoAlt": "A designer’s hands drawing plans with a set square",
     "quote": "Request a quote",
     "photos": {
       "interiorExteriorDesign": "HandyMan Do IT crew fitting a TV wall unit on a studio set",

@@ -84,6 +84,14 @@ export const servicePhotos: Partial<
   transport: { src: '/images/work/at-work-transport.webp', width: 1200, height: 800 },
 }
 
+// "Also in the app" tiles in the services bento (alt in messages under `servicesSection`). Pexels
+// stock until the owner has photos from the Shop and Food sides of the app (Q-20; ids in the tracker).
+export const alsoInAppPhotos = {
+  shop: '/images/work/also-shop.webp',
+  food: '/images/work/also-food.webp',
+  custom: '/images/work/also-custom.webp',
+} as const
+
 export const storyChapters = [
   'browse',
   'price',

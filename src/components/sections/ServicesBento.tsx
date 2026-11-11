@@ -1,4 +1,5 @@
 import { ArrowRight, ArrowUpRight, Store, UtensilsCrossed, Wrench } from 'lucide-react'
+import Image from 'next/image'
 import { getLocale, getTranslations } from 'next-intl/server'
 import type { CSSProperties, ReactNode } from 'react'
 
@@ -13,7 +14,7 @@ import { bentoOrder, getHome, getHomeServices, pick, pickList } from '@/lib/home
 import { asMedia, imageSources } from '@/lib/media'
 import { groupBySlug } from '@/lib/serviceGroups'
 import { services, type ServiceKey } from '@/lib/services'
-import { servicePhotos, servicePrices } from '@/lib/showcase'
+import { alsoInAppPhotos, servicePhotos, servicePrices } from '@/lib/showcase'
 
 const LARGE: ServiceKey[] = ['interiorExteriorDesign', 'remodeling']
 const sectionId = 'services'
@@ -211,25 +212,37 @@ export async function ServicesBento() {
                     ['food', '/food', UtensilsCrossed],
                   ] as const
                 ).map(([key, href, Icon]) => (
-                  <li key={key} data-panel-tile className="panels:min-w-0">
+                  <li key={key} data-panel-tile className="flex panels:min-w-0">
                     <Link
                       href={href}
-                      className="group flex h-full flex-col justify-between rounded-panel bg-white p-4 shadow-sm sm:p-6 ring-1 ring-mist-200 transition-shadow hover:shadow-float"
+                      className="group relative flex w-full flex-col justify-between overflow-hidden rounded-panel bg-night-900 p-4 text-white sm:p-6"
                     >
-                      <span className="flex items-center justify-between">
-                        <span className="grid size-10 place-items-center rounded-card bg-mist-100 text-teal-600">
-                          <Icon aria-hidden className="size-5" strokeWidth={1.75} />
-                        </span>
-                        {/* The panel's title already says it. */}
-                        <span className="rounded-full bg-teal-600/10 px-2 py-1 text-[10px] font-semibold text-teal-700 sm:px-3 sm:text-xs panels:hidden">
+                      <Image
+                        src={alsoInAppPhotos[key]}
+                        alt={t(`${key}.photoAlt`)}
+                        fill
+                        sizes="(min-width: 1280px) 300px, (min-width: 1024px) 25vw, 50vw"
+                        // Exported at web size; nothing to resize per request.
+                        unoptimized
+                        className="object-cover transition-transform duration-700 ease-out-expo motion-safe:group-hover:scale-105"
+                      />
+                      <span
+                        aria-hidden
+                        className="absolute inset-0 bg-gradient-to-t from-night-950 via-night-950/70 via-45% to-transparent"
+                      />
+                      <span className="relative grid size-9 place-items-center self-start rounded-card bg-gold-500 text-night-900 shadow-sm sm:size-10">
+                        <Icon aria-hidden className="size-5" strokeWidth={1.75} />
+                      </span>
+                      <span className="relative block">
+                        {/* In the text, not over the photo, where it would hide a face. The panel's
+                            title already says it on phones. */}
+                        <span className="mb-1 block text-[10px] font-semibold tracking-wide text-gold-300 uppercase sm:text-xs panels:hidden">
                           {t('alsoInApp')}
                         </span>
-                      </span>
-                      <span>
-                        <span className="block font-display text-lg font-semibold text-teal-700">
+                        <span className="block font-display text-lg font-semibold">
                           {t(`${key}.name`)}
                         </span>
-                        <span className="mt-1 block text-xs text-slate-500 sm:text-sm">
+                        <span className="mt-1 block text-xs text-white/85 sm:text-sm">
                           {t(`${key}.blurb`)}
                         </span>
                       </span>
@@ -238,8 +251,21 @@ export async function ServicesBento() {
                 ))}
 
                 <li data-panel-tile className="panels:col-span-2">
-                  <div className="flex h-full flex-col justify-between gap-3 rounded-panel bg-teal-600 p-4 text-white sm:p-6">
-                    <span className="font-display text-base leading-snug font-semibold sm:text-xl panels:text-2xl">
+                  <div className="relative flex h-full flex-col justify-between gap-3 overflow-hidden rounded-panel bg-teal-600 p-4 text-white sm:p-6">
+                    <Image
+                      src={alsoInAppPhotos.custom}
+                      alt={t('customPhotoAlt')}
+                      fill
+                      sizes="(min-width: 1280px) 600px, (min-width: 1024px) 50vw, 100vw"
+                      unoptimized
+                      className="object-cover object-[50%_60%]"
+                    />
+                    {/* Brand teal behind the title and the button; the plans show between them. */}
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 bg-gradient-to-b from-teal-700/95 via-teal-700/60 to-teal-700/95"
+                    />
+                    <span className="relative font-display text-base leading-snug font-semibold sm:text-xl panels:text-2xl">
                       {t('custom')}
                     </span>
                     <Link
@@ -248,7 +274,7 @@ export async function ServicesBento() {
                         variant: 'primary',
                         size: 'sm',
                         // Half-width tile on phones: let the label wrap rather than overflow.
-                        className: 'self-start px-3 whitespace-normal! sm:px-4',
+                        className: 'relative self-start px-3 whitespace-normal! sm:px-4',
                       })}
                     >
                       {t('quote')}

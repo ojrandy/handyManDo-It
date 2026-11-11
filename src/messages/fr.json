@@ -413,24 +413,27 @@
     },
     "shop": {
       "name": "Boutique",
-      "blurb": "Articles neufs, reconditionnés et d’occasion."
+      "blurb": "Articles neufs, reconditionnés et d’occasion.",
+      "photoAlt": "Une vendeuse souriante derrière son étal de paniers et d’articles emballés"
     },
     "food": {
       "name": "Repas",
-      "blurb": "Commandez auprès de cuisines locales."
+      "blurb": "Commandez auprès de cuisines locales.",
+      "photoAlt": "Une assiette de riz jollof avec des plantains frits"
     },
     "custom": "Besoin de quelque chose de sur mesure ?",
+    "customPhotoAlt": "Les mains d’un concepteur dessinent des plans avec une équerre",
     "quote": "Demander un devis",
     "photos": {
       "interiorExteriorDesign": "L’équipe HandyMan Do IT installe un meuble TV mural sur un plateau de tournage",
       "remodeling": "L’équipe HandyMan Do IT coupe du bois à la scie sur le chantier",
       "upholsteryFurniture": "Un artisan répare la structure courbe d’une chaise en bois",
-      "repairsInstallations": "Une femme sur un canapé orange décrit un travail sur son téléphone",
+      "repairsInstallations": "Un membre de l’équipe HandyMan Do IT peint autour d’un portail métallique bleu",
       "signage": "L’équipe HandyMan Do IT pose une grande enseigne au logo Soundz sur un plateau",
       "events": "Un membre de l’équipe HandyMan Do IT installe un présentoir lors d’un événement en plein air",
       "lighting": "L’équipe HandyMan Do IT vérifie une installation de scène sous les projecteurs",
       "building": "L’équipe HandyMan Do IT coupe du bois sur un établi de chantier",
-      "moving": "Une pro vérifiée en gilet haute visibilité, casque à la main, parle au téléphone",
+      "moving": "Un membre de l’équipe HandyMan Do IT déplace une étagère blanche",
       "packing": "Un ouvrier range des objets de la maison dans un carton",
       "transport": "Des ouvriers chargent des cartons dans une camionnette de livraison"
     }

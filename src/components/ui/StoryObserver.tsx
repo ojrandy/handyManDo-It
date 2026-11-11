@@ -11,6 +11,9 @@ type Props = {
 const PINNED =
   '(min-width: 48rem) and (prefers-reduced-motion: no-preference) and (scripting: enabled)'
 
+// How long each swipe card stays before the next one slides in (owner, 2026-11-10).
+const ADVANCE_MS = 10_000
+
 // Runs the scroll story (FR-HOME-07, ADR-030). Every element with `data-for="<chapter indexes>"`
 // gets `data-current` while one of its chapters is showing; CSS alone can run the story from that,
 // so it still works if GSAP fails to load. When pinned, it also sizes the phone to the stage, so the
@@ -27,6 +30,7 @@ export function StoryObserver({ id }: Props) {
     const chapters = [...track.querySelectorAll<HTMLElement>('[data-story-chapter]')]
     const marked = [...root.querySelectorAll<HTMLElement>('[data-for]')]
     const media = window.matchMedia(PINNED)
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)')
 
     const show = (index: number) => {
       for (const element of marked) {
@@ -100,18 +104,81 @@ export function StoryObserver({ id }: Props) {
       }
     }
 
-    // Swipe: the card in the middle of the horizontal track.
+    // Swipe: the card in the middle of the horizontal track. While the track is on screen it moves
+    // on by itself every ADVANCE_MS, long enough to read a card. Touching, hovering or focusing the
+    // track holds it (WCAG 2.2.2), a manual swipe restarts the count, and reduced motion turns it off.
     const swipe = () => {
+      let current = 0
+      let timer = 0
+      let inView = false
+      let held = false
+
+      const advance = () => {
+        const next = chapters[(current + 1) % chapters.length]
+        if (!next) return
+        const box = track.getBoundingClientRect()
+        const card = next.getBoundingClientRect()
+        const left = track.scrollLeft + card.left - box.left - (box.width - card.width) / 2
+        track.scrollTo({ left, behavior: 'smooth' })
+      }
+      const schedule = () => {
+        window.clearTimeout(timer)
+        if (!inView || held || still.matches) return
+        timer = window.setTimeout(() => {
+          advance()
+          schedule()
+        }, ADVANCE_MS)
+      }
+
       const observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
-            if (entry.isIntersecting) show(chapters.indexOf(entry.target as HTMLElement))
+            if (!entry.isIntersecting) continue
+            current = chapters.indexOf(entry.target as HTMLElement)
+            show(current)
+            schedule()
           }
         },
         { root: track, rootMargin: '0px -45% 0px -45%' },
       )
       for (const chapter of chapters) observer.observe(chapter)
-      return () => observer.disconnect()
+
+      const visible = new IntersectionObserver(
+        ([entry]) => {
+          inView = entry?.isIntersecting ?? false
+          schedule()
+        },
+        { threshold: 0.5 },
+      )
+      visible.observe(track)
+
+      const hold = () => {
+        held = true
+        schedule()
+      }
+      const release = () => {
+        held = track.contains(document.activeElement)
+        schedule()
+      }
+      const onFocusOut = (event: FocusEvent) => {
+        if (!track.contains(event.relatedTarget as Node | null)) release()
+      }
+      const holdEvents = ['touchstart', 'mouseenter', 'focusin'] as const
+      const releaseEvents = ['touchend', 'touchcancel', 'mouseleave'] as const
+      for (const name of holdEvents) track.addEventListener(name, hold, { passive: true })
+      for (const name of releaseEvents) track.addEventListener(name, release, { passive: true })
+      track.addEventListener('focusout', onFocusOut)
+      still.addEventListener('change', schedule)
+
+      return () => {
+        window.clearTimeout(timer)
+        observer.disconnect()
+        visible.disconnect()
+        for (const name of holdEvents) track.removeEventListener(name, hold)
+        for (const name of releaseEvents) track.removeEventListener(name, release)
+        track.removeEventListener('focusout', onFocusOut)
+        still.removeEventListener('change', schedule)
+      }
     }
 
     let cleanup = media.matches ? pinned() : swipe()
