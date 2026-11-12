@@ -87,6 +87,22 @@ async function sourceIndex(): Promise<Map<string, string>> {
   return index
 }
 
+type Locale = 'fr' | 'en'
+// `alt` read with `locale: 'all'`: one value per locale (a plain string from older reads).
+type AltByLocale = Partial<Record<Locale, string | null>> | string | null | undefined
+
+// The update must name a locale whose required `alt` is filled in: without one Payload writes the
+// default locale (fr), and the WordPress imports have English alt only, so validation rejected
+// every one of them ("The following field is invalid: Alt", Hostinger deploy 2026-11-12).
+function altLocale(alt: AltByLocale): { locale: Locale; alt: string } | null {
+  if (typeof alt === 'string') return alt.trim() ? { locale: 'fr', alt } : null
+  for (const locale of ['fr', 'en'] as const) {
+    const value = alt?.[locale]
+    if (value?.trim()) return { locale, alt: value }
+  }
+  return null
+}
+
 const storedNames = (doc: Media) =>
   [doc.filename, ...Object.values(doc.sizes ?? {}).map((size) => size?.filename)].filter(
     (name): name is string => Boolean(name),
@@ -120,6 +136,7 @@ async function main(): Promise<number> {
     pagination: false,
     depth: 0,
     sort: 'id',
+    locale: 'all',
   })
   const broken = docs.filter((doc) => !isComplete(doc, keys))
   console.log(`${docs.length} media documents, ${keys.size} files in the bucket.`)
@@ -136,15 +153,24 @@ async function main(): Promise<number> {
       console.error(`  ✗ ${doc.id} ${doc.filename}: original file not found`)
       continue
     }
+    const target = altLocale(doc.alt as AltByLocale)
+    if (!target) {
+      failed++
+      console.error(`  ✗ ${doc.id} ${doc.filename}: no alt text in any locale`)
+      continue
+    }
     if (!apply) {
-      console.log(`  · ${doc.id} ${doc.filename} ← ${path.relative(process.cwd(), source)}`)
+      console.log(
+        `  · ${doc.id} ${doc.filename} ← ${path.relative(process.cwd(), source)} (${target.locale})`,
+      )
       continue
     }
     try {
       const updated = await payload.update({
         collection: 'media',
         id: doc.id,
-        data: {},
+        locale: target.locale,
+        data: { alt: target.alt },
         filePath: source,
         depth: 0,
         // A new object per call: a shared context skips every upload after the first.
