@@ -138,6 +138,11 @@ export interface Config {
     welcome: WelcomeWidget;
     inbox: InboxWidget;
     content: ContentWidget;
+    kpis: KpisWidget;
+    trend: TrendWidget;
+    pipeline: PipelineWidget;
+    mix: MixWidget;
+    sources: SourcesWidget;
     collections: CollectionsWidget;
   };
   user: User;
@@ -2150,6 +2155,56 @@ export interface InboxWidget {
  * via the `definition` "content_widget".
  */
 export interface ContentWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'small' | 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "kpis_widget".
+ */
+export interface KpisWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trend_widget".
+ */
+export interface TrendWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pipeline_widget".
+ */
+export interface PipelineWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'small' | 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mix_widget".
+ */
+export interface MixWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'small' | 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sources_widget".
+ */
+export interface SourcesWidget {
   data?: {
     [k: string]: unknown;
   };

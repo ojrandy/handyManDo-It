@@ -8,9 +8,10 @@ import { adminCopy, adminLang, type AdminCopy } from './copy'
 // Local API as the signed-in user (overrideAccess: false), so nobody sees numbers their role
 // can't open.
 
-const adminPath = (req: PayloadRequest, path: string) => `${req.payload.config.routes.admin}${path}`
+export const adminPath = (req: PayloadRequest, path: string) =>
+  `${req.payload.config.routes.admin}${path}`
 
-async function safeCount(req: PayloadRequest, collection: CollectionSlug, where?: Where) {
+export async function safeCount(req: PayloadRequest, collection: CollectionSlug, where?: Where) {
   try {
     const { totalDocs } = await req.payload.count({
       collection,
@@ -72,7 +73,7 @@ export function WelcomeWidget({ req, user }: WidgetServerProps) {
   )
 }
 
-function relativeTime(date: string, lang: 'en' | 'fr') {
+export function relativeTime(date: string, lang: 'en' | 'fr') {
   const minutes = Math.round((Date.now() - new Date(date).getTime()) / 60_000)
   const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' })
   if (minutes < 60) return rtf.format(-minutes, 'minute')

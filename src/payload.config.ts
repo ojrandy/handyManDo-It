@@ -106,10 +106,46 @@ export default buildConfig({
           label: { en: 'Site content', fr: 'Contenu du site' },
           minWidth: 'small',
         },
+        // Analytics (analytics.tsx): form entries and content, read from the database.
+        {
+          slug: 'kpis',
+          Component: '/components/admin/analytics#KpiWidget',
+          label: { en: 'Key figures', fr: 'Chiffres clés' },
+          minWidth: 'large',
+        },
+        {
+          slug: 'trend',
+          Component: '/components/admin/analytics#TrendWidget',
+          label: { en: 'Leads over 30 days', fr: 'Demandes sur 30 jours' },
+          minWidth: 'medium',
+        },
+        {
+          slug: 'pipeline',
+          Component: '/components/admin/analytics#PipelineWidget',
+          label: { en: 'Follow-up pipeline', fr: 'Suivi des demandes' },
+          minWidth: 'small',
+        },
+        {
+          slug: 'mix',
+          Component: '/components/admin/analytics#MixWidget',
+          label: { en: 'What people ask for', fr: 'Ce que les gens demandent' },
+          minWidth: 'small',
+        },
+        {
+          slug: 'sources',
+          Component: '/components/admin/analytics#SourcesWidget',
+          label: { en: 'Where leads come from', fr: 'Origine des demandes' },
+          minWidth: 'small',
+        },
       ],
       defaultLayout: [
         { widgetSlug: 'welcome', width: 'full' },
+        { widgetSlug: 'kpis', width: 'full' },
+        { widgetSlug: 'trend', width: 'large' },
+        { widgetSlug: 'pipeline', width: 'small' },
         { widgetSlug: 'inbox', width: 'medium' },
+        { widgetSlug: 'mix', width: 'medium' },
+        { widgetSlug: 'sources', width: 'medium' },
         { widgetSlug: 'content', width: 'medium' },
         // Payload's own collection cards, kept below the summary.
         { widgetSlug: 'collections', width: 'full' },
