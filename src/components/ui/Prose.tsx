@@ -21,6 +21,7 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
         height={media.height ?? 800}
         sizes="(min-width: 768px) 48rem, 100vw"
         loading="lazy"
+        removeOnError
         className="my-8 h-auto w-full rounded-panel"
       />
     )
